@@ -24,5 +24,7 @@ test('development preview uses the real B01E chamber and preserves the 15x30 mov
   assert.match(scene,/if\s*\(this\.previewMode\)\s*\{\s*for\s*\(const\s*\{\s*id,\s*facing\s*\}\s*of\s*IONA_B01E_TEXTURES\)/s);
   assert.match(scene,/this\.previewMode \? ionaB01EAssetKey\('idle-0','right'\)/);
   assert.match(scene,/stepMovement\(/,'preview should continue to use the established movement simulation');
-  assert.match(scene,/this\.updateB01CCombat\(attackPressed,grounded,dt\)/,'preview should use the authoritative combo event clock');
+  assert.match(scene,/this\.updateB01CCombat\(input\.actions\.light,grounded,dt\)/,'the earlier preview route keeps its authoritative combo clock through the central input mapper');
+  assert.match(scene,/if\(this\.b03Mode\)this\.updateB03Combat\(input\.actions,grounded,dt\)/,'B03 must route configurable action edges into its deterministic combat clock');
+  assert.match(scene,/private updateB03Animation\(/,'B03 moves must use their selected action poses in the actual player presentation');
 });

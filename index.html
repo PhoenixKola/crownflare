@@ -22,14 +22,17 @@
         <div class="thin-rule" aria-hidden="true"></div>
         <p class="lore">The day broke. The Spindle remembers.</p>
         <button id="start-button" class="primary-action" type="button">ENTER THE SPINDLE <span aria-hidden="true">→</span></button>
+        <button id="title-settings-button" class="secondary-action title-settings-action" type="button">CONTROLS / CONTROLLER</button>
         <p id="title-metadata" class="metadata">B00 / FOUNDATION PROTOTYPE / TEMPORARY GAMEPLAY ART</p>
       </div>
       <div class="corner-note">A NEW ORIGINAL WORLD<br />UNAPPROVED HERO ART</div>
     </section>
     <div id="hud" class="hud hidden" aria-hidden="true">
       <div class="hud-brand">CROWNFLARE <small id="hud-mode">/ CHAMBER 00</small></div>
-      <div class="hud-health"><span>INTEGRITY</span><div class="bar"><i></i></div></div>
-      <div class="hud-resonance"><span>RESONANCE / LOCKED</span><div class="bar"><i></i></div></div>
+      <div id="player-health" class="hud-health"><span>INTEGRITY</span><div class="bar"><i></i></div></div>
+      <div id="target-health" class="hud-health hidden"><span>SENTRY</span><div class="bar"><i></i></div></div>
+      <div id="resonance-meter" class="hud-resonance"><span>RESONANCE / LOCKED</span><div class="bar"><i></i></div></div>
+      <div id="b03-status" class="b03-status hidden" aria-live="polite"></div>
       <div id="preview-readout" class="preview-readout hidden" aria-live="polite"></div>
       <p id="controls-tip" class="controls-tip">A/D MOVE &nbsp; SPACE JUMP &nbsp; SHIFT DASH &nbsp; ESC PAUSE</p>
       <div id="preview-tools" class="preview-tools hidden" aria-label="Provisional Iona review controls">
@@ -58,7 +61,44 @@
         <h2 id="pause-title">PAUSED</h2>
         <p id="pause-reason">The Spindle is still.</p>
         <button id="resume-button" class="primary-action" type="button">RESUME <span aria-hidden="true">→</span></button>
+        <button id="pause-settings-button" class="secondary-action" type="button">CONTROLS / CONTROLLER</button>
         <button id="quit-button" class="secondary-action" type="button">RETURN TO TITLE</button>
+      </div>
+    </section>
+    <section id="settings-screen" class="screen settings-screen hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title" aria-hidden="true">
+      <div class="settings-panel">
+        <header class="settings-header">
+          <div><p class="eyebrow">SETTINGS / CONTROLS / CONTROLLER</p><h2 id="settings-title">INPUT CONFIGURATION</h2></div>
+          <button id="settings-close" class="settings-close" type="button" aria-label="Close controller settings">CLOSE ×</button>
+        </header>
+        <div id="controller-status" class="controller-status" aria-live="polite">CHECKING FOR A STANDARD CONTROLLER…</div>
+        <div class="settings-live-test">
+          <div class="axis-test"><span>LEFT STICK</span><div class="axis-track"><i id="axis-fill"></i><b></b></div><output id="axis-value">0.00</output></div>
+          <div class="button-test" aria-label="Live standard controller button test">
+            <span data-test-button="0">SOUTH</span><span data-test-button="1">EAST</span><span data-test-button="2">WEST</span><span data-test-button="3">NORTH</span><span data-test-button="5">RB</span>
+          </div>
+        </div>
+        <div class="settings-bindings" role="group" aria-label="Controller button assignments">
+          <div class="binding-row"><span>JUMP <small>Space / W / ↑</small></span><button type="button" data-rebind="jump">Button 0</button><button type="button" class="rebind-action" data-capture="jump">REMAP</button></div>
+          <div class="binding-row"><span>LIGHT / COMBO <small>J / Left Mouse</small></span><button type="button" data-rebind="light">Button 2</button><button type="button" class="rebind-action" data-capture="light">REMAP</button></div>
+          <div class="binding-row"><span>HEAVY / LAUNCHER <small>K / Right Mouse</small></span><button type="button" data-rebind="heavy">Button 3</button><button type="button" class="rebind-action" data-capture="heavy">REMAP</button></div>
+          <div class="binding-row"><span>DODGE / DASH <small>Shift</small></span><button type="button" data-rebind="dash">Button 1</button><button type="button" class="rebind-action" data-capture="dash">REMAP</button></div>
+          <div class="binding-row"><span>RESONANCE SPECIAL <small>Q</small></span><button type="button" data-rebind="special">Button 5</button><button type="button" class="rebind-action" data-capture="special">REMAP</button></div>
+          <div class="binding-row"><span>INTERACT <small>E</small></span><button type="button" data-rebind="interact">Button 12</button><button type="button" class="rebind-action" data-capture="interact">REMAP</button></div>
+        </div>
+        <div class="settings-controls">
+          <label class="deadzone-control">STICK DEAD ZONE <output id="deadzone-value">0.20</output><input id="deadzone-range" type="range" min="0.10" max="0.40" step="0.01" value="0.20" /></label>
+          <p class="reserved-controls">LB / L1: TRANSFORM — NOT AVAILABLE &nbsp; · &nbsp; RT / R2: FINISHER — NOT AVAILABLE</p>
+          <label class="rumble-control"><input id="rumble-enabled" type="checkbox" /> Vibration <span id="rumble-support">Checking support…</span></label>
+          <button id="rumble-test" class="secondary-action" type="button" disabled>TEST RUMBLE</button>
+        </div>
+        <p id="settings-message" class="settings-message" role="status" aria-live="polite">Keyboard and mouse remain available. Controller navigation uses D-pad, South to confirm, East or Start to go back.</p>
+        <footer class="settings-footer">
+          <button id="settings-reset" class="secondary-action" type="button">RESET DEFAULTS</button>
+          <span></span>
+          <button id="settings-cancel" class="secondary-action" type="button">CANCEL</button>
+          <button id="settings-save" class="primary-action" type="button">SAVE CONTROLS</button>
+        </footer>
       </div>
     </section>
     <aside id="debug-overlay" class="debug-overlay hidden" aria-label="Development telemetry"></aside>

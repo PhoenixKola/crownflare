@@ -1,0 +1,912 @@
+{
+  "milestone": "B03",
+  "generatedAt": "2026-11-07T18:44:18.088Z",
+  "artStatus": "CANDIDATE_PENDING_OWNER_REVIEW",
+  "baseDesignApproval": "PENDING",
+  "artMotionApproval": "PENDING_NORMAL_SPEED_REVIEW",
+  "imageGeneration": {
+    "tool": "OpenAI native image_gen",
+    "sourceSheets": [
+      {
+        "path": "art-source/characters/iona/b03-candidate/generation/iona-heavy-6poses.png",
+        "sha256": "46daba04ca9bc49ac43eb788a8b01d1e19a8086ff420cdd278ae6ba24aa47bfe",
+        "bytes": 1718745,
+        "generationId": "exec-cba1dab3-23ae-4deb-9481-7bff94f93d55"
+      },
+      {
+        "path": "art-source/characters/iona/b03-candidate/generation/iona-aerial-6poses.png",
+        "sha256": "aa9ac0965e83f11028e1e9ea402091ed2e021bd6a5ea0cbff45fc0facb643a21",
+        "bytes": 1845817,
+        "generationId": "exec-24dbf2d6-99dd-48f2-8853-dcd906321cbe"
+      },
+      {
+        "path": "art-source/characters/iona/b03-candidate/generation/iona-resonance-6poses.png",
+        "sha256": "cda6af7a2738a0bbb8e101dcdba382e2dffb18b66438c71a8fe9c8cef921e906",
+        "bytes": 1735881,
+        "generationId": "exec-6eb8432f-12fa-47fc-ae68-83106c7a55c5"
+      },
+      {
+        "path": "art-source/characters/iona/b03-candidate/generation/iona-hurt-6poses.png",
+        "sha256": "3905d85e01eac3845abab9e53a8675b902910a6c4e7daebd31d32be96d7f139d",
+        "bytes": 1822157,
+        "generationId": "exec-7ce2e082-f0e7-48d5-9d04-7956e2ecd325"
+      },
+      {
+        "path": "art-source/characters/enemies/b03-sentry/generation/spindle-sentry-6poses.png",
+        "sha256": "50b4fc2924c132efcc032c040674659b1a41cc90fe57aa99e8e440b86ae1c14a",
+        "bytes": 1723522,
+        "generationId": "exec-cd92cbe8-e5be-4c0f-a05b-481226c9a35d"
+      },
+      {
+        "path": "art-source/vfx/b03/resonance-pressure-wave-4frames.png",
+        "sha256": "20717de65beca851944e6c0df16ebe68eb6d87b3517de609a30f39243d77d2ea",
+        "bytes": 488924,
+        "generationId": "exec-6de35d9e-b2cc-4755-a23c-9ab2cfc9a5e9"
+      }
+    ],
+    "exactPromptAvailability": "Exact request text was not preserved in the repository at baseline; see generation-prompts.md for clearly marked reconstructed intent summaries."
+  },
+  "sourceAudit": [
+    {
+      "path": "art-source/characters/iona/b03-candidate/generation/iona-heavy-6poses.png",
+      "sha256": "46daba04ca9bc49ac43eb788a8b01d1e19a8086ff420cdd278ae6ba24aa47bfe",
+      "bytes": 1718745,
+      "generationId": "exec-cba1dab3-23ae-4deb-9481-7bff94f93d55"
+    },
+    {
+      "path": "art-source/characters/iona/b03-candidate/generation/iona-aerial-6poses.png",
+      "sha256": "aa9ac0965e83f11028e1e9ea402091ed2e021bd6a5ea0cbff45fc0facb643a21",
+      "bytes": 1845817,
+      "generationId": "exec-24dbf2d6-99dd-48f2-8853-dcd906321cbe"
+    },
+    {
+      "path": "art-source/characters/iona/b03-candidate/generation/iona-resonance-6poses.png",
+      "sha256": "cda6af7a2738a0bbb8e101dcdba382e2dffb18b66438c71a8fe9c8cef921e906",
+      "bytes": 1735881,
+      "generationId": "exec-6eb8432f-12fa-47fc-ae68-83106c7a55c5"
+    },
+    {
+      "path": "art-source/characters/iona/b03-candidate/generation/iona-hurt-6poses.png",
+      "sha256": "3905d85e01eac3845abab9e53a8675b902910a6c4e7daebd31d32be96d7f139d",
+      "bytes": 1822157,
+      "generationId": "exec-7ce2e082-f0e7-48d5-9d04-7956e2ecd325"
+    },
+    {
+      "path": "art-source/characters/enemies/b03-sentry/generation/spindle-sentry-6poses.png",
+      "sha256": "50b4fc2924c132efcc032c040674659b1a41cc90fe57aa99e8e440b86ae1c14a",
+      "bytes": 1723522,
+      "generationId": "exec-cd92cbe8-e5be-4c0f-a05b-481226c9a35d"
+    },
+    {
+      "path": "art-source/vfx/b03/resonance-pressure-wave-4frames.png",
+      "sha256": "20717de65beca851944e6c0df16ebe68eb6d87b3517de609a30f39243d77d2ea",
+      "bytes": 488924,
+      "generationId": "exec-6de35d9e-b2cc-4755-a23c-9ab2cfc9a5e9"
+    },
+    {
+      "path": "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+      "sha256": "c5cd65ee4eab727f389696638171f9cb0f23764c8ae8be3652c79e761bec7418",
+      "bytes": 617752,
+      "generationId": null
+    }
+  ],
+  "runtimeAudit": [
+    {
+      "path": "public/assets/characters/iona/b03/air-contact-left.png",
+      "sha256": "278ca93a5560f139a66aba5435ea1eb0b4cb74f4cc91b31f867b42239ad0c479",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 10827,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 2652,
+        "bounds": [
+          30,
+          16,
+          98,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/air-contact-right.png",
+      "sha256": "17d78c32a1c5818ef57a7a13c6aabc79dc981314d885a747b4bb90d61047441f",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 10731,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 2311,
+        "bounds": [
+          30,
+          16,
+          98,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/air-recovery-left.png",
+      "sha256": "a4e32f518de24dfc4ebe878777b7d75b43552774e7862b56325cf902f84f3d02",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 10258,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 2261,
+        "bounds": [
+          30,
+          16,
+          98,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/air-recovery-right.png",
+      "sha256": "0e7595fcc42afda9275ef72b68b38f4261929542f5ad1c4d2c82a4372b7f5f83",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 10313,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 2068,
+        "bounds": [
+          30,
+          16,
+          96,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/air-windup-left.png",
+      "sha256": "d8309244382264ee608f899b64c6bbf0f1e5a77f02f7c191e905b5bc4c2c93b5",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 10137,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 2295,
+        "bounds": [
+          30,
+          16,
+          98,
+          79
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/air-windup-right.png",
+      "sha256": "12461de924278b58909d4350cb59956737c7e4b44bc7cde6824a3de5481841b5",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9892,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1857,
+        "bounds": [
+          30,
+          18,
+          98,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/heavy-contact-left.png",
+      "sha256": "e5b4e2942bfbfb1f93bedf1051fd6840b7b500642df46d562bd488accc48b3e3",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9755,
+      "alpha": {
+        "min": 0,
+        "max": 255,
+        "nontransparentPixels": 1490,
+        "bounds": [
+          30,
+          18,
+          95,
+          78
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/heavy-contact-right.png",
+      "sha256": "3bd285e511ff500394164db168422c4b464fcf4dae9fbb37091dde2a5e8127f3",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9687,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1490,
+        "bounds": [
+          34,
+          18,
+          95,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/heavy-recovery-left.png",
+      "sha256": "3ddd79f729abb84cbe22808d13eb9fcffead35ec08713d52f622d635bcd90a90",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9604,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1402,
+        "bounds": [
+          31,
+          17,
+          87,
+          78
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/heavy-recovery-right.png",
+      "sha256": "4c9e0a207773293c8bfa3bda4d1835f6b812131d4ba4b9f2b85a31936ca8f4a0",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9510,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1360,
+        "bounds": [
+          31,
+          20,
+          96,
+          78
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/heavy-windup-left.png",
+      "sha256": "54cc6c0d69c31c8b773c4a62ea1488e20770554b1b18100cb583e3531f410ed9",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9588,
+      "alpha": {
+        "min": 0,
+        "max": 255,
+        "nontransparentPixels": 1430,
+        "bounds": [
+          30,
+          16,
+          96,
+          78
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/heavy-windup-right.png",
+      "sha256": "9e8fa6e3a75f17b443ac79e990f7a7ed8f22d1bef4719d2b7122d050132019bf",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9350,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1331,
+        "bounds": [
+          34,
+          19,
+          96,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/hurt-flinch-left.png",
+      "sha256": "a4e8ed5d2d16c1c24c6f5668cf5bea5868680c5f7e35cc0063df10f53924b2e0",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9991,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1628,
+        "bounds": [
+          37,
+          16,
+          98,
+          78
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/hurt-flinch-right.png",
+      "sha256": "78b7146ae0a9e5061eb25e2971ea796fb89035ca32547b4ce3255551a9363170",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9887,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1627,
+        "bounds": [
+          34,
+          18,
+          96,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/hurt-ko-left.png",
+      "sha256": "2984c926320ea18ce1c0df4e9beec3b2a43020b5b7be3d68e22df60c4ab69fdd",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9739,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1870,
+        "bounds": [
+          30,
+          16,
+          96,
+          78
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/hurt-ko-right.png",
+      "sha256": "553d499f16a95eefb7cd9d27b0919d14405c96a5531295655bbc1290706b6fe6",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9297,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1520,
+        "bounds": [
+          30,
+          20,
+          93,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/hurt-stagger-left.png",
+      "sha256": "a8837ff7c7aad57769612307f6ce3ac57296c52864e5445b511f1595ddc76fff",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 10455,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1972,
+        "bounds": [
+          30,
+          16,
+          98,
+          78
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/hurt-stagger-right.png",
+      "sha256": "3a1277eb0924342ff808b920426e28660de729daf70a4cd9a777ef4f21c9c4d0",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 10286,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1808,
+        "bounds": [
+          31,
+          18,
+          98,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/special-contact-left.png",
+      "sha256": "b1161ce1f76e9b0aa206308a3be3ddadbcfb46f4c3f17936770b77731f6d2bd9",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9523,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1679,
+        "bounds": [
+          30,
+          16,
+          98,
+          78
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/special-contact-right.png",
+      "sha256": "e849f5337483215abc2960bb5b0414c13df0379591c82eaf0173cc91d7b71b76",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9489,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1536,
+        "bounds": [
+          30,
+          20,
+          96,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/special-recovery-left.png",
+      "sha256": "1fb7b7a5a646ff58d59079d7995681c6330ae45528b05bd583dc6c42f9fb2032",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9654,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1634,
+        "bounds": [
+          31,
+          16,
+          95,
+          78
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/special-recovery-right.png",
+      "sha256": "8591877924dfa36613108c40e03be647134eeae7742b274d4cb26d3d81428837",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9273,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1458,
+        "bounds": [
+          30,
+          18,
+          87,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/special-windup-left.png",
+      "sha256": "fce73490aaa3c782ecaf241b33be3af75bd99906f0d19ee4ec8f60195b06917b",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9337,
+      "alpha": {
+        "min": 0,
+        "max": 255,
+        "nontransparentPixels": 1675,
+        "bounds": [
+          30,
+          16,
+          98,
+          79
+        ]
+      }
+    },
+    {
+      "path": "public/assets/characters/iona/b03/special-windup-right.png",
+      "sha256": "3ed1c2b5c63025dbb4bed3e8143bd76cda386e9ea5b8b3df770d731637184b1e",
+      "canvas": "128x80",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 9128,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1477,
+        "bounds": [
+          34,
+          16,
+          98,
+          80
+        ]
+      }
+    },
+    {
+      "path": "public/assets/enemies/spindle-sentry/hurt.png",
+      "sha256": "ff80223c524a82d57a024c22b304a6397513968341cd3315a214a9d28af2d6f3",
+      "canvas": "64x56",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 6098,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 964,
+        "bounds": [
+          8,
+          9,
+          57,
+          55
+        ]
+      }
+    },
+    {
+      "path": "public/assets/enemies/spindle-sentry/idle.png",
+      "sha256": "f003ca5933c056628430b3554e289b7293b1e76f6e00c553ec71600acd056ec9",
+      "canvas": "64x56",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 6080,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1000,
+        "bounds": [
+          9,
+          8,
+          58,
+          56
+        ]
+      }
+    },
+    {
+      "path": "public/assets/enemies/spindle-sentry/ko.png",
+      "sha256": "4d57a5e933528a0d71c1080236294e3528c47607e194974f62a9e7158397f7d5",
+      "canvas": "64x56",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 5531,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 941,
+        "bounds": [
+          6,
+          8,
+          56,
+          52
+        ]
+      }
+    },
+    {
+      "path": "public/assets/enemies/spindle-sentry/lunge.png",
+      "sha256": "4556c87987eeb001fdd99b874c0c87575529b229d073a7e36d8af7baaadcc760",
+      "canvas": "64x56",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 6052,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 1010,
+        "bounds": [
+          6,
+          11,
+          57,
+          56
+        ]
+      }
+    },
+    {
+      "path": "public/assets/enemies/spindle-sentry/stagger.png",
+      "sha256": "5c91a2979b485e22034d167efc349f2d13184173d16988d5fb977291a8b8c345",
+      "canvas": "64x56",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 6018,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 968,
+        "bounds": [
+          6,
+          8,
+          58,
+          52
+        ]
+      }
+    },
+    {
+      "path": "public/assets/enemies/spindle-sentry/telegraph.png",
+      "sha256": "34acbc671f673a48781e0850e676ddef2047cc03a5c6275258c31ee5bf36334e",
+      "canvas": "64x56",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 5793,
+      "alpha": {
+        "min": 0,
+        "max": 254,
+        "nontransparentPixels": 862,
+        "bounds": [
+          9,
+          8,
+          57,
+          56
+        ]
+      }
+    },
+    {
+      "path": "public/assets/vfx/b03/resonance-wave-0.png",
+      "sha256": "25349bf9b711f0ba8d87373915648728bd6eb9332a2e57a2e85883612073b38b",
+      "canvas": "64x64",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 1837,
+      "alpha": {
+        "min": 0,
+        "max": 255,
+        "nontransparentPixels": 411,
+        "bounds": [
+          14,
+          9,
+          56,
+          56
+        ]
+      }
+    },
+    {
+      "path": "public/assets/vfx/b03/resonance-wave-1.png",
+      "sha256": "87ab8cdece6715975c5923aee00ee19dea034354c727d022660000f0417c9d5d",
+      "canvas": "64x64",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 2761,
+      "alpha": {
+        "min": 0,
+        "max": 255,
+        "nontransparentPixels": 657,
+        "bounds": [
+          8,
+          11,
+          56,
+          56
+        ]
+      }
+    },
+    {
+      "path": "public/assets/vfx/b03/resonance-wave-2.png",
+      "sha256": "9aff675891b4e7ca1c5ab608ed29c69bd86c62b5ee5a51f85a9b6acf7b667a39",
+      "canvas": "64x64",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 2622,
+      "alpha": {
+        "min": 0,
+        "max": 255,
+        "nontransparentPixels": 579,
+        "bounds": [
+          8,
+          10,
+          54,
+          56
+        ]
+      }
+    },
+    {
+      "path": "public/assets/vfx/b03/resonance-wave-3.png",
+      "sha256": "2943b1126929ff627b2baba850d291e8b2a855e25e41f16bf9fe80d5bc706d06",
+      "canvas": "64x64",
+      "candidate": true,
+      "ownerApproved": false,
+      "bytes": 1480,
+      "alpha": {
+        "min": 0,
+        "max": 255,
+        "nontransparentPixels": 262,
+        "bounds": [
+          8,
+          11,
+          52,
+          56
+        ]
+      }
+    }
+  ],
+  "actionCoverage": [
+    {
+      "action": "combo-1-contact",
+      "source": "B01E candidate",
+      "facings": [
+        "left",
+        "right"
+      ],
+      "runtimePaths": [
+        "public/assets/characters/iona/b01e/combo-1-contact-left.png",
+        "public/assets/characters/iona/b01e/combo-1-contact-right.png"
+      ],
+      "chrome": "SCREENSHOT_CAPTURED; combo damage and chain timing passed",
+      "ownerApproval": "PENDING"
+    },
+    {
+      "action": "combo-2-contact",
+      "source": "B01E candidate",
+      "facings": [
+        "left",
+        "right"
+      ],
+      "runtimePaths": [
+        "public/assets/characters/iona/b01e/combo-2-contact-left.png",
+        "public/assets/characters/iona/b01e/combo-2-contact-right.png"
+      ],
+      "chrome": "SCREENSHOT_CAPTURED; low-kick pose and chain timing passed",
+      "ownerApproval": "PENDING"
+    },
+    {
+      "action": "combo-3-contact",
+      "source": "B01E candidate",
+      "facings": [
+        "left",
+        "right"
+      ],
+      "runtimePaths": [
+        "public/assets/characters/iona/b01e/combo-3-contact-left.png",
+        "public/assets/characters/iona/b01e/combo-3-contact-right.png"
+      ],
+      "chrome": "SCREENSHOT_CAPTURED; rising-forearm pose and chain timing passed",
+      "ownerApproval": "PENDING"
+    },
+    {
+      "action": "heavy",
+      "source": "B03 native image_gen candidate",
+      "facings": [
+        "left",
+        "right"
+      ],
+      "runtimePaths": [
+        "public/assets/characters/iona/b03/heavy-windup-left.png",
+        "public/assets/characters/iona/b03/heavy-windup-right.png",
+        "public/assets/characters/iona/b03/heavy-contact-left.png",
+        "public/assets/characters/iona/b03/heavy-contact-right.png",
+        "public/assets/characters/iona/b03/heavy-recovery-left.png",
+        "public/assets/characters/iona/b03/heavy-recovery-right.png"
+      ],
+      "chrome": "WINDUP AND CONTACT SCREENSHOTS; tagged charge/impact audio and launch passed",
+      "ownerApproval": "PENDING"
+    },
+    {
+      "action": "air",
+      "source": "B03 native image_gen candidate",
+      "facings": [
+        "left",
+        "right"
+      ],
+      "runtimePaths": [
+        "public/assets/characters/iona/b03/air-windup-left.png",
+        "public/assets/characters/iona/b03/air-windup-right.png",
+        "public/assets/characters/iona/b03/air-contact-left.png",
+        "public/assets/characters/iona/b03/air-contact-right.png",
+        "public/assets/characters/iona/b03/air-recovery-left.png",
+        "public/assets/characters/iona/b03/air-recovery-right.png"
+      ],
+      "chrome": "CONTACT SCREENSHOT; aerial action and swing cue passed",
+      "ownerApproval": "PENDING"
+    },
+    {
+      "action": "special",
+      "source": "B03 native image_gen candidate",
+      "facings": [
+        "left",
+        "right"
+      ],
+      "runtimePaths": [
+        "public/assets/characters/iona/b03/special-windup-left.png",
+        "public/assets/characters/iona/b03/special-windup-right.png",
+        "public/assets/characters/iona/b03/special-contact-left.png",
+        "public/assets/characters/iona/b03/special-contact-right.png",
+        "public/assets/characters/iona/b03/special-recovery-left.png",
+        "public/assets/characters/iona/b03/special-recovery-right.png"
+      ],
+      "chrome": "CONTACT + VFX SCREENSHOT; charge/release cues and resource passed",
+      "ownerApproval": "PENDING"
+    },
+    {
+      "action": "hurt reactions",
+      "source": "B03 native image_gen candidate",
+      "facings": [
+        "left",
+        "right"
+      ],
+      "runtimePaths": [
+        "public/assets/characters/iona/b03/hurt-flinch-left.png",
+        "public/assets/characters/iona/b03/hurt-flinch-right.png",
+        "public/assets/characters/iona/b03/hurt-stagger-left.png",
+        "public/assets/characters/iona/b03/hurt-stagger-right.png",
+        "public/assets/characters/iona/b03/hurt-ko-left.png",
+        "public/assets/characters/iona/b03/hurt-ko-right.png"
+      ],
+      "chrome": "HURT-FLINCH SCREENSHOT; telegraph damage and HP change passed",
+      "ownerApproval": "PENDING"
+    }
+  ],
+  "enemy": {
+    "source": "B03 native image_gen candidate",
+    "states": [
+      "idle",
+      "telegraph",
+      "lunge",
+      "hurt",
+      "stagger",
+      "ko"
+    ],
+    "facing": "right master mirrored in Phaser for left",
+    "ownerApproval": "PENDING",
+    "chrome": "approach/telegraph/lunge observed; KO visual pending"
+  },
+  "vfx": {
+    "source": "B03 native image_gen candidate",
+    "runtimeFrames": [
+      "resonance-wave-0",
+      "resonance-wave-1",
+      "resonance-wave-2",
+      "resonance-wave-3"
+    ],
+    "chrome": "special hit and generated pressure wave captured; VFX-off body pose checked",
+    "ownerApproval": "PENDING"
+  },
+  "counts": {
+    "originalSourceSheets": 6,
+    "playerActionTextures": 24,
+    "enemyStates": 6,
+    "vfxFrames": 4,
+    "runtimeTextures": 34
+  },
+  "anatomyComparison": {
+    "path": "review-evidence/b03/b03-anatomy-comparison.png",
+    "poses": [
+      "crouch",
+      "low-kick",
+      "launcher",
+      "air strike"
+    ],
+    "cropPixels": [
+      250,
+      225
+    ],
+    "PhaserCanvasScale": 1,
+    "ownerApproval": "PENDING"
+  },
+  "browserCapture": {
+    "sourceTreeSha256": "0e0827b2b095215b7a0cf0c30e8bd65fcc0e8bd325caca81581c952bbd0d344a",
+    "videoSha256": "bedc87b7cefca2e36d6f8cb7793cb2532d6b9992b40da49f3852e0232fc2ff3d",
+    "videoDurationSeconds": 125.6,
+    "browserErrors": 0,
+    "checks": 22,
+    "ownerApproval": "PENDING"
+  }
+}
