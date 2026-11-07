@@ -3,9 +3,10 @@ import { InputController } from '../input/InputController';
 import { initialMoveState, stepMovement, type MoveState } from '../movement/motion';
 import { animationAssetKey, frameAt, IONA_ATTACK_FRAMES, IONA_CLIPS, type IonaFacing, type IonaLocomotion } from '../animation/ionaAnimation';
 import { IONA_RECOVERY_CLIPS, IONA_RECOVERY_FRAME_IDS, IONA_RECOVERY_JAB, recoveryAssetKey, recoveryFrameAt } from '../animation/ionaRecoveryAnimation';
+import { IONA_B01C_TEXTURES, ionaB01CAnimationKey, ionaB01CAssetKey, registerIonaB01CAnimations, validateIonaB01CTextures } from '../animation/ionaB01cAnimation';
 import { beginAction, idleClock, stepAction, type ActionDef, type CombatClock, type CombatEvent } from '../combat/sim';
 
-export type ChamberSnapshot = { x: number; y: number; grounded: boolean; facing: number; dashActive: boolean; cameraX: number; controller: boolean };
+export type ChamberSnapshot = { x: number; y: number; grounded: boolean; facing: number; dashActive: boolean; cameraX: number; controller: boolean; bodySize: { width: number; height: number } };
 export type ArtReviewView = 'base' | 'forms' | 'silhouette' | 'direction' | 'materials';
 export type ArtReviewContrast = 'calm' | 'light' | 'busy';
 export type ArtReviewSnapshot = { view: ArtReviewView; contrast: ArtReviewContrast; silhouetteHeight: 48 | 60 | 72; pixelGrid: boolean; loadedAssets: number; totalAssets: number; missingAssets: string[] };
@@ -22,7 +23,12 @@ const LIGHT_HIT: ActionDef = {
   id:'iona-light-hit', moveId:'iona-base-jab', sourceId:'iona-player', targetId:'training-dummy',
   startupMs:IONA_RECOVERY_JAB.startupMs, activeMs:IONA_RECOVERY_JAB.activeMs, recoveryMs:IONA_RECOVERY_JAB.recoveryMs, events:[{id:'contact',atMs:IONA_RECOVERY_JAB.contactEventMs}],
 };
-export type AnimationLabSnapshot = { mode:string; frame:string; facing:IonaFacing; attackPhase:string; targetHealth:number; targetX:number; lastCombatEvent:string; artSource:'generated-imagegen'|'rejected-svg'; assetCount:number; missingAssets:string[]; reviewVisible:boolean; contrast:ArtReviewContrast; reviewScale:48|60|72 };
+const B01C_COMBO_ACTIONS: ActionDef[] = [
+  { id:'iona-base-combo-1', moveId:'iona-base-combo-1', sourceId:'iona-player', targetId:'training-dummy', startupMs:90, activeMs:80, recoveryMs:170, events:[{id:'contact',atMs:112}] },
+  { id:'iona-base-combo-2', moveId:'iona-base-combo-2', sourceId:'iona-player', targetId:'training-dummy', startupMs:110, activeMs:90, recoveryMs:170, events:[{id:'contact',atMs:138}] },
+  { id:'iona-base-combo-3', moveId:'iona-base-combo-3', sourceId:'iona-player', targetId:'training-dummy', startupMs:140, activeMs:100, recoveryMs:220, events:[{id:'contact',atMs:165}] },
+];
+export type AnimationLabSnapshot = { mode:string; frame:string; facing:IonaFacing; attackPhase:string; comboStep:number; targetHealth:number; targetX:number; lastCombatEvent:string; artSource:'generated-imagegen'|'rejected-svg'|'b01c-native'; assetCount:number; missingAssets:string[]; reviewVisible:boolean; contrast:ArtReviewContrast; reviewScale:48|60|72 };
 
 /** B00 collision-test chamber; geometry remains programmer art and is never treated as production art. */
 export class ChamberScene extends Phaser.Scene {
@@ -38,6 +44,7 @@ export class ChamberScene extends Phaser.Scene {
   private readonly artReview: boolean;
   private readonly animationLab: boolean;
   private readonly oldRejectedArt: boolean;
+  private readonly b01cMode: boolean;
   private reviewView: ArtReviewView = 'base';
   private reviewContrast: ArtReviewContrast = 'calm';
   private silhouetteHeight: 48 | 60 | 72 = 60;
@@ -46,7 +53,8 @@ export class ChamberScene extends Phaser.Scene {
   private reviewObjects: Phaser.GameObjects.GameObject[] = [];
   private backgroundLayers!: Record<ArtReviewContrast, Phaser.GameObjects.Graphics>;
   private busyLayer!: Phaser.GameObjects.Graphics;
-  private labSprite?: Phaser.GameObjects.Image;
+  private labSprite?: Phaser.GameObjects.Sprite;
+  private labClipKey = '';
   private labFrame = 'idle-0';
   private labMode: IonaLocomotion | 'attack' = 'idle';
   private labElapsed = 0;
@@ -57,8 +65,12 @@ export class ChamberScene extends Phaser.Scene {
   private stopMs = 0;
   private turnMs = 0;
   private dashRecoverMs = 0;
+  private jumpTakeoffMs = 0;
+  private turnFromFacing: IonaFacing = 1;
   private attackClock: CombatClock = idleClock;
   private attackBufferMs = 0;
+  private attackComboIndex = 0;
+  private attackFacing: IonaFacing = 1;
   private targetHealth = 3;
   private lastCombatEvent = 'none';
   private readonly targetX = 151;
@@ -86,6 +98,7 @@ export class ChamberScene extends Phaser.Scene {
     this.animationLab = options.animationLab === true && !this.artReview;
     const params = new URLSearchParams(window.location.search);
     this.oldRejectedArt = this.animationLab && params.get('oldRejectedArt') === '1';
+    this.b01cMode = this.animationLab && params.get('b01c') === '1' && !this.oldRejectedArt;
     const view = params.get('view');
     const contrast = params.get('contrast');
     const height = Number(params.get('size'));
@@ -107,21 +120,30 @@ export class ChamberScene extends Phaser.Scene {
       this.load.image('b01a-base-left-60-silhouette', './assets/characters/iona/b01a/base-left-60-silhouette.png');
     }
     if (this.animationLab) {
-      for (const id of IONA_RECOVERY_FRAME_IDS) for (const facing of [-1, 1] as const) {
-        const side = facing < 0 ? 'left' : 'right';
-        this.load.image(recoveryAssetKey(id, facing), `./assets/characters/iona/b01-recovery/${id}-${side}.png`);
+      if (this.b01cMode) {
+        for (const { id, facing } of IONA_B01C_TEXTURES) {
+          this.load.image(ionaB01CAssetKey(id, facing), `./assets/characters/iona/b01c/${id}-${facing}.png`);
+        }
+        this.load.image('iona-b01c-method-nearest-right','./assets/characters/iona/b01-recovery/run-0-right.png');
+        this.load.image('iona-b01c-method-grid-right','./assets/characters/iona/b01c/method-grid-right.png');
+        this.load.image('iona-b01c-method-native-right','./assets/characters/iona/b01c/method-native-edit-right.png');
+      } else {
+        for (const id of IONA_RECOVERY_FRAME_IDS) for (const facing of [-1, 1] as const) {
+          const side = facing < 0 ? 'left' : 'right';
+          this.load.image(recoveryAssetKey(id, facing), `./assets/characters/iona/b01-recovery/${id}-${side}.png`);
+        }
+        this.load.image('iona-rejected-idle-right','./assets/characters/iona/overnight/idle-0-right.png');
+        this.load.image('iona-rejected-idle-left','./assets/characters/iona/overnight/idle-0-left.png');
+        if (this.oldRejectedArt) {
+          for (const id of LEGACY_IONA_FRAME_IDS) for (const side of ['right','left']) this.load.image(`iona-${id}-${side}`, `./assets/characters/iona/overnight/${id}-${side}.png`);
+          for (const side of ['right','left']) this.load.image(`iona-dawnrush-silhouette-${side}`, `./assets/characters/iona/overnight/dawnrush-silhouette-${side}.png`);
+        }
+        this.load.image('iona-review-b01a','./assets/characters/iona/b01a/base-60.png');
+        this.load.image('iona-review-dawnrush','./assets/characters/iona/overnight/dawnrush-silhouette-right.png');
+        this.load.image('iona-review-stormhalo','./assets/characters/iona/b01a/stormhalo-60-silhouette.png');
+        this.load.image('iona-review-eclipse','./assets/characters/iona/b01a/eclipse-warden-60-silhouette.png');
+        this.load.image('iona-recovery-silhouette','./assets/characters/iona/b01-recovery/base-60-silhouette.png');
       }
-      this.load.image('iona-rejected-idle-right','./assets/characters/iona/overnight/idle-0-right.png');
-      this.load.image('iona-rejected-idle-left','./assets/characters/iona/overnight/idle-0-left.png');
-      if (this.oldRejectedArt) {
-        for (const id of LEGACY_IONA_FRAME_IDS) for (const side of ['right','left']) this.load.image(`iona-${id}-${side}`, `./assets/characters/iona/overnight/${id}-${side}.png`);
-        for (const side of ['right','left']) this.load.image(`iona-dawnrush-silhouette-${side}`, `./assets/characters/iona/overnight/dawnrush-silhouette-${side}.png`);
-      }
-      this.load.image('iona-review-b01a','./assets/characters/iona/b01a/base-60.png');
-      this.load.image('iona-review-dawnrush','./assets/characters/iona/overnight/dawnrush-silhouette-right.png');
-      this.load.image('iona-review-stormhalo','./assets/characters/iona/b01a/stormhalo-60-silhouette.png');
-      this.load.image('iona-review-eclipse','./assets/characters/iona/b01a/eclipse-warden-60-silhouette.png');
-      this.load.image('iona-recovery-silhouette','./assets/characters/iona/b01-recovery/base-60-silhouette.png');
     }
   }
 
@@ -181,7 +203,7 @@ export class ChamberScene extends Phaser.Scene {
       add.text(1057, 205, 'DASH BARRIER', { fontFamily: 'monospace', fontSize: '8px', color: '#edab91' });
       add.text(1270, 127, 'BEYOND THE BROKEN DAY', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#314852' : '#85c3bd' });
     }
-    add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART / OWNER REVIEW PENDING' : this.animationLab ? (this.oldRejectedArt ? 'REJECTED OVERNIGHT VECTOR ART / COMPARISON ONLY' : 'B01 RECOVERY / IMAGEGEN PIXELS / OWNER REVIEW PENDING') : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'monospace', fontSize: this.artReview || this.animationLab ? '6px' : '7px', color: this.artReview || this.animationLab ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
+    add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART / OWNER REVIEW PENDING' : this.animationLab ? (this.oldRejectedArt ? 'REJECTED OVERNIGHT VECTOR ART / COMPARISON ONLY' : this.b01cMode ? 'B01C NATIVE PIXEL MOTION PILOT / OWNER REVIEW PENDING' : 'B01 RECOVERY / IMAGEGEN PIXELS / OWNER REVIEW PENDING') : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'monospace', fontSize: this.artReview || this.animationLab ? '6px' : '7px', color: this.artReview || this.animationLab ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
 
     if (this.artReview) {
       this.createArtReview();
@@ -200,9 +222,10 @@ export class ChamberScene extends Phaser.Scene {
     this.controller = new InputController(this);
     if (this.animationLab) {
       this.actor.setAlpha(0);
-      const initialKey = this.oldRejectedArt ? animationAssetKey('idle-0',1) : recoveryAssetKey('idle-0',1);
-      this.labSprite = add.image(this.actor.x,this.body.bottom,initialKey).setOrigin(.5,1).setDepth(12);
-      this.labHud = add.text(6,5,this.oldRejectedArt ? 'REJECTED ART COMPARISON ONLY  |  J HIT  |  R A/B' : 'B01 RECOVERY / GENERATED PIXELS  |  J HIT  |  R A/B  |  C BG', {fontFamily:'monospace',fontSize:'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
+      if (this.b01cMode) registerIonaB01CAnimations(this);
+      const initialKey = this.oldRejectedArt ? animationAssetKey('idle-0',1) : this.b01cMode ? ionaB01CAssetKey('idle-0','right') : recoveryAssetKey('idle-0',1);
+      this.labSprite = add.sprite(this.actor.x,this.body.bottom,initialKey).setOrigin(.5,1).setDepth(12);
+      this.labHud = add.text(6,5,this.oldRejectedArt ? 'REJECTED ART COMPARISON ONLY  |  J HIT  |  R A/B' : this.b01cMode ? 'B01C / PHASER SPRITES  |  A/D MOVE  |  SPACE JUMP  |  SHIFT DASH  |  J COMBO  |  R REVIEW' : 'B01 RECOVERY / GENERATED PIXELS  |  J HIT  |  R A/B  |  C BG', {fontFamily:'monospace',fontSize:'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
       this.input.keyboard?.on('keydown-R',(event:KeyboardEvent)=>{if(!event.repeat)this.labReviewRequested=true;});
       this.input.keyboard?.on('keydown-C',(event:KeyboardEvent)=>{if(!event.repeat)this.labContrastRequested=true;});
       this.input.keyboard?.on('keydown',(event:KeyboardEvent)=>{
@@ -253,15 +276,19 @@ export class ChamberScene extends Phaser.Scene {
         this.labReviewSub?.setText('VISIBLE HEIGHT '+this.labReviewScale+' PX / B00 BODY 15x30 / 1-2-3 SCALE / R CLOSES / C CYCLES BG');
       }
       const moving = Math.abs(movement.next.xVelocity) > 12 && movement.next.dashMs === 0;
-      if (moving && !wasMoving) this.startMs = 70;
-      if (!moving && wasMoving) this.stopMs = 85;
-      if (oldFacing !== movement.next.facing) this.turnMs = 90;
+      if (moving && !wasMoving) this.startMs = this.b01cMode ? 140 : 70;
+      if (!moving && wasMoving) this.stopMs = this.b01cMode ? 140 : 85;
+      if (oldFacing !== movement.next.facing) { this.turnMs = 90; this.turnFromFacing = oldFacing as IonaFacing; }
+      if (movement.jumped) this.jumpTakeoffMs = this.b01cMode ? 80 : 0;
+      if (movement.next.dashMs > 0) { this.startMs = 0; this.stopMs = 0; }
       if (wasDashing && movement.next.dashMs === 0) this.dashRecoverMs = 100;
-      this.updateCombat(this.controller.readAttackPressed(), grounded, dt);
+      const attackPressed=this.controller.readAttackPressed();
+      if(this.b01cMode)this.updateB01CCombat(attackPressed,grounded,dt);
+      else this.updateCombat(attackPressed,grounded,dt);
       this.updateLabAnimation(grounded,moving,dt);
       this.labSprite?.setPosition(this.actor.x,this.body.bottom);
       this.updateAnimationReviewVisibility();
-      if (this.labHud) this.labHud.setText((this.oldRejectedArt?'REJECTED SVG COMPARE  |  ':'B01 RECOVERY / GENERATED PIXELS  |  ') + this.labMode.toUpperCase() + ' / ' + this.labFrame + '  |  J HIT  |  R A/B  |  C BG');
+      if (this.labHud) this.labHud.setText((this.oldRejectedArt?'REJECTED SVG COMPARE  |  ':this.b01cMode?'B01C NATIVE PIXEL PILOT  |  ':'B01 RECOVERY / GENERATED PIXELS  |  ') + this.labMode.toUpperCase() + ' / ' + this.labFrame + '  |  '+(this.b01cMode?'J COMBO':'J HIT')+'  |  R REVIEW  |  C BG');
       this.wasMoving = moving;
       this.wasGrounded = grounded;
       this.hitFlashMs = Math.max(0,this.hitFlashMs-dt);
@@ -278,17 +305,22 @@ export class ChamberScene extends Phaser.Scene {
 
   snapshot(): ChamberSnapshot | null {
     if (!this.actor || !this.body) return null;
-    return { x: Number(this.actor.x.toFixed(1)), y: Number(this.actor.y.toFixed(1)), grounded: this.groundContact, facing: this.motion.facing, dashActive: this.motion.dashMs > 0, cameraX: Math.round(this.cameras.main.scrollX), controller: this.controllerConnected };
+    return { x: Number(this.actor.x.toFixed(1)), y: Number(this.actor.y.toFixed(1)), grounded: this.groundContact, facing: this.motion.facing, dashActive: this.motion.dashMs > 0, cameraX: Math.round(this.cameras.main.scrollX), controller: this.controllerConnected, bodySize: { width: this.body.width, height: this.body.height } };
   }
 
   animationSnapshot(): AnimationLabSnapshot | null {
     if (!this.animationLab || !this.labSprite) return null;
-    const all = this.oldRejectedArt
+    const all = this.b01cMode
+      ? IONA_B01C_TEXTURES.map(({ id, facing }) => ionaB01CAssetKey(id, facing))
+      : this.oldRejectedArt
       ? LEGACY_IONA_FRAME_IDS.flatMap((id) => [-1,1].map((facing) => animationAssetKey(id,facing as IonaFacing)))
         .concat([-1,1].map((facing)=>animationAssetKey('dawnrush-silhouette',facing as IonaFacing)))
       : IONA_RECOVERY_FRAME_IDS.flatMap((id) => [-1,1].map((facing) => recoveryAssetKey(id,facing as IonaFacing)));
-    const missingAssets = all.filter((key) => !this.textures.exists(key));
-    return { mode:this.labMode, frame:this.labFrame, facing:this.motion.facing, attackPhase:this.attackClock.phase, targetHealth:this.targetHealth, targetX:this.targetX, lastCombatEvent:this.lastCombatEvent, artSource:this.oldRejectedArt?'rejected-svg':'generated-imagegen', assetCount:all.length-missingAssets.length, missingAssets, reviewVisible:this.labReviewVisible, contrast:this.reviewContrast, reviewScale:this.labReviewScale };
+    const missingAssets = this.b01cMode
+      ? validateIonaB01CTextures(all.filter((key) => this.textures.exists(key)))
+      : all.filter((key) => !this.textures.exists(key));
+    const currentFrame = this.b01cMode ? this.labSprite.texture.key.match(/^iona-b01c-(.*)-(left|right)$/)?.[1] ?? this.labFrame : this.labFrame;
+    return { mode:this.labMode, frame:currentFrame, facing:this.motion.facing, attackPhase:this.attackClock.phase, comboStep:this.b01cMode&&this.attackClock.phase!=='idle'?this.attackComboIndex+1:0, targetHealth:this.targetHealth, targetX:this.targetX, lastCombatEvent:this.lastCombatEvent, artSource:this.oldRejectedArt?'rejected-svg':this.b01cMode?'b01c-native':'generated-imagegen', assetCount:all.length-missingAssets.length, missingAssets, reviewVisible:this.labReviewVisible, contrast:this.reviewContrast, reviewScale:this.labReviewScale };
   }
 
   reviewSnapshot(): ArtReviewSnapshot | null {
@@ -333,10 +365,41 @@ export class ChamberScene extends Phaser.Scene {
     }
   }
 
+  private updateB01CCombat(pressed: boolean, grounded: boolean, deltaMs: number): void {
+    if(this.attackBufferMs>0)this.attackBufferMs=Math.max(0,this.attackBufferMs-deltaMs);
+    if(pressed){
+      if(this.attackClock.phase==='idle'&&grounded&&this.motion.dashMs===0){
+        this.attackComboIndex=0;
+        this.attackFacing=this.motion.facing;
+        this.attackClock=beginAction(B01C_COMBO_ACTIONS[0]!);
+      }else if(this.attackClock.phase!=='idle'&&this.attackComboIndex<2){
+        this.attackBufferMs=650;
+      }
+    }
+    if(this.attackClock.phase!=='idle'){
+      const action=B01C_COMBO_ACTIONS[this.attackComboIndex]!;
+      const result=stepAction(this.attackClock,action,deltaMs);
+      this.attackClock=result.clock;
+      for(const event of result.events)this.resolveCombatEvent(event);
+    }
+    if(this.attackClock.phase==='idle'){
+      if(this.attackBufferMs>0&&this.attackComboIndex<2&&grounded&&this.motion.dashMs===0){
+        this.attackComboIndex+=1;
+        this.attackBufferMs=0;
+        this.attackClock=beginAction(B01C_COMBO_ACTIONS[this.attackComboIndex]!);
+      }else if(this.attackBufferMs===0||this.attackComboIndex>=2){
+        this.attackBufferMs=0;
+        this.attackComboIndex=0;
+      }
+    }
+  }
+
   private resolveCombatEvent(event: CombatEvent): void {
-    if (event.eventId!=='contact' || event.moveId!=='iona-base-jab' || event.sourceId!=='iona-player' || event.targetId!=='training-dummy') return;
+    const isB01CCombo=this.b01cMode&&B01C_COMBO_ACTIONS.some((action)=>action.moveId===event.moveId);
+    if (event.eventId!=='contact' || (event.moveId!=='iona-base-jab'&&!isB01CCombo) || event.sourceId!=='iona-player' || event.targetId!=='training-dummy') return;
     const offset=this.targetX-this.actor.x;
-    const hit=Math.abs(offset)<=42 && Math.sign(offset)===this.motion.facing && this.targetHealth>0;
+    const facing=isB01CCombo?this.attackFacing:this.motion.facing;
+    const hit=Math.abs(offset)<=42 && Math.sign(offset)===facing && this.targetHealth>0;
     if (hit) {
       this.targetHealth=Math.max(0,this.targetHealth-1);
       this.hitFlashMs=90;
@@ -370,7 +433,63 @@ export class ChamberScene extends Phaser.Scene {
 
   private updateLabAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
     if (this.oldRejectedArt) this.updateRejectedArtAnimation(grounded,moving,deltaMs);
+    else if (this.b01cMode) this.updateB01CAnimation(grounded,moving,deltaMs);
     else this.updateRecoveryAnimation(grounded,moving,deltaMs);
+  }
+
+  private updateB01CAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
+    const sprite=this.labSprite;
+    if(!sprite)return;
+    if(grounded&&!this.wasGrounded)this.landingMs=110;
+    else this.landingMs=Math.max(0,this.landingMs-deltaMs);
+    this.startMs=Math.max(0,this.startMs-deltaMs);
+    this.stopMs=Math.max(0,this.stopMs-deltaMs);
+    this.turnMs=Math.max(0,this.turnMs-deltaMs);
+    this.dashRecoverMs=Math.max(0,this.dashRecoverMs-deltaMs);
+    this.jumpTakeoffMs=Math.max(0,this.jumpTakeoffMs-deltaMs);
+
+    let next:IonaLocomotion|'attack';
+    let clip:string;
+    if(this.attackClock.phase!=='idle'){
+      next='attack';
+      const phase=this.attackClock.phase==='startup'?'windup':this.attackClock.phase==='active'?'contact':'recovery';
+      const frame=`combo-${this.attackComboIndex+1}-${phase}`;
+      const key=ionaB01CAssetKey(frame,this.attackFacing<0?'left':'right');
+      sprite.anims.stop();
+      this.labClipKey='';
+      if(sprite.texture.key!==key)sprite.setTexture(key);
+      this.labFrame=frame;
+    }else{
+      const side=this.motion.facing<0?'left':'right';
+      if(this.motion.dashMs>0){next='dash';clip=`dash-${side}`;}
+      else if(!grounded){
+        if(this.jumpTakeoffMs>0){next='jumpRise';clip=`jump-takeoff-${side}`;}
+        else if(this.body.velocity.y<-130){next='jumpRise';clip=`jump-rise-${side}`;}
+        else if(this.body.velocity.y<45){next='jumpApex';clip=`jump-apex-${side}`;}
+        else{next='fall';clip=`jump-fall-${side}`;}
+      }else if(this.landingMs>0){next='land';clip=`jump-land-${side}`;}
+      else if(this.dashRecoverMs>0){next='dashRecover';clip=`dash-recover-${side}`;}
+      else if(this.turnMs>0){
+        next='turn';
+        clip=this.turnFromFacing>0?'turn-right-to-left':'turn-left-to-right';
+      }else if(moving&&this.startMs>0){next='start';clip=`start-${side}`;}
+      else if(moving){next='run';clip=`run-${side}`;}
+      else if(this.stopMs>0){next='stop';clip=`stop-${side}`;}
+      else{next='idle';clip=`idle-${side}`;}
+
+      this.labMode=next;
+      const clipKey=ionaB01CAnimationKey(clip);
+      if(this.labClipKey!==clipKey){
+        sprite.play(clipKey);
+        this.labClipKey=clipKey;
+      }
+      const frameMatch=sprite.texture.key.match(/^iona-b01c-(.*)-(left|right)$/);
+      this.labFrame=frameMatch?.[1]??this.labFrame;
+    }
+    this.labMode=next;
+    sprite.setPosition(this.actor.x,this.body.bottom);
+    sprite.setFlipX(false);
+    sprite.setAlpha(1);
   }
 
   private updateRejectedArtAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
@@ -488,6 +607,36 @@ export class ChamberScene extends Phaser.Scene {
       this.labReviewPanel=bg;
       this.labReviewObjects.push(bg);
     };
+    if(this.b01cMode){
+      addPanel(240,135,464,230);
+      const title=this.add.text(240,24,'B01C PIXEL METHOD / OWNER REVIEW PENDING',{fontFamily:'monospace',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const sub=this.add.text(240,36,'SAME SOURCE POSE / 60PX VISIBLE HEIGHT / 1-2-3 SCALE / R CLOSES / C BG',{fontFamily:'monospace',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      this.labReviewSub=sub;
+      this.labReviewObjects.push(title,sub);
+      const methods=[
+        {key:'iona-b01c-method-nearest-right',label:'EXISTING NEAREST',x:80},
+        {key:'iona-b01c-method-grid-right',label:'SHARED GRID + PALETTE',x:240},
+        {key:'iona-b01c-method-native-right',label:'NATIVE EDIT + CLEANUP',x:400},
+      ];
+      for(const method of methods){
+        const image=this.add.image(method.x,145,method.key).setOrigin(.5,1).setScale(this.labReviewScale/60).setScrollFactor(0).setDepth(52);
+        const label=this.add.text(method.x,57,method.label,{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        this.labReviewImages.push(image);
+        this.labReviewObjects.push(image,label);
+      }
+      const samples=[
+        {id:'run-0',side:'left' as const,x:62,label:'RUN LEFT'},
+        {id:'run-0',side:'right' as const,x:176,label:'RUN RIGHT'},
+        {id:'jump-3',side:'right' as const,x:304,label:'JUMP APEX'},
+        {id:'dash-2',side:'left' as const,x:418,label:'DASH LEFT'},
+      ];
+      for(const sample of samples){
+        const image=this.add.image(sample.x,236,ionaB01CAssetKey(sample.id,sample.side)).setOrigin(.5,1).setScale(.72).setScrollFactor(0).setDepth(52);
+        const label=this.add.text(sample.x,185,sample.label,{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        this.labReviewObjects.push(image,label);
+      }
+      return;
+    }
     addPanel(240,135,464,230);
       const title=this.add.text(240,25,'B01 RECOVERY A/B / OWNER REVIEW PENDING', {fontFamily:'monospace',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
       this.labReviewObjects.push(title);

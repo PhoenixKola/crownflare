@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "generator": "Codex native image_gen.imagegen tool",
+  "modelVersion": null,
+  "modelVersionNote": "The tool returned no model/version field; none is inferred.",
+  "generationDate": "2026-11-07",
+  "referencePolicy": "Only original Project Crownflare B01 recovery Iona imagegen masters and pose references were used. No Veyrshift or third-party art was referenced.",
+  "outputs": [
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-run-right-6pose-imagegen-02.png",
+      "outputId": "exec-ba829e24-03e7-429b-bb68-128b9bb03e38.png",
+      "role": "six-pose right-facing run cycle, exact 3x2 sheet with transparent alpha",
+      "promptSection": "run-right",
+      "referenceFiles": ["art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png", "art-source/characters/iona/b01-recovery/generated/iona-run-right-4pose-imagegen-01.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-run-left-6pose-imagegen-01.png",
+      "outputId": "exec-b0bed957-22cf-49fd-bacc-6ae5d4cf0ad0.png",
+      "role": "six-pose left-facing run cycle, independently authored handed details",
+      "promptSection": "run-left",
+      "referenceFiles": ["art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png", "art-source/characters/iona/b01-recovery/generated/iona-run-left-4pose-imagegen-01.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-jump-right-6pose-imagegen-01.png",
+      "outputId": "exec-ec38dab8-4fa0-4277-8921-393f4a3c3786.png",
+      "role": "six dedicated right-facing jump phases: load, takeoff, rise, apex, fall, landing compression",
+      "promptSection": "jump-right",
+      "referenceFiles": ["art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png", "art-source/characters/iona/b01c/generated/iona-run-right-6pose-imagegen-02.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-jump-left-6pose-imagegen-01.png",
+      "outputId": "exec-30b6a865-d214-4083-9f26-aae6415bd66c.png",
+      "role": "six dedicated left-facing jump phases with left-facing details",
+      "promptSection": "jump-left",
+      "referenceFiles": ["art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png", "art-source/characters/iona/b01-recovery/generated/iona-run-left-4pose-imagegen-01.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-dash-right-6pose-imagegen-01.png",
+      "outputId": "exec-adce52d8-072e-41ff-9313-4ef1b9586c7e.png",
+      "role": "six dedicated right-facing dash phases: anticipation through recovery",
+      "promptSection": "dash-right",
+      "referenceFiles": ["art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png", "art-source/characters/iona/b01c/generated/iona-run-right-6pose-imagegen-02.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-dash-left-6pose-imagegen-01.png",
+      "outputId": "exec-29afdbfa-611e-4b36-a078-e785adbeeedf.png",
+      "role": "six dedicated left-facing dash phases with left-facing details",
+      "promptSection": "dash-left",
+      "referenceFiles": ["art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png", "art-source/characters/iona/b01-recovery/generated/iona-run-left-4pose-imagegen-01.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-transition-right-to-left-6pose-imagegen-01.png",
+      "outputId": "exec-97378ba9-3e18-4933-8170-faaf8113632a.png",
+      "role": "right-facing start/stop and right-to-left turn transition",
+      "promptSection": "transition-right-to-left",
+      "referenceFiles": ["art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png", "art-source/characters/iona/b01c/generated/iona-run-right-6pose-imagegen-02.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-transition-left-to-right-6pose-imagegen-01.png",
+      "outputId": "exec-a1063081-afde-4e18-9330-f3b22c260141.png",
+      "role": "left-facing start/stop and left-to-right turn transition",
+      "promptSection": "transition-left-to-right",
+      "referenceFiles": ["art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png", "art-source/characters/iona/b01-recovery/generated/iona-run-left-4pose-imagegen-01.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-run-right-pose0-native-edit-01.png",
+      "outputId": "exec-d77d60a8-2524-4340-adad-2d82f565bb4c.png",
+      "role": "constrained native image edit of the existing right run pose for the pixel-method comparison",
+      "promptSection": "native-edit-run-pose0",
+      "referenceFiles": ["art-source/characters/iona/b01-recovery/cropped-poses/run-0-right-source-crop.png", "art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-combo-right-9pose-imagegen-01.png",
+      "outputId": "exec-d6359622-3853-4309-9186-3d64d06548f7.png",
+      "role": "original right-facing three-strike source; combo steps one and three are used, while similar-looking step two was replaced with a side kick",
+      "promptSection": "three-hit-combo-right",
+      "referenceFiles": ["art-source/characters/iona/b01c/generated/iona-run-right-6pose-imagegen-02.png"],
+      "supersededCells": [3, 4, 5]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-combo-left-9pose-imagegen-01.png",
+      "outputId": "exec-db14425a-e2c5-4171-862d-d73608c9a7b9.png",
+      "role": "original left-facing three-strike source; combo steps one and three are used, while similar-looking step two was replaced with a side kick",
+      "promptSection": "three-hit-combo-left",
+      "referenceFiles": ["art-source/characters/iona/b01c/generated/iona-run-left-6pose-imagegen-01.png"],
+      "supersededCells": [3, 4, 5]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-combo-2-right-sidekick-6pose-imagegen-01.png",
+      "outputId": "exec-c5142447-1af8-4227-9130-1e6b30c3360e.png",
+      "role": "distinct right-facing side-kick windup, contact and recovery poses for combo step two",
+      "promptSection": "three-hit-combo-2-sidekick-right",
+      "referenceFiles": ["art-source/characters/iona/b01c/generated/iona-run-right-6pose-imagegen-02.png", "art-source/characters/iona/b01c/generated/iona-combo-right-9pose-imagegen-01.png"]
+    },
+    {
+      "file": "art-source/characters/iona/b01c/generated/iona-combo-2-left-sidekick-6pose-imagegen-01.png",
+      "outputId": "exec-e165298c-f5f3-4240-b857-29d61f4d1811.png",
+      "role": "distinct independently authored left-facing side-kick windup, contact and recovery poses for combo step two",
+      "promptSection": "three-hit-combo-2-sidekick-left",
+      "referenceFiles": ["art-source/characters/iona/b01c/generated/iona-run-left-6pose-imagegen-01.png", "art-source/characters/iona/b01c/generated/iona-combo-left-9pose-imagegen-01.png"]
+    }
+  ],
+  "rejectedAttempts": [
+    {
+      "outputId": "exec-7b9232b1-c6d6-472c-bcdd-128b9bb03e38.png",
+      "toolOutputFilename": "exec-7b9232b1-c6d6-472c-bcdd-128b9bb03e38.png",
+      "status": "REJECTED_NOT_TRANSPARENT",
+      "reason": "The first run-sheet attempt baked a checkerboard into its RGB pixels. It is excluded from runtime and source masters; the regenerated sheet uses transparent alpha."
+    }
+  ]
+}

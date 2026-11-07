@@ -16,9 +16,11 @@
     "art:b01a:build": "node tools/art-export/build-b01a-previews.mjs",
     "art:iona:overnight:build": "node tools/art-export/build-iona-overnight.mjs",
     "art:iona:recovery:build": "python tools/art-export/build-iona-recovery.py",
+    "art:iona:b01c:build": "python tools/art-export/build-iona-b01c.py",
     "qa:b01a": "node tools/local-qa/b01a-visual-review.mjs",
     "qa:iona:overnight": "node tools/local-qa/iona-overnight-smoke.mjs",
     "qa:iona:recovery": "node tools/local-qa/iona-recovery-smoke.mjs",
+    "qa:iona:b01c": "node tools/local-qa/iona-b01c-production-smoke.mjs",
     "qa:chrome:local": "node tools/local-qa/chrome-smoke.mjs --headed",
     "qa:controller:local": "node tools/local-qa/controller-start-smoke.mjs",
     "qa:chrome:headless": "node tools/local-qa/chrome-smoke.mjs --headless"
