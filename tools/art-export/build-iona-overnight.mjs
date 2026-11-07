@@ -231,7 +231,7 @@ async function main() {
   ];
   for (const ref of sourceRefs) ref.sha256=hash(await readFile(path.join(root,ref.path)));
   const manifest = {
-    id:'iona-overnight-v1',version:1,status:'PROVISIONAL_OWNER_REVIEW',
+    id:'iona-overnight-v1',version:1,status:'REJECTED_OWNER_ART',runtimeDefault:false,retainedFor:'historical comparison and regression QA only',
     created:'2026-11-07',target:{canvas:[64,64],visibleCharacterHeightPx:60,origin:[0.5,1],footAnchor:[32,64],physicsBodyReference:[15,30]},
     style:{palette:C,outline:'2px deep navy hard edge; all contours use integer coordinates and crisp-edged rasterization',directions:'right pose is authored; left output is a reviewed horizontal counterpart with front bracer and teal lock remaining on the leading side'},
     pipeline:{command:'npm run art:iona:overnight:build',source:'tools/art-export/build-iona-overnight.mjs',rasterizer:'Installed Chrome SVG and Canvas renderer at 64x64/deviceScaleFactor 1; no post-export scaling; transparent PNG',chromeVersion:rasterizerVersion},

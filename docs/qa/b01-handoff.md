@@ -30,4 +30,12 @@ Until that approval, keep every visual candidate provisional and do not mass-gen
 
 ## B01A review package
 
-The first original art direction and true-scale Phaser review package is documented in [`b01a-visual-review.md`](b01a-visual-review.md), with source/runtime hashes in `art-source/manifests/iona-b01a-visual-review.json` and captures in `review-evidence/b01a/`. The recommended source is `iona-b01a-base-recommended-master-source.png` at a proposed 60px review height. All source and preview art remains `PENDING_OWNER_REVIEW`; Dawnrush's no-VFX silhouette and pixel-level detail need review. The separately authorized overnight pilot adds a provisional hand-authored pixel candidate and live Base animation lab, indexed in [the overnight review package](../../review-evidence/overnight/README.md). That pilot does not replace the owner gate, alter B01A, or begin the full B01B catalog. No canonical art or scale is locked.
+The first art direction and true-scale Phaser package is documented in [`b01a-visual-review.md`](b01a-visual-review.md), with source/runtime hashes in `art-source/manifests/iona-b01a-visual-review.json` and captures in `review-evidence/b01a/`. Its recommended source remains `PENDING_OWNER_REVIEW`; the recovery art used it as a reference and did not implicitly approve it.
+
+## B01 recovery package — current owner review
+
+- Owner-facing bundle: [`review-evidence/recovery/README.md`](../../review-evidence/recovery/README.md).
+- Source-generation prompts and invocation IDs: `art-source/characters/iona/b01-recovery/generation-prompts.md` and `generation-provenance.json`.
+- Source-to-runtime hash lineage, alpha checks, anchors and clip events: `art-source/manifests/iona-b01-recovery-v2.json`.
+- New development default: `/?animationLab=1`. The old actor can only be selected for explicit A/B or regression with `&oldRejectedArt=1`; it is marked `REJECTED_OWNER_ART`.
+- Current gate: `TECH PASS` for the scoped Chrome run; `ART-MOTION PENDING` normal-speed owner review; `OWNER APPROVAL PENDING`. The Base identity and 60px working height are not locked. Dedicated jump/dash poses, forms and the production combo are not included.

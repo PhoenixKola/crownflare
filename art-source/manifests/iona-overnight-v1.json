@@ -1,7 +1,9 @@
 {
   "id": "iona-overnight-v1",
   "version": 1,
-  "status": "PROVISIONAL_OWNER_REVIEW",
+  "status": "REJECTED_OWNER_ART",
+  "runtimeDefault": false,
+  "retainedFor": "historical comparison and regression QA only",
   "created": "2026-11-07",
   "target": {
     "canvas": [

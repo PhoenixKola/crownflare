@@ -17,14 +17,20 @@
 
 ## Owner gates still pending
 
-1. B01 visual lock: review the overnight hand-authored Base at 48/60/72px and the four VFX-off silhouette comparison in the real chamber; approve or revise the side-view face, proportions and Dawnrush mass before choosing an immutable master.
-2. Later: a complete production animation catalog, three-hit combat combo, each transformation, and full release still need their own owner review. The overnight pilot is not owner approval and does not complete B01B.
-3. All public names (`Crownflare`, `Iona Rell`, and form names) remain subject to commercial name clearance.
+1. B01 recovery art gate: review generated Base face/proportions, both authored facings, genuine idle/run/jab in normal-speed play, and 48/60/72px scale. The candidate and proposed 60px height are not approved or canon-locked.
+2. B01A remains a separate unapproved source direction; the recovery generation used it as a visual reference, not an approval. Dawnrush stays a study until Base passes.
+3. Later: a complete production animation catalog, three-hit combo, each transformation, and full release need their own review. No B02/B03 production should begin from green technical checks alone.
+4. Public names (`Crownflare`, `Iona Rell`, and form names) remain subject to commercial name clearance.
 
-## 2026-11-07 — B01 overnight provisional pilot
+## 2026-11-07 — B01 overnight output, later rejected
 
-- Added a separate 64x64 hard-edged hand-authored Base sprite source and 44 reproducible PNG outputs: 21 Base poses for each facing plus two Dawnrush VFX-off studies. The visible Base is about 60px tall, with common bottom-center feet alignment and source/output SHA-256s in `art-source/manifests/iona-overnight-v1.json`. Imagegen outputs are retained only as opaque reference illustrations; they were not used as frame pixels.
-- Added the dev-only `/?animationLab=1` route. It maps existing B00 Arcade body and `stepMovement` state to Base idle/run/jump/land/dash and action poses; left uses the reviewed counterpart. The review overlay compares B01A before, overnight right/left, Base scale 48/60/72 and the four form silhouettes.
-- Added a timed provisional jab and training dummy. The typed combat clock owns its startup/active/recovery phases and one contact event; contact records hit or miss once. A buffered input can launch the next jab after recovery. Original procedural Web Audio and a small flash provide hit feedback; no audio is included in browser video.
-- Local installed Chrome normal-speed QA retains a 21-second video plus idle/run/jump/dash/contact/review captures in `review-evidence/overnight/`. Status: **TECH: PASS for the pilot; ART-MOTION: provisional pilot, incomplete catalog; OWNER APPROVAL: PENDING**.
-- Not included: a three-hit combo, full Dawnrush/Stormhalo/Eclipse Warden actions, target AI, approved scale/master, or B02/B03 work. B01A source images and manifest remain unchanged.
+- The earlier implementation generated SVG polygon/rectangle actors and rasterized them into 44 PNGs; two real image-generation outputs were not used for runtime pixels. The owner rejected that actor as `REJECTED_OWNER_ART`.
+- Its Phaser lab, jab clock, assets, and evidence remain for audit/regression only. `/?animationLab=1&oldRejectedArt=1` explicitly selects it; the default animation lab no longer does. The overnight QA command is regression-only.
+
+## 2026-11-07 — B01 recovery native image generation and real animation
+
+- Invoked the Codex built-in `image_gen.imagegen` tool seven times for a new Iona Base master and six reference-guided 2×2 sheets: idle, run, and jab for right and left facings. Original generator PNG bytes, output IDs, source references, prompts, dimensions and SHA-256s are preserved in `art-source/characters/iona/b01-recovery/` and `art-source/manifests/iona-b01-recovery-v2.json`.
+- The build pipeline crops 24 unique generated poses into 128×80 transparent runtime PNGs at a 60px visible height with nearest-neighbor scaling and a feet/waist pivot. All runtime frames link to exact generated source sheets and cropped-source hashes. There are no mirrored frames or hand-redrawn vector substitutes.
+- The real Phaser `/?animationLab=1` route now defaults to the generated image-source sprites. It plays four idle poses and four run poses per facing plus a four-pose jab per facing, connected to the existing B00 body/movement and 130/100/260ms action clock with contact at 162ms. It reuses generated run poses for jump/dash display; dedicated jump and dash art remain unauthored.
+- Installed Chrome evidence at `review-evidence/recovery/` includes a normal-speed 27.8-second video, idle/run/jab captures for both facings, generated-vs-rejected A/B at 48/60/72px, contrast variants, and viewport review. The 27.8-second clip has no audio track; audio was not reviewed.
+- Recovery remains `B01_RECOVERY_PROVISIONAL`. TECH PASS does not approve the art or lock Iona/60px. No complete forms, combo, enemy AI, physical gamepad test, or B02/B03 content are claimed. B01A source masters remain untouched.

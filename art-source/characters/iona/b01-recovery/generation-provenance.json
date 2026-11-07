@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "generator": {
+    "capability": "Codex built-in image_gen.imagegen",
+    "codeModeBinding": "tools.image_gen__imagegen",
+    "apiKeyUsed": false,
+    "modelVersion": null,
+    "modelVersionNote": "The built-in tool did not report a model/version in its output; none is inferred.",
+    "sessionOutputDirectory": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806",
+    "transparentBackgroundRequested": true
+  },
+  "references": [
+    "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+    "art-source/characters/iona/b01a/iona-base-left-facing-study-source.png"
+  ],
+  "outputs": [
+    {
+      "file": "iona-base-right-ready-imagegen-01.png",
+      "outputId": "exec-ea5b5964-62f0-4ac5-a8d3-744bc540d0a0.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-ea5b5964-62f0-4ac5-a8d3-744bc540d0a0.png",
+      "role": "selected right-facing full-body Base identity master",
+      "promptSection": "01"
+    },
+    {
+      "file": "iona-idle-right-4pose-imagegen-01.png",
+      "outputId": "exec-23855b2b-eee5-4cfb-ab63-89d38619126a.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-23855b2b-eee5-4cfb-ab63-89d38619126a.png",
+      "role": "four-pose right-facing idle reference-guided sheet; three variants used at runtime",
+      "promptSection": "02"
+    },
+    {
+      "file": "iona-run-right-4pose-imagegen-01.png",
+      "outputId": "exec-3252acaa-aa3d-4810-90ef-b1dd6f58af05.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-3252acaa-aa3d-4810-90ef-b1dd6f58af05.png",
+      "role": "four-pose right-facing run cycle",
+      "promptSection": "03"
+    },
+    {
+      "file": "iona-run-left-4pose-imagegen-01.png",
+      "outputId": "exec-5993a867-6d94-4988-a1b4-fcafd9f31ed9.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-5993a867-6d94-4988-a1b4-fcafd9f31ed9.png",
+      "role": "four-pose left-facing run cycle with original handed details",
+      "promptSection": "04"
+    },
+    {
+      "file": "iona-jab-right-4pose-imagegen-01.png",
+      "outputId": "exec-2e3ca905-74f8-4767-ab6b-85ea984b387b.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-2e3ca905-74f8-4767-ab6b-85ea984b387b.png",
+      "role": "four-pose right-facing jab with visible windup, extension, contact and recoil",
+      "promptSection": "05"
+    },
+    {
+      "file": "iona-idle-left-4pose-imagegen-01.png",
+      "outputId": "exec-f2c455eb-cf9a-4b02-865e-fbe52de6556d.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-f2c455eb-cf9a-4b02-865e-fbe52de6556d.png",
+      "role": "four-pose left-facing idle counterpart",
+      "promptSection": "06"
+    },
+    {
+      "file": "iona-jab-left-4pose-imagegen-01.png",
+      "outputId": "exec-105d2493-494a-4c3d-893d-2f45cd55d9fe.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-105d2493-494a-4c3d-893d-2f45cd55d9fe.png",
+      "role": "four-pose left-facing jab counterpart",
+      "promptSection": "07"
+    }
+  ]
+}

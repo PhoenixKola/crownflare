@@ -1,4 +1,4 @@
-/** Normal-speed installed-Chrome proof of the provisional Iona live Phaser lab. */
+/** Regression-only Chrome proof for the owner-rejected overnight SVG actor. */
 import { spawn } from 'node:child_process';
 import { mkdir, readdir, rename, stat, unlink } from 'node:fs/promises';
 import { readFile } from 'node:fs/promises';
@@ -32,7 +32,7 @@ try {
   page=await context.newPage();
   page.on('pageerror',(error)=>errors.push('runtime: '+error.message));
   page.on('console',(message)=>{if(message.type()==='error')errors.push('console: '+message.text());});
-  await page.goto('http://127.0.0.1:'+port+'/?animationLab=1',{waitUntil:'domcontentloaded'});
+  await page.goto('http://127.0.0.1:'+port+'/?animationLab=1&oldRejectedArt=1',{waitUntil:'domcontentloaded'});
   await waitForLab();
   clipStart=Date.now();
   await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().player?.grounded===true);
@@ -144,7 +144,7 @@ try {
   const videoBytes=await readFile(finalVideo);
   const videoHash=createHash('sha256').update(videoBytes).digest('hex');
   passed=true;
-  console.log('PASS: installed Chrome normal-speed lab; 44/44 frames; run/jump/dash; buffered hit, miss and damage; six review silhouettes; resize; '+Math.round((Date.now()-clipStart)/1000)+'s clip');
+  console.log('PASS: legacy rejection regression only; 44/44 historical textures; movement/jump/dash; buffered hit/miss; review/resize; '+Math.round((Date.now()-clipStart)/1000)+'s clip');
   console.log('Chrome '+browser.version()+' / source digest '+sourceDigest.digest('hex')+' / video SHA-256 '+videoHash+' / '+videoBytes.length+' bytes');
   console.log('Evidence: '+evidence);
 } finally {

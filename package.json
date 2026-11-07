@@ -15,8 +15,10 @@
     "audit:assets": "node tools/audit-assets/audit.mjs",
     "art:b01a:build": "node tools/art-export/build-b01a-previews.mjs",
     "art:iona:overnight:build": "node tools/art-export/build-iona-overnight.mjs",
+    "art:iona:recovery:build": "python tools/art-export/build-iona-recovery.py",
     "qa:b01a": "node tools/local-qa/b01a-visual-review.mjs",
     "qa:iona:overnight": "node tools/local-qa/iona-overnight-smoke.mjs",
+    "qa:iona:recovery": "node tools/local-qa/iona-recovery-smoke.mjs",
     "qa:chrome:local": "node tools/local-qa/chrome-smoke.mjs --headed",
     "qa:controller:local": "node tools/local-qa/controller-start-smoke.mjs",
     "qa:chrome:headless": "node tools/local-qa/chrome-smoke.mjs --headless"

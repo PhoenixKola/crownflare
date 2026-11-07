@@ -17,12 +17,12 @@ test('animation asset validator finds a missing directional frame', () => {
   assert.deepEqual(validateIonaAnimationAssets(complete).sort(),['iona-hit-contact-left','iona-hit-contact-right','iona-hit-recover-left','iona-hit-recover-right','iona-hit-windup-left','iona-hit-windup-right']);
 });
 
-test('overnight frame manifest is provisional, transparent-scale art with source and output hashes', () => {
+test('rejected overnight frame manifest is historical transparent art with source and output hashes', () => {
   const manifest=JSON.parse(readFileSync('art-source/manifests/iona-overnight-v1.json','utf8')) as {
     status:string; target:{canvas:number[];visibleCharacterHeightPx:number;origin:number[]};
     frames:Array<{id:string;facing:string;state:string;source:string;sourceSha256:string;outputSha256:string;output:string;pivot:{origin:number[];feet:number[]};alphaPixelCount:number;alphaBounds:number[];transparentCorners:number[]}>;
   };
-  assert.equal(manifest.status,'PROVISIONAL_OWNER_REVIEW');
+  assert.equal(manifest.status,'REJECTED_OWNER_ART');
   assert.deepEqual(manifest.target.canvas,[64,64]);
   assert.equal(manifest.target.visibleCharacterHeightPx,60);
   assert.deepEqual(manifest.target.origin,[.5,1]);

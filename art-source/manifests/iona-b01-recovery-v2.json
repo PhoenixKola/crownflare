@@ -1,0 +1,1602 @@
+{
+  "schemaVersion": 2,
+  "batch": "B01 RECOVERY",
+  "status": "B01_RECOVERY_PROVISIONAL",
+  "ownerApproval": "PENDING",
+  "previousOvernightActorStatus": "REJECTED_OWNER_ART",
+  "runtimeDefault": "generated-image-source sprite frames; old overnight art only via ?animationLab=1&oldRejectedArt=1",
+  "generator": {
+    "capability": "Codex built-in image_gen.imagegen",
+    "codeModeBinding": "tools.image_gen__imagegen",
+    "apiKeyUsed": false,
+    "modelVersion": null,
+    "modelVersionNote": "The built-in tool did not report a model/version in its output; none is inferred.",
+    "sessionOutputDirectory": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806",
+    "transparentBackgroundRequested": true
+  },
+  "generationPromptFile": "art-source/characters/iona/b01-recovery/generation-prompts.md",
+  "generatedOutputCount": 7,
+  "generatedOutputs": [
+    {
+      "file": "iona-base-right-ready-imagegen-01.png",
+      "outputId": "exec-ea5b5964-62f0-4ac5-a8d3-744bc540d0a0.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-ea5b5964-62f0-4ac5-a8d3-744bc540d0a0.png",
+      "role": "selected right-facing full-body Base identity master",
+      "promptSection": "01",
+      "sourceFile": "art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png",
+      "resolvedOriginalPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-ea5b5964-62f0-4ac5-a8d3-744bc540d0a0.png",
+      "bytes": 614203,
+      "sha256": "94a117ffd775ab37f19252c76f167cd96faf325733c1ce58e2aa9fd22d8db89d",
+      "width": 1179,
+      "height": 1334,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "iona-idle-right-4pose-imagegen-01.png",
+      "outputId": "exec-23855b2b-eee5-4cfb-ab63-89d38619126a.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-23855b2b-eee5-4cfb-ab63-89d38619126a.png",
+      "role": "four-pose right-facing idle reference-guided sheet; three variants used at runtime",
+      "promptSection": "02",
+      "sourceFile": "art-source/characters/iona/b01-recovery/generated/iona-idle-right-4pose-imagegen-01.png",
+      "resolvedOriginalPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-23855b2b-eee5-4cfb-ab63-89d38619126a.png",
+      "bytes": 884414,
+      "sha256": "dc646258002958219fbc1b4eea4f5ebfcecad7fa3b3abfaa02275a5d88a67433",
+      "width": 1179,
+      "height": 1334,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "iona-run-right-4pose-imagegen-01.png",
+      "outputId": "exec-3252acaa-aa3d-4810-90ef-b1dd6f58af05.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-3252acaa-aa3d-4810-90ef-b1dd6f58af05.png",
+      "role": "four-pose right-facing run cycle",
+      "promptSection": "03",
+      "sourceFile": "art-source/characters/iona/b01-recovery/generated/iona-run-right-4pose-imagegen-01.png",
+      "resolvedOriginalPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-3252acaa-aa3d-4810-90ef-b1dd6f58af05.png",
+      "bytes": 942601,
+      "sha256": "d5ec6649f0429ea4b04c7de1728c27f34838a9b62aca19a4febe01b0713b272c",
+      "width": 1179,
+      "height": 1334,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "iona-run-left-4pose-imagegen-01.png",
+      "outputId": "exec-5993a867-6d94-4988-a1b4-fcafd9f31ed9.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-5993a867-6d94-4988-a1b4-fcafd9f31ed9.png",
+      "role": "four-pose left-facing run cycle with original handed details",
+      "promptSection": "04",
+      "sourceFile": "art-source/characters/iona/b01-recovery/generated/iona-run-left-4pose-imagegen-01.png",
+      "resolvedOriginalPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-5993a867-6d94-4988-a1b4-fcafd9f31ed9.png",
+      "bytes": 1025040,
+      "sha256": "989ae0b9693ced85a1f662a5ca67d249774f7ddf3c7e13ebae2a1fa151f0df2c",
+      "width": 1179,
+      "height": 1334,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "iona-jab-right-4pose-imagegen-01.png",
+      "outputId": "exec-2e3ca905-74f8-4767-ab6b-85ea984b387b.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-2e3ca905-74f8-4767-ab6b-85ea984b387b.png",
+      "role": "four-pose right-facing jab with visible windup, extension, contact and recoil",
+      "promptSection": "05",
+      "sourceFile": "art-source/characters/iona/b01-recovery/generated/iona-jab-right-4pose-imagegen-01.png",
+      "resolvedOriginalPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-2e3ca905-74f8-4767-ab6b-85ea984b387b.png",
+      "bytes": 912080,
+      "sha256": "dfe92d499a404c2cb7716183943d7b55cf5633a8b8e0cd88e24e6c3c3bd77116",
+      "width": 1312,
+      "height": 1199,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "iona-idle-left-4pose-imagegen-01.png",
+      "outputId": "exec-f2c455eb-cf9a-4b02-865e-fbe52de6556d.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-f2c455eb-cf9a-4b02-865e-fbe52de6556d.png",
+      "role": "four-pose left-facing idle counterpart",
+      "promptSection": "06",
+      "sourceFile": "art-source/characters/iona/b01-recovery/generated/iona-idle-left-4pose-imagegen-01.png",
+      "resolvedOriginalPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-f2c455eb-cf9a-4b02-865e-fbe52de6556d.png",
+      "bytes": 854646,
+      "sha256": "25125de66afd536bded17f5f7682d1e500a2de692b4aad6c490a7203e746cf28",
+      "width": 1179,
+      "height": 1334,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "file": "iona-jab-left-4pose-imagegen-01.png",
+      "outputId": "exec-105d2493-494a-4c3d-893d-2f45cd55d9fe.png",
+      "codexOutputPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-105d2493-494a-4c3d-893d-2f45cd55d9fe.png",
+      "role": "four-pose left-facing jab counterpart",
+      "promptSection": "07",
+      "sourceFile": "art-source/characters/iona/b01-recovery/generated/iona-jab-left-4pose-imagegen-01.png",
+      "resolvedOriginalPath": "C:/Users/totik/.codex/generated_images/01a1b353-b750-72f3-9594-c017f1f1a806/exec-105d2493-494a-4c3d-893d-2f45cd55d9fe.png",
+      "bytes": 906414,
+      "sha256": "4887c9aabcfe0bb73f6067c1d4751eb7f177d319638935223c8f326f634094c0",
+      "width": 1312,
+      "height": 1199,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ]
+    }
+  ],
+  "processing": {
+    "script": "tools/art-export/build-iona-recovery.py",
+    "PillowVersion": "12.2.0",
+    "alphaThresholdInclusive": 192,
+    "resize": "nearest-neighbor",
+    "runtimeCanvas": {
+      "width": 128,
+      "height": 80
+    },
+    "visibleHeightTargetPx": 60,
+    "anchor": {
+      "x": 64,
+      "feetY": 80
+    },
+    "waistPivot": "median alpha x-coordinate from 52%-70% of trimmed source pose height",
+    "manualRedrawCount": 0,
+    "mirroredFrameCount": 0
+  },
+  "clips": {
+    "idle": {
+      "frames": [
+        {
+          "id": "idle-0",
+          "durationMs": 420
+        },
+        {
+          "id": "idle-1",
+          "durationMs": 260
+        },
+        {
+          "id": "idle-2",
+          "durationMs": 300
+        },
+        {
+          "id": "idle-3",
+          "durationMs": 420
+        }
+      ],
+      "uniqueAuthoredPoseCountByFacing": {
+        "right": 4,
+        "left": 4
+      },
+      "loops": true
+    },
+    "run": {
+      "frames": [
+        {
+          "id": "run-0",
+          "durationMs": 105
+        },
+        {
+          "id": "run-1",
+          "durationMs": 95
+        },
+        {
+          "id": "run-2",
+          "durationMs": 90
+        },
+        {
+          "id": "run-3",
+          "durationMs": 105
+        }
+      ],
+      "uniqueAuthoredPoseCountByFacing": {
+        "right": 4,
+        "left": 4
+      },
+      "loops": true
+    },
+    "jab": {
+      "framesByFacing": {
+        "right": [
+          {
+            "id": "jab-0",
+            "timeRangeMs": [
+              0,
+              80
+            ],
+            "meaning": "windup"
+          },
+          {
+            "id": "jab-1",
+            "timeRangeMs": [
+              80,
+              130
+            ],
+            "meaning": "visible extension before active"
+          },
+          {
+            "id": "jab-2",
+            "timeRangeMs": [
+              130,
+              230
+            ],
+            "meaning": "active/contact; combat event at 162ms"
+          },
+          {
+            "id": "jab-3",
+            "timeRangeMs": [
+              230,
+              350
+            ],
+            "meaning": "recoil"
+          },
+          {
+            "id": "idle-3",
+            "timeRangeMs": [
+              350,
+              490
+            ],
+            "meaning": "settle during late recovery"
+          }
+        ],
+        "left": [
+          {
+            "id": "jab-0",
+            "timeRangeMs": [
+              0,
+              80
+            ],
+            "meaning": "windup"
+          },
+          {
+            "id": "jab-1",
+            "timeRangeMs": [
+              80,
+              130
+            ],
+            "meaning": "visible extension before active"
+          },
+          {
+            "id": "jab-2",
+            "timeRangeMs": [
+              130,
+              230
+            ],
+            "meaning": "active/contact; combat event at 162ms"
+          },
+          {
+            "id": "jab-3",
+            "timeRangeMs": [
+              230,
+              350
+            ],
+            "meaning": "recoil"
+          },
+          {
+            "id": "idle-3",
+            "timeRangeMs": [
+              350,
+              490
+            ],
+            "meaning": "settle during late recovery"
+          }
+        ]
+      },
+      "startupMs": 130,
+      "activeMs": 100,
+      "recoveryMs": 260,
+      "contactEventMs": 162,
+      "loop": false
+    },
+    "jumpDash": {
+      "status": "NOT_AUTHORED_IN_RECOVERY_BATCH",
+      "runtimeFallback": "generated run/idle poses only; no new claim of jump or dash animation"
+    }
+  },
+  "runtimeFrames": [
+    {
+      "id": "idle-0",
+      "action": "idle",
+      "facing": "right",
+      "poseName": "selected-base-master-ready",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-base-right-ready-imagegen-01.png",
+      "generatedSourceSha256": "94a117ffd775ab37f19252c76f167cd96faf325733c1ce58e2aa9fd22d8db89d",
+      "cellIndex": null,
+      "cellBoundsSourcePixels": null,
+      "trimBoundsSourcePixels": [
+        149,
+        13,
+        833,
+        1292
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/idle-0-right-source-crop.png",
+      "sourceCropSha256": "aacecc1137a63ee30f43f2accf6e3651e20f730adbf2169ab1fe513f1cf44376",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/idle-0-right.png",
+      "runtimeSha256": "d6b31952d2e7f2fbbb2a48686310f4554af22945c4cd69e31a069d98a504299b",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        47,
+        20,
+        79,
+        80
+      ],
+      "runtimeAlphaPixels": 849,
+      "sourcePosePixels": [
+        684,
+        1279
+      ],
+      "scale": 0.04691165,
+      "estimatedWaistPivotSourceX": 364.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "idle-1",
+      "action": "idle",
+      "facing": "right",
+      "poseName": "inhale",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-idle-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "dc646258002958219fbc1b4eea4f5ebfcecad7fa3b3abfaa02275a5d88a67433",
+      "cellIndex": {
+        "row": 0,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        589,
+        0,
+        1179,
+        667
+      ],
+      "trimBoundsSourcePixels": [
+        65,
+        13,
+        398,
+        628
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/idle-1-right-source-crop.png",
+      "sourceCropSha256": "e0fa4943e5a8de69d4436826fb2998cbc73a161a1deb00dfcf0fd07e054684b6",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/idle-1-right.png",
+      "runtimeSha256": "014b275fd441208cdff0ab9d0c41bba02f700aee8c08bb8228db50bfd4939641",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        47,
+        19,
+        80,
+        80
+      ],
+      "runtimeAlphaPixels": 906,
+      "sourcePosePixels": [
+        333,
+        615
+      ],
+      "scale": 0.09884679,
+      "estimatedWaistPivotSourceX": 175.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "idle-2",
+      "action": "idle",
+      "facing": "right",
+      "poseName": "weight-settle",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-idle-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "dc646258002958219fbc1b4eea4f5ebfcecad7fa3b3abfaa02275a5d88a67433",
+      "cellIndex": {
+        "row": 1,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        667,
+        589,
+        1334
+      ],
+      "trimBoundsSourcePixels": [
+        140,
+        28,
+        449,
+        630
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/idle-2-right-source-crop.png",
+      "sourceCropSha256": "70bf699dcd1982c4b84d05daa556680265d69de2fbf585c1c8277748d8c5c164",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/idle-2-right.png",
+      "runtimeSha256": "342564aaeb9e34fc3d10683d19b3dfd06b1fb231e099b290ea1fecbc23d04bc2",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        48,
+        20,
+        79,
+        80
+      ],
+      "runtimeAlphaPixels": 877,
+      "sourcePosePixels": [
+        309,
+        602
+      ],
+      "scale": 0.09884679,
+      "estimatedWaistPivotSourceX": 161.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "idle-3",
+      "action": "idle",
+      "facing": "right",
+      "poseName": "quiet-settle",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-idle-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "dc646258002958219fbc1b4eea4f5ebfcecad7fa3b3abfaa02275a5d88a67433",
+      "cellIndex": {
+        "row": 1,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        589,
+        667,
+        1179,
+        1334
+      ],
+      "trimBoundsSourcePixels": [
+        66,
+        23,
+        398,
+        630
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/idle-3-right-source-crop.png",
+      "sourceCropSha256": "8643c3a7afab39225fc41d31a0f447c4517acc2cde17b76222e72108a210d631",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/idle-3-right.png",
+      "runtimeSha256": "2999e08be8e2cc254ac21ee44f1a2a5c43362f62584f7681e951b39ea786259a",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        47,
+        20,
+        80,
+        80
+      ],
+      "runtimeAlphaPixels": 863,
+      "sourcePosePixels": [
+        332,
+        607
+      ],
+      "scale": 0.09884679,
+      "estimatedWaistPivotSourceX": 174.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "idle-0",
+      "action": "idle",
+      "facing": "left",
+      "poseName": "ready",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-idle-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "25125de66afd536bded17f5f7682d1e500a2de692b4aad6c490a7203e746cf28",
+      "cellIndex": {
+        "row": 0,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        0,
+        589,
+        667
+      ],
+      "trimBoundsSourcePixels": [
+        138,
+        12,
+        497,
+        631
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/idle-0-left-source-crop.png",
+      "sourceCropSha256": "b16df4ac2a4480f7adcacfdcdc6cf2a90dd80d1405b91fed6b696963894e14d4",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/idle-0-left.png",
+      "runtimeSha256": "8cec0454e0e8ab8b52107fca5e5e3f2749c978ebf952e00778ab1d191ba04765",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        47,
+        20,
+        82,
+        80
+      ],
+      "runtimeAlphaPixels": 855,
+      "sourcePosePixels": [
+        359,
+        619
+      ],
+      "scale": 0.09654063,
+      "estimatedWaistPivotSourceX": 171.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "idle-1",
+      "action": "idle",
+      "facing": "left",
+      "poseName": "inhale",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-idle-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "25125de66afd536bded17f5f7682d1e500a2de692b4aad6c490a7203e746cf28",
+      "cellIndex": {
+        "row": 0,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        589,
+        0,
+        1179,
+        667
+      ],
+      "trimBoundsSourcePixels": [
+        129,
+        10,
+        464,
+        631
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/idle-1-left-source-crop.png",
+      "sourceCropSha256": "e7862615eb20733e5fa0f08ddcc99b90d3e16f3d1f077d73af02416f440e15f5",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/idle-1-left.png",
+      "runtimeSha256": "97e1d65c3db5479336d0fb002417263958b5f188348862d4b55abf31718e9132",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        48,
+        20,
+        80,
+        80
+      ],
+      "runtimeAlphaPixels": 825,
+      "sourcePosePixels": [
+        335,
+        621
+      ],
+      "scale": 0.09654063,
+      "estimatedWaistPivotSourceX": 166.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "idle-2",
+      "action": "idle",
+      "facing": "left",
+      "poseName": "weight-settle",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-idle-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "25125de66afd536bded17f5f7682d1e500a2de692b4aad6c490a7203e746cf28",
+      "cellIndex": {
+        "row": 1,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        667,
+        589,
+        1334
+      ],
+      "trimBoundsSourcePixels": [
+        145,
+        16,
+        482,
+        638
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/idle-2-left-source-crop.png",
+      "sourceCropSha256": "c230985f16f98c3f85ed8e36beae85d68114613d9a391d904530b8d29c9ba4bf",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/idle-2-left.png",
+      "runtimeSha256": "edbbd2af3ba87e882c7fa47928c0efbb556aae125d3c15e2e01f583c682b42ea",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        49,
+        20,
+        82,
+        80
+      ],
+      "runtimeAlphaPixels": 877,
+      "sourcePosePixels": [
+        337,
+        622
+      ],
+      "scale": 0.09654063,
+      "estimatedWaistPivotSourceX": 159.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "idle-3",
+      "action": "idle",
+      "facing": "left",
+      "poseName": "quiet-settle",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-idle-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "25125de66afd536bded17f5f7682d1e500a2de692b4aad6c490a7203e746cf28",
+      "cellIndex": {
+        "row": 1,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        589,
+        667,
+        1179,
+        1334
+      ],
+      "trimBoundsSourcePixels": [
+        130,
+        16,
+        485,
+        638
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/idle-3-left-source-crop.png",
+      "sourceCropSha256": "d1161c979903005b220acaf156f2c6dddda24d9cb6e3a7a8b178e36ca41ef442",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/idle-3-left.png",
+      "runtimeSha256": "d018b85199bd4787639c8f45767ca2f08396ee87d2deadf59af113be1ca3f058",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        48,
+        20,
+        82,
+        80
+      ],
+      "runtimeAlphaPixels": 839,
+      "sourcePosePixels": [
+        355,
+        622
+      ],
+      "scale": 0.09654063,
+      "estimatedWaistPivotSourceX": 169.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "run-0",
+      "action": "run",
+      "facing": "right",
+      "poseName": "forward-contact",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-run-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "d5ec6649f0429ea4b04c7de1728c27f34838a9b62aca19a4febe01b0713b272c",
+      "cellIndex": {
+        "row": 0,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        0,
+        589,
+        667
+      ],
+      "trimBoundsSourcePixels": [
+        53,
+        14,
+        495,
+        608
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/run-0-right-source-crop.png",
+      "sourceCropSha256": "5957ea557d38acf0e0192e59ac36100c443bf796e85574ae2df1b06c1ae8ed42",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/run-0-right.png",
+      "runtimeSha256": "4ff8a0f747226c181bdea13b5592d0bd3e7b0900b40b1fc5dd545f3aa7cfa730",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        45,
+        20,
+        89,
+        80
+      ],
+      "runtimeAlphaPixels": 1004,
+      "sourcePosePixels": [
+        442,
+        594
+      ],
+      "scale": 0.10058676,
+      "estimatedWaistPivotSourceX": 185.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "run-1",
+      "action": "run",
+      "facing": "right",
+      "poseName": "passing",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-run-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "d5ec6649f0429ea4b04c7de1728c27f34838a9b62aca19a4febe01b0713b272c",
+      "cellIndex": {
+        "row": 0,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        589,
+        0,
+        1179,
+        667
+      ],
+      "trimBoundsSourcePixels": [
+        88,
+        9,
+        430,
+        608
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/run-1-right-source-crop.png",
+      "sourceCropSha256": "bfc2db23430293c6eb482ce5380e824548c0c613089f3cd19db9f010f926c980",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/run-1-right.png",
+      "runtimeSha256": "4d7bf8001e6a76678a76ebbcffda4a2f90e35966bb9c682c10da9677992e04b7",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        46,
+        20,
+        80,
+        80
+      ],
+      "runtimeAlphaPixels": 879,
+      "sourcePosePixels": [
+        342,
+        599
+      ],
+      "scale": 0.10058676,
+      "estimatedWaistPivotSourceX": 179.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "run-2",
+      "action": "run",
+      "facing": "right",
+      "poseName": "airborne",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-run-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "d5ec6649f0429ea4b04c7de1728c27f34838a9b62aca19a4febe01b0713b272c",
+      "cellIndex": {
+        "row": 1,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        667,
+        589,
+        1334
+      ],
+      "trimBoundsSourcePixels": [
+        73,
+        14,
+        491,
+        542
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/run-2-right-source-crop.png",
+      "sourceCropSha256": "32720d30332c869b320c8c7fa40454b79c965a8af2bce6659b98938a0ada32ba",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/run-2-right.png",
+      "runtimeSha256": "2a91d4c2c8be9be0bd9d6d2b858779001985d17d2617d02ef85297be0e575ac0",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        43,
+        23,
+        85,
+        76
+      ],
+      "runtimeAlphaPixels": 958,
+      "sourcePosePixels": [
+        418,
+        528
+      ],
+      "scale": 0.10058676,
+      "estimatedWaistPivotSourceX": 206.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 4
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "run-3",
+      "action": "run",
+      "facing": "right",
+      "poseName": "opposite-contact",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-run-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "d5ec6649f0429ea4b04c7de1728c27f34838a9b62aca19a4febe01b0713b272c",
+      "cellIndex": {
+        "row": 1,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        589,
+        667,
+        1179,
+        1334
+      ],
+      "trimBoundsSourcePixels": [
+        49,
+        18,
+        484,
+        628
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/run-3-right-source-crop.png",
+      "sourceCropSha256": "58c6626f5cb9b35bcc0bdc62b9946f236725e6beb790bf33894315da0f49d7cc",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/run-3-right.png",
+      "runtimeSha256": "455ccec45b59e977041b2102dd50e66e096e89448a3fab1e2c82f438dcbb7d9d",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        44,
+        19,
+        88,
+        80
+      ],
+      "runtimeAlphaPixels": 976,
+      "sourcePosePixels": [
+        435,
+        610
+      ],
+      "scale": 0.10058676,
+      "estimatedWaistPivotSourceX": 194.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "run-0",
+      "action": "run",
+      "facing": "left",
+      "poseName": "forward-contact",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-run-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "989ae0b9693ced85a1f662a5ca67d249774f7ddf3c7e13ebae2a1fa151f0df2c",
+      "cellIndex": {
+        "row": 0,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        0,
+        589,
+        667
+      ],
+      "trimBoundsSourcePixels": [
+        90,
+        14,
+        549,
+        610
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/run-0-left-source-crop.png",
+      "sourceCropSha256": "bb26de3e907a2b64ac01912f928cd4094e4f30c3bc67d59b14a16efb57682338",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/run-0-left.png",
+      "runtimeSha256": "ddf087d374fb6cd2313388cfe66a538480bd950737e94a3d82f5bf45e15a3fed",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        37,
+        20,
+        83,
+        80
+      ],
+      "runtimeAlphaPixels": 1045,
+      "sourcePosePixels": [
+        459,
+        596
+      ],
+      "scale": 0.10041841,
+      "estimatedWaistPivotSourceX": 271.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "run-1",
+      "action": "run",
+      "facing": "left",
+      "poseName": "passing",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-run-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "989ae0b9693ced85a1f662a5ca67d249774f7ddf3c7e13ebae2a1fa151f0df2c",
+      "cellIndex": {
+        "row": 0,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        589,
+        0,
+        1179,
+        667
+      ],
+      "trimBoundsSourcePixels": [
+        94,
+        13,
+        449,
+        612
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/run-1-left-source-crop.png",
+      "sourceCropSha256": "5f95e2336364c4ca3fc7d68e91f3d62be941a3360f0343d96346bc074f44bdde",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/run-1-left.png",
+      "runtimeSha256": "250ca9dbe1bb3598d34dc4946b13bfb138defee71a43ad70da1ba752737e1ba7",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        46,
+        20,
+        82,
+        80
+      ],
+      "runtimeAlphaPixels": 956,
+      "sourcePosePixels": [
+        355,
+        599
+      ],
+      "scale": 0.10041841,
+      "estimatedWaistPivotSourceX": 178.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "run-2",
+      "action": "run",
+      "facing": "left",
+      "poseName": "airborne",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-run-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "989ae0b9693ced85a1f662a5ca67d249774f7ddf3c7e13ebae2a1fa151f0df2c",
+      "cellIndex": {
+        "row": 1,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        667,
+        589,
+        1334
+      ],
+      "trimBoundsSourcePixels": [
+        120,
+        15,
+        539,
+        537
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/run-2-left-source-crop.png",
+      "sourceCropSha256": "3a4fa5d5e41a7c88c7d29c22dbf1809f96b03ad5ee3a5186a1d4cc728f7238fe",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/run-2-left.png",
+      "runtimeSha256": "e4a783637233f32421a9984646424a5bf21db7e2c174248c91184c7e982f1de8",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        43,
+        24,
+        85,
+        76
+      ],
+      "runtimeAlphaPixels": 986,
+      "sourcePosePixels": [
+        419,
+        522
+      ],
+      "scale": 0.10041841,
+      "estimatedWaistPivotSourceX": 212.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 4
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "run-3",
+      "action": "run",
+      "facing": "left",
+      "poseName": "opposite-contact",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-run-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "989ae0b9693ced85a1f662a5ca67d249774f7ddf3c7e13ebae2a1fa151f0df2c",
+      "cellIndex": {
+        "row": 1,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        589,
+        667,
+        1179,
+        1334
+      ],
+      "trimBoundsSourcePixels": [
+        37,
+        16,
+        511,
+        620
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/run-3-left-source-crop.png",
+      "sourceCropSha256": "8d6eb4f916c41cdda9a8d8bacbaa7d6a801ced3d36fae5ae76239500d5e36494",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/run-3-left.png",
+      "runtimeSha256": "e6ac4e7c05730bf1f5beb3bd64d829467a76aea436b1e0c975af229435f15982",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        37,
+        19,
+        85,
+        80
+      ],
+      "runtimeAlphaPixels": 1093,
+      "sourcePosePixels": [
+        474,
+        604
+      ],
+      "scale": 0.10041841,
+      "estimatedWaistPivotSourceX": 264.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "jab-0",
+      "action": "jab",
+      "facing": "right",
+      "poseName": "windup",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-jab-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "dfe92d499a404c2cb7716183943d7b55cf5633a8b8e0cd88e24e6c3c3bd77116",
+      "cellIndex": {
+        "row": 0,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        0,
+        656,
+        599
+      ],
+      "trimBoundsSourcePixels": [
+        81,
+        17,
+        462,
+        567
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/jab-0-right-source-crop.png",
+      "sourceCropSha256": "d70fdc1ffe6f4d7cab6270d17ac5069d516d868aa448f72256b09d83e8926a6f",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/jab-0-right.png",
+      "runtimeSha256": "3b0648978b19bd90ed8946295b6b5c97a0b5e1b72d1e3ceb9cf028ab404abad7",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        47,
+        20,
+        88,
+        80
+      ],
+      "runtimeAlphaPixels": 1046,
+      "sourcePosePixels": [
+        381,
+        550
+      ],
+      "scale": 0.10869565,
+      "estimatedWaistPivotSourceX": 157.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "jab-1",
+      "action": "jab",
+      "facing": "right",
+      "poseName": "extension",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-jab-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "dfe92d499a404c2cb7716183943d7b55cf5633a8b8e0cd88e24e6c3c3bd77116",
+      "cellIndex": {
+        "row": 0,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        656,
+        0,
+        1312,
+        599
+      ],
+      "trimBoundsSourcePixels": [
+        43,
+        17,
+        427,
+        566
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/jab-1-right-source-crop.png",
+      "sourceCropSha256": "3f26f81acff16e145b99a696adfd4d9949c60049fd9b1d9c1dbc24f9f7b09cae",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/jab-1-right.png",
+      "runtimeSha256": "4f5eccecfc5c0530979e3e6650f829f3fd0e67f9eba65b38e786a4d7bae6b49e",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        46,
+        20,
+        88,
+        80
+      ],
+      "runtimeAlphaPixels": 1082,
+      "sourcePosePixels": [
+        384,
+        549
+      ],
+      "scale": 0.10869565,
+      "estimatedWaistPivotSourceX": 161.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "jab-2",
+      "action": "jab",
+      "facing": "right",
+      "poseName": "contact",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-jab-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "dfe92d499a404c2cb7716183943d7b55cf5633a8b8e0cd88e24e6c3c3bd77116",
+      "cellIndex": {
+        "row": 1,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        599,
+        656,
+        1199
+      ],
+      "trimBoundsSourcePixels": [
+        64,
+        19,
+        553,
+        573
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/jab-2-right-source-crop.png",
+      "sourceCropSha256": "4b489e6e422366ccfd555ebb7f75d3016675107fdf8a0d2fb6ac07e7deb32c64",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/jab-2-right.png",
+      "runtimeSha256": "c54428beec9401efce64976f8f0fe3547bb6bacd6a2fdf4ae18a20c7e61eac28",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        43,
+        20,
+        96,
+        80
+      ],
+      "runtimeAlphaPixels": 1149,
+      "sourcePosePixels": [
+        489,
+        554
+      ],
+      "scale": 0.10869565,
+      "estimatedWaistPivotSourceX": 196.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "jab-3",
+      "action": "jab",
+      "facing": "right",
+      "poseName": "recoil",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-jab-right-4pose-imagegen-01.png",
+      "generatedSourceSha256": "dfe92d499a404c2cb7716183943d7b55cf5633a8b8e0cd88e24e6c3c3bd77116",
+      "cellIndex": {
+        "row": 1,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        656,
+        599,
+        1312,
+        1199
+      ],
+      "trimBoundsSourcePixels": [
+        58,
+        18,
+        444,
+        573
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/jab-3-right-source-crop.png",
+      "sourceCropSha256": "3c1afa72b9ce3d08d770c06bb9501d4d241732c2c3c23f8a7973df3d2db72014",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/jab-3-right.png",
+      "runtimeSha256": "96d8c645f670e3f9862ed1a0dcdfad9c8caac7a43e450c1d5d3e2755c9ebf688",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        46,
+        20,
+        88,
+        80
+      ],
+      "runtimeAlphaPixels": 1080,
+      "sourcePosePixels": [
+        386,
+        555
+      ],
+      "scale": 0.10869565,
+      "estimatedWaistPivotSourceX": 162.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "jab-0",
+      "action": "jab",
+      "facing": "left",
+      "poseName": "windup",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-jab-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "4887c9aabcfe0bb73f6067c1d4751eb7f177d319638935223c8f326f634094c0",
+      "cellIndex": {
+        "row": 0,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        0,
+        656,
+        599
+      ],
+      "trimBoundsSourcePixels": [
+        231,
+        23,
+        619,
+        565
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/jab-0-left-source-crop.png",
+      "sourceCropSha256": "972d7299875dbfff3832f30b24b491adb4dd2d45aebdc7daf3400fe3ac7e7c48",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/jab-0-left.png",
+      "runtimeSha256": "4729bcbf8af3351ba0288238f10bd5d2288454c9c92b3e735ceec26531dd06fd",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        39,
+        20,
+        82,
+        80
+      ],
+      "runtimeAlphaPixels": 1145,
+      "sourcePosePixels": [
+        388,
+        542
+      ],
+      "scale": 0.11131725,
+      "estimatedWaistPivotSourceX": 223.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "jab-1",
+      "action": "jab",
+      "facing": "left",
+      "poseName": "extension",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-jab-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "4887c9aabcfe0bb73f6067c1d4751eb7f177d319638935223c8f326f634094c0",
+      "cellIndex": {
+        "row": 0,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        656,
+        0,
+        1312,
+        599
+      ],
+      "trimBoundsSourcePixels": [
+        158,
+        24,
+        556,
+        565
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/jab-1-left-source-crop.png",
+      "sourceCropSha256": "9ef7e5bad036eef776657554766adebb8fd30e72e8326b3d2ab907c4963afdd5",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/jab-1-left.png",
+      "runtimeSha256": "a7c223408c3538583c7e1cb46641bf3f56b2542297228a00fb502716bcface06",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        41,
+        20,
+        85,
+        80
+      ],
+      "runtimeAlphaPixels": 1179,
+      "sourcePosePixels": [
+        398,
+        541
+      ],
+      "scale": 0.11131725,
+      "estimatedWaistPivotSourceX": 211.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "jab-2",
+      "action": "jab",
+      "facing": "left",
+      "poseName": "contact",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-jab-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "4887c9aabcfe0bb73f6067c1d4751eb7f177d319638935223c8f326f634094c0",
+      "cellIndex": {
+        "row": 1,
+        "column": 0
+      },
+      "cellBoundsSourcePixels": [
+        0,
+        599,
+        656,
+        1199
+      ],
+      "trimBoundsSourcePixels": [
+        126,
+        29,
+        619,
+        565
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/jab-2-left-source-crop.png",
+      "sourceCropSha256": "57b311f0a5d483e188f3c56f72aac2d72b96dec8ed24f56a43c49659fc0de0b3",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/jab-2-left.png",
+      "runtimeSha256": "ea09852771b8c8a4cd5dff7c19d8641b01d503b14d64b79d1a8390ffd92709ef",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        32,
+        20,
+        87,
+        80
+      ],
+      "runtimeAlphaPixels": 1245,
+      "sourcePosePixels": [
+        493,
+        536
+      ],
+      "scale": 0.11131725,
+      "estimatedWaistPivotSourceX": 288.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    },
+    {
+      "id": "jab-3",
+      "action": "jab",
+      "facing": "left",
+      "poseName": "recoil",
+      "generatedSource": "art-source/characters/iona/b01-recovery/generated/iona-jab-left-4pose-imagegen-01.png",
+      "generatedSourceSha256": "4887c9aabcfe0bb73f6067c1d4751eb7f177d319638935223c8f326f634094c0",
+      "cellIndex": {
+        "row": 1,
+        "column": 1
+      },
+      "cellBoundsSourcePixels": [
+        656,
+        599,
+        1312,
+        1199
+      ],
+      "trimBoundsSourcePixels": [
+        147,
+        28,
+        560,
+        565
+      ],
+      "sourceCrop": "art-source/characters/iona/b01-recovery/cropped-poses/jab-3-left-source-crop.png",
+      "sourceCropSha256": "bef84561c65e8d02b8f9a262225a3143b53a9ce513c72d94bd0cdd816ce12cc2",
+      "runtimePng": "public/assets/characters/iona/b01-recovery/jab-3-left.png",
+      "runtimeSha256": "9e745b81271367c242e79b3340eabc5e9f023634056677def98fe1909ddb4f39",
+      "runtimeCanvas": {
+        "width": 128,
+        "height": 80
+      },
+      "runtimeVisibleBounds": [
+        39,
+        20,
+        85,
+        80
+      ],
+      "runtimeAlphaPixels": 1176,
+      "sourcePosePixels": [
+        413,
+        537
+      ],
+      "scale": 0.11131725,
+      "estimatedWaistPivotSourceX": 228.0,
+      "anchor": {
+        "x": 64,
+        "feetY": 80,
+        "flightLiftPx": 0
+      },
+      "pixelMethod": "alpha-threshold-192, alpha-trim, nearest-neighbor resize, transparent-canvas placement",
+      "handRetouched": false,
+      "mirrored": false
+    }
+  ],
+  "derivedReviewAssets": [
+    {
+      "file": "public/assets/characters/iona/b01-recovery/base-60-silhouette.png",
+      "sha256": "2dfea2dd523020501715f22466e56d581b39b8388b1130267b9f1e62c21709e0",
+      "derivedFromRuntimeFrame": "public/assets/characters/iona/b01-recovery/idle-0-right.png",
+      "purpose": "VFX-off silhouette comparison only; not counted as an authored pose"
+    }
+  ],
+  "audit": {
+    "allFramesTransparent": true,
+    "allRuntimeAlphaBinary": true,
+    "allFramesFitCanvas": true,
+    "sourceToRuntimeHashChainRecorded": true,
+    "runtimeFrameCount": 24,
+    "runtimeAuthoredPoseCount": 24,
+    "runtimeFacings": [
+      "right",
+      "left"
+    ],
+    "visualReview": "CODEX_REAL_CHROME_REVIEW_COMPLETED; OWNER_PLAYBACK_REVIEW_REQUIRED",
+    "artMotionGate": "PENDING_OWNER_REVIEW"
+  }
+}

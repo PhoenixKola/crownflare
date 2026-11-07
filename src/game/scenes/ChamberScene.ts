@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import { InputController } from '../input/InputController';
 import { initialMoveState, stepMovement, type MoveState } from '../movement/motion';
 import { animationAssetKey, frameAt, IONA_ATTACK_FRAMES, IONA_CLIPS, type IonaFacing, type IonaLocomotion } from '../animation/ionaAnimation';
+import { IONA_RECOVERY_CLIPS, IONA_RECOVERY_FRAME_IDS, IONA_RECOVERY_JAB, recoveryAssetKey, recoveryFrameAt } from '../animation/ionaRecoveryAnimation';
 import { beginAction, idleClock, stepAction, type ActionDef, type CombatClock, type CombatEvent } from '../combat/sim';
 
 export type ChamberSnapshot = { x: number; y: number; grounded: boolean; facing: number; dashActive: boolean; cameraX: number; controller: boolean };
@@ -16,12 +17,12 @@ const ART_REVIEW_ASSET_KEYS = FORM_KEYS.flatMap((form) => [48, 60, 72].flatMap((
   `b01a-${form}-${height}`,
   `b01a-${form}-${height}-silhouette`,
 ])).concat(['b01a-base-left-60', 'b01a-base-left-60-silhouette']);
-const IONA_FRAME_IDS = [...new Set(Object.values(IONA_CLIPS).flatMap((clip) => clip.map((frame) => frame.id)).concat(Object.values(IONA_ATTACK_FRAMES)))];
+const LEGACY_IONA_FRAME_IDS = [...new Set(Object.values(IONA_CLIPS).flatMap((clip) => clip.map((frame) => frame.id)).concat(Object.values(IONA_ATTACK_FRAMES)))];
 const LIGHT_HIT: ActionDef = {
   id:'iona-light-hit', moveId:'iona-base-jab', sourceId:'iona-player', targetId:'training-dummy',
-  startupMs:130, activeMs:100, recoveryMs:260, events:[{id:'contact',atMs:162}],
+  startupMs:IONA_RECOVERY_JAB.startupMs, activeMs:IONA_RECOVERY_JAB.activeMs, recoveryMs:IONA_RECOVERY_JAB.recoveryMs, events:[{id:'contact',atMs:IONA_RECOVERY_JAB.contactEventMs}],
 };
-export type AnimationLabSnapshot = { mode:string; frame:string; facing:IonaFacing; attackPhase:string; targetHealth:number; targetX:number; lastCombatEvent:string; assetCount:number; missingAssets:string[]; reviewVisible:boolean; contrast:ArtReviewContrast; reviewScale:48|60|72 };
+export type AnimationLabSnapshot = { mode:string; frame:string; facing:IonaFacing; attackPhase:string; targetHealth:number; targetX:number; lastCombatEvent:string; artSource:'generated-imagegen'|'rejected-svg'; assetCount:number; missingAssets:string[]; reviewVisible:boolean; contrast:ArtReviewContrast; reviewScale:48|60|72 };
 
 /** B00 collision-test chamber; geometry remains programmer art and is never treated as production art. */
 export class ChamberScene extends Phaser.Scene {
@@ -36,6 +37,7 @@ export class ChamberScene extends Phaser.Scene {
   private onControllerState: (active: boolean) => void;
   private readonly artReview: boolean;
   private readonly animationLab: boolean;
+  private readonly oldRejectedArt: boolean;
   private reviewView: ArtReviewView = 'base';
   private reviewContrast: ArtReviewContrast = 'calm';
   private silhouetteHeight: 48 | 60 | 72 = 60;
@@ -83,6 +85,7 @@ export class ChamberScene extends Phaser.Scene {
     this.artReview = options.artReview === true;
     this.animationLab = options.animationLab === true && !this.artReview;
     const params = new URLSearchParams(window.location.search);
+    this.oldRejectedArt = this.animationLab && params.get('oldRejectedArt') === '1';
     const view = params.get('view');
     const contrast = params.get('contrast');
     const height = Number(params.get('size'));
@@ -104,14 +107,21 @@ export class ChamberScene extends Phaser.Scene {
       this.load.image('b01a-base-left-60-silhouette', './assets/characters/iona/b01a/base-left-60-silhouette.png');
     }
     if (this.animationLab) {
-      for (const id of IONA_FRAME_IDS) for (const side of ['right','left']) this.load.image(`iona-${id}-${side}`, `./assets/characters/iona/overnight/${id}-${side}.png`);
-      for (const side of ['right','left']) this.load.image(`iona-dawnrush-silhouette-${side}`, `./assets/characters/iona/overnight/dawnrush-silhouette-${side}.png`);
-      this.load.image('iona-review-before','./assets/characters/iona/b01a/base-60.png');
-      this.load.image('iona-review-after','./assets/characters/iona/overnight/idle-0-right.png');
-      this.load.image('iona-review-left','./assets/characters/iona/overnight/idle-0-left.png');
+      for (const id of IONA_RECOVERY_FRAME_IDS) for (const facing of [-1, 1] as const) {
+        const side = facing < 0 ? 'left' : 'right';
+        this.load.image(recoveryAssetKey(id, facing), `./assets/characters/iona/b01-recovery/${id}-${side}.png`);
+      }
+      this.load.image('iona-rejected-idle-right','./assets/characters/iona/overnight/idle-0-right.png');
+      this.load.image('iona-rejected-idle-left','./assets/characters/iona/overnight/idle-0-left.png');
+      if (this.oldRejectedArt) {
+        for (const id of LEGACY_IONA_FRAME_IDS) for (const side of ['right','left']) this.load.image(`iona-${id}-${side}`, `./assets/characters/iona/overnight/${id}-${side}.png`);
+        for (const side of ['right','left']) this.load.image(`iona-dawnrush-silhouette-${side}`, `./assets/characters/iona/overnight/dawnrush-silhouette-${side}.png`);
+      }
+      this.load.image('iona-review-b01a','./assets/characters/iona/b01a/base-60.png');
       this.load.image('iona-review-dawnrush','./assets/characters/iona/overnight/dawnrush-silhouette-right.png');
       this.load.image('iona-review-stormhalo','./assets/characters/iona/b01a/stormhalo-60-silhouette.png');
       this.load.image('iona-review-eclipse','./assets/characters/iona/b01a/eclipse-warden-60-silhouette.png');
+      this.load.image('iona-recovery-silhouette','./assets/characters/iona/b01-recovery/base-60-silhouette.png');
     }
   }
 
@@ -166,12 +176,12 @@ export class ChamberScene extends Phaser.Scene {
     tile(1150, 167, 110, 11);
     tile(1380, 192, 120, 11);
     tile(1120, 217, 14, 24, 0x624f50); // dash collision test barrier
-    if (!this.artReview) {
+    if (!this.artReview && !this.animationLab) {
       add.text(27, 205, 'SECTOR 00 Â· SIMULATION CHAMBER', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#263940' : '#cce5d9' });
       add.text(1057, 205, 'DASH BARRIER', { fontFamily: 'monospace', fontSize: '8px', color: '#edab91' });
       add.text(1270, 127, 'BEYOND THE BROKEN DAY', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#314852' : '#85c3bd' });
     }
-    add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART / OWNER REVIEW PENDING' : this.animationLab ? 'B01 OVERNIGHT / PROVISIONAL OWNER REVIEW' : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'monospace', fontSize: this.artReview || this.animationLab ? '6px' : '7px', color: this.artReview || this.animationLab ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
+    add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART / OWNER REVIEW PENDING' : this.animationLab ? (this.oldRejectedArt ? 'REJECTED OVERNIGHT VECTOR ART / COMPARISON ONLY' : 'B01 RECOVERY / IMAGEGEN PIXELS / OWNER REVIEW PENDING') : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'monospace', fontSize: this.artReview || this.animationLab ? '6px' : '7px', color: this.artReview || this.animationLab ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
 
     if (this.artReview) {
       this.createArtReview();
@@ -190,8 +200,9 @@ export class ChamberScene extends Phaser.Scene {
     this.controller = new InputController(this);
     if (this.animationLab) {
       this.actor.setAlpha(0);
-      this.labSprite = add.image(this.actor.x,this.body.bottom,'iona-idle-0-right').setOrigin(.5,1).setDepth(12);
-      this.labHud = add.text(6,5,'B01 PROVISIONAL  |  IDLE  |  J HIT  |  R REVIEW  |  C BG', {fontFamily:'monospace',fontSize:'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
+      const initialKey = this.oldRejectedArt ? animationAssetKey('idle-0',1) : recoveryAssetKey('idle-0',1);
+      this.labSprite = add.image(this.actor.x,this.body.bottom,initialKey).setOrigin(.5,1).setDepth(12);
+      this.labHud = add.text(6,5,this.oldRejectedArt ? 'REJECTED ART COMPARISON ONLY  |  J HIT  |  R A/B' : 'B01 RECOVERY / GENERATED PIXELS  |  J HIT  |  R A/B  |  C BG', {fontFamily:'monospace',fontSize:'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
       this.input.keyboard?.on('keydown-R',(event:KeyboardEvent)=>{if(!event.repeat)this.labReviewRequested=true;});
       this.input.keyboard?.on('keydown-C',(event:KeyboardEvent)=>{if(!event.repeat)this.labContrastRequested=true;});
       this.input.keyboard?.on('keydown',(event:KeyboardEvent)=>{
@@ -238,8 +249,8 @@ export class ChamberScene extends Phaser.Scene {
       if(this.labReviewScaleRequested!==null){
         this.labReviewScale=this.labReviewScaleRequested;
         this.labReviewScaleRequested=null;
-        for(const image of this.labReviewImages)image.setDisplaySize(this.labReviewScale+4,this.labReviewScale+4);
-        this.labReviewSub?.setText('BASE TEST HEIGHT: '+this.labReviewScale+' PX  /  1-2-3 SCALE  /  R CLOSES  /  C CYCLES CALM-LIGHT-BUSY');
+        for(const image of this.labReviewImages)image.setScale(this.labReviewScale/60);
+        this.labReviewSub?.setText('VISIBLE HEIGHT '+this.labReviewScale+' PX / B00 BODY 15x30 / 1-2-3 SCALE / R CLOSES / C CYCLES BG');
       }
       const moving = Math.abs(movement.next.xVelocity) > 12 && movement.next.dashMs === 0;
       if (moving && !wasMoving) this.startMs = 70;
@@ -250,7 +261,7 @@ export class ChamberScene extends Phaser.Scene {
       this.updateLabAnimation(grounded,moving,dt);
       this.labSprite?.setPosition(this.actor.x,this.body.bottom);
       this.updateAnimationReviewVisibility();
-      if (this.labHud) this.labHud.setText('B01 PROVISIONAL  |  ' + this.labMode.toUpperCase() + ' / ' + this.labFrame + '  |  J HIT  |  R REVIEW  |  C BG');
+      if (this.labHud) this.labHud.setText((this.oldRejectedArt?'REJECTED SVG COMPARE  |  ':'B01 RECOVERY / GENERATED PIXELS  |  ') + this.labMode.toUpperCase() + ' / ' + this.labFrame + '  |  J HIT  |  R A/B  |  C BG');
       this.wasMoving = moving;
       this.wasGrounded = grounded;
       this.hitFlashMs = Math.max(0,this.hitFlashMs-dt);
@@ -272,10 +283,12 @@ export class ChamberScene extends Phaser.Scene {
 
   animationSnapshot(): AnimationLabSnapshot | null {
     if (!this.animationLab || !this.labSprite) return null;
-    const all = IONA_FRAME_IDS.flatMap((id) => [-1,1].map((facing) => animationAssetKey(id,facing as IonaFacing)))
-      .concat([-1,1].map((facing)=>animationAssetKey('dawnrush-silhouette',facing as IonaFacing)));
+    const all = this.oldRejectedArt
+      ? LEGACY_IONA_FRAME_IDS.flatMap((id) => [-1,1].map((facing) => animationAssetKey(id,facing as IonaFacing)))
+        .concat([-1,1].map((facing)=>animationAssetKey('dawnrush-silhouette',facing as IonaFacing)))
+      : IONA_RECOVERY_FRAME_IDS.flatMap((id) => [-1,1].map((facing) => recoveryAssetKey(id,facing as IonaFacing)));
     const missingAssets = all.filter((key) => !this.textures.exists(key));
-    return { mode:this.labMode, frame:this.labFrame, facing:this.motion.facing, attackPhase:this.attackClock.phase, targetHealth:this.targetHealth, targetX:this.targetX, lastCombatEvent:this.lastCombatEvent, assetCount:all.length-missingAssets.length, missingAssets, reviewVisible:this.labReviewVisible, contrast:this.reviewContrast, reviewScale:this.labReviewScale };
+    return { mode:this.labMode, frame:this.labFrame, facing:this.motion.facing, attackPhase:this.attackClock.phase, targetHealth:this.targetHealth, targetX:this.targetX, lastCombatEvent:this.lastCombatEvent, artSource:this.oldRejectedArt?'rejected-svg':'generated-imagegen', assetCount:all.length-missingAssets.length, missingAssets, reviewVisible:this.labReviewVisible, contrast:this.reviewContrast, reviewScale:this.labReviewScale };
   }
 
   reviewSnapshot(): ArtReviewSnapshot | null {
@@ -286,7 +299,7 @@ export class ChamberScene extends Phaser.Scene {
 
   private createTrainingTarget(): void {
     this.targetVisual = this.add.graphics().setDepth(9);
-    this.targetLabel = this.add.text(this.targetX,GROUND_TOP-42,'TRAINING DUMMY / 3', {fontFamily:'monospace',fontSize:'6px',color:'#f0cda8',align:'center',backgroundColor:'#171b2c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(20);
+    this.targetLabel = this.add.text(this.targetX,GROUND_TOP-72,'TRAINING DUMMY / 3', {fontFamily:'monospace',fontSize:'6px',color:'#f0cda8',align:'center',backgroundColor:'#171b2c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(20);
     this.drawTrainingTarget();
   }
 
@@ -356,6 +369,11 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   private updateLabAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
+    if (this.oldRejectedArt) this.updateRejectedArtAnimation(grounded,moving,deltaMs);
+    else this.updateRecoveryAnimation(grounded,moving,deltaMs);
+  }
+
+  private updateRejectedArtAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
     if (!this.labSprite) return;
     if (grounded && !this.wasGrounded) this.landingMs=175;
     else this.landingMs=Math.max(0,this.landingMs-deltaMs);
@@ -406,44 +424,99 @@ export class ChamberScene extends Phaser.Scene {
     this.labSprite.setAlpha(1);
   }
 
+  private updateRecoveryAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
+    if (!this.labSprite) return;
+    if (grounded && !this.wasGrounded) this.landingMs=175;
+    else this.landingMs=Math.max(0,this.landingMs-deltaMs);
+    this.startMs=Math.max(0,this.startMs-deltaMs);
+    this.stopMs=Math.max(0,this.stopMs-deltaMs);
+    this.turnMs=Math.max(0,this.turnMs-deltaMs);
+    this.dashRecoverMs=Math.max(0,this.dashRecoverMs-deltaMs);
+
+    let next: IonaLocomotion | 'attack';
+    let frame: string;
+    if (this.attackClock.phase!=='idle') {
+      next='attack';
+      frame=IONA_RECOVERY_JAB.frameAtElapsed(this.attackClock.elapsedMs);
+    } else if (this.motion.dashMs>0) {
+      next='dash';
+      frame=recoveryFrameAt(IONA_RECOVERY_CLIPS.run,125-this.motion.dashMs);
+    } else if (!grounded) {
+      if (this.motion.yVelocity < -65) next='jumpRise';
+      else if (this.motion.yVelocity < 62) next='jumpApex';
+      else next='fall';
+      frame='run-2'; // generated airborne run pose; no dedicated jump art is claimed in this batch.
+    } else if (this.landingMs>0) {
+      next='land'; frame=this.landingMs>95?'idle-2':'idle-3';
+    } else if (this.dashRecoverMs>0) {
+      next='dashRecover'; frame='idle-1';
+    } else if (this.turnMs>0) {
+      next='turn'; frame='idle-0';
+    } else if (moving && this.startMs>0) {
+      next='start'; frame='run-0';
+    } else if (moving) {
+      next='run'; frame=recoveryFrameAt(IONA_RECOVERY_CLIPS.run,this.labElapsed);
+    } else if (this.stopMs>0) {
+      next='stop'; frame='idle-2';
+    } else {
+      next='idle'; frame=recoveryFrameAt(IONA_RECOVERY_CLIPS.idle,this.labElapsed);
+    }
+
+    if (next!==this.labMode) {
+      this.labElapsed=0;
+      if (next==='run') frame=IONA_RECOVERY_CLIPS.run[0]!.id;
+      if (next==='idle') frame=IONA_RECOVERY_CLIPS.idle[0]!.id;
+    } else if (next==='run' || next==='idle') {
+      const speed=Math.abs(this.body.velocity.x);
+      const cadence=next==='run'?0.45+0.55*Math.min(1,speed/155):1;
+      this.labElapsed+=deltaMs*cadence;
+      frame=next==='run'
+        ? recoveryFrameAt(IONA_RECOVERY_CLIPS.run,this.labElapsed)
+        : recoveryFrameAt(IONA_RECOVERY_CLIPS.idle,this.labElapsed);
+    }
+    this.labMode=next;
+    this.labFrame=frame;
+    this.labSprite.setTexture(recoveryAssetKey(frame,this.motion.facing));
+    this.labSprite.setFlipX(false);
+    this.labSprite.setPosition(this.actor.x,this.body.bottom);
+    this.labSprite.setAlpha(1);
+  }
+
   private createAnimationReview(): void {
     const addPanel=(x:number,y:number,w:number,h:number):void=>{
-      const bg=this.add.rectangle(x,y,w,h,0x0b1220,.96).setStrokeStyle(1,0xa9cdbf,.9).setScrollFactor(0).setDepth(49);
+      const bg=this.add.rectangle(x,y,w,h,0x0b1220,1).setStrokeStyle(1,0xa9cdbf,.9).setScrollFactor(0).setDepth(49);
       this.labReviewPanel=bg;
       this.labReviewObjects.push(bg);
     };
     addPanel(240,135,464,230);
-      const title=this.add.text(240,25,'OVERNIGHT PIXEL REVIEW / PROVISIONAL OWNER REVIEW', {fontFamily:'monospace',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const title=this.add.text(240,25,'B01 RECOVERY A/B / OWNER REVIEW PENDING', {fontFamily:'monospace',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
       this.labReviewObjects.push(title);
-      const sub=this.add.text(240,36,'BASE TEST HEIGHT: 60 PX  /  1-2-3 SCALE  /  R CLOSES  /  C BACKGROUNDS', {fontFamily:'monospace',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const sub=this.add.text(240,36,'VISIBLE HEIGHT 60 PX / B00 BODY 15x30 / 1-2-3 SCALE / R CLOSES / C BACKGROUNDS', {fontFamily:'monospace',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
       this.labReviewSub=sub;
       this.labReviewObjects.push(sub);
       const topCards=[
-        {key:'iona-review-before',label:'BEFORE / B01A',x:112},
-        {key:'iona-review-after',label:'AFTER / RIGHT',x:240},
-        {key:'iona-review-left',label:'AFTER / LEFT',x:368},
+        {key:'iona-review-b01a',label:'B01A MASTER',x:62},
+        {key:'iona-rejected-idle-right',label:'REJECTED SVG',x:181},
+        {key:recoveryAssetKey('idle-0',1),label:'RECOVERY RIGHT',x:300},
+        {key:recoveryAssetKey('idle-0',-1),label:'RECOVERY LEFT',x:419},
       ];
       for(const card of topCards){
-        const image=this.add.image(card.x,145,card.key).setOrigin(.5,1).setDisplaySize(64,64).setScrollFactor(0).setDepth(52);
+        const image=this.add.image(card.x,147,card.key).setOrigin(.5,1).setScrollFactor(0).setDepth(52);
         this.labReviewImages.push(image);
         this.labReviewObjects.push(image);
         const label=this.add.text(card.x,57,card.label,{fontFamily:'monospace',fontSize:'6px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
         this.labReviewObjects.push(label);
       }
-      const body=this.add.rectangle(240,130,15,30,0,0).setStrokeStyle(1,0xffa17f,1).setScrollFactor(0).setDepth(54);
-      this.labReviewObjects.push(body);
-      const bodyLabel=this.add.text(240,146,'B00 BODY 15 x 30 / GROUND ANCHOR',{fontFamily:'monospace',fontSize:'4px',color:'#ffb99c',backgroundColor:'#171b2c',padding:{x:1,y:1},align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
-      this.labReviewObjects.push(bodyLabel);
       const forms=[
-        {key:'iona-review-after',label:'BASE',x:58,tint:0x10131c},
-        {key:'iona-review-dawnrush',label:'DAWNRUSH',x:179,tint:0x10131c},
-        {key:'iona-review-stormhalo',label:'STORMHALO',x:300,tint:0xffffff},
-        {key:'iona-review-eclipse',label:'ECLIPSE',x:421,tint:0xffffff},
+        {key:'iona-recovery-silhouette',label:'RECOVERY BASE',x:58,tint:0x10131c},
+        {key:'iona-review-dawnrush',label:'DAWNRUSH STUDY',x:179,tint:0x10131c},
+        {key:'iona-review-stormhalo',label:'STORMHALO STUDY',x:300,tint:0xffffff},
+        {key:'iona-review-eclipse',label:'ECLIPSE STUDY',x:421,tint:0xffffff},
       ];
-      const formsTitle=this.add.text(240,158,'VFX OFF / FORM SILHOUETTE COMPARISON',{fontFamily:'monospace',fontSize:'6px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const formsTitle=this.add.text(240,158,'VFX OFF / EARLIER FORM STUDIES — NOT APPROVED',{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
       this.labReviewObjects.push(formsTitle);
       for(const form of forms){
-        const image=this.add.image(form.x,235,form.key).setOrigin(.5,1).setDisplaySize(52,52).setTint(form.tint).setTintMode(Phaser.TintModes.FILL).setScrollFactor(0).setDepth(52);
+        const image=this.add.image(form.x,235,form.key).setOrigin(.5,1).setScale(52/60).setTint(form.tint).setTintMode(Phaser.TintModes.FILL).setScrollFactor(0).setDepth(52);
         const label=this.add.text(form.x,181,form.label,{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
         this.labReviewObjects.push(image,label);
         this.labReviewSilhouettes.push(image);
@@ -454,7 +527,7 @@ export class ChamberScene extends Phaser.Scene {
     for (const item of this.labReviewObjects) item.setVisible(this.labReviewVisible);
     if(this.labReviewPanel){
       const colors:Record<ArtReviewContrast,number>={calm:0x101a2b,light:0xe5ded0,busy:0x29233c};
-      this.labReviewPanel.setFillStyle(colors[this.reviewContrast],.97);
+      this.labReviewPanel.setFillStyle(colors[this.reviewContrast],1);
       const silhouetteTint=this.reviewContrast==='light'?0x202330:this.reviewContrast==='busy'?0xffdab0:0xd8e2dc;
       for(const image of this.labReviewSilhouettes)image.setTint(silhouetteTint).setTintMode(Phaser.TintModes.FILL);
       const textColor=this.reviewContrast==='light'?'#222536':'#eef0e8';
