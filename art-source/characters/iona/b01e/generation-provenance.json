@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "tool": "OpenAI native image_gen.imagegen",
+  "modelVersion": "unknown (not exposed by tool result)",
+  "ownerApproval": "PENDING_OWNER_REVIEW",
+  "promptRecord": "art-source/characters/iona/b01e/generation-prompts.md",
+  "referenceSources": [
+    {
+      "facing": "left",
+      "path": "art-source/characters/iona/b01c/generated/iona-combo-2-left-sidekick-6pose-imagegen-01.png",
+      "sha256": "09366c6af9f0a7749ae79450123fd6696aa2e9b372f9a8924bdf491c4bfb818e"
+    },
+    {
+      "facing": "right",
+      "path": "art-source/characters/iona/b01c/generated/iona-combo-2-right-sidekick-6pose-imagegen-01.png",
+      "sha256": "91659187dc6de44a06bed4bc1cdd5203da92f617f439064bf88bc49f831812bb"
+    }
+  ],
+  "outputs": [
+    {
+      "facing": "left",
+      "outputId": "exec-650c8fd4-692e-40c9-908f-189fa811a1a7.png",
+      "path": "art-source/characters/iona/b01e/original-imagegen/iona-sidekick-left-4pose-imagegen-01.png",
+      "sha256": "4397aaa19132053cb77c9de2b23f17139b14eb48f1f3a85e02314f577d9ac91b"
+    },
+    {
+      "facing": "right",
+      "outputId": "exec-2c20e536-00a9-4818-84d0-18c2d533065f.png",
+      "path": "art-source/characters/iona/b01e/original-imagegen/iona-sidekick-right-4pose-imagegen-01.png",
+      "sha256": "03512a4b18a19d1836976fbd47c23f80baf092116c2b026dbe33c277ffc64fa3"
+    }
+  ],
+  "exporter": "tools/art-export/build-iona-b01e.py",
+  "alphaThreshold": 192,
+  "runtimePaletteSource": "art-source/manifests/iona-b01c-production-v1.json"
+}

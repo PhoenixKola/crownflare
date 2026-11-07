@@ -60,7 +60,7 @@
   },
   "frameMetricsModule": {
     "path": "src/game/animation/ionaCandidateFrameMetrics.ts",
-    "sha256": "2cc553963d063efacff5a97ced0f80e4064835b417d2702caf3140c696a68e81"
+    "sha256": "0ed53a799dce083c7d63b4854541a21c2c2df8d6efef0d78d9184a2169688a6e"
   },
   "sourceSheets": {
     "left": {

@@ -36,7 +36,18 @@ test('B01D manifest verifies source-to-runtime hashes, anchors, transparency and
   assert.deepEqual(manifest.physicsBody,{width:15,height:30,authority:'unchanged B00 Arcade body'});
   assert.equal(manifest.runtimeFrameCount,68);
   assert.equal(manifest.runtimeFrames.length,68);
-  assert.equal(fileHash(manifest.frameMetricsModule.path),manifest.frameMetricsModule.sha256,'generated visible-bounds metrics must match the manifest hash');
+  const metrics=readFileSync(manifest.frameMetricsModule.path);
+  const metricsText=metrics.toString('utf8');
+  assert.equal(metrics.includes(0x0d),false,'generated visible-bounds metrics must be LF-only');
+  assert.equal(fileHash(manifest.frameMetricsModule.path),manifest.frameMetricsModule.sha256,'generated visible-bounds metrics must match the exact manifest bytes');
+  const simulatedWindowsCheckout=Buffer.from(metricsText.replace(/\n/g,'\r\n'),'utf8');
+  const normalizedWindowsCheckout=Buffer.from(simulatedWindowsCheckout.toString('utf8').replace(/\r\n/g,'\n'),'utf8');
+  assert.deepEqual(normalizedWindowsCheckout,metrics,'normalizing a simulated CRLF checkout must reproduce the exact source bytes');
+  assert.equal(createHash('sha256').update(normalizedWindowsCheckout).digest('hex'),manifest.frameMetricsModule.sha256);
+  assert.deepEqual(manifest.runtimeFrames.reduce((counts,frame)=>{
+    counts[frame.candidateStatus]=(counts[frame.candidateStatus]??0)+1;
+    return counts;
+  },{} as Record<string,number>),{NEW_IMAGEGEN_POSE:8,UNCHANGED_REUSED:60},'B01D historical inventory must remain exactly 8 new and 60 reused frames');
   for(const frame of manifest.runtimeFrames){
     assert.ok(frame.actionId.startsWith('iona-base-'));
     assert.ok(frame.facing==='left'||frame.facing==='right');

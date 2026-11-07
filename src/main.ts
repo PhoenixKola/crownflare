@@ -50,6 +50,7 @@ function togglePause(reason = 'The Spindle is still.'): void {
   if (!active || !game) return;
   paused = !paused;
   chamber?.resetTransientInput();
+  chamber?.setLabAudioPaused(paused);
   if (paused) {
     game.scene.pause('Chamber');
     if (!artReviewMode) {

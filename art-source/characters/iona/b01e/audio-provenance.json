@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "authoringMethod": "Deterministic original filtered-noise, transient, and short resonator synthesis in Python standard library; 24kHz mono PCM WAV.",
+  "externalSamples": [],
+  "externalLibraries": [],
+  "license": "Original Crownflare project assets; no third-party samples or sample libraries.",
+  "sourceScript": {
+    "path": "tools/audio/generate-iona-b01e-sfx.py",
+    "sha256": "db3851bef48c4b8ee041117e4231f82163ad114c07932c8c44d6ae894e94339b"
+  },
+  "assets": [
+    {
+      "key": "step-a",
+      "path": "public/assets/characters/iona/b01e/audio/step-a.wav",
+      "sha256": "f6bc41d710e4656e7a6d3807c737eef767d878c824f647ea9fcfe43cd3483a20",
+      "bytes": 5084,
+      "durationMs": 105,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Alternating boot plant: dry leather scrape, softened floor contact and low body."
+    },
+    {
+      "key": "step-b",
+      "path": "public/assets/characters/iona/b01e/audio/step-b.wav",
+      "sha256": "02df4299afc08276b924becb2e0edec512b341c27aea6d36e742d36c7733869b",
+      "bytes": 5564,
+      "durationMs": 115,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Alternating second boot plant with a slightly brighter toe scuff."
+    },
+    {
+      "key": "jump",
+      "path": "public/assets/characters/iona/b01e/audio/jump.wav",
+      "sha256": "508f5661da7beb98b6ea571d1e63b88f4ecac96dec188eedd9d754dc4dbce504",
+      "bytes": 10604,
+      "durationMs": 220,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Air and jacket pull rising into a short impulse; no pitched game beep."
+    },
+    {
+      "key": "land",
+      "path": "public/assets/characters/iona/b01e/audio/land.wav",
+      "sha256": "8a9e0be2240477f135cc04cb69345ce9e2505ff477706e4d56a897ff5709b876",
+      "bytes": 13004,
+      "durationMs": 270,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Boots and body settle into a muted floor thump with a short gritty tail."
+    },
+    {
+      "key": "dash-start",
+      "path": "public/assets/characters/iona/b01e/audio/dash-start.wav",
+      "sha256": "61d26efb7cf506b40999bd1f669a1625931c0e2b300ba15b48c083d583bf417f",
+      "bytes": 11564,
+      "durationMs": 240,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Compressed cloth snap, low thrust and a fast outward air sweep."
+    },
+    {
+      "key": "dash-brake",
+      "path": "public/assets/characters/iona/b01e/audio/dash-brake.wav",
+      "sha256": "3461c004e81763e6d3b5ede4b2694acbaf04eb1fffa046322ab896b94c3c02eb",
+      "bytes": 9644,
+      "durationMs": 200,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Air folds down into a controlled boot skid and short body settle."
+    },
+    {
+      "key": "palm-whoosh",
+      "path": "public/assets/characters/iona/b01e/audio/palm-whoosh.wav",
+      "sha256": "9a40b90e001a45f181cbb3582463fcb65db77be30e197c5d866f2079a6436c77",
+      "bytes": 8204,
+      "durationMs": 170,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Tight sleeve and palm air pass, high and brief."
+    },
+    {
+      "key": "palm-hit",
+      "path": "public/assets/characters/iona/b01e/audio/palm-hit.wav",
+      "sha256": "207fa1334396ada4e89bce579a39af06c161c41d49047f91b0b12e84efc82d43",
+      "bytes": 7244,
+      "durationMs": 150,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Soft palm-on-padding crack with a compact body resonance."
+    },
+    {
+      "key": "kick-whoosh",
+      "path": "public/assets/characters/iona/b01e/audio/kick-whoosh.wav",
+      "sha256": "4cd67d40e31242f6c1e0751604df04d888f3f72cc7fb04e9633f7183cdf43304",
+      "bytes": 10604,
+      "durationMs": 220,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Longer lower leg sweep with cloth flutter at extension."
+    },
+    {
+      "key": "kick-hit",
+      "path": "public/assets/characters/iona/b01e/audio/kick-hit.wav",
+      "sha256": "bc0f28bfec64dc4d358739e5df4a7a95c94c9be1893f1daf7df4d03d615700bf",
+      "bytes": 9164,
+      "durationMs": 190,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Weighted padded side-kick contact, layered thud and clipped fabric snap."
+    },
+    {
+      "key": "forearm-whoosh",
+      "path": "public/assets/characters/iona/b01e/audio/forearm-whoosh.wav",
+      "sha256": "dfcab9c6f783acc4ca63930bfb8312f91ac8e227e83981eb1ab4611fb2498df7",
+      "bytes": 8684,
+      "durationMs": 180,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Compact rising forearm sweep with a warmer sleeve layer."
+    },
+    {
+      "key": "forearm-hit",
+      "path": "public/assets/characters/iona/b01e/audio/forearm-hit.wav",
+      "sha256": "589ae90468a8b80fe2e8a68732f383cb4ebc1f8b69d2470c82639ed6c5fa2501",
+      "bytes": 8204,
+      "durationMs": 170,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Firm forearm impact with bright transient and short padded body."
+    },
+    {
+      "key": "miss",
+      "path": "public/assets/characters/iona/b01e/audio/miss.wav",
+      "sha256": "bdfc2def67ea7946fbf5333e57d2f42f02dd57af49430d63282899dd51bed9dd",
+      "bytes": 7724,
+      "durationMs": 160,
+      "sampleRateHz": 24000,
+      "channels": 1,
+      "description": "Unconfirmed air pass with a falling cloth tail; deliberately no impact body."
+    }
+  ]
+}

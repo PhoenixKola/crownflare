@@ -7,6 +7,7 @@ playwright/.cache/
 test-results/
 tests/evidence/
 review-evidence/raw/
+review-evidence/b01e/.recordings/
 .art-tmp/
 art-source/rejected/
 art-source/scratch/

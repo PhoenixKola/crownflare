@@ -47,6 +47,12 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def write_lf(path: Path, text: str) -> None:
+    """Write generated text bytes identically on Windows, macOS and Linux."""
+    normalized = text.replace("\r\n", "\n").replace("\r", "\n")
+    path.write_bytes(normalized.encode("utf-8"))
+
+
 def rgba_bytes(image: Image.Image) -> str:
     import io
     stream = io.BytesIO()
@@ -326,7 +332,7 @@ def main() -> None:
         "  return bounds ?? [0, 0, 128, 80];\n"
         "}\n"
     )
-    metrics_path.write_text(metrics_text, encoding="utf-8")
+    write_lf(metrics_path, metrics_text)
 
     manifest = {
         "schemaVersion": 1,
@@ -350,7 +356,7 @@ def main() -> None:
         "frameCoverage": "B01C actions retained byte-identically except run loops, replaced by four separate image-generated poses per facing.",
         "runtimeFrames": records,
     }
-    MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    write_lf(MANIFEST, json.dumps(manifest, indent=2) + "\n")
     print(f"PASS: B01D exported {len(records)} frames (B01C frames retained; 8 new run poses), canvas 128x80, run visible height={TARGET_RUN_HEIGHT}, palette=32")
 
 

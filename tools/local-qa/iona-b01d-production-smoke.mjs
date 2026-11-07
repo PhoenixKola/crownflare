@@ -7,7 +7,8 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { chromium } from 'playwright';
 
 const port=4177;
-const evidence='review-evidence/b01d';
+// Regression runs may use ignored scratch evidence to preserve the historical owner-review package.
+const evidence=process.env.CROWNFLARE_QA_B01D_EVIDENCE??'review-evidence/b01d';
 const recordings=path.join(evidence,'.recordings');
 const server=spawn(process.execPath,['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port',String(port),'--strictPort'],{stdio:'pipe'});
 let serverErrors='';
@@ -321,7 +322,7 @@ try {
   const videoBytes=await readFile(finalVideo);
   const videoHash=createHash('sha256').update(videoBytes).digest('hex');
   const report={
-    status:'PASS',date:new Date().toISOString(),chrome:browser.version(),sourceSha256:sourceDigest.digest('hex'),video:'review-evidence/b01d/iona-b01d-75s.webm',videoSha256:videoHash,videoBytes:videoBytes.length,videoDurationSeconds,
+    status:'PASS',date:new Date().toISOString(),chrome:browser.version(),sourceSha256:sourceDigest.digest('hex'),video:path.join(evidence,'iona-b01d-75s.webm').replaceAll('\\','/'),videoSha256:videoHash,videoBytes:videoBytes.length,videoDurationSeconds,
     runtimeFrames:68,baselineRuntimeFrames:72,allCandidateAndBaselineTextures:140,bodySize:'15x30',verifiedVisibleHeightsPx:[48,60,72],visualChecks:['idle','start/stop/turn','four-pose ImageGen run left/right; historical 420ms loop cadence','jump load/rise/apex/fall/land','dash active/recovery into solid barrier','live B01C/B01D A/B; B01D VFX toggle; exact per-frame 48/60/72 visible heights; canvas/painted-bounds/anchor overlay','three-hit combo in both authored facings with simulation-clock contact frames, misses, input buffer and held-input no loop','pause/resume during first combo windup, resize, focus loss, background contrast'],
     combatEvents,errors,realTabHiddenVerified,realTabHiddenMethod:'Opened a second tab in the headed Chrome context and called bringToFront; measured the review page document.visibilityState.',realTabHiddenBlocker:realTabHiddenVerified?null:'Chrome continued reporting visible after the tab switch; the native computer-use bridge was unavailable for UI-level confirmation.',audioTrackCaptured:videoProbe.streams?.some((stream)=>stream.codec_type==='audio')??false,videoAudio:'No audio track is captured by Playwright; audio playback was not confirmed by this run.',agentViewedAtNormalSpeed:false,agentPlaybackBlocker:'Computer-use native pipe and browser access host unavailable in this session.',
   };
