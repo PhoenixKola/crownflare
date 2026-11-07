@@ -9,7 +9,7 @@ import { chromium } from 'playwright';
 
 const headless = process.argv.includes('--headless');
 const port = 4173;
-const evidenceDir = headless ? 'tests/evidence/headless' : 'review-evidence';
+const evidenceDir = process.env.CROWNFLARE_QA_EVIDENCE_DIR ?? (headless ? 'tests/evidence/headless' : 'review-evidence');
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', '--host', '127.0.0.1', '--port', String(port), '--strictPort'], { stdio: 'pipe' });
 let serverErrors = '';
 server.stderr.on('data', (buf) => { serverErrors += buf.toString(); });

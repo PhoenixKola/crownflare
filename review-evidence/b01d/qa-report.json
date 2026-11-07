@@ -1,0 +1,109 @@
+{
+  "status": "PASS",
+  "date": "2026-11-07T12:41:00.277Z",
+  "chrome": "156.0.8078.80",
+  "sourceSha256": "6891aa41de9c1bcda75c78a64e0ea6dd8bf2bc93f1a0a3a3a8c6ffde33dae3b2",
+  "video": "review-evidence/b01d/iona-b01d-75s.webm",
+  "videoSha256": "b8588efbce7307fffb37ca718a45bd81d2aff489f0aca0194f8ef70b399aee82",
+  "videoBytes": 4593218,
+  "videoDurationSeconds": 67.68,
+  "runtimeFrames": 68,
+  "baselineRuntimeFrames": 72,
+  "allCandidateAndBaselineTextures": 140,
+  "bodySize": "15x30",
+  "verifiedVisibleHeightsPx": [
+    48,
+    60,
+    72
+  ],
+  "visualChecks": [
+    "idle",
+    "start/stop/turn",
+    "four-pose ImageGen run left/right; historical 420ms loop cadence",
+    "jump load/rise/apex/fall/land",
+    "dash active/recovery into solid barrier",
+    "live B01C/B01D A/B; B01D VFX toggle; exact per-frame 48/60/72 visible heights; canvas/painted-bounds/anchor overlay",
+    "three-hit combo in both authored facings with simulation-clock contact frames, misses, input buffer and held-input no loop",
+    "pause/resume during first combo windup, resize, focus loss, background contrast"
+  ],
+  "combatEvents": [
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-2",
+      "eventId": "contact",
+      "atMs": 138,
+      "moveId": "iona-base-combo-2",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-3",
+      "eventId": "contact",
+      "atMs": 165,
+      "moveId": "iona-base-combo-3",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "hit",
+      "targetHealth": 2
+    },
+    {
+      "actionId": "iona-base-combo-2",
+      "eventId": "contact",
+      "atMs": 138,
+      "moveId": "iona-base-combo-2",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "hit",
+      "targetHealth": 1
+    },
+    {
+      "actionId": "iona-base-combo-3",
+      "eventId": "contact",
+      "atMs": 165,
+      "moveId": "iona-base-combo-3",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "hit",
+      "targetHealth": 0
+    }
+  ],
+  "errors": [],
+  "realTabHiddenVerified": false,
+  "realTabHiddenMethod": "Opened a second tab in the headed Chrome context and called bringToFront; measured the review page document.visibilityState.",
+  "realTabHiddenBlocker": "Chrome continued reporting visible after the tab switch; the native computer-use bridge was unavailable for UI-level confirmation.",
+  "audioTrackCaptured": false,
+  "videoAudio": "No audio track is captured by Playwright; audio playback was not confirmed by this run.",
+  "agentViewedAtNormalSpeed": false,
+  "agentPlaybackBlocker": "Computer-use native pipe and browser access host unavailable in this session."
+}

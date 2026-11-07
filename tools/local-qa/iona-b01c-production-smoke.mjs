@@ -7,7 +7,8 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { chromium } from 'playwright';
 
 const port=4176;
-const evidence='review-evidence/b01c';
+// Regression runs may target ignored test evidence so they never overwrite the committed owner-review package.
+const evidence=process.env.CROWNFLARE_QA_B01C_EVIDENCE??'review-evidence/b01c';
 const recordings=path.join(evidence,'.recordings');
 const server=spawn(process.execPath,['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port',String(port),'--strictPort'],{stdio:'pipe'});
 let serverErrors='';
@@ -259,8 +260,9 @@ try {
   for(const file of digestFiles){sourceDigest.update(file);sourceDigest.update(await readFile(file));}
   const videoBytes=await readFile(finalVideo);
   const videoHash=createHash('sha256').update(videoBytes).digest('hex');
+  const videoRelativePath=path.relative(process.cwd(),finalVideo).split(path.sep).join('/');
   const report={
-    status:'PASS',date:new Date().toISOString(),chrome:browser.version(),sourceSha256:sourceDigest.digest('hex'),video:'review-evidence/b01c/iona-b01c-60s.webm',videoSha256:videoHash,videoBytes:videoBytes.length,videoDurationSeconds,
+    status:'PASS',date:new Date().toISOString(),chrome:browser.version(),sourceSha256:sourceDigest.digest('hex'),video:videoRelativePath,videoSha256:videoHash,videoBytes:videoBytes.length,videoDurationSeconds,
     runtimeFrames:72,bodySize:'15x30',visualChecks:['idle','start/stop/turn','six-pose run left/right','jump load/rise/apex/fall/land','dash active/recovery','same-pose pixel method A/B/C','three-hit combo in both authored facings with event-matched contact frames, misses, input buffer and held-input no loop','pause/resize/contrast'],
     combatEvents,errors,audioTrackCaptured:videoProbe.streams?.some((stream)=>stream.codec_type==='audio')??false,videoAudio:'No audio track is captured by Playwright; audio playback was not confirmed by this run.',
   };

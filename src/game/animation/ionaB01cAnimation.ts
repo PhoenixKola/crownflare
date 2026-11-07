@@ -1,4 +1,5 @@
 import type * as Phaser from 'phaser';
+import { missingTextureKeys, registerTextureClips } from './textureClips.ts';
 
 export type IonaB01CFacing = 'left' | 'right';
 export type IonaB01CFrame = { readonly id: string; readonly facing: IonaB01CFacing; readonly durationMs: number };
@@ -85,20 +86,9 @@ export const IONA_B01C_CLIPS: readonly IonaB01CClip[] = [
 
 /** Register separate-file Phaser 4 animation clips; the world collider remains a separate 15x30 body. */
 export function registerIonaB01CAnimations(scene: Phaser.Scene): void {
-  for (const clip of IONA_B01C_CLIPS) {
-    if (scene.anims.exists(clip.key)) continue;
-    scene.anims.create({
-      key: clip.key,
-      frames: clip.frames.map((frame) => ({ key: ionaB01CAssetKey(frame.id, frame.facing), frame: 0, duration: frame.durationMs })),
-      // Phaser adds frame-specific durations to the parent duration. A 1ms base keeps the authored per-frame timings intact.
-      duration: 1,
-      repeat: clip.repeat,
-      skipMissedFrames: false,
-    });
-  }
+  registerTextureClips(scene, IONA_B01C_CLIPS, ionaB01CAssetKey);
 }
 
 export function validateIonaB01CTextures(assetKeys: readonly string[]): string[] {
-  const available = new Set(assetKeys);
-  return IONA_B01C_TEXTURES.map(({ id, facing }) => ionaB01CAssetKey(id, facing)).filter((key) => !available.has(key));
+  return missingTextureKeys(IONA_B01C_TEXTURES, ionaB01CAssetKey, assetKeys);
 }

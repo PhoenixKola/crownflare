@@ -38,6 +38,13 @@ Codex can author **real original sprites, sprite edits, impact textures, VFX fli
 - `npm run qa:iona:recovery` is the acceptance-specific browser route. Its owner-facing 25–45 second normal-speed Chrome clip, same-chamber rejected-vs-generated comparison, 48/60/72px and contrast captures are indexed in `review-evidence/recovery/README.md`. Audio was not captured or reviewed; no physical controller was tested.
 - Recovery status is `B01_RECOVERY_PROVISIONAL`: TECH, ART-MOTION and owner approval remain separate gates. The generated image source pixels are in runtime, but Iona's identity, actual-scale animation quality, and 60px working height await owner playback review. No canonical lock, transformation catalog, enemy AI or B02/B03 work is claimed.
 
+## B01D — provisional run refinement and B02 motion readiness
+
+- B01D is an isolated candidate namespace: `art-source/characters/iona/b01d/`, `art-source/manifests/iona-b01d-candidate-v1.json`, and `public/assets/characters/iona/b01d/`. The runtime preview is `/?animationLab=1&b01d=1`; B01C remains available at `/?animationLab=1&b01c=1`.
+- Two native, reference-guided ImageGen sheets add four original run poses per direction. The other B01C frames are retained byte-identically. `tools/art-export/build-iona-b01d.py` reproduces crops, alpha thresholding, palette quantization and anchors; `tools/art-export/audit-iona-b01d.py` verifies hashes, alpha, bounds and size.
+- The development lab provides the B01C/B01D toggle, VFX off by default, exact 48/60/72 painted-height scales from generated per-frame bounds, clean/light/busy backgrounds and full-canvas/painted-bounds/anchor diagnostics. Physics and simulation combat timing remain authoritative. A small typed texture-clip helper is shared by B01C/B01D.
+- `IONA_PROMOTION_CONFIG.readyToPromote` is false and `ownerApproval` is `PENDING_OWNER_REVIEW`. The candidate is not active in ordinary gameplay. B01D output, scale and motion remain owner-review items; no forms, new audio, B02 acceptance, or B03 content is claimed. Installed Chrome recorded a 67.68-second normal-speed clip, but agent playback was unavailable in this session. The Playwright tab-hidden probe remained unverified and the WebM has no audio track.
+
 ## Four form identities
 
 - Base: separate readable head/shoulder/hands/footwork, martial combo and sash secondary motion.

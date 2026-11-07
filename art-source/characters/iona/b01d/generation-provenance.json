@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "batch": "B01D",
+  "createdAt": "2026-11-07",
+  "status": "PROVISIONAL_SOURCE_ART_PENDING_OWNER_REVIEW",
+  "tool": "Codex built-in image_gen.imagegen",
+  "modelVersion": "unknown (not exposed by the tool result)",
+  "licenseReview": "Original reference-guided outputs from the built-in image-generation tool; no third-party art, franchise characters, or Veyrshift material was provided or intentionally reproduced.",
+  "requestedTransparentBackground": true,
+  "outputs": [
+    {
+      "promptId": "b01d-run-left-4pose-v1",
+      "toolOutputId": "exec-8effeab5-4efc-4910-b13e-a904e3c415db.png",
+      "file": "art-source/characters/iona/b01d/original-imagegen/iona-run-left-4pose-imagegen-01.png",
+      "sha256": "47999cddb63e807da43223b59f8a25bda6ab73a4d79c751caba7a9bd9084ca5d",
+      "bytes": 1594790,
+      "dimensions": [1536, 1024],
+      "mode": "RGBA",
+      "alphaExtrema": [0, 254],
+      "reference": "art-source/characters/iona/b01c/generated/iona-run-left-6pose-imagegen-01.png",
+      "referenceSha256": "42b3ea920528c1438f5f768d215265a1dbb885f0a7a9e05e7ccba2e128fc41a"
+    },
+    {
+      "promptId": "b01d-run-right-4pose-v1",
+      "toolOutputId": "exec-2cd955a8-bec8-40e5-864b-355aecace9f4.png",
+      "file": "art-source/characters/iona/b01d/original-imagegen/iona-run-right-4pose-imagegen-01.png",
+      "sha256": "c843cd5d0fce12cd683d396719a68a79e21de62085936df619d3eafcd88349dc",
+      "bytes": 952845,
+      "dimensions": [1261, 1247],
+      "mode": "RGBA",
+      "alphaExtrema": [0, 255],
+      "reference": "art-source/characters/iona/b01c/generated/iona-run-right-6pose-imagegen-02.png",
+      "referenceSha256": "6f19bcc4c95dbe2bbefaad1dc82dd53ef3df1bdbdb23cf548c5b835a3ae56c9c"
+    }
+  ],
+  "promptsFile": "art-source/characters/iona/b01d/generation-prompts.md",
+  "manualPixelRedraws": 0
+}
