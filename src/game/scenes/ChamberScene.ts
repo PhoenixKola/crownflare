@@ -8,6 +8,7 @@ import { IONA_B01D_TEXTURES, ionaB01DAnimationKey, ionaB01DAssetKey, registerIon
 import { IONA_B01E_TEXTURES, ionaB01EAnimationKey, ionaB01EAssetKey, nextIonaLabCandidate, registerIonaB01EAnimations, validateIonaB01ETextures } from '../animation/ionaB01eAnimation';
 import { ionaB01EFrameBounds } from '../animation/ionaB01eFrameMetrics';
 import { ionaCandidateFrameBounds } from '../animation/ionaCandidateFrameMetrics';
+import { IonaPlayerPresentation } from '../animation/ionaPlayerPresentation';
 import { IONA_B01E_AUDIO_CUES, IonaB01eAudioEventGate, isIonaRunContactFrame, ionaB01eResolutionCue, ionaB01eWhooshForMove, type IonaB01eAudioCue } from '../audio/ionaB01eAudio';
 import { beginAction, idleClock, stepAction, type ActionDef, type CombatClock, type CombatEvent } from '../combat/sim';
 
@@ -15,7 +16,7 @@ export type ChamberSnapshot = { x: number; y: number; grounded: boolean; facing:
 export type ArtReviewView = 'base' | 'forms' | 'silhouette' | 'direction' | 'materials';
 export type ArtReviewContrast = 'calm' | 'light' | 'busy';
 export type ArtReviewSnapshot = { view: ArtReviewView; contrast: ArtReviewContrast; silhouetteHeight: 48 | 60 | 72; pixelGrid: boolean; loadedAssets: number; totalAssets: number; missingAssets: string[] };
-export type IonaPreviewSnapshot = { playerX:number; playerY:number; grounded:boolean; facing:IonaFacing; bodySize:{width:number;height:number}; action:string; frame:string; attackPhase:string; comboStep:number; targetX:number; targetHealth:number; lastCombatEvent:string; reviewScale:48|60|72; vfxEnabled:boolean; background:'calm'; audioEnabled:boolean; audioUnlocked:boolean; audioAssetsLoaded:number; audioVolume:number; audioStatus:string; controller:boolean; loadedTextures:number; missingTextures:string[] };
+export type IonaPreviewSnapshot = { playerX:number; playerY:number; physicsAnchor:{x:number;y:number}; grounded:boolean; facing:IonaFacing; bodySize:{width:number;height:number}; action:string; frame:string; attackPhase:string; comboStep:number; targetX:number; targetHealth:number; lastCombatEvent:string; reviewScale:48|60|72; spriteScale:number; spriteOrigin:{x:number;y:number}; spritePosition:{x:number;y:number}; vfxEnabled:boolean; background:'calm'; audioEnabled:boolean; audioUnlocked:boolean; audioAssetsLoaded:number; audioVolume:number; audioStatus:string; controller:boolean; loadedTextures:number; missingTextures:string[] };
 const WORLD_WIDTH = 1560;
 const WORLD_HEIGHT = 270;
 const GROUND_TOP = 241;
@@ -54,6 +55,8 @@ export class ChamberScene extends Phaser.Scene {
   private readonly b01cMode: boolean;
   private readonly b01dMode: boolean;
   private readonly b01eMode: boolean;
+  private readonly b02Diagnostics: boolean;
+  private readonly playerPresentation = new IonaPlayerPresentation();
   private labCompareB01c = false;
   private labCompareCandidate: 'b01c' | 'b01d' | 'b01e' = 'b01e';
   private labDiagnosticsVisible = false;
@@ -62,6 +65,7 @@ export class ChamberScene extends Phaser.Scene {
   private labVfxRequested = false;
   private labDiagnosticsRequested = false;
   private labDiagnosticsGraphic?: Phaser.GameObjects.Graphics;
+  private labDiagnosticLabel?: Phaser.GameObjects.Text;
   private reviewView: ArtReviewView = 'base';
   private reviewContrast: ArtReviewContrast = 'calm';
   private silhouetteHeight: 48 | 60 | 72 = 60;
@@ -126,6 +130,7 @@ export class ChamberScene extends Phaser.Scene {
     this.animationLab = options.animationLab === true && !this.artReview;
     this.previewMode = options.ionaPreview === true && !this.artReview && !this.animationLab;
     const params = new URLSearchParams(window.location.search);
+    this.b02Diagnostics = this.previewMode && params.get('b02diag') === '1';
     this.oldRejectedArt = this.animationLab && params.get('oldRejectedArt') === '1';
     this.b01eMode = this.animationLab && params.get('b01e') === '1' && !this.oldRejectedArt;
     this.b01cMode = this.animationLab && params.get('b01c') === '1' && params.get('b01d') !== '1' && !this.b01eMode && !this.oldRejectedArt;
@@ -276,7 +281,8 @@ export class ChamberScene extends Phaser.Scene {
       if (this.b01dMode || this.b01eMode) registerIonaB01DAnimations(this);
       if (this.b01eRuntime) registerIonaB01EAnimations(this);
       const initialKey = this.previewMode ? ionaB01EAssetKey('idle-0','right') : this.oldRejectedArt ? animationAssetKey('idle-0',1) : this.b01eMode ? ionaB01EAssetKey('idle-0','right') : this.b01dMode ? ionaB01DAssetKey('idle-0','right') : this.b01cMode ? ionaB01CAssetKey('idle-0','right') : recoveryAssetKey('idle-0',1);
-      this.labSprite = add.sprite(this.actor.x,this.body.bottom,initialKey).setOrigin(.5,1).setDepth(12);
+      this.labSprite = add.sprite(this.actor.x,this.body.bottom,initialKey).setDepth(12);
+      this.playerPresentation.attach(this.labSprite);
       if (this.b01eRuntime) this.sound.setVolume(this.labAudioVolume);
       if (this.animationLab) this.labHud = add.text(6,5,this.b01eMode ? 'B01E / C-D-E A/B | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | CLICK/J ENABLE AUDIO | M MUTE | [ ] VOLUME | T VERSION | 1-3 SCALE | C BG | V VFX | R REVIEW | ESC PAUSE' : this.b01dMode ? 'B01D CANDIDATE / OWNER PENDING | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | T A/B | 1-2-3 SCALE | C BG | V VFX | G DIAG' : this.oldRejectedArt ? 'REJECTED OVERNIGHT ART COMPARE | J HIT | R REVIEW' : this.b01cMode ? 'B01C / PHASER SPRITES | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | R REVIEW' : 'B01 RECOVERY / GENERATED PIXELS | J HIT | R REVIEW', {fontFamily:'monospace',fontSize:this.b01dMode||this.b01eMode?'5px':'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
       this.input.keyboard?.on('keydown-R',(event:KeyboardEvent)=>{if(!event.repeat){if(this.previewMode)this.previewResetRequested=true;else this.labReviewRequested=true;}});
@@ -296,7 +302,8 @@ export class ChamberScene extends Phaser.Scene {
         else if(event.code==='Digit3')this.labReviewScaleRequested=72;
         if(this.b01eRuntime)this.unlockLabAudio();
       });
-      if(this.b01dMode||this.b01eMode)this.labDiagnosticsGraphic=add.graphics().setDepth(39);
+      if(this.b01dMode||this.b01eMode||this.b02Diagnostics)this.labDiagnosticsGraphic=add.graphics().setDepth(39);
+      if(this.b02Diagnostics)this.labDiagnosticLabel=add.text(this.actor.x,this.body.bottom-84,'',{fontFamily:'monospace',fontSize:'5px',color:'#b9fff0',backgroundColor:'#09111c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(40);
       if(this.b01eRuntime)this.input.on(Phaser.Input.Events.POINTER_DOWN,()=>this.unlockLabAudio());
       if (this.animationLab || this.previewMode) this.createTrainingTarget();
       if (this.animationLab) {
@@ -368,8 +375,7 @@ export class ChamberScene extends Phaser.Scene {
         this.labReviewScaleRequested=null;
         if (this.animationLab) {
           for(const image of this.labReviewImages)image.setScale(this.labReviewScale/60);
-          this.fitB01dSpriteToRequestedHeight();
-          this.labReviewSub?.setText('VISIBLE HEIGHT '+this.labReviewScale+' PX / B00 BODY 15x30 / 1-2-3 SCALE / R CLOSES / C CYCLES BG');
+          this.labReviewSub?.setText(`STANDING REFERENCE ${this.labReviewScale} PX / FIXED GLOBAL SCALE ${this.playerPresentation.scale.toFixed(3)} / B00 BODY 15x30 / 1-2-3 SCALE / R CLOSES / C CYCLES BG`);
         }
       }
       const moving = Math.abs(movement.next.xVelocity) > 12 && movement.next.dashMs === 0;
@@ -383,7 +389,6 @@ export class ChamberScene extends Phaser.Scene {
       if(this.b01cMode||this.b01dMode||this.b01eRuntime)this.updateB01CCombat(attackPressed,grounded,dt);
       else this.updateCombat(attackPressed,grounded,dt);
       this.updateLabAnimation(grounded,moving,dt);
-      this.labSprite?.setPosition(this.actor.x,this.body.bottom);
       this.drawAnimationDiagnostics();
       if (this.animationLab) this.updateAnimationReviewVisibility();
       if (this.labHud) this.labHud.setText(this.b01eMode
@@ -438,20 +443,20 @@ export class ChamberScene extends Phaser.Scene {
     const expected=IONA_B01E_TEXTURES.map(({id,facing})=>ionaB01EAssetKey(id,facing));
     const missingTextures=expected.filter((key)=>!this.textures.exists(key));
     return {
-      playerX:Number(this.actor.x.toFixed(2)),playerY:Number(this.actor.y.toFixed(2)),grounded:this.groundContact,
+      playerX:Number(this.actor.x.toFixed(2)),playerY:Number(this.actor.y.toFixed(2)),physicsAnchor:{x:Number(this.body.center.x.toFixed(2)),y:Number(this.body.bottom.toFixed(2))},grounded:this.groundContact,
       facing:this.motion.facing,bodySize:{width:this.body.width,height:this.body.height},action:this.labMode,frame:this.labFrame,
       attackPhase:this.attackClock.phase,comboStep:this.attackClock.phase==='idle'?0:this.attackComboIndex+1,
       targetX:Number(this.targetX.toFixed(2)),targetHealth:this.targetHealth,lastCombatEvent:this.lastCombatEvent,
-      reviewScale:this.labReviewScale,vfxEnabled:this.labVfxEnabled,background:'calm',audioEnabled:this.labAudioEnabled,audioUnlocked:!this.sound.locked,
+      reviewScale:this.labReviewScale,spriteScale:Number(this.labSprite.scaleX.toFixed(6)),spriteOrigin:{x:this.labSprite.originX,y:this.labSprite.originY},spritePosition:{x:Number(this.labSprite.x.toFixed(2)),y:Number(this.labSprite.y.toFixed(2))},vfxEnabled:this.labVfxEnabled,background:'calm',audioEnabled:this.labAudioEnabled,audioUnlocked:!this.sound.locked,
       audioAssetsLoaded:IONA_B01E_AUDIO_CUES.filter((cue)=>this.cache.audio.exists(cue)).length,audioVolume:this.labAudioVolume,
       audioStatus:this.audioStatus(),controller:this.controllerConnected,loadedTextures:expected.length-missingTextures.length,missingTextures,
     };
   }
 
   setPreviewScale(scale:48|60|72): void {
-    if (![48,60,72].includes(scale) || (!this.previewMode&&!this.b01eMode)) return;
+    if (![48,60,72].includes(scale) || !this.labSprite) return;
     this.labReviewScale=scale;
-    this.labSprite?.setScale(scale/60);
+    this.playerPresentation.setReviewSize(scale);
   }
 
   setPreviewAudioEnabled(enabled:boolean): void {
@@ -499,7 +504,7 @@ export class ChamberScene extends Phaser.Scene {
     this.lastFootfallFrame='';this.footfallSide=0;
     this.labMode='idle';this.labFrame='idle-0';this.labClipKey='';
     this.labSprite?.anims.stop();
-    this.labSprite?.setTexture(ionaB01EAssetKey('idle-0','right')).setScale(this.labReviewScale/60).setPosition(80,GROUND_TOP);
+    this.playerPresentation.present({textureKey:ionaB01EAssetKey('idle-0','right'),x:80,footY:GROUND_TOP});
     this.sound.stopAll();
     this.cameras.main.setScroll(0,0);
     this.drawTrainingTarget();
@@ -689,6 +694,7 @@ export class ChamberScene extends Phaser.Scene {
 
     let next:IonaLocomotion|'attack';
     let clip:string;
+    let textureKey:string|undefined;
     if(this.attackClock.phase!=='idle'){
       next='attack';
       const phase=this.attackClock.phase==='startup'?'windup':this.attackClock.phase==='active'?'contact':'recovery';
@@ -698,7 +704,7 @@ export class ChamberScene extends Phaser.Scene {
       const key=this.candidateAssetKey(frame,facing);
       sprite.anims.stop();
       this.labClipKey='';
-      if(sprite.texture.key!==key)sprite.setTexture(key);
+      textureKey=key;
       this.labFrame=frame;
     }else{
       const side=this.motion.facing<0?'left':'right';
@@ -734,10 +740,7 @@ export class ChamberScene extends Phaser.Scene {
       else this.lastFootfallFrame=this.labFrame;
     }
     this.labMode=next;
-    sprite.setPosition(this.actor.x,this.body.bottom);
-    sprite.setFlipX(false);
-    sprite.setAlpha(1);
-    this.fitB01dSpriteToRequestedHeight();
+    this.playerPresentation.present({textureKey,x:this.body.center.x,footY:this.body.bottom});
   }
 
   private getLabFrameBounds(): readonly number[] {
@@ -750,16 +753,9 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   private getLabVisibleHeightPx(): number {
-    if((!this.b01dMode&&!this.b01eMode)||!this.labSprite)return this.labSprite?.displayHeight??0;
+    if((!this.b01dMode&&!this.b01eMode&&!this.previewMode)||!this.labSprite)return this.labSprite?.displayHeight??0;
     const bounds=this.getLabFrameBounds();
     return (bounds[3]!-bounds[1]!)*this.labSprite.scaleY;
-  }
-
-  private fitB01dSpriteToRequestedHeight(): void {
-    if(!this.b01dMode||!this.labSprite)return;
-    const bounds=this.getLabFrameBounds();
-    const visibleHeight=bounds[3]!-bounds[1]!;
-    if(visibleHeight>0)this.labSprite.setScale(this.labReviewScale/visibleHeight);
   }
 
   private drawAnimationDiagnostics(): void {
@@ -767,18 +763,19 @@ export class ChamberScene extends Phaser.Scene {
     const sprite=this.labSprite;
     if(!graphics)return;
     graphics.clear();
-    if((!this.b01dMode&&!this.b01eMode)||!this.labDiagnosticsVisible||!sprite)return;
-    const bodyTop=this.body.bottom-this.body.height;
+    if((!this.b02Diagnostics&&((!this.b01dMode&&!this.b01eMode)||!this.labDiagnosticsVisible))||!sprite)return;
+
     const scale=sprite.scaleX;
     const bounds=this.getLabFrameBounds();
     const frameLeft=sprite.x-64*scale;
     const frameTop=sprite.y-80*scale;
-    graphics.lineStyle(1,0x67e0c7,.95).strokeRect(this.actor.x-7.5,bodyTop,15,30);
-    graphics.lineBetween(this.actor.x-11,this.body.bottom,this.actor.x+11,this.body.bottom);
+    graphics.lineStyle(1,0x67e0c7,.95).strokeRect(this.body.x,this.body.y,this.body.width,this.body.height);
+    graphics.lineStyle(1,0x67e0c7,.95).lineBetween(this.body.left-8,this.body.bottom,this.body.right+8,this.body.bottom);
     graphics.lineStyle(1,0xf4c06c,.8).strokeRect(frameLeft,frameTop,128*scale,80*scale);
     graphics.lineStyle(1,0xff73b8,.95).strokeRect(frameLeft+bounds[0]!*scale,frameTop+bounds[1]!*scale,(bounds[2]!-bounds[0]!)*scale,(bounds[3]!-bounds[1]!)*scale);
     graphics.lineBetween(sprite.x-4,sprite.y,sprite.x+4,sprite.y);
     graphics.lineBetween(sprite.x,sprite.y-4,sprite.x,sprite.y+4);
+    if(this.b02Diagnostics)this.labDiagnosticLabel?.setText(`REF ${this.playerPresentation.selectedReviewSize}px / SCALE ${scale.toFixed(3)} / BODY 15x30`).setPosition(sprite.x,Math.max(8,frameTop-2));
   }
 
   private updateRejectedArtAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
@@ -826,10 +823,7 @@ export class ChamberScene extends Phaser.Scene {
     }
     this.labMode=next;
     this.labFrame=frame;
-    this.labSprite.setTexture(animationAssetKey(frame,this.motion.facing));
-    this.labSprite.setFlipX(false);
-    this.labSprite.setPosition(this.actor.x,this.body.bottom);
-    this.labSprite.setAlpha(1);
+    this.playerPresentation.present({textureKey:animationAssetKey(frame,this.motion.facing),x:this.body.center.x,footY:this.body.bottom});
   }
 
   private updateRecoveryAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
@@ -884,10 +878,7 @@ export class ChamberScene extends Phaser.Scene {
     }
     this.labMode=next;
     this.labFrame=frame;
-    this.labSprite.setTexture(recoveryAssetKey(frame,this.motion.facing));
-    this.labSprite.setFlipX(false);
-    this.labSprite.setPosition(this.actor.x,this.body.bottom);
-    this.labSprite.setAlpha(1);
+    this.playerPresentation.present({textureKey:recoveryAssetKey(frame,this.motion.facing),x:this.body.center.x,footY:this.body.bottom});
   }
 
   private createAnimationReview(): void {
