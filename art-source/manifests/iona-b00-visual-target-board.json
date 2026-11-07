@@ -1,0 +1,14 @@
+{
+  "assetId": "iona-b00-provisional-visual-target-board",
+  "status": "CANDIDATE_NOT_CANONICAL",
+  "ownerApproval": "PENDING",
+  "milestone": "B00",
+  "purpose": "Visual direction board only, not runtime sprite/atlas, must be checked at real gameplay scale B01",
+  "path": "art-source/characters/iona/b00-provisional-visual-target-board.png",
+  "sha256": "7d7258aa582c8e6da011d43defb3d5adb36833b39c696cf3aaa1895bfbde4d75",
+  "provenance": "OpenAI image generation in current conversation, original conceptual board, 2026-11-07",
+  "canonicalReferenceSha256": null,
+  "runtimeIntegrated": false,
+  "generatedSpriteStates": 0,
+  "notes": "Contains HD concept variants / illustration and approximate environments. Not source of functional pixel animation, not B01 owner art lock; silhouettes and palettes are merely proposed, no gameplay assets approved."
+}

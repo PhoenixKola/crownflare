@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#070f1c" />
+  <link rel="icon" href="data:," />
+  <title>PROJECT CROWNFLARE — B00</title>
+</head>
+<body>
+  <div id="app">
+    <div id="game-root" aria-label="Project Crownflare test chamber"></div>
+    <section id="title-screen" class="screen title-screen" aria-labelledby="game-title">
+      <div class="ambient-orbit orbit-a" aria-hidden="true"></div>
+      <div class="ambient-orbit orbit-b" aria-hidden="true"></div>
+      <div class="title-content">
+        <div class="eyebrow">THE LUMEN SPINDLE / INITIATIVE ZERO</div>
+        <div class="logo-mark" aria-hidden="true"><span></span></div>
+        <h1 id="game-title">CROWN<span>FLARE</span></h1>
+        <p class="subtitle">BEYOND THE BROKEN DAY</p>
+        <div class="thin-rule" aria-hidden="true"></div>
+        <p class="lore">The day broke. The Spindle remembers.</p>
+        <button id="start-button" class="primary-action" type="button">ENTER THE SPINDLE <span aria-hidden="true">→</span></button>
+        <p class="metadata">B00 / FOUNDATION PROTOTYPE / TEMPORARY GAMEPLAY ART</p>
+      </div>
+      <div class="corner-note">A NEW ORIGINAL WORLD<br />UNAPPROVED HERO ART</div>
+    </section>
+    <div id="hud" class="hud hidden" aria-hidden="true">
+      <div class="hud-brand">CROWNFLARE <small>/ CHAMBER 00</small></div>
+      <div class="hud-health"><span>INTEGRITY</span><div class="bar"><i></i></div></div>
+      <div class="hud-resonance"><span>RESONANCE / LOCKED</span><div class="bar"><i></i></div></div>
+      <p class="controls-tip">A/D MOVE &nbsp; SPACE JUMP &nbsp; SHIFT DASH &nbsp; ESC PAUSE</p>
+      <div id="controller-indicator" class="controller-indicator" aria-live="polite"></div>
+    </div>
+    <section id="pause-screen" class="screen pause-screen hidden" aria-labelledby="pause-title" aria-hidden="true">
+      <div class="pause-panel">
+        <div class="eyebrow">TEMPORAL HOLD</div>
+        <h2 id="pause-title">PAUSED</h2>
+        <p id="pause-reason">The Spindle is still.</p>
+        <button id="resume-button" class="primary-action" type="button">RESUME <span aria-hidden="true">→</span></button>
+        <button id="quit-button" class="secondary-action" type="button">RETURN TO TITLE</button>
+      </div>
+    </section>
+    <aside id="debug-overlay" class="debug-overlay hidden" aria-label="Development telemetry"></aside>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

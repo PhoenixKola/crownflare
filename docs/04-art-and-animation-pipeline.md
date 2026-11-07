@@ -1,0 +1,36 @@
+# Project Crownflare — Technical Art, Animation & Production Pipeline
+
+## Production principle
+
+Codex can author **real original sprites, sprite edits, impact textures, VFX flips, menus and environment paintings** when its supported image tools are available; check the executing tool capability. Never claim only primitives are possible. However rendered images are *candidates*, not accepted gameplay content. B00 engineer rectangles are strictly disposable and cannot satisfy B01 or B02.
+
+## Canonical original hero system
+
+1. Draft silhouette thumbnails with **four forms** and original line/shape language. Stage them at 48/60/72 game pixels on the actual 480×270 room. No VFX.
+2. Generate 1–3 curated Iona base concept masters; choose one **with owner's explicit visual approval**. Record immutable canonical reference path, SHA-256, date, palette and rejection reasons. Body proportions, handedness, hair lock, jacket panels, copper hardware, sash shape become fixed.
+3. Produce action storyboard **key poses first** (anticipation, kinetic stretch, contact, follow-through, recovery). Test inside real game at normal speed as soon as first action exists. Add intentional in-between and controlled smears; do not batch 8 loosely related images and label them fluid animation.
+4. Preserve consistent pixel scale, canvas dimensions, top-head margin, grounded foot pivot, hand/strike anchor, turning masks and frame event offsets. Correct left asymmetry rather than blindly flip a distinct costume shape.
+5. Preview without VFX/audio, then add timed effects and unique sound once body's movement passes. Validate missing/ghost alpha pixels, body/foot drift, attack timing, atlas trim, memory use.
+6. Export runtime atlas and manifest with per-frame time, origin, effect anchors and event IDs. Retain canonical source masters outside runtime bundle, not duplicated through many huge directories.
+7. Record real game in local authorized Chrome at **normal speed**, original resolution and 75% scaled review. AI can assess but only owner can approve.
+
+## Four form identities
+
+- Base: separate readable head/shoulder/hands/footwork, martial combo and sash secondary motion.
+- Dawnrush: real changed upper-body/hair structure + pressure bands, bespoke ground velocity, coral/amber reactive filaments.
+- Stormhalo: floating split orbit, collar/coat geometry, angular arm silhouette, precise electric aura, counter animation.
+- Eclipse Warden: NEW mask/head, elongated hover body, plated limbs, detached ornaments and energy mantle; full independent attacks, directional art, activation/reversion and staged finisher. NOT a scale or color shift.
+
+**Minimum eventual per-form catalog:** idle/ready, move start/loop/stop, turn, jump rise/apex/fall/land, dash, guard/parry if included, hurt/knockback/KO, interact, light combo 1/2/3, heavy, aerial, special cast/release, finisher anticipation/contact/settle, transform activation/active/reversion/interruption. Frame counts should be artistic, not uniformly four-per-state.
+
+## Asset manifests & retention
+
+Manifest JSON example fields: `assetId`, `form`, `action`, `direction`, `sourceMaster`, `sourceSha256`, `authorTool`, `generationPromptId`, `license`, `canonicalReferenceSha256`, `ownerStatus`, `frameCanvas`, `pivot`, `durationMs`, `hitboxRef`, `eventIds`, `runtimeAtlas`, `integratedScene`, `chromeVideo`, `qaStatus`. Art without provenance or matching runtime integration is not counted as finished. Use `npm run audit:assets` SHA hashes, size checks, cleanup inventory. Exclude scratch, rejected batches, browser videos, ZIPs and redundant previews from Git; archive irreplaceable sources with manifests/checksums. Accept needed large art but measure compressed bundle impact.
+
+## First animation quality gate
+
+Base: idle ↔ run ↔ jump/fall ↔ land ↔ dash, clean L/R, then 3-hit combo plus one first special (original VFX/audio) against an active enemy. Assess real-scale smoothness, face/body identity, feet, limb anatomy, event sync, gamepad and input feel. No expansion until owner says motion looks and plays excellent. If a technique fails twice, evaluate focused manual keyframe correction or alternative method with measurable GO/NO-GO; no endless prompt roulette.
+
+## Motion/VFX accessibility
+
+Aura layers are independent animated choreographies: pressure core, wisps/orbits, reactive ring, particles, shockwave and world lighting. Prioritize readable enemy tells and collision geometry. Screen shake, flashing, bloom, particle counts and backdrop turbulence are adjustable; keep signal even in reduced-flash mode. Source and licensing of audio mandatory; browser WebM may contain **no audio**, and audio quality requires listening on real playback.

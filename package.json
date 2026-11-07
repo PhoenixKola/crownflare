@@ -1,0 +1,27 @@
+{
+  "name": "project-crownflare",
+  "private": true,
+  "version": "0.0.0-b00",
+  "type": "module",
+  "description": "Original premium side-scrolling action roguelite — B00 foundation, NOT release art",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/unit/*.test.ts",
+    "audit:assets": "node tools/audit-assets/audit.mjs",
+    "qa:chrome:local": "node tools/local-qa/chrome-smoke.mjs --headed",
+    "qa:chrome:headless": "node tools/local-qa/chrome-smoke.mjs --headless"
+  },
+  "dependencies": {
+    "phaser": "4.2.1"
+  },
+  "devDependencies": {
+    "playwright": "1.55.1",
+    "typescript": "5.9.3",
+    "vite": "7.3.7"
+  }
+}
