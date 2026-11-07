@@ -1,0 +1,2710 @@
+{
+  "status": "PASS",
+  "capturedAt": "2026-11-07T15:58:53.418Z",
+  "chrome": "156.0.8078.80",
+  "gitHeadAtCapture": "075efb2f464ba41d15f72a6f4cd6d468af07a51f",
+  "sourceSha256": "ef1582b55472da22dd9ca5ae038ecb10db1f4ab7352b84532ba8fd0ca50981a7",
+  "video": {
+    "path": "review-evidence/b01f/b01f-gameplay-preview.webm",
+    "sha256": "d24298451f85da09826ff965333ba20419c41a81ee080d85aa082ed3b08e17e5",
+    "bytes": 12478124,
+    "durationSeconds": 104.04,
+    "width": 1280,
+    "height": 720,
+    "rFrameRate": "25/1",
+    "avgFrameRate": "25/1",
+    "audioTrackCaptured": false,
+    "streams": [
+      {
+        "codec_name": "vp8",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "25/1",
+        "avg_frame_rate": "25/1"
+      }
+    ]
+  },
+  "recording": {
+    "videoCaptureWallClockSeconds": 108.43,
+    "videoTimeScale": 0.96,
+    "titleWallClockSeconds": 1.4,
+    "activeGameplayWallClockSeconds": 105.91,
+    "estimatedActiveVideoSeconds": 101.63,
+    "pausedWallClockSeconds": 0.52,
+    "estimatedActiveVideoFraction": 0.977,
+    "timingNote": "Action wall times are mapped to video time using the ratio of ffprobe duration to measured capture wall time; estimated video timestamps account for capture cadence.",
+    "focusedMotion": {
+      "startAfterGameplayWallClockSeconds": 23.11,
+      "estimatedVideoStartSeconds": 24.04,
+      "durationWallClockSeconds": 29.24,
+      "estimatedVideoDurationSeconds": 28.05,
+      "background": "calm",
+      "vfx": "off",
+      "scale": 60
+    }
+  },
+  "preview": {
+    "runtimeTextures": 70,
+    "missingTextures": [],
+    "bodySize": {
+      "width": 15,
+      "height": 30
+    },
+    "scaleModes": [
+      48,
+      60,
+      72
+    ],
+    "targetHealth": 3,
+    "audioAssetsLoaded": 13,
+    "audioCuesAuditioned": [
+      "step-a",
+      "step-b",
+      "jump",
+      "land",
+      "dash-start",
+      "dash-brake",
+      "palm-whoosh",
+      "palm-hit",
+      "kick-whoosh",
+      "kick-hit",
+      "forearm-whoosh",
+      "forearm-hit",
+      "miss"
+    ],
+    "audioUnlocked": true,
+    "productionRouteIgnored": true
+  },
+  "viewportChecks": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "letterboxVerticalPx": 0
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "canvas": {
+        "x": 0,
+        "y": 144,
+        "width": 1024,
+        "height": 576
+      },
+      "letterboxVerticalPx": 192
+    }
+  ],
+  "actions": [
+    {
+      "secondsAfterGameplayStartWallClock": 0.33,
+      "estimatedVideoSeconds": 2.18,
+      "label": "mouse-combo-whiff",
+      "x": 80,
+      "targetX": 233.78
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 5.86,
+      "estimatedVideoSeconds": 7.49,
+      "label": "auditioned-13-original-cues"
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 7.89,
+      "estimatedVideoSeconds": 9.43,
+      "label": "run-right",
+      "x": 154.7
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 8.43,
+      "estimatedVideoSeconds": 9.95,
+      "label": "run-left-reversal",
+      "x": 98.5
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 9.64,
+      "estimatedVideoSeconds": 11.11,
+      "label": "short-and-held-jump",
+      "shortApex": 202.11,
+      "longApex": 179.52
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 10.19,
+      "estimatedVideoSeconds": 11.64,
+      "label": "synthetic-focus-pause-and-resume"
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 16.87,
+      "estimatedVideoSeconds": 18.05,
+      "label": "dash-solid-barrier",
+      "x": 1105.5,
+      "cameraX": 818
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 19.25,
+      "estimatedVideoSeconds": 20.33,
+      "label": "held-j-repeat-suppressed",
+      "events": 1
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 21.32,
+      "estimatedVideoSeconds": 22.32,
+      "label": "buffered-three-hit-combo",
+      "contacts": [
+        {
+          "moveId": "iona-base-combo-1",
+          "atMs": 112,
+          "result": "hit"
+        },
+        {
+          "moveId": "iona-base-combo-2",
+          "atMs": 138,
+          "result": "hit"
+        },
+        {
+          "moveId": "iona-base-combo-3",
+          "atMs": 165,
+          "result": "hit"
+        }
+      ]
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 23.01,
+      "estimatedVideoSeconds": 23.94,
+      "label": "wrong-facing-combo-whiff",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "secondsAfterGameplayStartWallClock": 52.35,
+      "estimatedVideoSeconds": 52.09,
+      "label": "focused-calm-motion-section",
+      "durationSeconds": 29.24,
+      "scale": 60,
+      "vfx": "off"
+    }
+  ],
+  "combatEvents": [
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "hit",
+      "targetHealth": 2
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "hit",
+      "targetHealth": 2
+    },
+    {
+      "actionId": "iona-base-combo-2",
+      "eventId": "contact",
+      "atMs": 138,
+      "moveId": "iona-base-combo-2",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "hit",
+      "targetHealth": 1
+    },
+    {
+      "actionId": "iona-base-combo-3",
+      "eventId": "contact",
+      "atMs": 165,
+      "moveId": "iona-base-combo-3",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "hit",
+      "targetHealth": 0
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    },
+    {
+      "actionId": "iona-base-combo-1",
+      "eventId": "contact",
+      "atMs": 112,
+      "moveId": "iona-base-combo-1",
+      "sourceId": "iona-player",
+      "targetId": "training-dummy",
+      "result": "miss",
+      "targetHealth": 3
+    }
+  ],
+  "audioEvents": [
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:2:whoosh",
+      "volume": 0.68
+    },
+    {
+      "cue": "miss",
+      "token": "combat:2:contact",
+      "volume": 0.68
+    },
+    {
+      "cue": "step-a",
+      "token": "local:3",
+      "volume": 0.68
+    },
+    {
+      "cue": "step-b",
+      "token": "local:4",
+      "volume": 0.68
+    },
+    {
+      "cue": "jump",
+      "token": "local:5",
+      "volume": 0.68
+    },
+    {
+      "cue": "land",
+      "token": "local:6",
+      "volume": 0.68
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:7",
+      "volume": 0.68
+    },
+    {
+      "cue": "dash-brake",
+      "token": "local:8",
+      "volume": 0.68
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "local:9",
+      "volume": 0.68
+    },
+    {
+      "cue": "palm-hit",
+      "token": "local:10",
+      "volume": 0.68
+    },
+    {
+      "cue": "kick-whoosh",
+      "token": "local:11",
+      "volume": 0.68
+    },
+    {
+      "cue": "kick-hit",
+      "token": "local:12",
+      "volume": 0.68
+    },
+    {
+      "cue": "forearm-whoosh",
+      "token": "local:13",
+      "volume": 0.68
+    },
+    {
+      "cue": "forearm-hit",
+      "token": "local:14",
+      "volume": 0.68
+    },
+    {
+      "cue": "miss",
+      "token": "local:15",
+      "volume": 0.68
+    },
+    {
+      "cue": "land",
+      "token": "local:16",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:17",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:18",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:19",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:20",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:21",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:22",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:23",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:24",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:25",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:26",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:27",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:28",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:29",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:30",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:31",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:32",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:33",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:34",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:35",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:36",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:37",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:38",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:39",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:40",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:41",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:42",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:43",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:44",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:45",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:46",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:47",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:48",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:49",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:50",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:51",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:52",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:53",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:54",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:55",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:56",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:57",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-brake",
+      "token": "local:58",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:59",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:60",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:61",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:62",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:63",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:64:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-hit",
+      "token": "combat:64:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:65",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:66",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:67",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:68",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:69",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:70:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-hit",
+      "token": "combat:70:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "kick-whoosh",
+      "token": "combat:71:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "kick-hit",
+      "token": "combat:71:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "forearm-whoosh",
+      "token": "combat:72:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "forearm-hit",
+      "token": "combat:72:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:73",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:74",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:75",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:76",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:77",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:78",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:79",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:80",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:81:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:81:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:82",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:83",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:84",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-brake",
+      "token": "local:85",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:86",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:87",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:88",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:89",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:90",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:91",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:92",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:93",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:94",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:95",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:96",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:97:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:97:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:98",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:99",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:100",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:101",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:102",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:103",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:104",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-brake",
+      "token": "local:105",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:106",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:107",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:108",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:109:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:109:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:110",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:111",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:112",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:113",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:114",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:115",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:116",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:117",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:118",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:119:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:119:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:120",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:121",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:122",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:123",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-brake",
+      "token": "local:124",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:125",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:126",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:127",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:128:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:128:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:129",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:130",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:131",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:132",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:133",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:134",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:135",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:136",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:137:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:137:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:138",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:139",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:140",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:141",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:142",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:143",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:144",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-brake",
+      "token": "local:145",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:146",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:147",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:148",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:149",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:150:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:150:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:151",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:152",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:153",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:154",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:155",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:156",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:157:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:157:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:158",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:159",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:160",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:161",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:162",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:163",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-brake",
+      "token": "local:164",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:165",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:166",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:167",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:168:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:168:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:169",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:170",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:171",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:172",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:173",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:174",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:175",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:176:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:176:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:177",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:178",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:179",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:180",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-brake",
+      "token": "local:181",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:182",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:183",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:184",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:185:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:185:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:186",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:187",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:188",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:189",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:190",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:191",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:192",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:193",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:194",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:195",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:196:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:196:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:197",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:198",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:199",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:200",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:201",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-brake",
+      "token": "local:202",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:203",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:204",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:205",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:206",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:207:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:207:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:208",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:209",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:210",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:211",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:212",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:213:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:213:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:214",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:215",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:216",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:217",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:218",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:219",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:220",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:221",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:222",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:223",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:224",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:225",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:226",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:227",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:228",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:229",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:230",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:231",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:232",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:233",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:234",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:235",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:236",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:237",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:238",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:239",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:240",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:241",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:242",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:243",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:244",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:245",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:246",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:247",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:248",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:249",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:250",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:251",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:252",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:253",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:254",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:255",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:256",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:257",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:258",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:259",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:260",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:261",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:262",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:263",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:264",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:265",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:266",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:267",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:268",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:269",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:270",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:271",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:272",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:273",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:274",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:275",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:276",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:277",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:278",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:279",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:280",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:281",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:282",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:283",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:284",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:285",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:286",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:287",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:288",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:289",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:290",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:291",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:292",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:293",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:294",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:295",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:296",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:297",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:298",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:299",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:300",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:301",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:302",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:303",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:304",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:305",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:306",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:307",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:308",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:309",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:310",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:311",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:312",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:313",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:314",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:315",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:316",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:317",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:318",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:319",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:320",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:321",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:322",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:323",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:324",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:325",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:326",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:327",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:328",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:329",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:330",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:331",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:332",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:333",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:334",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:335",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:336",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:337",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:338",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:339",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:340",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:341",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:342",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:343",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:344",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:345",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:346",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:347",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:348",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:349",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:350",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:351",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:352",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:353",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:354",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:355",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:356",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:357",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:358",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:359",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:360",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:361",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:362",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:363",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:364",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:365",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:366",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:367",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:368",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:369",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:370",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:371",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:372",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:373",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:374",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:375",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:376",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:377",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:378",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:379",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:380",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:381",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:382",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:383",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:384",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:385",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:386",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:387",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:388",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:389",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:390",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:391",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:392",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:393",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:394",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:395",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:396",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:397",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:398",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:399",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:400",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:401",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:402",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:403",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:404",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:405",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:406",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:407",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:408",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:409",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:410",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:411",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:412",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:413",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:414",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:415",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:416",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:417",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:418",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:419",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:420",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:421",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:422",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:423",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:424",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:425",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:426",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:427",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:428",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:429",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:430",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:431",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:432",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:433",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:434",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:435",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:436",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:437",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:438",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:439",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:440",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:441",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-a",
+      "token": "local:442",
+      "volume": 0.5
+    },
+    {
+      "cue": "step-b",
+      "token": "local:443",
+      "volume": 0.5
+    }
+  ],
+  "errors": [],
+  "physicalController": "NOT TESTED",
+  "realTabHidden": "NOT TESTED; only synthetic blur pause was exercised",
+  "agentViewedAtNormalSpeed": false,
+  "agentPlaybackBlocker": "Native video playback bridge was unavailable; owner review remains pending.",
+  "agentListened": false,
+  "ownerListening": "PENDING_OWNER_REVIEW",
+  "ownerApproval": "PENDING_OWNER_REVIEW",
+  "comparisonCrops": 30,
+  "comparisonBoard": "review-evidence/b01f/iona-base-owner-compare.png",
+  "screenshots": [
+    "b01f-title-preview.png",
+    "b01f-preview-start-60px.png",
+    "b01f-scale-48.png",
+    "b01f-scale-72.png"
+  ]
+}

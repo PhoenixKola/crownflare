@@ -8,6 +8,7 @@ test-results/
 tests/evidence/
 review-evidence/raw/
 review-evidence/b01e/.recordings/
+review-evidence/b01f/.recordings/
 .art-tmp/
 art-source/rejected/
 art-source/scratch/

@@ -15,21 +15,41 @@
       <div class="ambient-orbit orbit-b" aria-hidden="true"></div>
       <div class="title-content">
         <div class="eyebrow">THE LUMEN SPINDLE / INITIATIVE ZERO</div>
+        <p id="preview-notice" class="preview-notice hidden">DEVELOPMENT PREVIEW / PROVISIONAL IONA — NOT APPROVED</p>
         <div class="logo-mark" aria-hidden="true"><span></span></div>
         <h1 id="game-title">CROWN<span>FLARE</span></h1>
         <p class="subtitle">BEYOND THE BROKEN DAY</p>
         <div class="thin-rule" aria-hidden="true"></div>
         <p class="lore">The day broke. The Spindle remembers.</p>
         <button id="start-button" class="primary-action" type="button">ENTER THE SPINDLE <span aria-hidden="true">→</span></button>
-        <p class="metadata">B00 / FOUNDATION PROTOTYPE / TEMPORARY GAMEPLAY ART</p>
+        <p id="title-metadata" class="metadata">B00 / FOUNDATION PROTOTYPE / TEMPORARY GAMEPLAY ART</p>
       </div>
       <div class="corner-note">A NEW ORIGINAL WORLD<br />UNAPPROVED HERO ART</div>
     </section>
     <div id="hud" class="hud hidden" aria-hidden="true">
-      <div class="hud-brand">CROWNFLARE <small>/ CHAMBER 00</small></div>
+      <div class="hud-brand">CROWNFLARE <small id="hud-mode">/ CHAMBER 00</small></div>
       <div class="hud-health"><span>INTEGRITY</span><div class="bar"><i></i></div></div>
       <div class="hud-resonance"><span>RESONANCE / LOCKED</span><div class="bar"><i></i></div></div>
-      <p class="controls-tip">A/D MOVE &nbsp; SPACE JUMP &nbsp; SHIFT DASH &nbsp; ESC PAUSE</p>
+      <div id="preview-readout" class="preview-readout hidden" aria-live="polite"></div>
+      <p id="controls-tip" class="controls-tip">A/D MOVE &nbsp; SPACE JUMP &nbsp; SHIFT DASH &nbsp; ESC PAUSE</p>
+      <div id="preview-tools" class="preview-tools hidden" aria-label="Provisional Iona review controls">
+        <div class="preview-scale-controls" aria-label="Working sprite scale">
+          <span>SIZE</span>
+          <button type="button" data-preview-scale="48" aria-pressed="false">48</button>
+          <button type="button" data-preview-scale="60" aria-pressed="true">60</button>
+          <button type="button" data-preview-scale="72" aria-pressed="false">72</button>
+        </div>
+        <label class="preview-cue-control">AUDIO CUE
+          <select id="preview-audio-cue">
+            <option>step-a</option><option>step-b</option><option>jump</option><option>land</option>
+            <option>dash-start</option><option>dash-brake</option><option>palm-whoosh</option><option>palm-hit</option>
+            <option>kick-whoosh</option><option>kick-hit</option><option>forearm-whoosh</option><option>forearm-hit</option><option>miss</option>
+          </select>
+        </label>
+        <button id="preview-audio-play" type="button">PLAY CUE</button>
+        <button id="preview-audio-toggle" type="button" aria-pressed="true">MUTE</button>
+        <label class="preview-volume-control">VOLUME <input id="preview-audio-volume" type="range" min="0" max="1" step="0.05" value="0.68" /></label>
+      </div>
       <div id="controller-indicator" class="controller-indicator" aria-live="polite"></div>
     </div>
     <section id="pause-screen" class="screen pause-screen hidden" aria-labelledby="pause-title" aria-hidden="true">

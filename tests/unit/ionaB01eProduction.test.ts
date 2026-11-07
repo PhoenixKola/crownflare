@@ -76,6 +76,7 @@ test('B01E authors 13 non-empty, hashed 24kHz WAV source cues with no external s
   assert.equal(sha256(record.sourceScript.path),record.sourceScript.sha256);
   assert.deepEqual(record.assets.map((asset)=>asset.key),IONA_B01E_AUDIO_CUES);
   const audioHashes=new Set<string>();
+  const rmsLevels:number[]=[];
   for(const asset of record.assets){
     const wav=readFileSync(asset.path);
     assert.equal(sha256(asset.path),asset.sha256);
@@ -84,8 +85,28 @@ test('B01E authors 13 non-empty, hashed 24kHz WAV source cues with no external s
     assert.ok(asset.bytes>3000&&asset.durationMs>50);
     assert.equal(asset.sampleRateHz,24000);
     assert.equal(asset.channels,1);
-    assert.ok(wav.subarray(44).some((sample)=>sample!==0),'WAV PCM must not be silent');
+    assert.equal(wav.readUInt16LE(22),1,'review cues should be mono');
+    assert.equal(wav.readUInt32LE(24),24000,'review cues should remain 24 kHz');
+    assert.equal(wav.readUInt16LE(34),16,'review cues should remain 16-bit PCM');
+    assert.equal(wav.readUInt32LE(40),wav.length-44,'WAV data chunk should match the PCM payload');
+    assert.equal((wav.length-44)%2,0,'16-bit samples should be complete');
+    const frames=(wav.length-44)/2;
+    assert.ok(frames>0,'WAV PCM must not be empty');
+    let peak=0, sumSquares=0, nonzero=0;
+    for(let offset=44;offset<wav.length;offset+=2){
+      const sample=wav.readInt16LE(offset);
+      const magnitude=Math.abs(sample);
+      peak=Math.max(peak,magnitude);sumSquares+=sample*sample;if(sample!==0)nonzero++;
+    }
+    assert.ok(peak<32700,`${asset.key} needs clipping headroom (peak=${peak})`);
+    assert.ok(nonzero/frames>.55,`${asset.key} must not be mostly silent`);
+    const rms=Math.sqrt(sumSquares/frames);
+    const rmsDbfs=20*Math.log10(rms/32768);
+    assert.ok(rmsDbfs>-32,`${asset.key} is too quiet (${rmsDbfs.toFixed(1)}dBFS)`);
+    assert.ok(Math.abs(frames/24000*1000-asset.durationMs)<1.1,`${asset.key} duration metadata must match its samples`);
+    rmsLevels.push(rmsDbfs);
     audioHashes.add(asset.sha256);
   }
   assert.equal(audioHashes.size,13,'individual authored actions must remain distinct source cues');
+  assert.ok(Math.max(...rmsLevels)-Math.min(...rmsLevels)<10,'cue playback RMS levels should stay within a useful relative range');
 });

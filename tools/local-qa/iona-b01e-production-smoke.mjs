@@ -7,11 +7,11 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { chromium } from 'playwright';
 
 const port=4178;
-const evidence='review-evidence/b01e';
+const evidence=process.env.CROWNFLARE_QA_B01E_EVIDENCE??'review-evidence/b01e';
 const recordings=path.join(evidence,'.recordings');
 const server=spawn(process.execPath,['node_modules/vite/bin/vite.js','--host','127.0.0.1','--port',String(port),'--strictPort'],{stdio:'pipe'});
 let serverErrors=''; server.stderr.on('data',(buffer)=>{serverErrors+=buffer.toString();});
-let browser,context,page,passed=false,clipStart=0;
+let browser,context,page,lifecycleContext,passed=false,clipStart=0;
 let videoDetails={durationSeconds:0,audioTrack:false};
 const errors=[];
 const assert=(ok,message)=>{if(!ok)throw new Error(message);};
@@ -203,25 +203,54 @@ try{
   assert(uniqueTokens===audioEvents.length,'A sound presentation token repeated');
   assert(errors.length===0,'Browser errors: '+errors.join(' | '));
 
-  // Leaving the route stops the Phaser scene; further input at title must not emit lab audio.
-  await page.keyboard.press('Escape');await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().screen==='paused');
-  await page.getByRole('button',{name:/return to title/i}).click();
-  await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().screen==='title');
-  const cueCountAfterQuit=await page.evaluate(()=>window.__B01E_AUDIO_EVENTS__.length);
-  await page.keyboard.press('j');await page.waitForTimeout(220);
-  assert(await page.evaluate(()=>window.__B01E_AUDIO_EVENTS__.length)===cueCountAfterQuit,'Input after leaving the lab emitted audio');
-  assert(errors.length===0,'Browser errors after lab exit: '+errors.join(' | '));
-
-  const elapsed=Date.now()-clipStart;
-  if(elapsed<75000)await page.waitForTimeout(75000-elapsed);
+  // Extend the capture with active movement in both directions; never pad it at title.
+  await page.keyboard.press('m');
+  let motionLoop=0;
+  while(Date.now()-clipStart<76000){
+    for(const direction of ['d','a']){
+      if(Date.now()-clipStart>=76000)break;
+      await page.keyboard.down(direction);
+      if(motionLoop%3===0){await page.keyboard.down('Space');await page.waitForTimeout(260);await page.keyboard.up('Space');}
+      if(motionLoop%4===0){await page.keyboard.down('Shift');await page.waitForTimeout(125);await page.keyboard.up('Shift');}
+      await page.waitForTimeout(720);await page.keyboard.up(direction);
+      if(motionLoop%2===0)await page.keyboard.press('j');
+      await page.waitForTimeout(280);motionLoop++;
+    }
+  }
+  const activeGameplayMs=Date.now()-clipStart;
+  assert(activeGameplayMs>=75000,'B01E capture did not contain at least 75 seconds of active route time');
+  assert(errors.length===0,'Browser errors during B01E gameplay: '+errors.join(' | '));
   await context.close();context=null;
   const files=(await readdir(recordings)).filter((file)=>file.endsWith('.webm'));
   assert(files.length>0,'Chrome did not capture a real-time WebM');
   const latest=(await Promise.all(files.map(async(file)=>({file,mtime:(await stat(path.join(recordings,file))).mtimeMs})))).sort((left,right)=>right.mtime-left.mtime)[0];
-  const finalVideo=path.join(evidence,'iona-b01e-review-75s.webm');await rename(path.join(recordings,latest.file),finalVideo);
+  const finalVideo=path.join(evidence,'iona-b01e-gameplay-75s.webm');await rename(path.join(recordings,latest.file),finalVideo);
   for(const file of await readdir(recordings))await unlink(path.join(recordings,file)).catch(()=>{});
   videoDetails=await runProbe(finalVideo);
-  assert(videoDetails.durationSeconds>=60,'Review clip is shorter than 60 seconds: '+JSON.stringify(videoDetails));
+  assert(videoDetails.durationSeconds>=70,'Active gameplay clip is shorter than 70 seconds: '+JSON.stringify(videoDetails));
+
+  // Verify shutdown/no-post-quit audio in a separate unrecorded route.
+  lifecycleContext=await browser.newContext({viewport:{width:1280,height:720}});
+  const lifecyclePage=await lifecycleContext.newPage();
+  lifecyclePage.on('pageerror',(error)=>errors.push('lifecycle runtime: '+error.message));
+  lifecyclePage.on('console',(message)=>{if(message.type()==='error')errors.push('lifecycle console: '+message.text());});
+  await lifecyclePage.goto(`http://127.0.0.1:${port}/?animationLab=1&b01e=1`,{waitUntil:'domcontentloaded'});
+  await lifecyclePage.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().screen==='animationLab');
+  await lifecyclePage.evaluate(()=>{window.__B01E_AUDIO_EVENTS__=[];window.addEventListener('crownflare:audio-event',(event)=>window.__B01E_AUDIO_EVENTS__.push(event.detail));});
+  await lifecyclePage.locator('#game-root canvas').click();
+  await lifecyclePage.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().lab?.audioUnlocked===true,undefined,{timeout:4000});
+  await lifecyclePage.selectOption('#preview-audio-cue','jump').catch(()=>{});
+  await lifecyclePage.keyboard.press('j');
+  await lifecyclePage.waitForTimeout(120);
+  await lifecyclePage.keyboard.press('Escape');
+  await lifecyclePage.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().screen==='paused');
+  await lifecyclePage.getByRole('button',{name:/return to title/i}).click();
+  await lifecyclePage.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().screen==='title');
+  const cueCountAfterQuit=await lifecyclePage.evaluate(()=>window.__B01E_AUDIO_EVENTS__.length);
+  await lifecyclePage.keyboard.press('j');await lifecyclePage.waitForTimeout(220);
+  assert(await lifecyclePage.evaluate(()=>window.__B01E_AUDIO_EVENTS__.length)===cueCountAfterQuit,'Input after leaving the lab emitted audio');
+  assert(errors.length===0,'Browser errors after lab exit: '+errors.join(' | '));
+  await lifecycleContext.close();lifecycleContext=null;
   const digestPaths=[
     'src/game/animation/ionaB01cAnimation.ts','src/game/animation/ionaB01dAnimation.ts','src/game/animation/ionaB01eAnimation.ts','src/game/animation/ionaB01eFrameMetrics.ts',
     'src/game/audio/ionaB01eAudio.ts','src/game/combat/sim.ts','src/game/input/InputController.ts','src/game/scenes/ChamberScene.ts','src/main.ts',
@@ -233,17 +262,18 @@ try{
   for(const file of digestPaths){sourceDigest.update(file);sourceDigest.update(await readFile(file));}
   const videoBytes=await readFile(finalVideo),videoHash=createHash('sha256').update(videoBytes).digest('hex');
   const report={
-    status:'PASS',date:new Date().toISOString(),chrome:browser.version(),sourceSha256:sourceDigest.digest('hex'),video:'review-evidence/b01e/iona-b01e-review-75s.webm',videoSha256:videoHash,videoBytes:videoBytes.length,videoDurationSeconds:videoDetails.durationSeconds,
+    status:'PASS',date:new Date().toISOString(),chrome:browser.version(),sourceSha256:sourceDigest.digest('hex'),video:path.join(evidence,'iona-b01e-gameplay-75s.webm').replaceAll('\\','/'),videoSha256:videoHash,videoBytes:videoBytes.length,videoDurationSeconds:videoDetails.durationSeconds,activeGameplaySeconds:Number((activeGameplayMs/1000).toFixed(2)),titlePaddingSeconds:0,
     audioTrackCaptured:videoDetails.audioTrack,audioTrackProbeError:videoDetails.probeError??null,agentViewedAtNormalSpeed:false,agentPlaybackBlocker:'CUA reported the native app pipe and browser access host unavailable.',agentListened:false,ownerAudioReview:'PENDING_OWNER_REVIEW',ownerApproval:'PENDING_OWNER_REVIEW',
     runtimeTextures:210,candidateFrames:70,bodySize:'15x30',scaleModes:[48,60,72],selector:['B01C','B01D','B01E'],audioCues:13,audioEvents,combatEvents,errors,syntheticFocusPause:true,
     visualChecks:['B01C/B01D/B01E selector preserves body, facing, health and combo state','same global scale at 48/60/72 without per-frame fitting in the E route','run both authored facings','jump/landing and solid dash barrier with 15x30 body','B01E side-kick second windup and contact texture at the 138ms simulation event','hit and miss audio cues, duplicate event suppression, mute and volume controls','VFX off default/toggle and calm/light/busy backgrounds','pause during startup, simulated focus loss, resize'],
   };
-  await writeFile(path.join(evidence,'qa-report.json'),JSON.stringify(report,null,2)+'\n','utf8');
+  await writeFile(path.join(evidence,'qa-report-active-gameplay.json'),JSON.stringify(report,null,2)+'\n','utf8');
   passed=true;
   console.log('PASS: real Chrome B01E route / 70 E + 68 D + 68 C textures / 15x30 body / C-D-E selector / movement, jump, barrier dash, sidekick, hit/miss and Phaser audio events');
   console.log(`Chrome ${browser.version()} / ${Math.round(videoDetails.durationSeconds)}s real-time clip / audio stream ${videoDetails.audioTrack?'present':'not captured'} / agent watched and listened NO / source SHA-256 ${report.sourceSha256}`);
   console.log('Evidence: '+evidence);
 }finally{
+  if(lifecycleContext)await lifecycleContext.close().catch(()=>{});
   if(context)await context.close().catch(()=>{});
   if(browser)await browser.close().catch(()=>{});
   server.kill();

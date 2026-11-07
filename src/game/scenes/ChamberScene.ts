@@ -15,6 +15,7 @@ export type ChamberSnapshot = { x: number; y: number; grounded: boolean; facing:
 export type ArtReviewView = 'base' | 'forms' | 'silhouette' | 'direction' | 'materials';
 export type ArtReviewContrast = 'calm' | 'light' | 'busy';
 export type ArtReviewSnapshot = { view: ArtReviewView; contrast: ArtReviewContrast; silhouetteHeight: 48 | 60 | 72; pixelGrid: boolean; loadedAssets: number; totalAssets: number; missingAssets: string[] };
+export type IonaPreviewSnapshot = { playerX:number; playerY:number; grounded:boolean; facing:IonaFacing; bodySize:{width:number;height:number}; action:string; frame:string; attackPhase:string; comboStep:number; targetX:number; targetHealth:number; lastCombatEvent:string; reviewScale:48|60|72; vfxEnabled:boolean; background:'calm'; audioEnabled:boolean; audioUnlocked:boolean; audioAssetsLoaded:number; audioVolume:number; audioStatus:string; controller:boolean; loadedTextures:number; missingTextures:string[] };
 const WORLD_WIDTH = 1560;
 const WORLD_HEIGHT = 270;
 const GROUND_TOP = 241;
@@ -48,6 +49,7 @@ export class ChamberScene extends Phaser.Scene {
   private onControllerState: (active: boolean) => void;
   private readonly artReview: boolean;
   private readonly animationLab: boolean;
+  private readonly previewMode: boolean;
   private readonly oldRejectedArt: boolean;
   private readonly b01cMode: boolean;
   private readonly b01dMode: boolean;
@@ -88,7 +90,9 @@ export class ChamberScene extends Phaser.Scene {
   private attackFacing: IonaFacing = 1;
   private targetHealth = 3;
   private lastCombatEvent = 'none';
-  private readonly targetX = 151;
+  private targetX = 151;
+  private previewElapsedMs = 0;
+  private previewResetRequested = false;
   private targetVisual?: Phaser.GameObjects.Graphics;
   private targetLabel?: Phaser.GameObjects.Text;
   private hitFlashMs = 0;
@@ -114,12 +118,13 @@ export class ChamberScene extends Phaser.Scene {
   private lastAudioCue = 'none';
   private impactAudio?: AudioContext;
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean } = {}) {
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean } = {}) {
     super({ key: 'Chamber' });
     this.onPauseRequested = onPauseRequested;
     this.onControllerState = onControllerState;
     this.artReview = options.artReview === true;
     this.animationLab = options.animationLab === true && !this.artReview;
+    this.previewMode = options.ionaPreview === true && !this.artReview && !this.animationLab;
     const params = new URLSearchParams(window.location.search);
     this.oldRejectedArt = this.animationLab && params.get('oldRejectedArt') === '1';
     this.b01eMode = this.animationLab && params.get('b01e') === '1' && !this.oldRejectedArt;
@@ -135,6 +140,8 @@ export class ChamberScene extends Phaser.Scene {
     if (height === 48 || height === 60 || height === 72) this.silhouetteHeight = height;
     this.labReviewVisible = this.animationLab && params.get('review') === '1';
   }
+
+  private get b01eRuntime(): boolean { return this.b01eMode || this.previewMode; }
 
   preload(): void {
     if (this.artReview) {
@@ -183,6 +190,10 @@ export class ChamberScene extends Phaser.Scene {
         this.load.image('iona-review-eclipse','./assets/characters/iona/b01a/eclipse-warden-60-silhouette.png');
         this.load.image('iona-recovery-silhouette','./assets/characters/iona/b01-recovery/base-60-silhouette.png');
       }
+    }
+    if (this.previewMode) {
+      for (const { id, facing } of IONA_B01E_TEXTURES) this.load.image(ionaB01EAssetKey(id, facing), `./assets/characters/iona/b01e/${id}-${facing}.png`);
+      for (const cue of IONA_B01E_AUDIO_CUES) this.load.audio(cue, `./assets/characters/iona/b01e/audio/${cue}.wav`);
     }
   }
 
@@ -237,12 +248,12 @@ export class ChamberScene extends Phaser.Scene {
     tile(1150, 167, 110, 11);
     tile(1380, 192, 120, 11);
     tile(1120, 217, 14, 24, 0x624f50); // dash collision test barrier
-    if (!this.artReview && !this.animationLab) {
+    if (!this.artReview && !this.animationLab && !this.previewMode) {
       add.text(27, 205, 'SECTOR 00 Â· SIMULATION CHAMBER', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#263940' : '#cce5d9' });
       add.text(1057, 205, 'DASH BARRIER', { fontFamily: 'monospace', fontSize: '8px', color: '#edab91' });
       add.text(1270, 127, 'BEYOND THE BROKEN DAY', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#314852' : '#85c3bd' });
     }
-    add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART / OWNER REVIEW PENDING' : this.animationLab ? (this.oldRejectedArt ? 'REJECTED OVERNIGHT VECTOR ART / COMPARISON ONLY' : this.b01cMode ? 'B01C NATIVE PIXEL MOTION PILOT / OWNER REVIEW PENDING' : 'B01 RECOVERY / IMAGEGEN PIXELS / OWNER REVIEW PENDING') : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'monospace', fontSize: this.artReview || this.animationLab ? '6px' : '7px', color: this.artReview || this.animationLab ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
+    if (!this.previewMode) add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART / OWNER REVIEW PENDING' : this.previewMode ? 'PROVISIONAL IONA / DEVELOPMENT PREVIEW / NOT APPROVED' : this.animationLab ? (this.oldRejectedArt ? 'REJECTED OVERNIGHT VECTOR ART / COMPARISON ONLY' : this.b01cMode ? 'B01C NATIVE PIXEL MOTION PILOT / OWNER REVIEW PENDING' : 'B01 RECOVERY / IMAGEGEN PIXELS / OWNER REVIEW PENDING') : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'monospace', fontSize: this.artReview || this.animationLab || this.previewMode ? '6px' : '7px', color: this.artReview || this.animationLab || this.previewMode ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
 
     if (this.artReview) {
       this.createArtReview();
@@ -259,38 +270,39 @@ export class ChamberScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.actor, false, .12, .12, 0, 15);
     this.cameras.main.setDeadzone(90, 46);
     this.controller = new InputController(this);
-    if (this.animationLab) {
+    if (this.animationLab || this.previewMode) {
       this.actor.setAlpha(0);
       if (this.b01cMode || this.b01dMode || this.b01eMode) registerIonaB01CAnimations(this);
       if (this.b01dMode || this.b01eMode) registerIonaB01DAnimations(this);
-      if (this.b01eMode) registerIonaB01EAnimations(this);
-      const initialKey = this.oldRejectedArt ? animationAssetKey('idle-0',1) : this.b01eMode ? ionaB01EAssetKey('idle-0','right') : this.b01dMode ? ionaB01DAssetKey('idle-0','right') : this.b01cMode ? ionaB01CAssetKey('idle-0','right') : recoveryAssetKey('idle-0',1);
+      if (this.b01eRuntime) registerIonaB01EAnimations(this);
+      const initialKey = this.previewMode ? ionaB01EAssetKey('idle-0','right') : this.oldRejectedArt ? animationAssetKey('idle-0',1) : this.b01eMode ? ionaB01EAssetKey('idle-0','right') : this.b01dMode ? ionaB01DAssetKey('idle-0','right') : this.b01cMode ? ionaB01CAssetKey('idle-0','right') : recoveryAssetKey('idle-0',1);
       this.labSprite = add.sprite(this.actor.x,this.body.bottom,initialKey).setOrigin(.5,1).setDepth(12);
-      if (this.b01eMode) this.sound.setVolume(this.labAudioVolume);
-      this.labHud = add.text(6,5,this.b01eMode ? 'B01E / C-D-E A/B | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | CLICK/J ENABLE AUDIO | M MUTE | [ ] VOLUME | T VERSION | 1-3 SCALE | C BG | V VFX | R REVIEW | ESC PAUSE' : this.b01dMode ? 'B01D CANDIDATE / OWNER PENDING | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | T A/B | 1-3 SCALE | C BG | V VFX | G DIAG' : this.oldRejectedArt ? 'REJECTED ART COMPARISON ONLY  |  J HIT  |  R A/B' : this.b01cMode ? 'B01C / PHASER SPRITES  |  A/D MOVE  |  SPACE JUMP  |  SHIFT DASH  |  J COMBO  |  R REVIEW' : 'B01 RECOVERY / GENERATED PIXELS  |  J HIT  |  R A/B  |  C BG', {fontFamily:'monospace',fontSize:this.b01dMode||this.b01eMode?'5px':'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
-      this.input.keyboard?.on('keydown-R',(event:KeyboardEvent)=>{if(!event.repeat)this.labReviewRequested=true;});
+      if (this.b01eRuntime) this.sound.setVolume(this.labAudioVolume);
+      if (this.animationLab) this.labHud = add.text(6,5,this.b01eMode ? 'B01E / C-D-E A/B | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | CLICK/J ENABLE AUDIO | M MUTE | [ ] VOLUME | T VERSION | 1-3 SCALE | C BG | V VFX | R REVIEW | ESC PAUSE' : this.b01dMode ? 'B01D CANDIDATE / OWNER PENDING | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | T A/B | 1-2-3 SCALE | C BG | V VFX | G DIAG' : this.oldRejectedArt ? 'REJECTED OVERNIGHT ART COMPARE | J HIT | R REVIEW' : this.b01cMode ? 'B01C / PHASER SPRITES | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | R REVIEW' : 'B01 RECOVERY / GENERATED PIXELS | J HIT | R REVIEW', {fontFamily:'monospace',fontSize:this.b01dMode||this.b01eMode?'5px':'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
+      this.input.keyboard?.on('keydown-R',(event:KeyboardEvent)=>{if(!event.repeat){if(this.previewMode)this.previewResetRequested=true;else this.labReviewRequested=true;}});
       this.input.keyboard?.on('keydown-C',(event:KeyboardEvent)=>{if(!event.repeat)this.labContrastRequested=true;});
       this.input.keyboard?.on('keydown-T',(event:KeyboardEvent)=>{if(!event.repeat&&(this.b01dMode||this.b01eMode))this.labABRequested=true;});
       this.input.keyboard?.on('keydown-V',(event:KeyboardEvent)=>{if(!event.repeat&&(this.b01dMode||this.b01eMode))this.labVfxRequested=true;});
       this.input.keyboard?.on('keydown-G',(event:KeyboardEvent)=>{if(!event.repeat&&this.b01dMode)this.labDiagnosticsRequested=true;});
-      this.input.keyboard?.on('keydown-M',(event:KeyboardEvent)=>{if(!event.repeat&&this.b01eMode)this.labAudioEnabled=!this.labAudioEnabled;});
+      this.input.keyboard?.on('keydown-M',(event:KeyboardEvent)=>{if(!event.repeat&&this.b01eRuntime)this.setPreviewAudioEnabled(!this.labAudioEnabled);});
       this.input.keyboard?.on('keydown',(event:KeyboardEvent)=>{
-        if(!this.b01eMode||event.repeat)return;
-        if(event.code==='BracketLeft')this.labAudioVolume=Math.max(0,Number((this.labAudioVolume-.08).toFixed(2)));
-        else if(event.code==='BracketRight')this.labAudioVolume=Math.min(1,Number((this.labAudioVolume+.08).toFixed(2)));
-        this.sound.setVolume(this.labAudioVolume);
+        if(!this.b01eRuntime||event.repeat)return;
+        if(event.code==='BracketLeft')this.setPreviewAudioVolume(this.labAudioVolume-.08);
+        else if(event.code==='BracketRight')this.setPreviewAudioVolume(this.labAudioVolume+.08);
       });
       this.input.keyboard?.on('keydown',(event:KeyboardEvent)=>{
         if(event.code==='Digit1')this.labReviewScaleRequested=48;
         else if(event.code==='Digit2')this.labReviewScaleRequested=60;
         else if(event.code==='Digit3')this.labReviewScaleRequested=72;
-        if(this.b01eMode)this.unlockLabAudio();
+        if(this.b01eRuntime)this.unlockLabAudio();
       });
       if(this.b01dMode||this.b01eMode)this.labDiagnosticsGraphic=add.graphics().setDepth(39);
-      if(this.b01eMode)this.input.on(Phaser.Input.Events.POINTER_DOWN,()=>this.unlockLabAudio());
-      this.createTrainingTarget();
-      this.createAnimationReview();
-      this.updateAnimationReviewVisibility();
+      if(this.b01eRuntime)this.input.on(Phaser.Input.Events.POINTER_DOWN,()=>this.unlockLabAudio());
+      if (this.animationLab || this.previewMode) this.createTrainingTarget();
+      if (this.animationLab) {
+        this.createAnimationReview();
+        this.updateAnimationReviewVisibility();
+      }
       this.input.keyboard?.addCapture(['J','R','C','T','V','G','M']);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN,()=>{this.sound.stopAll();this.labAudioPaused=true;void this.impactAudio?.close();this.impactAudio=undefined;});
     }
@@ -300,14 +312,23 @@ export class ChamberScene extends Phaser.Scene {
 
   update(_time: number, delta: number): void {
     if (this.artReview) { this.updateArtReview(); return; }
-    const input = this.controller.read();
+    let input = this.controller.read();
     if (input.pause) { this.setLabAudioPaused(true); this.onPauseRequested(); return; }
+    if (this.previewMode && this.previewResetRequested) {
+      this.previewResetRequested = false;
+      this.resetPreview();
+      input = this.controller.read();
+    }
     if (input.controller !== this.controllerConnected) { this.controllerConnected = input.controller; this.onControllerState(input.controller); }
     const grounded = this.body.blocked.down || this.body.touching.down;
     const oldFacing = this.motion.facing;
     const wasDashing = this.motion.dashMs > 0;
     const wasMoving = this.wasMoving;
     const dt = Math.min(delta, 50);
+    if (this.previewMode) {
+      this.previewElapsedMs += dt;
+      this.targetX = 228 + Math.sin(this.previewElapsedMs / 6500) * 66;
+    }
     const movement = stepMovement({ ...this.motion, xVelocity: this.body.velocity.x, yVelocity: this.body.velocity.y }, input.move, grounded, dt);
     this.motion = movement.next;
     this.body.setVelocityX(movement.next.xVelocity);
@@ -316,55 +337,58 @@ export class ChamberScene extends Phaser.Scene {
     this.actor.setFillStyle(movement.next.dashMs > 0 ? 0xf1ab85 : 0xe7dfce);
     this.actor.setAngle(movement.next.dashMs > 0 ? -7 * movement.next.facing : 0);
     this.groundContact = grounded;
-    if (this.b01eMode) {
+    if (this.b01eRuntime) {
       if (movement.jumped) this.playB01eCue('jump');
       if (!wasDashing && movement.next.dashMs > 0) this.playB01eCue('dash-start');
       if (wasDashing && movement.next.dashMs === 0) this.playB01eCue('dash-brake');
       if (grounded && !this.wasGrounded) this.playB01eCue('land');
     }
-    if (this.animationLab) {
-      if (this.labReviewRequested) { this.labReviewVisible=!this.labReviewVisible; this.labReviewRequested=false; }
-      if (this.labContrastRequested) {
-        this.labContrastRequested=false;
-        const contrasts: ArtReviewContrast[] = ['calm','light','busy'];
-        this.reviewContrast = contrasts[(contrasts.indexOf(this.reviewContrast)+1)%contrasts.length]!;
-        this.applyReviewContrast();
+    if (this.animationLab || this.previewMode) {
+      if (this.animationLab) {
+        if (this.labReviewRequested) { this.labReviewVisible=!this.labReviewVisible; this.labReviewRequested=false; }
+        if (this.labContrastRequested) {
+          this.labContrastRequested=false;
+          const contrasts: ArtReviewContrast[] = ['calm','light','busy'];
+          this.reviewContrast = contrasts[(contrasts.indexOf(this.reviewContrast)+1)%contrasts.length]!;
+          this.applyReviewContrast();
+        }
+        if(this.labABRequested){
+          this.labABRequested=false;
+          if (this.b01eMode) {
+            this.labCompareCandidate=nextIonaLabCandidate(this.labCompareCandidate);
+            this.labCompareB01c=this.labCompareCandidate==='b01c';
+          } else this.labCompareB01c=!this.labCompareB01c;
+          this.labClipKey='';
+        }
+        if(this.labVfxRequested){this.labVfxRequested=false;this.labVfxEnabled=!this.labVfxEnabled;}
+        if(this.labDiagnosticsRequested){this.labDiagnosticsRequested=false;this.labDiagnosticsVisible=!this.labDiagnosticsVisible;}
       }
-      if(this.labABRequested){
-        this.labABRequested=false;
-        if (this.b01eMode) {
-          this.labCompareCandidate=nextIonaLabCandidate(this.labCompareCandidate);
-          this.labCompareB01c=this.labCompareCandidate==='b01c';
-        } else this.labCompareB01c=!this.labCompareB01c;
-        this.labClipKey='';
-      }
-      if(this.labVfxRequested){this.labVfxRequested=false;this.labVfxEnabled=!this.labVfxEnabled;}
-      if(this.labDiagnosticsRequested){this.labDiagnosticsRequested=false;this.labDiagnosticsVisible=!this.labDiagnosticsVisible;}
       if(this.labReviewScaleRequested!==null){
-        this.labReviewScale=this.labReviewScaleRequested;
+        this.setPreviewScale(this.labReviewScaleRequested);
         this.labReviewScaleRequested=null;
-        for(const image of this.labReviewImages)image.setScale(this.labReviewScale/60);
-        this.fitB01dSpriteToRequestedHeight();
-        if(this.b01eMode)this.labSprite?.setScale(this.labReviewScale/60);
-        this.labReviewSub?.setText('VISIBLE HEIGHT '+this.labReviewScale+' PX / B00 BODY 15x30 / 1-2-3 SCALE / R CLOSES / C CYCLES BG');
+        if (this.animationLab) {
+          for(const image of this.labReviewImages)image.setScale(this.labReviewScale/60);
+          this.fitB01dSpriteToRequestedHeight();
+          this.labReviewSub?.setText('VISIBLE HEIGHT '+this.labReviewScale+' PX / B00 BODY 15x30 / 1-2-3 SCALE / R CLOSES / C CYCLES BG');
+        }
       }
       const moving = Math.abs(movement.next.xVelocity) > 12 && movement.next.dashMs === 0;
-      if (moving && !wasMoving) this.startMs = this.b01cMode||this.b01dMode||this.b01eMode ? 140 : 70;
-      if (!moving && wasMoving) this.stopMs = this.b01cMode||this.b01dMode||this.b01eMode ? 140 : 85;
+      if (moving && !wasMoving) this.startMs = this.b01cMode||this.b01dMode||this.b01eRuntime ? 140 : 70;
+      if (!moving && wasMoving) this.stopMs = this.b01cMode||this.b01dMode||this.b01eRuntime ? 140 : 85;
       if (oldFacing !== movement.next.facing) { this.turnMs = 90; this.turnFromFacing = oldFacing as IonaFacing; }
-      if (movement.jumped) this.jumpTakeoffMs = this.b01cMode||this.b01dMode||this.b01eMode ? 80 : 0;
+      if (movement.jumped) this.jumpTakeoffMs = this.b01cMode||this.b01dMode||this.b01eRuntime ? 80 : 0;
       if (movement.next.dashMs > 0) { this.startMs = 0; this.stopMs = 0; }
       if (wasDashing && movement.next.dashMs === 0) this.dashRecoverMs = 100;
       const attackPressed=this.controller.readAttackPressed();
-      if(this.b01cMode||this.b01dMode||this.b01eMode)this.updateB01CCombat(attackPressed,grounded,dt);
+      if(this.b01cMode||this.b01dMode||this.b01eRuntime)this.updateB01CCombat(attackPressed,grounded,dt);
       else this.updateCombat(attackPressed,grounded,dt);
       this.updateLabAnimation(grounded,moving,dt);
       this.labSprite?.setPosition(this.actor.x,this.body.bottom);
       this.drawAnimationDiagnostics();
-      this.updateAnimationReviewVisibility();
+      if (this.animationLab) this.updateAnimationReviewVisibility();
       if (this.labHud) this.labHud.setText(this.b01eMode
         ? `B01E 3-WAY / SHOWING ${this.labCompareCandidate.toUpperCase()} / OWNER PENDING | ${this.labMode.toUpperCase()} ${this.labFrame} ${this.motion.facing<0?'LEFT':'RIGHT'} | SIZE ${this.labReviewScale} | VFX ${this.labVfxEnabled?'ON':'OFF'} | AUDIO ${this.audioStatus()} | VOL ${Math.round(this.labAudioVolume*100)}% | T VERSION / [ ] VOLUME / M MUTE`
-        : this.b01dMode ? `B01D CANDIDATE ${this.labCompareB01c?'SHOWING B01C':'SHOWING B01D'} / OWNER PENDING | ${this.labMode.toUpperCase()} ${this.labFrame} | SIZE ${this.labReviewScale} | C BG | T A/B | VFX ${this.labVfxEnabled?'ON':'OFF'} | G DIAG` : (this.oldRejectedArt?'REJECTED SVG COMPARE  |  ':this.b01cMode?'B01C NATIVE PIXEL PILOT  |  ':'B01 RECOVERY / GENERATED PIXELS  |  ') + this.labMode.toUpperCase() + ' / ' + this.labFrame + '  |  '+(this.b01cMode?'J COMBO':'J HIT')+'  |  R REVIEW  |  C BG');
+        : this.b01dMode ? `B01D CANDIDATE ${this.labCompareB01c?'SHOWING B01C':'SHOWING B01D'} / OWNER PENDING | ${this.labMode.toUpperCase()} ${this.labFrame} | SIZE ${this.labReviewScale} | C BG | T A/B | VFX ${this.labVfxEnabled?'ON':'OFF'} | G DIAG` : (this.oldRejectedArt?'REJECTED ART COMPARE  |  ':this.b01cMode?'B01C NATIVE PIXEL PILOT  |  ':'B01 RECOVERY / GENERATED PIXELS  |  ') + this.labMode.toUpperCase() + ' / ' + this.labFrame + '  |  '+(this.b01cMode?'J COMBO':'J HIT')+'  |  R REVIEW  |  C BG');
       this.wasMoving = moving;
       this.wasGrounded = grounded;
       this.hitFlashMs = Math.max(0,this.hitFlashMs-dt);
@@ -409,6 +433,78 @@ export class ChamberScene extends Phaser.Scene {
     return { mode:this.labMode, frame:currentFrame, facing:this.motion.facing, attackPhase:this.attackClock.phase, comboStep:(this.b01cMode||this.b01dMode||this.b01eMode)&&this.attackClock.phase!=='idle'?this.attackComboIndex+1:0, targetHealth:this.targetHealth, targetX:this.targetX, lastCombatEvent:this.lastCombatEvent, artSource, candidateVersion:candidate.toUpperCase() as 'B01C'|'B01D'|'B01E', assetCount:all.length-missingAssets.length, missingAssets, reviewVisible:this.labReviewVisible, contrast:this.reviewContrast, reviewScale:this.labReviewScale, spriteScale:Number(this.labSprite.scaleX.toFixed(3)), visibleHeightPx:Number(this.getLabVisibleHeightPx().toFixed(2)), diagnosticsVisible:this.labDiagnosticsVisible, b01cComparison:this.b01eMode?candidate==='b01c':this.b01dMode&&this.labCompareB01c, vfxEnabled:this.labVfxEnabled, audioEnabled:this.labAudioEnabled, audioUnlocked:!this.sound.locked, audioAssetsLoaded:this.b01eMode?IONA_B01E_AUDIO_CUES.filter((cue)=>this.cache.audio.exists(cue)).length:0, audioVolume:this.labAudioVolume, audioPaused:this.labAudioPaused, lastAudioCue:this.lastAudioCue };
   }
 
+  previewSnapshot(): IonaPreviewSnapshot | null {
+    if (!this.previewMode || !this.labSprite) return null;
+    const expected=IONA_B01E_TEXTURES.map(({id,facing})=>ionaB01EAssetKey(id,facing));
+    const missingTextures=expected.filter((key)=>!this.textures.exists(key));
+    return {
+      playerX:Number(this.actor.x.toFixed(2)),playerY:Number(this.actor.y.toFixed(2)),grounded:this.groundContact,
+      facing:this.motion.facing,bodySize:{width:this.body.width,height:this.body.height},action:this.labMode,frame:this.labFrame,
+      attackPhase:this.attackClock.phase,comboStep:this.attackClock.phase==='idle'?0:this.attackComboIndex+1,
+      targetX:Number(this.targetX.toFixed(2)),targetHealth:this.targetHealth,lastCombatEvent:this.lastCombatEvent,
+      reviewScale:this.labReviewScale,vfxEnabled:this.labVfxEnabled,background:'calm',audioEnabled:this.labAudioEnabled,audioUnlocked:!this.sound.locked,
+      audioAssetsLoaded:IONA_B01E_AUDIO_CUES.filter((cue)=>this.cache.audio.exists(cue)).length,audioVolume:this.labAudioVolume,
+      audioStatus:this.audioStatus(),controller:this.controllerConnected,loadedTextures:expected.length-missingTextures.length,missingTextures,
+    };
+  }
+
+  setPreviewScale(scale:48|60|72): void {
+    if (![48,60,72].includes(scale) || (!this.previewMode&&!this.b01eMode)) return;
+    this.labReviewScale=scale;
+    this.labSprite?.setScale(scale/60);
+  }
+
+  setPreviewAudioEnabled(enabled:boolean): void {
+    if (!this.b01eRuntime) return;
+    this.labAudioEnabled=enabled;
+    if (!enabled) this.sound.stopAll();
+  }
+
+  setPreviewAudioVolume(volume:number): void {
+    if (!this.b01eRuntime || !Number.isFinite(volume)) return;
+    this.labAudioVolume=Math.max(0,Math.min(1,Number(volume.toFixed(2))));
+    this.sound.setVolume(this.labAudioVolume);
+  }
+
+  playPreviewCue(value:string): void {
+    if (!this.previewMode || !IONA_B01E_AUDIO_CUES.includes(value as IonaB01eAudioCue)) return;
+    const cue=value as IonaB01eAudioCue;
+    this.unlockLabAudio();
+    if (this.sound.locked) {
+      this.lastAudioCue=`LOCKED:${cue}`;
+      return;
+    }
+    this.playB01eCue(cue);
+  }
+
+  private resetPreview(): void {
+    this.controller.resetTransientState();
+    this.motion=initialMoveState();
+    this.actor.setPosition(80,GROUND_TOP-15).setAngle(0);
+    this.body.reset(80,GROUND_TOP-15);
+    this.body.setVelocity(0,0);
+    this.groundContact=true;
+    this.wasGrounded=true;
+    this.wasMoving=false;
+    this.attackClock=idleClock;
+    this.attackBufferMs=0;
+    this.attackComboIndex=0;
+    this.attackFacing=1;
+    this.targetHealth=3;
+    this.targetX=228;
+    this.previewElapsedMs=0;
+    this.lastCombatEvent='RESET / TARGET READY';
+    this.hitFlashMs=0;
+    this.startMs=0;this.stopMs=0;this.turnMs=0;this.dashRecoverMs=0;this.jumpTakeoffMs=0;this.landingMs=0;
+    this.lastFootfallFrame='';this.footfallSide=0;
+    this.labMode='idle';this.labFrame='idle-0';this.labClipKey='';
+    this.labSprite?.anims.stop();
+    this.labSprite?.setTexture(ionaB01EAssetKey('idle-0','right')).setScale(this.labReviewScale/60).setPosition(80,GROUND_TOP);
+    this.sound.stopAll();
+    this.cameras.main.setScroll(0,0);
+    this.drawTrainingTarget();
+  }
+
   reviewSnapshot(): ArtReviewSnapshot | null {
     if (!this.artReview) return null;
     const missingAssets = ART_REVIEW_ASSET_KEYS.filter((key) => !this.textures.exists(key));
@@ -417,7 +513,7 @@ export class ChamberScene extends Phaser.Scene {
 
   private createTrainingTarget(): void {
     this.targetVisual = this.add.graphics().setDepth(9);
-    this.targetLabel = this.add.text(this.targetX,GROUND_TOP-72,'TRAINING DUMMY / 3', {fontFamily:'monospace',fontSize:'6px',color:'#f0cda8',align:'center',backgroundColor:'#171b2c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(20);
+    this.targetLabel = this.add.text(this.targetX,GROUND_TOP-72,this.previewMode?'MOVING PRACTICE TARGET / 3 HP':'TRAINING DUMMY / 3', {fontFamily:'monospace',fontSize:'6px',color:'#f0cda8',align:'center',backgroundColor:'#171b2c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(20);
     this.drawTrainingTarget();
   }
 
@@ -431,7 +527,7 @@ export class ChamberScene extends Phaser.Scene {
     this.targetVisual.fillStyle(0x35aeb0,1).fillRect(x-3,top+8,2,2);
     this.targetVisual.fillStyle(0xa8694e,1).fillRect(x-10,top+14,20,4);
     this.targetVisual.fillStyle(0x282743,1).fillRect(x-5,GROUND_TOP-4,10,4);
-    this.targetLabel?.setText('TRAINING DUMMY / '+this.targetHealth+' HP');
+    this.targetLabel?.setPosition(x,GROUND_TOP-72).setText((this.previewMode?'PRACTICE TARGET / ':'TRAINING DUMMY / ')+this.targetHealth+' HP');
   }
 
   private updateCombat(pressed: boolean, grounded: boolean, deltaMs: number): void {
@@ -483,7 +579,7 @@ export class ChamberScene extends Phaser.Scene {
   private beginLabComboStep(index: number): void {
     const action=B01C_COMBO_ACTIONS[index]!;
     this.attackClock=beginAction(action);
-    if(this.b01eMode){
+    if(this.b01eRuntime){
       this.activeAudioSequence=++this.audioSequence;
       const cue=ionaB01eWhooshForMove(action.moveId??'');
       if(cue)this.playB01eCue(cue,`combat:${this.activeAudioSequence}:whoosh`);
@@ -491,28 +587,28 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   private resolveCombatEvent(event: CombatEvent): void {
-    const isExtendedCombo=(this.b01cMode||this.b01dMode||this.b01eMode)&&B01C_COMBO_ACTIONS.some((action)=>action.moveId===event.moveId);
+    const isExtendedCombo=(this.b01cMode||this.b01dMode||this.b01eRuntime)&&B01C_COMBO_ACTIONS.some((action)=>action.moveId===event.moveId);
     if (event.eventId!=='contact' || (event.moveId!=='iona-base-jab'&&!isExtendedCombo) || event.sourceId!=='iona-player' || event.targetId!=='training-dummy') return;
     const offset=this.targetX-this.actor.x;
     const facing=isExtendedCombo?this.attackFacing:this.motion.facing;
     const hit=Math.abs(offset)<=42 && Math.sign(offset)===facing && this.targetHealth>0;
     if (hit) {
       this.targetHealth=Math.max(0,this.targetHealth-1);
-      if((!this.b01dMode&&!this.b01eMode)||this.labVfxEnabled){
+      if((!this.b01dMode&&!this.b01eRuntime)||this.labVfxEnabled){
         this.hitFlashMs=90;
         const burst=this.add.graphics().setDepth(24).setPosition(this.targetX,GROUND_TOP-21);
         burst.lineStyle(2,0xffd890,1).lineBetween(-7,0,7,0).lineBetween(0,-7,0,7).lineBetween(-5,-5,5,5).lineBetween(-5,5,5,-5);
         this.tweens.add({targets:burst,alpha:0,scale:1.8,duration:150,onComplete:()=>burst.destroy()});
       }
-      if(!this.b01dMode&&!this.b01eMode)this.playImpactSound();
+      if(!this.b01dMode&&!this.b01eRuntime)this.playImpactSound();
       this.lastCombatEvent='HIT / '+event.moveId+' -> '+event.targetId;
     } else this.lastCombatEvent='MISS / '+event.moveId+' -> '+event.targetId;
-    if(this.b01eMode)this.playB01eCue(ionaB01eResolutionCue(event.moveId??'',hit?'hit':'miss'),`combat:${this.activeAudioSequence}:contact`);
+    if(this.b01eRuntime)this.playB01eCue(ionaB01eResolutionCue(event.moveId??'',hit?'hit':'miss'),`combat:${this.activeAudioSequence}:contact`);
     window.dispatchEvent(new CustomEvent('crownflare:combat-event',{detail:{...event,result:hit?'hit':'miss',targetHealth:this.targetHealth}}));
   }
 
   private unlockLabAudio(): void {
-    if(!this.b01eMode)return;
+    if(!this.b01eRuntime)return;
     if(this.sound.locked)this.sound.unlock();
   }
 
@@ -523,7 +619,7 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   private playB01eCue(cue: IonaB01eAudioCue, token?: string): void {
-    if(!this.b01eMode)return;
+    if(!this.b01eRuntime)return;
     if(!this.labAudioEnabled){this.lastAudioCue=`MUTED:${cue}`;return;}
     if(this.labAudioPaused){this.lastAudioCue=`PAUSED:${cue}`;return;}
     if(this.sound.locked){this.lastAudioCue=`LOCKED:${cue}`;return;}
@@ -537,7 +633,7 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   setLabAudioPaused(paused: boolean): void {
-    if(!this.b01eMode)return;
+    if(!this.b01eRuntime)return;
     this.labAudioPaused=paused;
     if(paused)this.sound.stopAll();
   }
@@ -563,11 +659,12 @@ export class ChamberScene extends Phaser.Scene {
 
   private updateLabAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
     if (this.oldRejectedArt) this.updateRejectedArtAnimation(grounded,moving,deltaMs);
-    else if (this.b01cMode||this.b01dMode||this.b01eMode) this.updateB01CAnimation(grounded,moving,deltaMs);
+    else if (this.b01cMode||this.b01dMode||this.b01eRuntime) this.updateB01CAnimation(grounded,moving,deltaMs);
     else this.updateRecoveryAnimation(grounded,moving,deltaMs);
   }
 
   private selectedLabCandidate(): 'b01c'|'b01d'|'b01e' {
+    if(this.previewMode)return 'b01e';
     if(this.b01eMode)return this.labCompareCandidate;
     if(this.b01dMode)return this.labCompareB01c?'b01c':'b01d';
     return 'b01c';
@@ -596,7 +693,7 @@ export class ChamberScene extends Phaser.Scene {
       next='attack';
       const phase=this.attackClock.phase==='startup'?'windup':this.attackClock.phase==='active'?'contact':'recovery';
       let frame=`combo-${this.attackComboIndex+1}-${phase}`;
-      if(candidate==='b01e'&&this.attackComboIndex===1&&phase==='windup'&&this.attackClock.elapsedMs>=55)frame='combo-2-windup-1';
+      if(this.b01eRuntime&&candidate==='b01e'&&this.attackComboIndex===1&&phase==='windup'&&this.attackClock.elapsedMs>=55)frame='combo-2-windup-1';
       const facing=this.attackFacing<0?'left':'right';
       const key=this.candidateAssetKey(frame,facing);
       sprite.anims.stop();
@@ -629,7 +726,7 @@ export class ChamberScene extends Phaser.Scene {
       }
       const frameMatch=sprite.texture.key.match(/^iona-b01[cde]-(.*)-(left|right)$/);
       this.labFrame=frameMatch?.[1]??this.labFrame;
-      if(this.b01eMode&&candidate==='b01e'&&next==='run'&&isIonaRunContactFrame(this.labFrame)&&this.labFrame!==this.lastFootfallFrame){
+      if(this.b01eRuntime&&candidate==='b01e'&&next==='run'&&isIonaRunContactFrame(this.labFrame)&&this.labFrame!==this.lastFootfallFrame){
         this.playB01eCue(this.footfallSide===0?'step-a':'step-b');
         this.footfallSide=this.footfallSide===0?1:0;
       }
