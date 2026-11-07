@@ -24,6 +24,7 @@ export type B03CombatSnapshot = { playerX:number; playerY:number; playerHp:numbe
 const WORLD_WIDTH = 1560;
 const WORLD_HEIGHT = 270;
 const GROUND_TOP = 241;
+const B04_SENTINEL_WAKE_DISTANCE = 60;
 const FORM_KEYS = ['base', 'dawnrush', 'stormhalo', 'eclipse-warden'] as const;
 const ART_REVIEW_ASSET_KEYS = FORM_KEYS.flatMap((form) => [48, 60, 72].flatMap((height) => [
   `b01a-${form}-${height}`,
@@ -60,6 +61,7 @@ export class ChamberScene extends Phaser.Scene {
   private readonly b01dMode: boolean;
   private readonly b01eMode: boolean;
   private readonly b03Mode: boolean;
+  private readonly b04Mode: boolean;
   private readonly b02Diagnostics: boolean;
   private readonly playerPresentation = new IonaPlayerPresentation();
   private labCompareB01c = false;
@@ -164,7 +166,7 @@ export class ChamberScene extends Phaser.Scene {
   private lastAudioCue = 'none';
   private impactAudio?: AudioContext;
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean } = {}) {
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean } = {}) {
     super({ key: 'Chamber' });
     this.onPauseRequested = onPauseRequested;
     this.onControllerState = onControllerState;
@@ -172,6 +174,7 @@ export class ChamberScene extends Phaser.Scene {
     this.animationLab = options.animationLab === true && !this.artReview;
     this.previewMode = options.ionaPreview === true && !this.artReview && !this.animationLab;
     this.b03Mode = this.previewMode && options.b03Combat === true;
+    this.b04Mode = this.b03Mode && options.b04 === true;
     const params = new URLSearchParams(window.location.search);
     this.b02Diagnostics = this.previewMode && params.get('b02diag') === '1';
     this.b03DebugVisible = this.b03Mode && params.get('b03diag') === '1';
@@ -267,35 +270,43 @@ export class ChamberScene extends Phaser.Scene {
       light: add.graphics().setScrollFactor(0),
       busy: add.graphics().setScrollFactor(0),
     };
-    this.backgroundLayers.calm.fillGradientStyle(0x0c1727, 0x11283c, 0x162a32, 0x101b2c, 1).fillRect(0, 0, 480, 270);
-    this.backgroundLayers.light.fillGradientStyle(0xd9d6c9, 0xb5ccc7, 0xc2c7b4, 0xe3d7c1, 1).fillRect(0, 0, 480, 270);
-    this.backgroundLayers.busy.fillGradientStyle(0x281e3b, 0x17344a, 0x513a51, 0x182838, 1).fillRect(0, 0, 480, 270);
+    if (!this.b04Mode) {
+      this.backgroundLayers.calm.fillGradientStyle(0x0c1727, 0x11283c, 0x162a32, 0x101b2c, 1).fillRect(0, 0, 480, 270);
+      this.backgroundLayers.light.fillGradientStyle(0xd9d6c9, 0xb5ccc7, 0xc2c7b4, 0xe3d7c1, 1).fillRect(0, 0, 480, 270);
+      this.backgroundLayers.busy.fillGradientStyle(0x281e3b, 0x17344a, 0x513a51, 0x182838, 1).fillRect(0, 0, 480, 270);
+    } else {
+      for (const layer of Object.values(this.backgroundLayers)) layer.setVisible(false);
+    }
     this.busyLayer = add.graphics().setScrollFactor(.18);
-    for (let i = 0; i < 22; i++) {
+    if (this.b04Mode) this.busyLayer.setVisible(false);
+    for (let i = 0; i < 22 && !this.b04Mode; i++) {
       const x = i * 23 + 2, y = 24 + ((i * 37) % 133), width = 8 + ((i * 11) % 19), height = 3 + ((i * 7) % 15);
       const colors = [0xf087a2, 0xe2a55e, 0x8a7ddb, 0x5ac1b5];
       this.busyLayer.fillStyle(colors[i % colors.length]!, .33).fillRect(x, y, width, height);
     }
-    this.applyReviewContrast();
+    if (!this.b04Mode) this.applyReviewContrast();
 
-    for (let i = 0; i < 32; i++) {
+    for (let i = 0; i < 32 && !this.b04Mode; i++) {
       const x = i * 52 + 5, y = 32 + ((i * 41) % 118);
       add.rectangle(x, y, 2, 2, this.reviewContrast === 'light' ? 0x435e64 : 0xb1dcdf, this.reviewContrast === 'light' ? .24 : .18).setScrollFactor(.13);
     }
-    for (let i = 0; i < 22; i++) {
+    for (let i = 0; i < 22 && !this.b04Mode; i++) {
       const x = i * 98; const h = 28 + (i % 4) * 16;
       add.rectangle(x, GROUND_TOP - h / 2 + 4, 40, h, this.reviewContrast === 'light' ? 0x60777a : 0x172e3c, .75).setScrollFactor(.36);
       add.rectangle(x + 8, GROUND_TOP - h + 6, 4, 3, 0x83c1c3, .25).setScrollFactor(.36);
     }
-    for (let i = 0; i < 26; i++) {
+    for (let i = 0; i < 26 && !this.b04Mode; i++) {
       const x = i * 64 + 12;
       add.rectangle(x, 229, 3, 20, 0x66bbc2, .25);
     }
     const platforms: Phaser.GameObjects.Rectangle[] = [];
     const tile = (x: number, top: number, width: number, height: number, color = 0x354f54): Phaser.GameObjects.Rectangle => {
       const block = add.rectangle(x, top + height / 2, width, height, color);
-      block.setStrokeStyle(1, this.reviewContrast === 'light' ? 0x536e6b : 0x79b8ad, .75);
-      add.rectangle(x, top + 1, width, 2, this.reviewContrast === 'light' ? 0xf0ead7 : 0x9adcd0, .7);
+      if (this.b04Mode) block.setAlpha(0);
+      else {
+        block.setStrokeStyle(1, this.reviewContrast === 'light' ? 0x536e6b : 0x79b8ad, .75);
+        add.rectangle(x, top + 1, width, 2, this.reviewContrast === 'light' ? 0xf0ead7 : 0x9adcd0, .7);
+      }
       this.physics.add.existing(block, true);
       platforms.push(block);
       return block;
@@ -308,7 +319,7 @@ export class ChamberScene extends Phaser.Scene {
     tile(965, 196, 95, 11);
     tile(1150, 167, 110, 11);
     tile(1380, 192, 120, 11);
-    tile(1120, 217, 14, 24, 0x624f50); // dash collision test barrier
+    if (!this.b04Mode) tile(1120, 217, 14, 24, 0x624f50); // B00 dash collision test barrier
     this.combatBlockers = platforms.map((platform) => {
       const bounds = platform.getBounds();
       return { left: bounds.left, right: bounds.right, top: bounds.top, bottom: bounds.bottom };
@@ -345,8 +356,8 @@ export class ChamberScene extends Phaser.Scene {
       this.playerPresentation.attach(this.labSprite);
       if (this.b01eRuntime) this.sound.setVolume(this.labAudioVolume);
       if (this.animationLab) this.labHud = add.text(6,5,this.b01eMode ? 'B01E / C-D-E A/B | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | CLICK/J ENABLE AUDIO | M MUTE | [ ] VOLUME | T VERSION | 1-3 SCALE | C BG | V VFX | R REVIEW | ESC PAUSE' : this.b01dMode ? 'B01D CANDIDATE / OWNER PENDING | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | T A/B | 1-2-3 SCALE | C BG | V VFX | G DIAG' : this.oldRejectedArt ? 'REJECTED OVERNIGHT ART COMPARE | J HIT | R REVIEW' : this.b01cMode ? 'B01C / PHASER SPRITES | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | R REVIEW' : 'B01 RECOVERY / GENERATED PIXELS | J HIT | R REVIEW', {fontFamily:'monospace',fontSize:this.b01dMode||this.b01eMode?'5px':'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
-      this.input.keyboard?.on('keydown-R',(event:KeyboardEvent)=>{if(!event.repeat){if(this.previewMode)this.previewResetRequested=true;else this.labReviewRequested=true;}});
-      this.input.keyboard?.on('keydown-C',(event:KeyboardEvent)=>{if(!event.repeat)this.labContrastRequested=true;});
+      this.input.keyboard?.on('keydown-R',(event:KeyboardEvent)=>{if(!event.repeat){if(this.previewMode&&!this.b04Mode)this.previewResetRequested=true;else if(this.animationLab)this.labReviewRequested=true;}});
+      this.input.keyboard?.on('keydown-C',(event:KeyboardEvent)=>{if(!event.repeat&&!this.b04Mode)this.labContrastRequested=true;});
       this.input.keyboard?.on('keydown-T',(event:KeyboardEvent)=>{if(!event.repeat&&(this.b01dMode||this.b01eMode))this.labABRequested=true;});
       this.input.keyboard?.on('keydown-V',(event:KeyboardEvent)=>{if(!event.repeat&&(this.b01dMode||this.b01eMode||this.b03Mode))this.labVfxRequested=true;});
       this.input.keyboard?.on('keydown-G',(event:KeyboardEvent)=>{if(!event.repeat&&this.b01dMode)this.labDiagnosticsRequested=true;});
@@ -381,7 +392,7 @@ export class ChamberScene extends Phaser.Scene {
     if (this.artReview) { this.updateArtReview(); return; }
     let input = this.controller.read();
     if (input.pause) { this.setLabAudioPaused(true); this.onPauseRequested(); return; }
-    if (this.previewMode && this.previewResetRequested) {
+    if (this.previewMode && !this.b04Mode && this.previewResetRequested) {
       this.previewResetRequested = false;
       this.resetPreview();
       input = this.controller.read();
@@ -401,7 +412,7 @@ export class ChamberScene extends Phaser.Scene {
       : input.move;
     const movement = stepMovement({ ...this.motion, xVelocity: this.body.velocity.x, yVelocity: this.body.velocity.y }, movementInput, grounded, dt);
     this.motion = movement.next;
-    if (movement.dashed && this.b03Mode) this.dashInvulnerabilityMs = 75;
+    if (movement.dashed && this.b03Mode) this.dashInvulnerabilityMs = this.b04Mode ? 150 : 75;
     this.body.setVelocityX(movement.next.xVelocity);
     if (movement.jumped) this.body.setVelocityY(movement.next.yVelocity);
     if (movement.releaseCut && this.body.velocity.y < -95) this.body.setVelocityY(-95);
@@ -416,7 +427,7 @@ export class ChamberScene extends Phaser.Scene {
     }
     if (this.animationLab || this.previewMode) {
       if (this.b03Mode) {
-        if (this.labContrastRequested) {
+        if (this.labContrastRequested && !this.b04Mode) {
           this.labContrastRequested = false;
           const contrasts: ArtReviewContrast[] = ['calm', 'light', 'busy'];
           this.reviewContrast = contrasts[(contrasts.indexOf(this.reviewContrast) + 1) % contrasts.length]!;
@@ -565,6 +576,50 @@ export class ChamberScene extends Phaser.Scene {
     };
   }
 
+  protected handleB04Interact(): boolean { return false; }
+
+  /** B04 consumes contextual interaction before the B03 practice retry behavior. */
+  protected setB04Target(x: number, hp = this.enemyMaxHp): void {
+    if (!this.b04Mode) return;
+    this.targetHealth = Math.max(0, Math.min(this.enemyMaxHp, Math.round(hp)));
+    this.targetX = Phaser.Math.Clamp(x, 120, WORLD_WIDTH - 70);
+    this.enemyVisualState = this.targetHealth > 0 ? 'idle' : 'ko';
+    this.enemyFacing = this.body.center.x < this.targetX ? -1 : 1;
+    this.enemyTimerMs = 0;
+    this.enemyAttackHit = false;
+    this.enemyHitstunMs = 0;
+    this.enemyKnockbackX = 0;
+    this.enemyAirOffset = 0;
+    this.enemyAirVelocity = 0;
+    this.drawTrainingTarget();
+  }
+
+  protected setB04PlayerHealth(hp: number): void {
+    if (!this.b04Mode) return;
+    this.playerHp = Phaser.Math.Clamp(Math.round(hp), 1, this.playerMaxHp);
+    this.playerHurtMs = 0;
+    this.playerInvulnerableMs = 0;
+    this.dashInvulnerabilityMs = 0;
+  }
+
+  protected resetB04Combat(startX = 80): void {
+    if (!this.b04Mode) return;
+    this.resetB03Encounter();
+    this.actor.setPosition(startX, GROUND_TOP - 15);
+    this.body.reset(startX, GROUND_TOP - 15);
+    this.playerPresentation.present({ textureKey: ionaB01EAssetKey('idle-0', 'right'), x: startX, footY: GROUND_TOP });
+    this.cameras.main.setScroll(0, 0);
+  }
+
+  protected setB04StartPosition(startX: number): void {
+    if (!this.b04Mode) return;
+    this.actor.setPosition(startX, GROUND_TOP - 15);
+    this.body.reset(startX, GROUND_TOP - 15);
+    this.body.setVelocity(0, 0);
+    this.playerPresentation.present({ textureKey: ionaB01EAssetKey('idle-0', 'right'), x: startX, footY: GROUND_TOP });
+    this.cameras.main.setScroll(0, 0);
+  }
+
   setPreviewScale(scale:48|60|72): void {
     if (![48,60,72].includes(scale) || !this.labSprite) return;
     this.labReviewScale=scale;
@@ -634,6 +689,7 @@ export class ChamberScene extends Phaser.Scene {
       this.enemySprite = this.add.image(this.targetX, GROUND_TOP, ionaB03EnemyTexture('idle')).setOrigin(.5, 1).setDepth(13);
       this.enemyTell = this.add.graphics().setDepth(11);
       this.targetLabel = this.add.text(this.targetX, GROUND_TOP - 61, 'FRACTURED SPINDLE SENTRY / 8 HP', { fontFamily: 'monospace', fontSize: '6px', color: '#f0cda8', align: 'center', backgroundColor: '#171b2c', padding: { x: 2, y: 1 } }).setOrigin(.5, 1).setDepth(20);
+      if (this.b04Mode) this.targetLabel.setVisible(false);
       return;
     }
     this.targetVisual = this.add.graphics().setDepth(9);
@@ -647,7 +703,7 @@ export class ChamberScene extends Phaser.Scene {
       this.enemySprite.setTexture(ionaB03EnemyTexture(this.enemyVisualState)).setFlipX(this.enemyFacing < 0).setPosition(this.targetX, GROUND_TOP + this.enemyAirOffset);
       this.targetLabel?.setPosition(this.targetX, GROUND_TOP - this.enemyAirOffset - 61).setText(this.targetHealth <= 0 ? 'SENTRY DEFEATED / E INTERACT OR R RETRY' : `FRACTURED SENTRY / ${this.targetHealth} HP`);
       this.enemyTell?.clear();
-      if (this.enemyVisualState === 'telegraph') {
+      if (this.enemyVisualState === 'telegraph' && !this.b04Mode) {
         const x = this.targetX + this.enemyFacing * 7;
         this.enemyTell?.lineStyle(2, 0xf6a879, .9).lineBetween(x, GROUND_TOP - 22, x + this.enemyFacing * 45, GROUND_TOP - 22);
         this.enemyTell?.fillStyle(0xffbd8c, .9).fillTriangle(x + this.enemyFacing * 49, GROUND_TOP - 26, x + this.enemyFacing * 49, GROUND_TOP - 18, x + this.enemyFacing * 55, GROUND_TOP - 22);
@@ -690,6 +746,7 @@ export class ChamberScene extends Phaser.Scene {
       this.updateB03Vfx(deltaMs);
       return;
     }
+    if (input.interact && this.b04Mode && this.handleB04Interact()) return;
     if (input.interact && (this.playerHp <= 0 || this.targetHealth <= 0)) {
       this.resetB03Encounter();
       return;
@@ -799,7 +856,13 @@ export class ChamberScene extends Phaser.Scene {
     }
     const playerX = this.body.center.x;
     const towardPlayer = playerX - this.targetX;
-    this.enemyFacing = towardPlayer < 0 ? -1 : 1;
+    const attackDirectionLocked = this.b04Mode && (this.enemyVisualState === 'telegraph' || this.enemyVisualState === 'lunge');
+    if (!attackDirectionLocked) this.enemyFacing = towardPlayer < 0 ? -1 : 1;
+    // B04 traversal stays safe until Iona enters the encounter. Once awake, the inherited B03 telegraph/lunge clock is unchanged.
+    if (this.b04Mode && this.enemyVisualState === 'idle' && Math.abs(towardPlayer) > B04_SENTINEL_WAKE_DISTANCE) {
+      this.enemyTimerMs = 0;
+      return;
+    }
     if (this.enemyVisualState === 'telegraph') {
       this.enemyTimerMs += deltaMs;
       if (this.enemyTimerMs >= 440) { this.enemyVisualState = 'lunge'; this.enemyTimerMs = 0; this.enemyAttackHit = false; }
@@ -854,7 +917,7 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   private createB03Impact(move: typeof B03_MOVES[B03MoveId]): void {
-    if (!this.b03VfxEnabled) return;
+    if (!this.b03VfxEnabled || this.b04Mode) return;
     if (move.id === 'resonance') { this.createB03SpecialWave('hit'); return; }
     const burst = this.add.graphics().setDepth(24).setPosition(this.targetX, GROUND_TOP - 22 + this.enemyAirOffset);
     const color = move.id === 'heavy' || move.id === 'light-3' ? 0xffbf91 : 0xb5f4e2;
