@@ -14,6 +14,15 @@ Codex can author **real original sprites, sprite edits, impact textures, VFX fli
 6. Export runtime atlas and manifest with per-frame time, origin, effect anchors and event IDs. Retain canonical source masters outside runtime bundle, not duplicated through many huge directories.
 7. Record real game in local authorized Chrome at **normal speed**, original resolution and 75% scaled review. AI can assess but only owner can approve.
 
+## B01A Iona review candidates (not canonical)
+
+- The B01A sources and source hashes are recorded in `art-source/manifests/iona-b01a-visual-review.json`; the owner review and scale rationale are in `docs/qa/b01a-visual-review.md`.
+- `iona-b01a-base-recommended` is the proposed Base direction for review at 60 logical pixels. It remains `PENDING_OWNER_REVIEW`; the generated 48/60/72 previews do not change B00 collision dimensions.
+- Runtime B01A previews are loaded only by the development `?artReview=1` path. The normal chamber retains its B00 programmer actor until an explicit owner-approved master and a later production-integration step.
+- Current original inputs are larger generated raster illustrations hardened/cropped and nearest-neighbor resampled by `npm run art:b01a:build`. This is a reproducible review pipeline, not a substitute for manual pixel cleanup, palette reduction, or an approved frame-construction workflow.
+- Base left/right images are separate studies; they have not passed a consistency/animation check. Dawnrush's black silhouette is close to Base and deserves focused owner review. No idle, action, transformation animation, or ART-MOTION pass is claimed.
+- Do not start B01B until the owner chooses the canonical Base direction and confirms/revises the target size. B01B should then lock an immutable cleaned source and make one genuine in-game Base idle with directional alignment.
+
 ## Four form identities
 
 - Base: separate readable head/shoulder/hands/footwork, martial combo and sash secondary motion.

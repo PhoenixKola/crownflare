@@ -27,3 +27,7 @@ Before producing a large animation batch, prepare:
 - Select one immutable Iona master. Record its path and SHA-256 before deriving action frames.
 
 Until that approval, keep every visual candidate provisional and do not mass-generate runtime sprites. Full B01 acceptance also needs a live base idle/locomotion preview; this B00 handoff does not claim B01 work is complete.
+
+## B01A review package
+
+The first original art direction and true-scale Phaser review package is documented in [`b01a-visual-review.md`](b01a-visual-review.md), with source/runtime hashes in `art-source/manifests/iona-b01a-visual-review.json` and captures in `review-evidence/b01a/`. The recommended source is `iona-b01a-base-recommended-master-source.png` at a proposed 60px review height. All source and preview art remains `PENDING_OWNER_REVIEW`; Dawnrush's no-VFX silhouette and pixel-level detail need review. No idle animation is included and B01B must wait for the owner's decision.

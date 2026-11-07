@@ -1,0 +1,775 @@
+{
+  "schemaVersion": 1,
+  "milestone": "B01A",
+  "status": "PENDING_OWNER_REVIEW",
+  "ownerApproval": "PENDING",
+  "sourceTool": "OpenAI built-in image_gen; tool model/version not exposed in result metadata",
+  "sourcePromptRecord": "art-source/manifests/b01a-image-generation-prompts.md",
+  "processing": {
+    "method": "Canvas alpha threshold, tight crop, nearest-neighbor resample; no geometric retouching",
+    "alphaThreshold": 128,
+    "targetHeights": [
+      48,
+      60,
+      72
+    ]
+  },
+  "sources": [
+    {
+      "form": "Base",
+      "key": "base",
+      "direction": "right",
+      "assetId": "iona-b01a-base-recommended",
+      "path": "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+      "generationRef": "exec-e3973517-c841-4966-b879-9dcabd8dbfa3",
+      "sourceDimensions": {
+        "width": 1179,
+        "height": 1334
+      },
+      "hardAlphaBounds": {
+        "x": 99,
+        "y": 18,
+        "width": 863,
+        "height": 1269
+      },
+      "alphaThreshold": 128,
+      "droppedTranslucentPixels": 44931,
+      "retainedPixels": 394994,
+      "sha256": "c5cd65ee4eab727f389696638171f9cb0f23764c8ae8be3652c79e761bec7418",
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegratedDirectly": false
+    },
+    {
+      "form": "Base",
+      "key": "base-left",
+      "direction": "left",
+      "assetId": "iona-b01a-base-left-study",
+      "path": "art-source/characters/iona/b01a/iona-base-left-facing-study-source.png",
+      "generationRef": "exec-295b8eb1-4af6-41d5-84d3-3a805301a449",
+      "sourceDimensions": {
+        "width": 1179,
+        "height": 1334
+      },
+      "hardAlphaBounds": {
+        "x": 247,
+        "y": 16,
+        "width": 770,
+        "height": 1269
+      },
+      "alphaThreshold": 128,
+      "droppedTranslucentPixels": 31421,
+      "retainedPixels": 392525,
+      "sha256": "d1108871dc7439b0ef2f56a04b578208dbe437d16b3c4f036705655f72c5da78",
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegratedDirectly": false
+    },
+    {
+      "form": "Dawnrush",
+      "key": "dawnrush",
+      "direction": "right",
+      "assetId": "iona-b01a-dawnrush-study",
+      "path": "art-source/characters/iona/b01a/dawnrush-study-source.png",
+      "generationRef": "exec-dce51952-8d1c-4f93-8b6b-01d90a648c5c",
+      "sourceDimensions": {
+        "width": 1179,
+        "height": 1334
+      },
+      "hardAlphaBounds": {
+        "x": 64,
+        "y": 15,
+        "width": 803,
+        "height": 1273
+      },
+      "alphaThreshold": 128,
+      "droppedTranslucentPixels": 34086,
+      "retainedPixels": 411392,
+      "sha256": "2ffd7c8952f21637a20d233019f0500d56331046d318a690da4665d38eafe1dd",
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegratedDirectly": false
+    },
+    {
+      "form": "Stormhalo",
+      "key": "stormhalo",
+      "direction": "right",
+      "assetId": "iona-b01a-stormhalo-study",
+      "path": "art-source/characters/iona/b01a/stormhalo-study-source.png",
+      "generationRef": "exec-19954f3c-aebb-4ee0-bb9c-72e20644abf8",
+      "sourceDimensions": {
+        "width": 1179,
+        "height": 1334
+      },
+      "hardAlphaBounds": {
+        "x": 164,
+        "y": 10,
+        "width": 836,
+        "height": 1279
+      },
+      "alphaThreshold": 128,
+      "droppedTranslucentPixels": 47826,
+      "retainedPixels": 373856,
+      "sha256": "6ce4b0be363bdd787f035ca8a8b07565aa13803c56571aa4b78733850120e995",
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegratedDirectly": false
+    },
+    {
+      "form": "Eclipse Warden",
+      "key": "eclipse-warden",
+      "direction": "right",
+      "assetId": "iona-b01a-eclipse-warden-study",
+      "path": "art-source/characters/iona/b01a/eclipse-warden-study-source.png",
+      "generationRef": "exec-08cfe2cb-e86e-4689-962c-62ad852714a5",
+      "sourceDimensions": {
+        "width": 1024,
+        "height": 1536
+      },
+      "hardAlphaBounds": {
+        "x": 76,
+        "y": 23,
+        "width": 779,
+        "height": 1342
+      },
+      "alphaThreshold": 128,
+      "droppedTranslucentPixels": 93850,
+      "retainedPixels": 321055,
+      "sha256": "a5e5f097a41191e6689b5e23e24f80b7a2d2ab06fb30be409c3bc830c23bbf88",
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegratedDirectly": false
+    }
+  ],
+  "previewAssets": [
+    {
+      "assetId": "iona-b01a-base-recommended-color-48",
+      "form": "Base",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 48,
+      "dimensions": "33x48",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+      "sourceSha256": "c5cd65ee4eab727f389696638171f9cb0f23764c8ae8be3652c79e761bec7418",
+      "runtimePath": "public/assets/characters/iona/b01a/base-48.png",
+      "sha256": "e6d7359c19e4df61dc599f3b75d83acbcaa188c2d5ecdd386a7888a5e49d2dd6",
+      "bytes": 2891,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-base-recommended-solid-black-silhouette-48",
+      "form": "Base",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 48,
+      "dimensions": "33x48",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+      "sourceSha256": "c5cd65ee4eab727f389696638171f9cb0f23764c8ae8be3652c79e761bec7418",
+      "runtimePath": "public/assets/characters/iona/b01a/base-48-silhouette.png",
+      "sha256": "de086ae8e4efcecd1473f9ca1b7f2a27b91cb55ab1da9a373a0d7356f5905873",
+      "bytes": 554,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-base-recommended-color-60",
+      "form": "Base",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 60,
+      "dimensions": "41x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+      "sourceSha256": "c5cd65ee4eab727f389696638171f9cb0f23764c8ae8be3652c79e761bec7418",
+      "runtimePath": "public/assets/characters/iona/b01a/base-60.png",
+      "sha256": "15a5e818e7d47270d56eaadf12b8a461ec08dd7d458d871ad9efc9903cf940dd",
+      "bytes": 4208,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-base-recommended-solid-black-silhouette-60",
+      "form": "Base",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 60,
+      "dimensions": "41x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+      "sourceSha256": "c5cd65ee4eab727f389696638171f9cb0f23764c8ae8be3652c79e761bec7418",
+      "runtimePath": "public/assets/characters/iona/b01a/base-60-silhouette.png",
+      "sha256": "af175ff5e3f84727ad8038b2f94ce2e98de3a14b2be5c4605adf1a3e096c5a09",
+      "bytes": 741,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-base-recommended-color-72",
+      "form": "Base",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 72,
+      "dimensions": "49x72",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+      "sourceSha256": "c5cd65ee4eab727f389696638171f9cb0f23764c8ae8be3652c79e761bec7418",
+      "runtimePath": "public/assets/characters/iona/b01a/base-72.png",
+      "sha256": "b8fedccf3841386b3da21431558690e22485878b0d9fbc5757c6ede5e745aee7",
+      "bytes": 5586,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-base-recommended-solid-black-silhouette-72",
+      "form": "Base",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 72,
+      "dimensions": "49x72",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+      "sourceSha256": "c5cd65ee4eab727f389696638171f9cb0f23764c8ae8be3652c79e761bec7418",
+      "runtimePath": "public/assets/characters/iona/b01a/base-72-silhouette.png",
+      "sha256": "43ad6379a09a5275077617b300f05fa2ab961736188925fd2ea36a07e0182433",
+      "bytes": 875,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-base-left-study-color-60",
+      "form": "Base",
+      "direction": "left",
+      "variant": "color",
+      "targetHeight": 60,
+      "dimensions": "36x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/iona-base-left-facing-study-source.png",
+      "sourceSha256": "d1108871dc7439b0ef2f56a04b578208dbe437d16b3c4f036705655f72c5da78",
+      "runtimePath": "public/assets/characters/iona/b01a/base-left-60.png",
+      "sha256": "1decfd067b2deb4d2520034e1b4aa44e6c84fb7af376f1f67d87808f375d6441",
+      "bytes": 3947,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-base-left-study-solid-black-silhouette-60",
+      "form": "Base",
+      "direction": "left",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 60,
+      "dimensions": "36x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/iona-base-left-facing-study-source.png",
+      "sourceSha256": "d1108871dc7439b0ef2f56a04b578208dbe437d16b3c4f036705655f72c5da78",
+      "runtimePath": "public/assets/characters/iona/b01a/base-left-60-silhouette.png",
+      "sha256": "b3ade9407bfe0d57f77ccefe644a4e066d3413deab8a060e20bbc602726aee92",
+      "bytes": 703,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-dawnrush-study-color-48",
+      "form": "Dawnrush",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 48,
+      "dimensions": "30x48",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/dawnrush-study-source.png",
+      "sourceSha256": "2ffd7c8952f21637a20d233019f0500d56331046d318a690da4665d38eafe1dd",
+      "runtimePath": "public/assets/characters/iona/b01a/dawnrush-48.png",
+      "sha256": "ac0578b7dd8c7487706e4dfe0a8089e93d6162002d64f3f36b675b36109d38bc",
+      "bytes": 2872,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-dawnrush-study-solid-black-silhouette-48",
+      "form": "Dawnrush",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 48,
+      "dimensions": "30x48",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/dawnrush-study-source.png",
+      "sourceSha256": "2ffd7c8952f21637a20d233019f0500d56331046d318a690da4665d38eafe1dd",
+      "runtimePath": "public/assets/characters/iona/b01a/dawnrush-48-silhouette.png",
+      "sha256": "a9c289db17e8387ee7efdfdfaf4355f349285fd420fe25ac6f107899647f4b60",
+      "bytes": 548,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-dawnrush-study-color-60",
+      "form": "Dawnrush",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 60,
+      "dimensions": "38x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/dawnrush-study-source.png",
+      "sourceSha256": "2ffd7c8952f21637a20d233019f0500d56331046d318a690da4665d38eafe1dd",
+      "runtimePath": "public/assets/characters/iona/b01a/dawnrush-60.png",
+      "sha256": "caf6a0e5eab5d51c776962f9ae6584e678c4ff9cf173a72fcd0c99262b93bd0f",
+      "bytes": 4246,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-dawnrush-study-solid-black-silhouette-60",
+      "form": "Dawnrush",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 60,
+      "dimensions": "38x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/dawnrush-study-source.png",
+      "sourceSha256": "2ffd7c8952f21637a20d233019f0500d56331046d318a690da4665d38eafe1dd",
+      "runtimePath": "public/assets/characters/iona/b01a/dawnrush-60-silhouette.png",
+      "sha256": "ae414b1174a7353342d93e72e521d2cddbcff337708af9461f4e1ed1e1c515f2",
+      "bytes": 677,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-dawnrush-study-color-72",
+      "form": "Dawnrush",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 72,
+      "dimensions": "45x72",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/dawnrush-study-source.png",
+      "sourceSha256": "2ffd7c8952f21637a20d233019f0500d56331046d318a690da4665d38eafe1dd",
+      "runtimePath": "public/assets/characters/iona/b01a/dawnrush-72.png",
+      "sha256": "1d66869ebb803cbf2eda03a790f9b0f96ea89c9aed437559c3aaf2e6b393cabb",
+      "bytes": 5744,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-dawnrush-study-solid-black-silhouette-72",
+      "form": "Dawnrush",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 72,
+      "dimensions": "45x72",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/dawnrush-study-source.png",
+      "sourceSha256": "2ffd7c8952f21637a20d233019f0500d56331046d318a690da4665d38eafe1dd",
+      "runtimePath": "public/assets/characters/iona/b01a/dawnrush-72-silhouette.png",
+      "sha256": "536cc9b19ec8262db5787befe0d1d07eadc61660d9979c16edee434c4c1234e0",
+      "bytes": 854,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-stormhalo-study-color-48",
+      "form": "Stormhalo",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 48,
+      "dimensions": "31x48",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/stormhalo-study-source.png",
+      "sourceSha256": "6ce4b0be363bdd787f035ca8a8b07565aa13803c56571aa4b78733850120e995",
+      "runtimePath": "public/assets/characters/iona/b01a/stormhalo-48.png",
+      "sha256": "7827806757edc0ebe9b2c5afc72b9b01d017add724d06cd2ff8ebde6022ff60c",
+      "bytes": 2784,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-stormhalo-study-solid-black-silhouette-48",
+      "form": "Stormhalo",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 48,
+      "dimensions": "31x48",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/stormhalo-study-source.png",
+      "sourceSha256": "6ce4b0be363bdd787f035ca8a8b07565aa13803c56571aa4b78733850120e995",
+      "runtimePath": "public/assets/characters/iona/b01a/stormhalo-48-silhouette.png",
+      "sha256": "3c632106a2ac6cf77d04b37a31be39b9007f7e808925df89ce8983497cb72a18",
+      "bytes": 561,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-stormhalo-study-color-60",
+      "form": "Stormhalo",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 60,
+      "dimensions": "39x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/stormhalo-study-source.png",
+      "sourceSha256": "6ce4b0be363bdd787f035ca8a8b07565aa13803c56571aa4b78733850120e995",
+      "runtimePath": "public/assets/characters/iona/b01a/stormhalo-60.png",
+      "sha256": "82ad9e76d985c619013c560f371f4c585d3800693484e7e439156c6357a92578",
+      "bytes": 4090,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-stormhalo-study-solid-black-silhouette-60",
+      "form": "Stormhalo",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 60,
+      "dimensions": "39x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/stormhalo-study-source.png",
+      "sourceSha256": "6ce4b0be363bdd787f035ca8a8b07565aa13803c56571aa4b78733850120e995",
+      "runtimePath": "public/assets/characters/iona/b01a/stormhalo-60-silhouette.png",
+      "sha256": "78751f13ef96aeaf7e75d30edf66b686c4aa29e678ccab37ee2db939c55d8c48",
+      "bytes": 753,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-stormhalo-study-color-72",
+      "form": "Stormhalo",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 72,
+      "dimensions": "47x72",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/stormhalo-study-source.png",
+      "sourceSha256": "6ce4b0be363bdd787f035ca8a8b07565aa13803c56571aa4b78733850120e995",
+      "runtimePath": "public/assets/characters/iona/b01a/stormhalo-72.png",
+      "sha256": "d40140d08d0d27039127ae5a1959488dd144ab3be665371de49acd1723faf6a1",
+      "bytes": 5533,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-stormhalo-study-solid-black-silhouette-72",
+      "form": "Stormhalo",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 72,
+      "dimensions": "47x72",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/stormhalo-study-source.png",
+      "sourceSha256": "6ce4b0be363bdd787f035ca8a8b07565aa13803c56571aa4b78733850120e995",
+      "runtimePath": "public/assets/characters/iona/b01a/stormhalo-72-silhouette.png",
+      "sha256": "017d053026b95501906ab320783f5e2d0219c323a71838d435c58af9a5ae7f7e",
+      "bytes": 883,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-eclipse-warden-study-color-48",
+      "form": "Eclipse Warden",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 48,
+      "dimensions": "28x48",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/eclipse-warden-study-source.png",
+      "sourceSha256": "a5e5f097a41191e6689b5e23e24f80b7a2d2ab06fb30be409c3bc830c23bbf88",
+      "runtimePath": "public/assets/characters/iona/b01a/eclipse-warden-48.png",
+      "sha256": "b706e50634e1a384f566deaa818d6d7a2ab019ab585b8bc670efce18deb22209",
+      "bytes": 2779,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-eclipse-warden-study-solid-black-silhouette-48",
+      "form": "Eclipse Warden",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 48,
+      "dimensions": "28x48",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/eclipse-warden-study-source.png",
+      "sourceSha256": "a5e5f097a41191e6689b5e23e24f80b7a2d2ab06fb30be409c3bc830c23bbf88",
+      "runtimePath": "public/assets/characters/iona/b01a/eclipse-warden-48-silhouette.png",
+      "sha256": "aa7c9a6bdb2e52b796a54f143c1df4673bdb022d17d181ecc6d2deba1a0a4830",
+      "bytes": 595,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-eclipse-warden-study-color-60",
+      "form": "Eclipse Warden",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 60,
+      "dimensions": "35x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/eclipse-warden-study-source.png",
+      "sourceSha256": "a5e5f097a41191e6689b5e23e24f80b7a2d2ab06fb30be409c3bc830c23bbf88",
+      "runtimePath": "public/assets/characters/iona/b01a/eclipse-warden-60.png",
+      "sha256": "78a3c4d090304855f674515c239a69e816f7f052a13d4bfe33a72702b2317e23",
+      "bytes": 3955,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-eclipse-warden-study-solid-black-silhouette-60",
+      "form": "Eclipse Warden",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 60,
+      "dimensions": "35x60",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/eclipse-warden-study-source.png",
+      "sourceSha256": "a5e5f097a41191e6689b5e23e24f80b7a2d2ab06fb30be409c3bc830c23bbf88",
+      "runtimePath": "public/assets/characters/iona/b01a/eclipse-warden-60-silhouette.png",
+      "sha256": "e14a11e4e09464fb68acc081426b1eaec5fdf9091f126853412d2ab14fb332f7",
+      "bytes": 838,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-eclipse-warden-study-color-72",
+      "form": "Eclipse Warden",
+      "direction": "right",
+      "variant": "color",
+      "targetHeight": 72,
+      "dimensions": "42x72",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/eclipse-warden-study-source.png",
+      "sourceSha256": "a5e5f097a41191e6689b5e23e24f80b7a2d2ab06fb30be409c3bc830c23bbf88",
+      "runtimePath": "public/assets/characters/iona/b01a/eclipse-warden-72.png",
+      "sha256": "c021e5ba25c7ebc8a4d8a53848f3e04397651060a72125a7d4160290252bb197",
+      "bytes": 5366,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    },
+    {
+      "assetId": "iona-b01a-eclipse-warden-study-solid-black-silhouette-72",
+      "form": "Eclipse Warden",
+      "direction": "right",
+      "variant": "solid-black-silhouette",
+      "targetHeight": 72,
+      "dimensions": "42x72",
+      "pivot": {
+        "x": 0.5,
+        "y": 1
+      },
+      "sourcePath": "art-source/characters/iona/b01a/eclipse-warden-study-source.png",
+      "sourceSha256": "a5e5f097a41191e6689b5e23e24f80b7a2d2ab06fb30be409c3bc830c23bbf88",
+      "runtimePath": "public/assets/characters/iona/b01a/eclipse-warden-72-silhouette.png",
+      "sha256": "894fe15befaf41251bd1bab6edead4ce60e1332a6451a3ed7d5137732dc998c8",
+      "bytes": 1009,
+      "ownerStatus": "PENDING_OWNER_REVIEW",
+      "runtimeIntegrated": true,
+      "integratedScene": "src/game/scenes/ChamberScene.ts?artReview=1"
+    }
+  ],
+  "candidatePalette": [
+    {
+      "role": "pearl fabric / hair light",
+      "hex": "#E4D7D0"
+    },
+    {
+      "role": "deep navy cloth / outline",
+      "hex": "#282743"
+    },
+    {
+      "role": "cool slate shadow",
+      "hex": "#68657B"
+    },
+    {
+      "role": "single teal identity accent",
+      "hex": "#35AEB0"
+    },
+    {
+      "role": "warm copper hardware",
+      "hex": "#A8694E"
+    },
+    {
+      "role": "warm skin midtone",
+      "hex": "#E9A480"
+    }
+  ],
+  "paletteSampleFromBase60px": [
+    {
+      "hex": "#000000",
+      "pixels": 54
+    },
+    {
+      "hex": "#313053",
+      "pixels": 15
+    },
+    {
+      "hex": "#323154",
+      "pixels": 10
+    },
+    {
+      "hex": "#2f2e51",
+      "pixels": 9
+    },
+    {
+      "hex": "#302f52",
+      "pixels": 9
+    },
+    {
+      "hex": "#302f51",
+      "pixels": 9
+    },
+    {
+      "hex": "#313052",
+      "pixels": 9
+    },
+    {
+      "hex": "#111022",
+      "pixels": 9
+    },
+    {
+      "hex": "#100f21",
+      "pixels": 9
+    },
+    {
+      "hex": "#111023",
+      "pixels": 8
+    },
+    {
+      "hex": "#302e51",
+      "pixels": 7
+    },
+    {
+      "hex": "#121125",
+      "pixels": 6
+    },
+    {
+      "hex": "#2f2e50",
+      "pixels": 6
+    },
+    {
+      "hex": "#101022",
+      "pixels": 5
+    },
+    {
+      "hex": "#312f53",
+      "pixels": 5
+    },
+    {
+      "hex": "#302f53",
+      "pixels": 5
+    },
+    {
+      "hex": "#100f22",
+      "pixels": 5
+    },
+    {
+      "hex": "#0f0e1f",
+      "pixels": 5
+    },
+    {
+      "hex": "#100f23",
+      "pixels": 5
+    },
+    {
+      "hex": "#0e0d1f",
+      "pixels": 5
+    }
+  ],
+  "notes": [
+    "These generated images are original directional candidates, not canonical/approved art or animation frames.",
+    "The full-resolution source PNGs are preserved unchanged. Preview PNGs harden alpha at the recorded threshold and use nearest-neighbor resampling to the stated logical height.",
+    "Solid silhouettes are deterministic black masks of the actual cleaned color previews, not replacement character drawings.",
+    "B01A review assets are loaded only by the development-only artReview query path; normal B00 gameplay retains its programmer rectangle."
+  ]
+}

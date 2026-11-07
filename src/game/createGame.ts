@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import { ChamberScene } from './scenes/ChamberScene';
-export function createGame(onPause: () => void, onController: (active: boolean) => void): { game: Phaser.Game; scene: ChamberScene } {
-  const scene = new ChamberScene(onPause, onController);
+export function createGame(onPause: () => void, onController: (active: boolean) => void, options: { artReview?: boolean } = {}): { game: Phaser.Game; scene: ChamberScene } {
+  const scene = new ChamberScene(onPause, onController, { artReview: import.meta.env.DEV && options.artReview === true });
   const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: 'game-root',
@@ -18,7 +18,7 @@ export function createGame(onPause: () => void, onController: (active: boolean) 
     const canvas = game.canvas;
     if (!canvas) return;
     canvas.tabIndex = 0;
-    canvas.setAttribute('aria-label', 'Crownflare playable test chamber');
+    canvas.setAttribute('aria-label', options.artReview ? 'Crownflare B01A true-scale character review' : 'Crownflare playable test chamber');
     canvas.focus();
   });
   return { game, scene };
