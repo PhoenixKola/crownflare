@@ -1,14 +1,14 @@
 {
   "status": "PASS",
-  "capturedAt": "2026-11-07T16:45:09.686Z",
+  "capturedAt": "2026-11-07T23:43:47.480Z",
   "chrome": "156.0.8078.80",
-  "gitHeadAtCapture": "f004beba0904561757536d37163ff3a64a96385c",
-  "sourceSha256": "c613e607a60d55c0d8ff40efa4bfe3e4a865cad903954ae1f95e3e03cbb7d6b8",
+  "gitHeadAtCapture": "8b106db0ac5ddf1fefe511b509c0fe083613c397",
+  "sourceSha256": "698cd81842304aed09345cb6a44cabf220974a0b7c88e5901df30d78372ffb63",
   "video": {
     "path": "review-evidence/b02/iona-b02-gameplay.webm",
-    "sha256": "b6d12202297f9b0f2897d5644c33eb566f33a406bd808670635fd607338d5da2",
-    "bytes": 12142003,
-    "durationSeconds": 100.16,
+    "sha256": "4d66fccd5d0cf8ee90c1c6bdf5e562b6aec69270f1c33262126086f60266797c",
+    "bytes": 11656871,
+    "durationSeconds": 102.96,
     "width": 1280,
     "height": 720,
     "rFrameRate": "25/1",
@@ -26,19 +26,19 @@
     ]
   },
   "recording": {
-    "videoCaptureWallClockSeconds": 107.58,
-    "videoTimeScale": 0.931,
-    "titleWallClockSeconds": 1.27,
-    "activeGameplayWallClockSeconds": 105.27,
-    "estimatedActiveVideoSeconds": 98.01,
-    "pausedWallClockSeconds": 0.51,
-    "estimatedActiveVideoFraction": 0.979,
+    "videoCaptureWallClockSeconds": 108.48,
+    "videoTimeScale": 0.949,
+    "titleWallClockSeconds": 1.57,
+    "activeGameplayWallClockSeconds": 105.68,
+    "estimatedActiveVideoSeconds": 100.3,
+    "pausedWallClockSeconds": 0.54,
+    "estimatedActiveVideoFraction": 0.974,
     "timingNote": "Action wall times are mapped to video time using the ratio of ffprobe duration to measured capture wall time; estimated video timestamps account for capture cadence.",
     "focusedMotion": {
-      "startAfterGameplayWallClockSeconds": 22.25,
-      "estimatedVideoStartSeconds": 22.35,
-      "durationWallClockSeconds": 28.68,
-      "estimatedVideoDurationSeconds": 26.7,
+      "startAfterGameplayWallClockSeconds": 35.75,
+      "estimatedVideoStartSeconds": 35.96,
+      "durationWallClockSeconds": 28.07,
+      "estimatedVideoDurationSeconds": 26.64,
       "background": "calm",
       "vfx": "off",
       "scale": 60
@@ -77,7 +77,7 @@
     "productionRouteIgnored": true
   },
   "presentationAudit": {
-    "sampleCount": 518,
+    "sampleCount": 520,
     "violations": [],
     "maxScaleDelta": 0,
     "maxFootXDelta": 0,
@@ -88,7 +88,7 @@
     "after": "review-evidence/b02/iona-b02-shrink-after.png",
     "composite": "review-evidence/b02/iona-b02-shrink-before-after.png",
     "beforeSourceSha256": "d44b3915e34f5e7ba3dea925ab1f4096940961fd801322f89b49ab6506803f1b",
-    "afterSourceSha256": "b5f4582df2ef7a2a7d2fb4bb03657c46ac8b76918ac022dd5378612eb632e0d9",
+    "afterSourceSha256": "0ef4aacac2e21b8d96202f431914c433a402ef381662c421d98ff4dc9d6b98cb",
     "beforeScaleSource": "B01D route captured reference at 60px by per-frame visible-alpha normalization",
     "afterScale": 1,
     "afterFrame": "jump-5"
@@ -123,57 +123,57 @@
   ],
   "actions": [
     {
-      "secondsAfterGameplayStartWallClock": 0.23,
-      "estimatedVideoSeconds": 1.85,
+      "secondsAfterGameplayStartWallClock": 0.3,
+      "estimatedVideoSeconds": 2.31,
       "label": "mouse-combo-whiff",
       "x": 80,
-      "targetX": 233.41
+      "targetX": 233.93
     },
     {
-      "secondsAfterGameplayStartWallClock": 5.06,
-      "estimatedVideoSeconds": 6.34,
+      "secondsAfterGameplayStartWallClock": 5.96,
+      "estimatedVideoSeconds": 7.68,
       "label": "auditioned-13-original-cues"
     },
     {
-      "secondsAfterGameplayStartWallClock": 6.97,
-      "estimatedVideoSeconds": 8.12,
+      "secondsAfterGameplayStartWallClock": 8.34,
+      "estimatedVideoSeconds": 9.94,
       "label": "run-right",
-      "x": 153.5
+      "x": 152.4
     },
     {
-      "secondsAfterGameplayStartWallClock": 7.51,
-      "estimatedVideoSeconds": 8.62,
+      "secondsAfterGameplayStartWallClock": 8.9,
+      "estimatedVideoSeconds": 10.47,
       "label": "run-left-reversal",
-      "x": 99.3
+      "x": 94
     },
     {
-      "secondsAfterGameplayStartWallClock": 8.91,
-      "estimatedVideoSeconds": 9.93,
+      "secondsAfterGameplayStartWallClock": 10.75,
+      "estimatedVideoSeconds": 12.23,
       "label": "short-and-held-jump",
-      "shortApex": 202.11,
-      "longApex": 177.44
+      "shortApex": 197.22,
+      "longApex": 177.02
     },
     {
-      "secondsAfterGameplayStartWallClock": 9.44,
-      "estimatedVideoSeconds": 10.42,
+      "secondsAfterGameplayStartWallClock": 11.32,
+      "estimatedVideoSeconds": 12.77,
       "label": "synthetic-focus-pause-and-resume"
     },
     {
-      "secondsAfterGameplayStartWallClock": 16.37,
-      "estimatedVideoSeconds": 16.87,
+      "secondsAfterGameplayStartWallClock": 18.25,
+      "estimatedVideoSeconds": 19.35,
       "label": "dash-solid-barrier",
       "x": 1105.5,
       "cameraX": 818
     },
     {
-      "secondsAfterGameplayStartWallClock": 18.36,
-      "estimatedVideoSeconds": 18.73,
+      "secondsAfterGameplayStartWallClock": 20.3,
+      "estimatedVideoSeconds": 21.29,
       "label": "held-j-repeat-suppressed",
       "events": 1
     },
     {
-      "secondsAfterGameplayStartWallClock": 20.31,
-      "estimatedVideoSeconds": 20.54,
+      "secondsAfterGameplayStartWallClock": 33.86,
+      "estimatedVideoSeconds": 34.16,
       "label": "buffered-three-hit-combo",
       "contacts": [
         {
@@ -194,17 +194,17 @@
       ]
     },
     {
-      "secondsAfterGameplayStartWallClock": 22.13,
-      "estimatedVideoSeconds": 22.24,
+      "secondsAfterGameplayStartWallClock": 35.63,
+      "estimatedVideoSeconds": 35.84,
       "label": "wrong-facing-combo-whiff",
       "result": "miss",
       "targetHealth": 3
     },
     {
-      "secondsAfterGameplayStartWallClock": 50.93,
-      "estimatedVideoSeconds": 49.05,
+      "secondsAfterGameplayStartWallClock": 63.82,
+      "estimatedVideoSeconds": 62.6,
       "label": "focused-calm-motion-section",
-      "durationSeconds": 28.68,
+      "durationSeconds": 28.07,
       "scale": 60,
       "vfx": "off"
     }
@@ -763,47 +763,47 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:70:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "palm-hit",
-      "token": "combat:70:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "kick-whoosh",
-      "token": "combat:71:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "kick-hit",
-      "token": "combat:71:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "forearm-whoosh",
-      "token": "combat:72:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "forearm-hit",
-      "token": "combat:72:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "land",
-      "token": "local:73",
-      "volume": 0.5
-    },
-    {
       "cue": "step-a",
-      "token": "local:74",
+      "token": "local:70",
       "volume": 0.5
     },
     {
       "cue": "step-b",
+      "token": "local:71",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:72:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-hit",
+      "token": "combat:72:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "kick-whoosh",
+      "token": "combat:73:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "kick-hit",
+      "token": "combat:73:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "forearm-whoosh",
+      "token": "combat:74:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "forearm-hit",
+      "token": "combat:74:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
       "token": "local:75",
       "volume": 0.5
     },
@@ -833,47 +833,47 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:81:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "miss",
-      "token": "combat:81:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "land",
-      "token": "local:82",
-      "volume": 0.5
-    },
-    {
-      "cue": "jump",
-      "token": "local:83",
-      "volume": 0.5
-    },
-    {
-      "cue": "dash-start",
-      "token": "local:84",
-      "volume": 0.5
-    },
-    {
-      "cue": "dash-brake",
-      "token": "local:85",
-      "volume": 0.5
-    },
-    {
-      "cue": "land",
-      "token": "local:86",
+      "cue": "step-b",
+      "token": "local:81",
       "volume": 0.5
     },
     {
       "cue": "step-a",
+      "token": "local:82",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:83:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:83:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
+      "token": "local:84",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:85",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-start",
+      "token": "local:86",
+      "volume": 0.5
+    },
+    {
+      "cue": "dash-brake",
       "token": "local:87",
       "volume": 0.5
     },
     {
-      "cue": "step-b",
+      "cue": "land",
       "token": "local:88",
       "volume": 0.5
     },
@@ -883,27 +883,27 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:90:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "miss",
-      "token": "combat:90:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "land",
-      "token": "local:91",
-      "volume": 0.5
-    },
-    {
       "cue": "step-b",
-      "token": "local:92",
+      "token": "local:90",
       "volume": 0.5
     },
     {
       "cue": "step-a",
+      "token": "local:91",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:92:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:92:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
       "token": "local:93",
       "volume": 0.5
     },
@@ -928,32 +928,32 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:98:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "miss",
-      "token": "combat:98:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "jump",
-      "token": "local:99",
-      "volume": 0.5
-    },
-    {
-      "cue": "land",
-      "token": "local:100",
-      "volume": 0.5
-    },
-    {
       "cue": "step-b",
-      "token": "local:101",
+      "token": "local:98",
       "volume": 0.5
     },
     {
       "cue": "step-a",
+      "token": "local:99",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:100:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:100:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:101",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
       "token": "local:102",
       "volume": 0.5
     },
@@ -963,22 +963,22 @@
       "volume": 0.5
     },
     {
-      "cue": "dash-start",
+      "cue": "step-a",
       "token": "local:104",
       "volume": 0.5
     },
     {
-      "cue": "land",
+      "cue": "dash-start",
       "token": "local:105",
       "volume": 0.5
     },
     {
-      "cue": "dash-brake",
+      "cue": "land",
       "token": "local:106",
       "volume": 0.5
     },
     {
-      "cue": "step-a",
+      "cue": "dash-brake",
       "token": "local:107",
       "volume": 0.5
     },
@@ -993,18 +993,18 @@
       "volume": 0.5
     },
     {
+      "cue": "step-b",
+      "token": "local:110",
+      "volume": 0.5
+    },
+    {
       "cue": "palm-whoosh",
-      "token": "combat:110:whoosh",
+      "token": "combat:111:whoosh",
       "volume": 0.5
     },
     {
       "cue": "miss",
-      "token": "combat:110:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:111",
+      "token": "combat:111:contact",
       "volume": 0.5
     },
     {
@@ -1018,17 +1018,17 @@
       "volume": 0.5
     },
     {
-      "cue": "jump",
+      "cue": "step-a",
       "token": "local:114",
       "volume": 0.5
     },
     {
-      "cue": "land",
+      "cue": "jump",
       "token": "local:115",
       "volume": 0.5
     },
     {
-      "cue": "step-a",
+      "cue": "land",
       "token": "local:116",
       "volume": 0.5
     },
@@ -1048,18 +1048,18 @@
       "volume": 0.5
     },
     {
+      "cue": "step-a",
+      "token": "local:120",
+      "volume": 0.5
+    },
+    {
       "cue": "palm-whoosh",
-      "token": "combat:120:whoosh",
+      "token": "combat:121:whoosh",
       "volume": 0.5
     },
     {
       "cue": "miss",
-      "token": "combat:120:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:121",
+      "token": "combat:121:contact",
       "volume": 0.5
     },
     {
@@ -1073,17 +1073,17 @@
       "volume": 0.5
     },
     {
-      "cue": "dash-start",
+      "cue": "step-b",
       "token": "local:124",
       "volume": 0.5
     },
     {
-      "cue": "dash-brake",
+      "cue": "dash-start",
       "token": "local:125",
       "volume": 0.5
     },
     {
-      "cue": "step-b",
+      "cue": "dash-brake",
       "token": "local:126",
       "volume": 0.5
     },
@@ -1098,27 +1098,27 @@
       "volume": 0.5
     },
     {
+      "cue": "step-a",
+      "token": "local:129",
+      "volume": 0.5
+    },
+    {
       "cue": "palm-whoosh",
-      "token": "combat:129:whoosh",
+      "token": "combat:130:whoosh",
       "volume": 0.5
     },
     {
       "cue": "miss",
-      "token": "combat:129:contact",
+      "token": "combat:130:contact",
       "volume": 0.5
     },
     {
       "cue": "jump",
-      "token": "local:130",
-      "volume": 0.5
-    },
-    {
-      "cue": "land",
       "token": "local:131",
       "volume": 0.5
     },
     {
-      "cue": "step-a",
+      "cue": "land",
       "token": "local:132",
       "volume": 0.5
     },
@@ -1148,18 +1148,18 @@
       "volume": 0.5
     },
     {
+      "cue": "step-a",
+      "token": "local:138",
+      "volume": 0.5
+    },
+    {
       "cue": "palm-whoosh",
-      "token": "combat:138:whoosh",
+      "token": "combat:139:whoosh",
       "volume": 0.5
     },
     {
       "cue": "miss",
-      "token": "combat:138:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:139",
+      "token": "combat:139:contact",
       "volume": 0.5
     },
     {
@@ -1173,32 +1173,32 @@
       "volume": 0.5
     },
     {
-      "cue": "jump",
+      "cue": "step-b",
       "token": "local:142",
       "volume": 0.5
     },
     {
-      "cue": "land",
+      "cue": "jump",
       "token": "local:143",
       "volume": 0.5
     },
     {
-      "cue": "dash-start",
+      "cue": "land",
       "token": "local:144",
       "volume": 0.5
     },
     {
-      "cue": "dash-brake",
+      "cue": "step-a",
       "token": "local:145",
       "volume": 0.5
     },
     {
-      "cue": "step-b",
+      "cue": "dash-start",
       "token": "local:146",
       "volume": 0.5
     },
     {
-      "cue": "step-a",
+      "cue": "dash-brake",
       "token": "local:147",
       "volume": 0.5
     },
@@ -1208,23 +1208,23 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:149:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "miss",
-      "token": "combat:149:contact",
-      "volume": 0.5
-    },
-    {
       "cue": "step-a",
-      "token": "local:150",
+      "token": "local:149",
       "volume": 0.5
     },
     {
       "cue": "step-b",
-      "token": "local:151",
+      "token": "local:150",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:151:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:151:contact",
       "volume": 0.5
     },
     {
@@ -1248,32 +1248,32 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:156:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "miss",
-      "token": "combat:156:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "jump",
-      "token": "local:157",
-      "volume": 0.5
-    },
-    {
-      "cue": "land",
-      "token": "local:158",
-      "volume": 0.5
-    },
-    {
       "cue": "step-a",
-      "token": "local:159",
+      "token": "local:156",
       "volume": 0.5
     },
     {
       "cue": "step-b",
+      "token": "local:157",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:158:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:158:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:159",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
       "token": "local:160",
       "volume": 0.5
     },
@@ -1283,22 +1283,22 @@
       "volume": 0.5
     },
     {
-      "cue": "dash-start",
+      "cue": "step-b",
       "token": "local:162",
       "volume": 0.5
     },
     {
-      "cue": "dash-brake",
+      "cue": "step-a",
       "token": "local:163",
       "volume": 0.5
     },
     {
-      "cue": "step-b",
+      "cue": "dash-start",
       "token": "local:164",
       "volume": 0.5
     },
     {
-      "cue": "step-a",
+      "cue": "dash-brake",
       "token": "local:165",
       "volume": 0.5
     },
@@ -1308,23 +1308,23 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:167:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "miss",
-      "token": "combat:167:contact",
-      "volume": 0.5
-    },
-    {
       "cue": "step-a",
-      "token": "local:168",
+      "token": "local:167",
       "volume": 0.5
     },
     {
       "cue": "step-b",
-      "token": "local:169",
+      "token": "local:168",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:169:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:169:contact",
       "volume": 0.5
     },
     {
@@ -1333,43 +1333,43 @@
       "volume": 0.5
     },
     {
-      "cue": "jump",
+      "cue": "step-b",
       "token": "local:171",
       "volume": 0.5
     },
     {
-      "cue": "land",
+      "cue": "step-a",
       "token": "local:172",
       "volume": 0.5
     },
     {
-      "cue": "step-b",
+      "cue": "jump",
       "token": "local:173",
       "volume": 0.5
     },
     {
-      "cue": "step-a",
+      "cue": "land",
       "token": "local:174",
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:175:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "miss",
-      "token": "combat:175:contact",
-      "volume": 0.5
-    },
-    {
       "cue": "step-b",
-      "token": "local:176",
+      "token": "local:175",
       "volume": 0.5
     },
     {
       "cue": "step-a",
-      "token": "local:177",
+      "token": "local:176",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:177:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:177:contact",
       "volume": 0.5
     },
     {
@@ -1378,22 +1378,22 @@
       "volume": 0.5
     },
     {
-      "cue": "dash-start",
+      "cue": "step-a",
       "token": "local:179",
       "volume": 0.5
     },
     {
-      "cue": "dash-brake",
+      "cue": "step-b",
       "token": "local:180",
       "volume": 0.5
     },
     {
-      "cue": "step-a",
+      "cue": "dash-start",
       "token": "local:181",
       "volume": 0.5
     },
     {
-      "cue": "step-b",
+      "cue": "dash-brake",
       "token": "local:182",
       "volume": 0.5
     },
@@ -1403,32 +1403,32 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:184:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "miss",
-      "token": "combat:184:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "jump",
-      "token": "local:185",
-      "volume": 0.5
-    },
-    {
-      "cue": "land",
-      "token": "local:186",
-      "volume": 0.5
-    },
-    {
       "cue": "step-b",
-      "token": "local:187",
+      "token": "local:184",
       "volume": 0.5
     },
     {
       "cue": "step-a",
+      "token": "local:185",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:186:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:186:contact",
+      "volume": 0.5
+    },
+    {
+      "cue": "jump",
+      "token": "local:187",
+      "volume": 0.5
+    },
+    {
+      "cue": "land",
       "token": "local:188",
       "volume": 0.5
     },
@@ -1463,23 +1463,23 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:195:whoosh",
-      "volume": 0.5
-    },
-    {
-      "cue": "miss",
-      "token": "combat:195:contact",
-      "volume": 0.5
-    },
-    {
       "cue": "step-b",
-      "token": "local:196",
+      "token": "local:195",
       "volume": 0.5
     },
     {
       "cue": "step-a",
-      "token": "local:197",
+      "token": "local:196",
+      "volume": 0.5
+    },
+    {
+      "cue": "palm-whoosh",
+      "token": "combat:197:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:197:contact",
       "volume": 0.5
     },
     {
@@ -1493,27 +1493,27 @@
       "volume": 0.5
     },
     {
-      "cue": "jump",
+      "cue": "step-b",
       "token": "local:200",
       "volume": 0.5
     },
     {
-      "cue": "dash-start",
+      "cue": "jump",
       "token": "local:201",
       "volume": 0.5
     },
     {
-      "cue": "dash-brake",
+      "cue": "dash-start",
       "token": "local:202",
       "volume": 0.5
     },
     {
-      "cue": "land",
+      "cue": "dash-brake",
       "token": "local:203",
       "volume": 0.5
     },
     {
-      "cue": "step-b",
+      "cue": "land",
       "token": "local:204",
       "volume": 0.5
     },
@@ -1528,18 +1528,18 @@
       "volume": 0.5
     },
     {
+      "cue": "step-a",
+      "token": "local:207",
+      "volume": 0.5
+    },
+    {
       "cue": "palm-whoosh",
-      "token": "combat:207:whoosh",
+      "token": "combat:208:whoosh",
       "volume": 0.5
     },
     {
       "cue": "miss",
-      "token": "combat:207:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:208",
+      "token": "combat:208:contact",
       "volume": 0.5
     },
     {
@@ -1563,23 +1563,23 @@
       "volume": 0.5
     },
     {
-      "cue": "palm-whoosh",
-      "token": "combat:213:whoosh",
+      "cue": "step-b",
+      "token": "local:213",
       "volume": 0.5
     },
     {
-      "cue": "miss",
-      "token": "combat:213:contact",
-      "volume": 0.5
-    },
-    {
-      "cue": "jump",
+      "cue": "step-a",
       "token": "local:214",
       "volume": 0.5
     },
     {
-      "cue": "land",
-      "token": "local:215",
+      "cue": "palm-whoosh",
+      "token": "combat:215:whoosh",
+      "volume": 0.5
+    },
+    {
+      "cue": "miss",
+      "token": "combat:215:contact",
       "volume": 0.5
     },
     {
@@ -2461,291 +2461,6 @@
       "cue": "step-a",
       "token": "local:391",
       "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:392",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:393",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:394",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:395",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:396",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:397",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:398",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:399",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:400",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:401",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:402",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:403",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:404",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:405",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:406",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:407",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:408",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:409",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:410",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:411",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:412",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:413",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:414",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:415",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:416",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:417",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:418",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:419",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:420",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:421",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:422",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:423",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:424",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:425",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:426",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:427",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:428",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:429",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:430",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:431",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:432",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:433",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:434",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:435",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:436",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:437",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:438",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:439",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:440",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:441",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:442",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:443",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:444",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:445",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:446",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-a",
-      "token": "local:447",
-      "volume": 0.5
-    },
-    {
-      "cue": "step-b",
-      "token": "local:448",
-      "volume": 0.5
     }
   ],
   "errors": [],
@@ -2765,82 +2480,5 @@
     "b02-scale-72.png",
     "iona-b02-shrink-after.png",
     "iona-b02-shrink-before-after.png"
-  ],
-  "sourceSha256AtCapture": "3363224c76b9e2242c090b72a19b1585ca119c597b65e98325f5205537162a16",
-  "sourceSha256Note": "Final source digest includes the corrected presentation-test expectation, forward-slash shrink evidence path, and required B02 video artifact filename. Game runtime and captured video bytes are unchanged from the headed Chrome run.",
-  "repositorySize": {
-    "baselineCommittedFileBytes": 89967442,
-    "currentTrackedFileBytes": 89974353,
-    "newB02Files": 15,
-    "newB02FileBytes": 13246786,
-    "workingTreeDeliverableBytesExcludingGitignoredDependenciesAndBuild": 103221139,
-    "netIncreaseBytes": 13253697,
-    "netIncreasePercent": 14.73,
-    "existingAuditedRuntimeAndSourceAssets": {
-      "files": 455,
-      "bytes": 50533893
-    },
-    "largestNewFile": {
-      "path": "review-evidence/b02/iona-b02-gameplay.webm",
-      "bytes": 12142003
-    },
-    "otherNewB02FilesBytes": 1104783,
-    "gitObjectDatabaseBeforeAndAfter": "98.05 MiB; B02 files remain uncommitted and are not yet stored in Git objects"
-  },
-  "commands": [
-    {
-      "command": "npm ci",
-      "result": "PASS; pre-edit baseline; 19 packages installed; npm reported 0 vulnerabilities"
-    },
-    {
-      "command": "npm run typecheck",
-      "result": "PASS; final B02 source"
-    },
-    {
-      "command": "npm test",
-      "result": "PASS; 42 tests, 42 passed, 0 failed"
-    },
-    {
-      "command": "npm run build",
-      "result": "PASS; included in qa:b02; Vite emitted existing >500kB bundle warning"
-    },
-    {
-      "command": "npm run audit:assets",
-      "result": "PASS; 455 assets; 50,533,893 bytes; 0 budget violations"
-    },
-    {
-      "command": "npm audit",
-      "result": "PASS; 0 vulnerabilities"
-    },
-    {
-      "command": "npm run qa:art:portable",
-      "result": "PASS; B01D/B01E manifests, hashes and CRLF round trips valid"
-    },
-    {
-      "command": "npm run qa:chrome:local",
-      "result": "PASS; pre-edit baseline at f004; installed Chrome; no browser errors"
-    },
-    {
-      "command": "npm run qa:controller:local",
-      "result": "PASS; pre-edit baseline; synthetic Gamepad API only; physical controller not tested"
-    },
-    {
-      "command": "npm run qa:iona:b01f",
-      "result": "PASS; pre-edit baseline on f004 source; existing report still marks normal-speed viewing unavailable"
-    },
-    {
-      "command": "npm run qa:b02",
-      "result": "PASS; headed Chrome 156; 100.16s capture; 98.01s estimated active gameplay; 30 Phaser crops; 518 scale/anchor/body samples; production route ignored"
-    }
-  ],
-  "gates": {
-    "technical": "PASS",
-    "artMotion": "PENDING_OWNER_NORMAL_SPEED_REVIEW",
-    "ownerApproval": "PENDING_OWNER_REVIEW",
-    "audio": "IMPLEMENTED_NOT_HEARD",
-    "promotion": {
-      "readyToPromote": false,
-      "ownerApproval": "PENDING_OWNER_REVIEW"
-    }
-  }
+  ]
 }

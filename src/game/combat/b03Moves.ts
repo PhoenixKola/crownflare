@@ -1,6 +1,6 @@
 import type { ActionDef } from './sim';
 
-export type B03MoveId = 'light-1' | 'light-2' | 'light-3' | 'heavy' | 'air-light' | 'resonance';
+export type B03MoveId = 'light-1' | 'light-2' | 'light-3' | 'heavy' | 'air-light' | 'resonance' | 'finisher';
 export type Facing = -1 | 1;
 export type CombatRect = { readonly left: number; readonly top: number; readonly right: number; readonly bottom: number };
 export type MoveHitbox = { readonly forward: number; readonly top: number; readonly width: number; readonly height: number };
@@ -18,6 +18,7 @@ export type B03MoveDefinition = {
   readonly cancelWindow: readonly [number, number];
   readonly hitstopMs: number;
   readonly animation: { readonly startup: string; readonly contact: string; readonly recovery: string };
+  readonly dawnrushEnergyCost?: number;
 };
 
 const action = (id: string, startupMs: number, activeMs: number, recoveryMs: number, contactAtMs: number): ActionDef => ({
@@ -38,6 +39,8 @@ export const B03_MOVES: Readonly<Record<B03MoveId, B03MoveDefinition>> = {
   heavy: { id: 'heavy', action: action('iona-heavy-launcher', 225, 80, 385, 275), hitbox: { forward: 6, top: 27, width: 38, height: 34 }, damage: 2, knockbackX: 78, knockbackY: -270, resonanceCost: 0, cooldownMs: 0, grounded: true, airborne: false, cancelWindow: [310, 470], hitstopMs: 94, animation: { startup: 'heavy-windup', contact: 'heavy-contact', recovery: 'heavy-recovery' } },
   'air-light': { id: 'air-light', action: action('iona-aerial-strike', 115, 95, 280, 160), hitbox: { forward: 7, top: 46, width: 43, height: 26 }, damage: 1, knockbackX: 94, knockbackY: 25, resonanceCost: 0, cooldownMs: 0, grounded: false, airborne: true, cancelWindow: [220, 325], hitstopMs: 52, animation: { startup: 'air-windup', contact: 'air-contact', recovery: 'air-recovery' } },
   resonance: { id: 'resonance', action: action('iona-resonance-imprint', 270, 90, 480, 340), hitbox: { forward: 15, top: 34, width: 68, height: 29 }, damage: 2, knockbackX: 110, knockbackY: -35, resonanceCost: 35, cooldownMs: 900, grounded: true, airborne: false, cancelWindow: [390, 530], hitstopMs: 66, animation: { startup: 'special-windup', contact: 'special-contact', recovery: 'special-recovery' } },
+  // This inaccessible fallback keeps the shared move ID type total; B03 input never selects the B05-only finisher.
+  finisher: { id: 'finisher', action: action('iona-dawnrush-finisher-disabled-in-base', 300, 100, 420, 352), hitbox: { forward: 0, top: 0, width: 0, height: 0 }, damage: 0, knockbackX: 0, knockbackY: 0, resonanceCost: 101, cooldownMs: 9999, grounded: true, airborne: false, cancelWindow: [999, 1000], hitstopMs: 0, animation: { startup: 'heavy-windup', contact: 'heavy-contact', recovery: 'heavy-recovery' } },
 };
 
 export type CombatantGeometry = { readonly x: number; readonly footY: number; readonly width: number; readonly height: number; readonly hp: number; readonly invulnerableMs?: number; readonly guarding?: boolean; readonly alive?: boolean };

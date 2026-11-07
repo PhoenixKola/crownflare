@@ -2,6 +2,8 @@
 
 **Rule:** Milestones are meaningful production phases, not guaranteed release dates. No new phase starts simply because builds are green. Inside each phase, break corrections into small issue-based Codex batches. Record `TECH`, `ART-MOTION`, `OWNER APPROVAL` separately.
 
+**B05 gate status:** Dawnrush implementation and technical review package are complete. B00–B05 technical gates pass, including generated-source, runtime, unit, build, asset, browser-combat, and production-route checks. Owner art-motion approval, human audio listening, and physical controller review remain pending; B06 stays gated until the owner reviews and accepts B05.
+
 | Batch | Product-visible deliverable | Gate to next phase |
 |---|---|---|
 | **B00** Foundation | New standalone Git/source, actual title→test chamber, movement/jump/dash/collision/camera/pause/controller foundation, deterministic core skeleton, docs, QA commands | Real browser loop verified, npm ci/typecheck/build/tests and Chrome smoke green; placeholders correctly labeled; B01 art brief ready |

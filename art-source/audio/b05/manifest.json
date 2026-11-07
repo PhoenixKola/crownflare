@@ -99,6 +99,42 @@
       "design": "soft low thump + short metallic partials",
       "seed": 5112,
       "peak": 0.57912
+    },
+    {
+      "cue": "transform-revert",
+      "file": "public/assets/audio/b05/transform-revert.wav",
+      "sha256": "3adbbf3d0cae65c421015c2ca45dc3e40391238a2c5ef6c9aaa531e3da3b6a6d",
+      "durationMs": 460,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "descending solar harmonics + soft clothy release",
+      "seed": 5113,
+      "peak": 0.38236
+    },
+    {
+      "cue": "dawnrush-hurt",
+      "file": "public/assets/audio/b05/dawnrush-hurt.wav",
+      "sha256": "5865d4a30d4c70f4e76595819e35b82fce991ca805e4f7737368ffd3adc2b203",
+      "durationMs": 220,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "muted amber crack + short low pulse",
+      "seed": 5114,
+      "peak": 0.56062
+    },
+    {
+      "cue": "finisher",
+      "file": "public/assets/audio/b05/finisher.wav",
+      "sha256": "18e74ab152fa40da6dacf5f13018ae9a174bce9baea484a571d0f691aad48105",
+      "durationMs": 840,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "compressed opposing sub pulses + bright ring-clap tail",
+      "seed": 5115,
+      "peak": 0.63598
     }
   ]
 }

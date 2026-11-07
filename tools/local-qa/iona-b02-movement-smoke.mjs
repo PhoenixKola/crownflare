@@ -69,6 +69,7 @@ async function probeVideo(videoPath){
 async function waitCombatCount(count,targetPage=page,timeout=2500){
   await targetPage.waitForFunction((minimum)=>window.__B02_COMBAT_EVENTS__?.length>=minimum, count,{timeout});
 }
+const tapKey=async(targetPage,key)=>{await targetPage.keyboard.down(key);await targetPage.waitForTimeout(55);await targetPage.keyboard.up(key);};
 
 async function startPresentationAudit(targetPage=page){
   await targetPage.evaluate(()=>{
@@ -149,7 +150,7 @@ async function approachTarget(targetPage=page){
   while(Date.now()<deadline){
     const value=await previewState(targetPage);
     const gap=value.targetX-value.playerX;
-    if(gap>=22&&gap<=40&&value.grounded&&value.facing===1){await targetPage.keyboard.up('d');await waitGrounded(targetPage);return value;}
+    if(gap>=18&&gap<=28&&value.grounded&&value.facing===1){await targetPage.keyboard.up('d');await waitGrounded(targetPage);return value;}
     if(gap<10){
       await targetPage.keyboard.up('d');
       await targetPage.keyboard.down('a');await targetPage.waitForTimeout(100);await targetPage.keyboard.up('a');
@@ -205,9 +206,9 @@ async function makeComparisonBoard(targetPage){
         }else if(action==='dash'){
           await targetPage.keyboard.down(direction);await targetPage.keyboard.down('Shift');await targetPage.waitForTimeout(65);await captureActorCrop(targetPage,scale,action,facing);await targetPage.keyboard.up('Shift');await targetPage.keyboard.up(direction);await targetPage.waitForTimeout(350);
         }else if(action==='combo'){
-          await targetPage.keyboard.press('j');
+          await tapKey(targetPage,'j');
           await targetPage.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.comboStep===1,undefined,{timeout:1200});
-          await targetPage.keyboard.press('j');
+          await tapKey(targetPage,'j');
           await targetPage.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.comboStep===2,undefined,{timeout:1500});
           await targetPage.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.frame==='combo-2-contact',undefined,{timeout:700});
           await captureActorCrop(targetPage,scale,action,facing);
@@ -321,13 +322,15 @@ try{
   logAction('run-left-reversal',{x:state.player.x});
   await waitGrounded();await page.keyboard.down('Space');await page.waitForTimeout(90);await page.keyboard.up('Space');
   await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.grounded===false,undefined,{timeout:1000});
-  const shortApex=(await previewState()).playerY;
+  let shortApex=Infinity;
+  while(!(await previewState()).grounded){shortApex=Math.min(shortApex,(await previewState()).playerY);await page.waitForTimeout(20);}
   await waitGrounded();
   await page.keyboard.down('Space');
   await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.playerY<190,undefined,{timeout:1800}).catch(async(error)=>{throw new Error('Held jump did not reach the expected rise: '+JSON.stringify(await snapshot())+' / '+error.message);});
-  await page.waitForTimeout(140);await page.keyboard.up('Space');
-  const longApex=(await previewState()).playerY;
-  assert(longApex<shortApex,'Held jump should rise higher than the short jump');
+  let longApex=Infinity;
+  for(let sample=0;sample<18;sample++){longApex=Math.min(longApex,(await previewState()).playerY);await page.waitForTimeout(20);}
+  await page.keyboard.up('Space');
+  assert(longApex<shortApex,`Held jump should rise higher than the short jump (short minimum y=${shortApex}, held minimum y=${longApex})`);
   await waitGrounded();logAction('short-and-held-jump',{shortApex,longApex});
 
   // A synthetic focus loss pauses and freezes the real chamber; resume restores canvas focus.
@@ -360,11 +363,23 @@ try{
   let combat=await page.evaluate(()=>window.__B02_COMBAT_EVENTS__);
   assert(combat.length-combatBefore===1,'Held/repeating J created more than one attack contact: '+JSON.stringify(combat.slice(combatBefore)));
   logAction('held-j-repeat-suppressed',{events:combat.length-combatBefore});
-  await resetPreview();await approachTarget();
+  await resetPreview();
+  await page.evaluate(()=>{window.__B02_PREVIOUS_TARGET_X__=window.__CROWNFLARE_QA__?.snapshot().preview?.targetX;});
+  await page.waitForFunction(()=>{
+    const x=window.__CROWNFLARE_QA__?.snapshot().preview?.targetX;
+    const previous=window.__B02_PREVIOUS_TARGET_X__;
+    window.__B02_PREVIOUS_TARGET_X__=x;
+    return x!==undefined&&previous!==undefined&&x<previous-.02;
+  },undefined,{timeout:12000});
+  await approachTarget();
   combatBefore=await page.evaluate(()=>window.__B02_COMBAT_EVENTS__.length);
-  await page.keyboard.press('j');await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.comboStep===1,undefined,{timeout:1000});
-  await page.keyboard.press('j');await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.comboStep===2,undefined,{timeout:1800});
-  await page.keyboard.press('j');
+  await tapKey(page,'j');await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.comboStep===1,undefined,{timeout:1000}).catch(async(error)=>{
+    throw new Error('First buffered combo step did not begin: '+JSON.stringify({preview:await previewState(),events:await page.evaluate((start)=>window.__B02_COMBAT_EVENTS__.slice(start),combatBefore),focus:await page.evaluate(()=>document.activeElement?.tagName+'#'+document.activeElement?.id)})+' / '+error.message);
+  });
+  await tapKey(page,'j');await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.comboStep===2,undefined,{timeout:1800}).catch(async(error)=>{
+    throw new Error('Second buffered combo step did not begin: '+JSON.stringify({preview:await previewState(),events:await page.evaluate((start)=>window.__B02_COMBAT_EVENTS__.slice(start),combatBefore)})+' / '+error.message);
+  });
+  await tapKey(page,'j');
   await page.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().preview?.comboStep===3,undefined,{timeout:3500}).catch(async(error)=>{
     throw new Error('Third buffered combo step did not begin: '+JSON.stringify({preview:await previewState(),events:await page.evaluate((start)=>window.__B02_COMBAT_EVENTS__.slice(start),combatBefore)})+' / '+error.message);
   });
@@ -382,7 +397,7 @@ try{
   await page.waitForFunction(()=>{const s=window.__CROWNFLARE_QA__?.snapshot();return s?.preview?.playerX>=s?.preview?.targetX+58;},undefined,{timeout:3000});
   await page.keyboard.up('d');state=await snapshot();assert(state.preview.facing===1,'Miss setup should face away from the target');
   combatBefore=await page.evaluate(()=>window.__B02_COMBAT_EVENTS__.length);
-  await page.keyboard.press('j');await waitCombatCount(combatBefore+1,page,1800);
+  await tapKey(page,'j');await waitCombatCount(combatBefore+1,page,1800);
   const miss=(await page.evaluate((start)=>window.__B02_COMBAT_EVENTS__.slice(start),combatBefore))[0];
   assert(miss.result==='miss'&&(await previewState()).targetHealth===3,'Miss damaged the training target: '+JSON.stringify(miss));
   logAction('wrong-facing-combo-whiff',{result:miss.result,targetHealth:(await previewState()).targetHealth});
@@ -398,7 +413,7 @@ try{
       if(focusLoop%3===0){await page.keyboard.down('Space');await page.waitForTimeout(focusLoop%2===0?210:360);await page.keyboard.up('Space');}
       if(focusLoop%4===0){await page.keyboard.down('Shift');await page.waitForTimeout(125);await page.keyboard.up('Shift');}
       await page.waitForTimeout(680);await page.keyboard.up(direction);
-      if(focusLoop%2===0)await page.keyboard.press('j');
+      if(focusLoop%2===0)await tapKey(page,'j');
       await page.waitForTimeout(180);focusLoop++;
       if(Date.now()-focusedStartAt>=28000)break;
     }
@@ -414,7 +429,7 @@ try{
       if(loop%3===0){await page.keyboard.down('Space');await page.waitForTimeout(240);await page.keyboard.up('Space');}
       if(loop%4===0){await page.keyboard.down('Shift');await page.waitForTimeout(130);await page.keyboard.up('Shift');}
       await page.waitForTimeout(720);await page.keyboard.up(direction);
-      if(loop%2===0)await page.keyboard.press('j');
+      if(loop%2===0)await tapKey(page,'j');
       await page.waitForTimeout(220);
       if(Date.now()-gameplayStartAt-pauseIntervals.reduce((sum,value)=>sum+value,0)>=105000)break;
     }
@@ -462,7 +477,7 @@ try{
   await lifecyclePage.getByRole('button',{name:/return to title/i}).click();
   await lifecyclePage.waitForFunction(()=>window.__CROWNFLARE_QA__?.snapshot().screen==='title');
   const eventCountAfterQuit=await lifecyclePage.evaluate(()=>window.__B02_AUDIO_EVENTS__.length);
-  await lifecyclePage.keyboard.press('j');await lifecyclePage.waitForTimeout(250);
+  await tapKey(lifecyclePage,'j');await lifecyclePage.waitForTimeout(250);
   assert(await lifecyclePage.evaluate(()=>window.__B02_AUDIO_EVENTS__.length)===eventCountAfterQuit,'Audio fired after quitting the preview');
   await makeComparisonBoard(lifecyclePage);
   const shrinkAfter=await captureLandingFrame(lifecyclePage);

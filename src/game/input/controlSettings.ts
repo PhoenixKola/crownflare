@@ -1,6 +1,6 @@
 export const CONTROL_SETTINGS_NAMESPACE = 'project-crownflare:controls:v1';
 
-export const REBINDABLE_ACTIONS = ['jump', 'light', 'heavy', 'dash', 'special', 'interact', 'transform'] as const;
+export const REBINDABLE_ACTIONS = ['jump', 'light', 'heavy', 'dash', 'special', 'interact', 'transform', 'finisher'] as const;
 export type RebindableAction = typeof REBINDABLE_ACTIONS[number];
 export type ControlSettings = {
   readonly version: 1;
@@ -13,7 +13,7 @@ export const DEFAULT_CONTROL_SETTINGS: ControlSettings = {
   version: 1,
   deadZone: 0.2,
   rumbleEnabled: false,
-  buttons: { jump: 0, light: 2, heavy: 3, dash: 1, special: 5, interact: 12, transform: 4 },
+  buttons: { jump: 0, light: 2, heavy: 3, dash: 1, special: 5, interact: 12, transform: 4, finisher: 7 },
 };
 
 export const KEYBOARD_CODES: Readonly<Record<RebindableAction, readonly string[]>> = {
@@ -24,6 +24,7 @@ export const KEYBOARD_CODES: Readonly<Record<RebindableAction, readonly string[]
   special: ['KeyQ'],
   interact: ['KeyE'],
   transform: ['KeyR'],
+  finisher: ['KeyF'],
 };
 
 export function parseControlSettings(raw: string | null): ControlSettings {
@@ -34,17 +35,23 @@ export function parseControlSettings(raw: string | null): ControlSettings {
     const data = value as Record<string, unknown>;
     const buttons = data.buttons as Record<string, unknown> | undefined;
     if (data.version !== 1 || typeof data.deadZone !== 'number' || data.deadZone < 0.1 || data.deadZone > 0.4 || typeof data.rumbleEnabled !== 'boolean') return DEFAULT_CONTROL_SETTINGS;
-    const legacyActions = REBINDABLE_ACTIONS.filter((action) => action !== 'transform');
+    const legacyActions = REBINDABLE_ACTIONS.filter((action) => action !== 'transform' && action !== 'finisher');
     if (!buttons || legacyActions.some((action) => !Number.isInteger(buttons[action]) || Number(buttons[action]) < 0 || Number(buttons[action]) > 15 || Number(buttons[action]) === 9)) return DEFAULT_CONTROL_SETTINGS;
     const legacyIndices = legacyActions.map((action) => Number(buttons[action]));
     const transformValue = buttons.transform;
     const freeButton = Array.from({ length: 16 }, (_, index) => index).find((index) => index !== 9 && !legacyIndices.includes(index));
     const transformButton = Number.isInteger(transformValue) && Number(transformValue) >= 0 && Number(transformValue) <= 15 && Number(transformValue) !== 9
       ? Number(transformValue) : freeButton;
-    if (transformButton === undefined) return DEFAULT_CONTROL_SETTINGS;
-    const indices = [...legacyIndices, transformButton];
+    if (transformButton === undefined || legacyIndices.includes(transformButton)) return DEFAULT_CONTROL_SETTINGS;
+    const finisherValue = buttons.finisher;
+    const freeFinisher = Number.isInteger(finisherValue) && Number(finisherValue) >= 0 && Number(finisherValue) <= 15
+      && Number(finisherValue) !== 9 && Number(finisherValue) !== transformButton && !legacyIndices.includes(Number(finisherValue))
+      ? Number(finisherValue)
+      : ([7, ...Array.from({ length: 16 }, (_, index) => index)].find((index) => index !== 9 && index !== transformButton && !legacyIndices.includes(index)));
+    if (freeFinisher === undefined) return DEFAULT_CONTROL_SETTINGS;
+    const indices = [...legacyIndices, transformButton, freeFinisher];
     if (new Set(indices).size !== indices.length) return DEFAULT_CONTROL_SETTINGS;
-    return { version: 1, deadZone: data.deadZone, rumbleEnabled: data.rumbleEnabled, buttons: { ...Object.fromEntries(legacyActions.map((action) => [action, Number(buttons[action])])), transform: transformButton } as Record<RebindableAction, number> };
+    return { version: 1, deadZone: data.deadZone, rumbleEnabled: data.rumbleEnabled, buttons: { ...Object.fromEntries(legacyActions.map((action) => [action, Number(buttons[action])])), transform: transformButton, finisher: freeFinisher } as Record<RebindableAction, number> };
   } catch { return DEFAULT_CONTROL_SETTINGS; }
 }
 
@@ -87,7 +94,7 @@ export function selectStandardPad(pads: readonly (StandardPadLike | null)[], pre
 }
 
 export function readPadActions(pad: StandardPadLike | null, settings: ControlSettings, axisWasEngaged = false): { readonly axis: number; readonly axisEngaged: boolean; readonly pressed: Readonly<Record<RebindableAction, boolean>>; readonly pausePressed: boolean; readonly interactPressed: boolean } {
-  if (!pad) return { axis: 0, axisEngaged: false, pressed: { jump: false, light: false, heavy: false, dash: false, special: false, interact: false, transform: false }, pausePressed: false, interactPressed: false };
+  if (!pad) return { axis: 0, axisEngaged: false, pressed: { jump: false, light: false, heavy: false, dash: false, special: false, interact: false, transform: false, finisher: false }, pausePressed: false, interactPressed: false };
   const axisValue = Number.isFinite(pad.axes[0]) ? Number(pad.axes[0]) : 0;
   const magnitude = Math.abs(axisValue);
   const axisEngaged = axisWasEngaged ? magnitude >= Math.max(0, settings.deadZone - 0.025) : magnitude >= Math.min(1, settings.deadZone + 0.025);

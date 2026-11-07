@@ -262,7 +262,7 @@ export class B04VerticalSliceScene extends ChamberScene {
     if (dawnrush) {
       g.fillStyle(0x182630, 1).fillRect(84, 45, 83, 4);
       g.fillStyle(0xf3a85f, 1).fillRect(84, 45, 83 * dawnrush.energy / 100, 4);
-      this.hudDawnrush?.setText(`${dawnrush.form.toUpperCase()}  ${Math.floor(dawnrush.energy)}%  /  R OR LB TRANSFORM`);
+      this.hudDawnrush?.setText(`${dawnrush.form.toUpperCase()}  ${Math.floor(dawnrush.energy)}%  /  R OR LB FORM  /  F OR RT ${dawnrush.finisherStatus}`);
     }
     for (let i = 0; i < 5; i += 1) {
       g.fillStyle(i < combat.playerHp ? 0xf1c99a : 0x3a3c43, i < combat.playerHp ? 1 : .72).fillRect(56 + i * 6, 25, 4, 5);
@@ -274,8 +274,8 @@ export class B04VerticalSliceScene extends ChamberScene {
     this.hudSpecial?.setText(`RESONANCE IMPRINT  ${combat.specialCooldownMs > 0 ? `${(combat.specialCooldownMs / 1000).toFixed(1)}s` : 'READY'}`);
     this.hudEncounter?.setText(this.encounterLabel(combat));
     if (this.b05ReviewMode) this.hudControls?.setText(combat.controllerIndex >= 0
-      ? 'STICK MOVE / SOUTH JUMP / WEST LIGHT / NORTH HEAVY / EAST DODGE / RB SOLAR DRIVE / LB TRANSFORM / G CHARGE'
-      : 'A/D MOVE / SPACE JUMP / SHIFT DODGE / J COMBO / K HEAVY / Q SOLAR DRIVE / R TRANSFORM / G DEV CHARGE');
+      ? 'STICK MOVE / SOUTH JUMP / WEST LIGHT / NORTH HEAVY / EAST DODGE / RB DRIVE / RT FINISHER / LB FORM'
+      : 'A/D MOVE / SPACE JUMP / SHIFT DODGE / J COMBO / K HEAVY / Q DRIVE / F FINISHER / R FORM / E INTERACT');
     this.hudControls?.setPosition(8, 254).setText(combat.controllerIndex >= 0
       ? 'STICK MOVE  ·  SOUTH JUMP  ·  WEST LIGHT  ·  NORTH HEAVY  ·  EAST DODGE  ·  RB IMPRINT  ·  START PAUSE'
       : 'A/D MOVE  ·  SPACE JUMP  ·  SHIFT DODGE  ·  J COMBO  ·  K HEAVY  ·  Q IMPRINT  ·  E INTERACT  ·  ESC PAUSE');

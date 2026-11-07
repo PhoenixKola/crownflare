@@ -1,6 +1,6 @@
 {
   "milestone": "B03",
-  "generatedAt": "2026-11-07T18:44:18.088Z",
+  "generatedAt": "2026-11-07T23:44:30.719Z",
   "artStatus": "CANDIDATE_PENDING_OWNER_REVIEW",
   "baseDesignApproval": "PENDING",
   "artMotionApproval": "PENDING_NORMAL_SPEED_REVIEW",
@@ -902,9 +902,9 @@
     "ownerApproval": "PENDING"
   },
   "browserCapture": {
-    "sourceTreeSha256": "0e0827b2b095215b7a0cf0c30e8bd65fcc0e8bd325caca81581c952bbd0d344a",
-    "videoSha256": "bedc87b7cefca2e36d6f8cb7793cb2532d6b9992b40da49f3852e0232fc2ff3d",
-    "videoDurationSeconds": 125.6,
+    "sourceTreeSha256": "922fa986c1e38ca3e81d95f55fa440825c479004629c6898e1065ddda4a3afbc",
+    "videoSha256": "8054e65cf6b1f5597c6c9b72c806f32b44d2f620b6cfb72b48399b8d6d807cdd",
+    "videoDurationSeconds": 135.64,
     "browserErrors": 0,
     "checks": 22,
     "ownerApproval": "PENDING"

@@ -213,18 +213,18 @@ async function settingsQA() {
   await setPad(page, { id: 'Xbox Wireless Controller', mapping: 'standard', axes: [0, 0], buttons: [] });
   await page.locator('[data-capture="light"]').click();
   await page.waitForTimeout(100);
-  await setPad(page, { id: 'Xbox Wireless Controller', mapping: 'standard', axes: [0, 0], buttons: [4] });
-  await page.waitForFunction(() => /LB.*4/.test(document.querySelector('[data-rebind="light"]')?.textContent ?? ''), undefined, { timeout: 1800 });
+  await setPad(page, { id: 'Xbox Wireless Controller', mapping: 'standard', axes: [0, 0], buttons: [6] });
+  await page.waitForFunction(() => /LT.*6/.test(document.querySelector('[data-rebind="light"]')?.textContent ?? ''), undefined, { timeout: 1800 });
   await setPad(page, { id: 'Xbox Wireless Controller', mapping: 'standard', axes: [0, 0], buttons: [] });
   await page.locator('#settings-save').click();
   await page.locator('#settings-screen').waitFor({ state: 'hidden' });
-  assert(await page.evaluate(() => JSON.parse(localStorage.getItem('project-crownflare:controls:v1') ?? '{}').buttons.light) === 4, 'light rebind should persist to the versioned controller namespace');
+  assert(await page.evaluate(() => JSON.parse(localStorage.getItem('project-crownflare:controls:v1') ?? '{}').buttons.light) === 6, 'light rebind should persist to the versioned controller namespace');
   await page.reload();
   await page.waitForFunction(() => !!window.__CROWNFLARE_QA__);
   await setPad(page, { id: 'Xbox Wireless Controller', mapping: 'standard', axes: [0, 0], buttons: [] });
   await page.locator('#title-settings-button').click();
-  await page.waitForFunction(() => /LB.*4/.test(document.querySelector('[data-rebind="light"]')?.textContent ?? ''));
-  check('button remap and reload persistence', 'PASS', { lightButton: 4, namespace: 'project-crownflare:controls:v1' });
+  await page.waitForFunction(() => /LT.*6/.test(document.querySelector('[data-rebind="light"]')?.textContent ?? ''));
+  check('button remap and reload persistence', 'PASS', { lightButton: 6, namespace: 'project-crownflare:controls:v1' });
   await page.evaluate(() => localStorage.setItem('project-crownflare:controls:v1', '{broken'));
   await page.reload();
   await page.waitForFunction(() => !!window.__CROWNFLARE_QA__);
@@ -386,7 +386,7 @@ async function runCombatQA(page) {
   check('heavy launcher uses generated anticipation/contact/recovery poses, launch knockback and tagged charge/impact cues', 'PASS', { targetHp: state.enemyHp, targetY: state.enemyY, facing: state.facing, audioCues: heavyCues.filter((cue) => cue.startsWith('b03-heavy-')) });
 
   await reset(page, 'reset before air strike'); await approach(page, 34);
-  await page.keyboard.down('Space'); await page.waitForTimeout(35); await page.keyboard.up('Space');
+  await keyTap(page, 'Space');
   await page.waitForFunction(() => {
     const current = window.__CROWNFLARE_QA__?.snapshot().combat;
     return current && current.playerY < 226;

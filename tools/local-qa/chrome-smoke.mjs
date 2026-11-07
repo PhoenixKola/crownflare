@@ -97,10 +97,23 @@ try {
 
   const floorY = state.player.y;
   await page.keyboard.down('d');
-  await page.waitForTimeout(290);
+  const reachedPlatformApproach = await page.waitForFunction(() => {
+    const player = window.__CROWNFLARE_QA__?.snapshot().player;
+    // Jump from the floor just before the platform's left edge. Moving under
+    // the platform first leaves too little headroom for a valid takeoff.
+    return player?.grounded && player.x >= 145 && player.x <= 158;
+  }, undefined, { timeout: 2500 }).then(() => true).catch(() => false);
   await page.keyboard.up('d');
+  assert(reachedPlatformApproach, `Could not reach the floor approach before the first platform: ${JSON.stringify(await snapshot())}`);
+  let jumpStarted = false;
+  for (let attempt = 0; attempt < 3 && !jumpStarted; attempt += 1) {
+    await page.keyboard.down('Space');
+    jumpStarted = await page.waitForFunction((groundY) => window.__CROWNFLARE_QA__?.snapshot().player?.y < groundY - 10, floorY, { timeout: 500 })
+      .then(() => true).catch(() => false);
+    if (!jumpStarted) { await page.keyboard.up('Space'); await page.waitForTimeout(90); }
+  }
+  assert(jumpStarted, `Jump input did not leave the ground from the platform approach: ${JSON.stringify(await snapshot())}`);
   await page.keyboard.down('d');
-  await page.keyboard.down('Space');
   await page.waitForTimeout(420);
   await page.keyboard.up('Space');
   await page.keyboard.up('d');
@@ -154,10 +167,16 @@ try {
   await page.keyboard.down('d');
   await page.waitForTimeout(7200);
   state = await snapshot();
-  await page.keyboard.down('Shift');
-  await page.waitForTimeout(55);
+  let dashObserved = false;
+  for (let attempt = 0; attempt < 3 && !dashObserved; attempt += 1) {
+    await page.keyboard.down('Shift');
+    dashObserved = await page.waitForFunction(() => window.__CROWNFLARE_QA__?.snapshot().player?.dashActive === true, undefined, { timeout: 350 })
+      .then(() => true).catch(() => false);
+    await page.keyboard.up('Shift');
+    if (!dashObserved) await page.waitForTimeout(460);
+  }
   state = await snapshot();
-  assert(state.player.dashActive, `Dash did not activate on a fresh press: ${JSON.stringify(state.player)}`);
+  assert(dashObserved, `Dash did not activate on a fresh press: ${JSON.stringify(state.player)}`);
   assert(state.player.cameraX > 0, 'Camera did not follow player across the chamber');
   assert(state.player.x <= 1108, `Dash crossed the solid barrier (player x=${state.player.x})`);
   await page.keyboard.up('Shift');

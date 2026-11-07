@@ -8,8 +8,8 @@ import { chromium } from 'playwright';
 
 const port = 4194;
 const base = `http://127.0.0.1:${port}`;
-const evidence = 'review-evidence/b05';
-const recordingDir = 'tests/evidence/b05-recordings';
+const evidence = 'review-evidence/b05-completion';
+const recordingDir = 'tests/evidence/b05-completion-recordings';
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', '--host', '127.0.0.1', '--port', String(port), '--strictPort'], { stdio: 'pipe' });
 let serverErrors = '';
 server.stderr.on('data', (buffer) => { serverErrors += buffer.toString(); });
@@ -30,6 +30,7 @@ const combat = async (page) => (await snapshot(page))?.combat;
 const b04 = async (page) => (await snapshot(page))?.b04;
 const dawnrush = async (page) => (await snapshot(page))?.b05;
 const check = (label, status, detail = {}) => checks.push({ label, status, ...detail });
+const nearSimulationPhase = (value, expected) => Number.isFinite(value) && value <= expected && value >= expected - 50;
 
 async function ready(url) {
   for (let i = 0; i < 100; i += 1) {
@@ -51,7 +52,7 @@ async function filesIn(folder) {
 }
 
 async function sourceDigest() {
-  const roots = ['src/game/scenes/B04VerticalSliceScene.ts', 'src/game/enemies/b04EncounterFlow.ts', 'src/game/rooms/sunderglassAtrium.ts', 'src/game/scenes/ChamberScene.ts', 'src/game/combat/dawnrushMoves.ts', 'src/game/animation/dawnrushAnimation.ts', 'src/game/input/controlSettings.ts', 'src/game/input/InputController.ts', 'src/game/input/controllerSettingsScreen.ts', 'src/main.ts', 'src/game/createGame.ts', 'src/style.css', 'index.html', 'package.json', 'tests/unit/dawnrush-moves.test.ts', 'tests/unit/control-settings.test.ts', 'tools/local-qa/b05-dawnrush-smoke.mjs', 'tools/local-qa/b05-production-route-smoke.mjs', 'tools/art-export/build-dawnrush.py', 'tools/art-export/audit-dawnrush.py', 'tools/audio/generate-dawnrush.py', 'tools/audio/audit-dawnrush.py', 'art-source/manifests/dawnrush-generation-prompts.md', 'art-source/manifests/dawnrush-b05-v1.json', 'art-source/characters/iona/b05/generation', 'public/assets/characters/iona/b05', 'art-source/audio/b05', 'public/assets/audio/b05', 'review-evidence/b05']
+  const roots = ['src/game/scenes/B04VerticalSliceScene.ts', 'src/game/enemies/b04EncounterFlow.ts', 'src/game/rooms/sunderglassAtrium.ts', 'src/game/scenes/ChamberScene.ts', 'src/game/combat/dawnrushMoves.ts', 'src/game/combat/dawnrushLifecycle.ts', 'src/game/animation/dawnrushAnimation.ts', 'src/game/input/controlSettings.ts', 'src/game/input/InputController.ts', 'src/game/input/controllerSettingsScreen.ts', 'src/main.ts', 'src/game/createGame.ts', 'src/style.css', 'index.html', 'package.json', 'tests/unit/dawnrush-completion.test.ts', 'tests/unit/control-settings.test.ts', 'tools/local-qa/b05-dawnrush-smoke.mjs', 'tools/local-qa/b05-production-route-smoke.mjs', 'tools/art-export/build-dawnrush.py', 'tools/art-export/audit-dawnrush.py', 'tools/audio/generate-dawnrush.py', 'tools/audio/audit-dawnrush.py', 'art-source/manifests/dawnrush-generation-prompts.md', 'art-source/manifests/dawnrush-b05-v1.json', 'art-source/characters/iona/b05/generation', 'public/assets/characters/iona/b05', 'art-source/audio/b05', 'public/assets/audio/b05']
   const files = [];
   for (const root of roots) {
     try { const info = await stat(root); files.push(...(info.isDirectory() ? await filesIn(root) : [root])); } catch { /* absent optional inputs */ }
@@ -59,7 +60,7 @@ async function sourceDigest() {
   files.sort((a, b) => a.localeCompare(b));
   const hash = createHash('sha256');
   for (const file of files) { hash.update(file.replaceAll('\\', '/') + '\0'); hash.update(await readFile(file)); }
-  return { sha256: hash.digest('hex'), files: files.length };
+  return { sha256: hash.digest('hex'), files: files.length, scope: 'B05 source and generated inputs; review-evidence excluded' };
 }
 
 function monitor(page, label) {
@@ -72,14 +73,45 @@ function monitor(page, label) {
 async function initCapture(context) {
   await context.addInitScript(() => {
     window.__B05_QA_EVENTS__ = [];
+    let lastDawnrushState = null;
     for (const name of ['crownflare:b05-state', 'crownflare:b04-state', 'crownflare:b04-result', 'crownflare:combat-event', 'crownflare:player-damage', 'crownflare:audio-event', 'crownflare:b04-vfx', 'crownflare:b05-vfx']) {
-      window.addEventListener(name, (event) => window.__B05_QA_EVENTS__.push({ name, detail: event.detail, at: performance.now() }));
+      window.addEventListener(name, (event) => {
+        if (name === 'crownflare:b05-state') {
+          if (event.detail?.state === lastDawnrushState && !event.detail?.debugFill) return;
+          if (event.detail?.state !== lastDawnrushState) lastDawnrushState = event.detail?.state ?? null;
+        }
+        window.__B05_QA_EVENTS__.push({ name, detail: event.detail, at: performance.now(), sample: name === 'crownflare:b05-state' ? window.__CROWNFLARE_QA__?.snapshot?.() ?? null : null });
+      });
     }
   });
 }
 
 async function keyTap(page, key, duration = 45) {
   await page.keyboard.down(key); await page.waitForTimeout(duration); await page.keyboard.up(key);
+}
+
+async function interactUntil(page, predicate, message) {
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    if (predicate(await snapshot(page))) return;
+    await page.bringToFront();
+    await keyTap(page, 'e', 70);
+    await page.waitForTimeout(120);
+  }
+  throw new Error(`${message}: ${JSON.stringify(await snapshot(page))}`);
+}
+
+async function chargeDawnrushGauge(page) {
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const start = await page.evaluate(() => window.__B05_QA_EVENTS__.length);
+    await page.bringToFront();
+    await page.locator('#game-root canvas').evaluate((canvas) => canvas.focus());
+    await keyTap(page, 'g');
+    const charged = await page.waitForFunction((index) => window.__B05_QA_EVENTS__.slice(index)
+      .some((event) => event.name === 'crownflare:b05-state' && event.detail?.debugFill && event.detail?.energy === 100), start, { timeout: 700 })
+      .then(() => true).catch(() => false);
+    if (charged) return;
+  }
+  throw new Error(`QA Dawnrush gauge fill did not register: ${JSON.stringify(await dawnrush(page))}`);
 }
 
 async function dodgeSentry(page, state) {
@@ -112,21 +144,106 @@ async function transformForReview(page) {
   }
   await keyTap(page, 'g');
   await waitFor(page, (state) => state.b05?.energy === 100, 'B05 review helper fills transformation charge');
-  await keyTap(page, 'r');
-  const phases = [];
-  for (const phase of ['anticipation', 'ignition', 'silhouette', 'dawnrush']) {
-    await waitFor(page, `(state) => state.b05?.state === ${JSON.stringify(phase)}`, `transform reaches ${phase}`, 2500);
-    phases.push(phase);
-    record(`Dawnrush transform ${phase}`, await dawnrush(page));
-  }
+  const activationStartedAt = Date.now();
+  const activationEventStart = await page.evaluate(() => window.__B05_QA_EVENTS__.length);
+  await keyTap(page, 'Shift', 25);
+  await keyTap(page, 'r', 35);
+  await waitFor(page, (state) => state.b05?.state === 'dawnrush', 'ordinary transform completes after the dash buffer', 3500);
+  const activationEvents = await page.evaluate((start) => window.__B05_QA_EVENTS__.slice(start)
+    .filter((event) => event.name === 'crownflare:b05-state'), activationEventStart);
+  const phases = activationEvents.map((event) => event.detail?.state);
+  const activationPhaseMs = Object.fromEntries(['anticipation', 'ignition', 'silhouette'].map((phase) => [phase, activationEvents.find((event) => event.detail?.state === phase)?.detail?.phaseMs]));
+  assert(['anticipation', 'ignition', 'silhouette', 'dawnrush'].every((phase) => phases.includes(phase)), `ordinary transform skipped a phase: ${JSON.stringify(phases)}`);
+  assert(nearSimulationPhase(activationPhaseMs.anticipation, 200) && nearSimulationPhase(activationPhaseMs.ignition, 240) && nearSimulationPhase(activationPhaseMs.silhouette, 280),
+    `ordinary transform timing changed: ${JSON.stringify(activationPhaseMs)}`);
   const active = await dawnrush(page);
   assert(active?.form === 'Dawnrush' && active.missingFrames.length === 0, `Dawnrush did not settle or art is missing: ${JSON.stringify(active)}`);
-  check('Dawnrush transformation completes anticipation, ignition, silhouette and ready phases', 'PASS', { phases, totalCinematicMs: 1700 });
+  const activationWallMs = Date.now() - activationStartedAt;
+  check('ordinary combat activation completes all phases in the shortened simulation window after a dash buffer', 'PASS', { phases, phaseMs: activationPhaseMs, simulationDurationMs: 720, browserHarnessWallMs: activationWallMs });
   await capture(page, 'b05-transform-ready');
   await page.keyboard.down('d'); await page.waitForTimeout(110); await page.keyboard.up('d');
   await keyTap(page, 'Shift', 35);
   await page.waitForTimeout(100);
   await capture(page, 'b05-dawnrush-dash');
+}
+
+async function exerciseInitialDawnrushShowcase(page) {
+  await keyTap(page, 'g');
+  await waitFor(page, (state) => state.b05?.energy === 100, 'safe showcase starts with a full form gauge');
+  const baseBeforeTransform = await combat(page);
+  await page.evaluate(() => window.dispatchEvent(new Event('blur')));
+  await page.waitForFunction(() => window.__CROWNFLARE_QA__?.snapshot().screen === 'paused', undefined, { timeout: 1500 });
+  assert((await page.locator('#pause-reason').innerText()).includes('Focus lost'), 'Focus loss did not explain why the simulation paused');
+  check('synthetic window focus loss pauses the live scene and exposes the recovery reason', 'PASS', { reason: await page.locator('#pause-reason').innerText() });
+  await page.locator('#resume-button').click();
+  await waitFor(page, (state) => state.screen === 'b05Combat', 'focus-loss pause resumes to B05');
+  const startedAt = Date.now();
+  const showcaseEventStart = await page.evaluate(() => window.__B05_QA_EVENTS__.length);
+  await keyTap(page, 'r');
+  await waitFor(page, (state) => state.b05?.state === 'dawnrush', 'safe first showcase completes its staged reveal', 4000);
+  const showcaseEvents = await page.evaluate((start) => window.__B05_QA_EVENTS__.slice(start)
+    .filter((event) => event.name === 'crownflare:b05-state'), showcaseEventStart);
+  const phases = showcaseEvents.map((event) => event.detail?.state);
+  const showcasePhaseMs = Object.fromEntries(['anticipation', 'ignition', 'silhouette'].map((phase) => [phase, showcaseEvents.find((event) => event.detail?.state === phase)?.detail?.phaseMs]));
+  assert(['anticipation', 'ignition', 'silhouette', 'dawnrush'].every((phase) => phases.includes(phase)), `safe showcase skipped a phase: ${JSON.stringify(phases)}`);
+  assert(nearSimulationPhase(showcasePhaseMs.anticipation, 500) && nearSimulationPhase(showcasePhaseMs.ignition, 600) && nearSimulationPhase(showcasePhaseMs.silhouette, 600),
+    `safe showcase timing changed: ${JSON.stringify(showcasePhaseMs)}`);
+  const showcaseWallMs = Date.now() - startedAt;
+  const body = await combat(page);
+  assert(body.bodySize.width === 15 && body.bodySize.height === 30, `showcase changed the Arcade body: ${JSON.stringify(body.bodySize)}`);
+  assert(body.playerInvulnerableMs <= baseBeforeTransform.playerInvulnerableMs, `transform unexpectedly granted invulnerability: ${baseBeforeTransform.playerInvulnerableMs} -> ${body.playerInvulnerableMs}`);
+  check('first safe transformation keeps its full 1.7s simulation presentation without changing physics or invulnerability', 'PASS', { simulationDurationMs: 1700, phases, phaseMs: showcasePhaseMs, browserHarnessWallMs: showcaseWallMs, bodySize: body.bodySize, playerInvulnerableMs: body.playerInvulnerableMs });
+  await capture(page, 'b05-showcase-vfx-on');
+  await keyTap(page, 'v');
+  await waitFor(page, (state) => state.combat?.vfxEnabled === false, 'VFX-off review toggle');
+  await page.waitForTimeout(220);
+  await capture(page, 'b05-showcase-vfx-off');
+  await keyTap(page, 'v');
+  await waitFor(page, (state) => state.combat?.vfxEnabled === true, 'VFX-on review toggle');
+  await page.waitForTimeout(220);
+  await capture(page, 'b05-showcase-vfx-on-restored');
+
+  const reversionStart = Date.now();
+  const reversionEventStart = await page.evaluate(() => window.__B05_QA_EVENTS__.length);
+  await keyTap(page, 'r');
+  await waitFor(page, (state) => state.b05?.state === 'base', 'manual reversion completes the Base handoff', 1800);
+  const reversionEvents = await page.evaluate((start) => window.__B05_QA_EVENTS__.slice(start)
+    .filter((event) => event.name === 'crownflare:b05-state'), reversionEventStart);
+  const reversionStates = reversionEvents.map((event) => event.detail?.state);
+  assert(['reverting-contract', 'reverting-release', 'reverting-handoff', 'base'].every((phase) => reversionStates.includes(phase)), `manual reversion skipped a staged transition: ${JSON.stringify(reversionStates)}`);
+  for (const event of reversionEvents) {
+    const sample = event.sample?.combat;
+    if (sample) {
+      assert(sample.bodySize.width === 15 && sample.bodySize.height === 30, `reversion changed the physics body in ${event.detail?.state}`);
+      assert(Math.abs(sample.playerX - body.playerX) < 42, `reversion introduced a position snap in ${event.detail?.state}: ${body.playerX} -> ${sample.playerX}`);
+    }
+  }
+  const reversionWallMs = Date.now() - reversionStart;
+  const reversionPhaseMs = Object.fromEntries(['reverting-contract', 'reverting-release', 'reverting-handoff', 'base'].map((phase) => [phase, reversionEvents.find((event) => event.detail?.state === phase)?.detail?.phaseMs]));
+  assert(nearSimulationPhase(reversionPhaseMs['reverting-contract'], 120) && nearSimulationPhase(reversionPhaseMs['reverting-release'], 140)
+    && nearSimulationPhase(reversionPhaseMs['reverting-handoff'], 160) && reversionPhaseMs.base === 0,
+  `manual return phase timers changed: ${JSON.stringify(reversionPhaseMs)}`);
+  check('manual reversion plays contraction, release and Base handoff with stable body and foot anchor', 'PASS', { simulationDurationMs: 420, phaseMs: reversionPhaseMs, browserHarnessWallMs: reversionWallMs, states: reversionStates, bodySize: (await combat(page)).bodySize });
+  await capture(page, 'b05-manual-reversion-base');
+
+  await keyTap(page, 'g');
+  const depletionEventStart = await page.evaluate(() => window.__B05_QA_EVENTS__.length);
+  await keyTap(page, 'r');
+  await waitFor(page, (state) => state.b05?.state === 'dawnrush', 'depletion review activates Dawnrush');
+  const depletionStartedAt = Date.now();
+  await waitFor(page, (state) => state.b05?.state === 'base', 'zero gauge completes the readable Base handoff', 24000);
+  const depletionMs = Date.now() - depletionStartedAt;
+  const depletionEvents = await page.evaluate((start) => window.__B05_QA_EVENTS__.slice(start)
+    .filter((event) => event.name === 'crownflare:b05-state'), depletionEventStart);
+  const depletionStates = depletionEvents.map((event) => event.detail?.state);
+  assert(depletionEvents.some((event) => event.detail?.state === 'reverting-contract' && event.detail?.energy === 0), `zero-gauge reversion did not expose its spent contract: ${JSON.stringify(depletionEvents.map((event) => event.detail))}`);
+  assert(['reverting-release', 'reverting-handoff', 'base'].every((phase) => depletionStates.includes(phase)), `zero-gauge reversion skipped a staged transition: ${JSON.stringify(depletionStates)}`);
+  const depletionPhaseMs = Object.fromEntries(['reverting-contract', 'reverting-release', 'reverting-handoff', 'base'].map((phase) => [phase, depletionEvents.find((event) => event.detail?.state === phase)?.detail?.phaseMs]));
+  assert(nearSimulationPhase(depletionPhaseMs['reverting-contract'], 120) && nearSimulationPhase(depletionPhaseMs['reverting-release'], 140)
+    && nearSimulationPhase(depletionPhaseMs['reverting-handoff'], 160) && depletionPhaseMs.base === 0,
+  `empty-gauge return phase timers changed: ${JSON.stringify(depletionPhaseMs)}`);
+  check('zero gauge uses the same staged return without a direct Base swap', 'PASS', { depletionMs, manualAndAutomaticReversion: true, simulationDurationMs: 420, phaseMs: depletionPhaseMs, states: depletionStates });
+  await capture(page, 'b05-depletion-reversion-base');
 }
 
 async function approach(page, desiredGap = 34) {
@@ -178,7 +295,7 @@ async function attackAndWait(page, key) {
   const aerial = key === 'air';
   const inputKey = aerial ? 'j' : key;
   const before = await combat(page);
-  const expectedMove = aerial ? 'air-light' : key === 'k' ? 'heavy' : key === 'q' ? 'resonance' : 'light-1';
+  const expectedMove = aerial ? 'air-light' : key === 'k' ? 'heavy' : key === 'q' ? 'resonance' : key === 'f' ? 'finisher' : 'light-1';
   let started = false;
   for (let retry = 0; retry < 10 && !started; retry += 1) {
     let readyState = await combat(page);
@@ -290,15 +407,20 @@ async function clearCurrentSentry(page, label, captureResult = true) {
   let state = await combat(page);
   let attempts = 0;
   if (label === 'first sentry') {
-    await approach(page, 42);
-    state = await attackAndWait(page, 'j');
-    check('Base light attack remains available before transformation', 'PASS', { enemyHp: state.enemyHp, form: (await dawnrush(page))?.form });
+    const baseForm = await dawnrush(page);
+    assert(baseForm?.state === 'base' && state.bodySize.width === 15 && state.bodySize.height === 30, `first B05 encounter did not begin from the unchanged Base body: ${JSON.stringify({ baseForm, body: state.bodySize })}`);
+    check('first B05 encounter begins in the unchanged Base form and B03 body before activation', 'PASS', { enemyHp: state.enemyHp, form: baseForm.form, bodySize: state.bodySize });
     await transformForReview(page);
     await approach(page, 42);
     await runDawnrushLightCombo(page);
     await approach(page, 42);
     state = await attackAndWait(page, 'k');
     record('Dawnrush heavy sentry contact', { enemyHp: state.enemyHp, lastResult: state.lastResult });
+    if (state.enemyHp > 0 && state.playerHp > 0) {
+      await approach(page, 42);
+      state = await attackAndWait(page, 'j');
+      record('Dawnrush resonance-preserving light cleanup', { enemyHp: state.enemyHp, resonance: state.resonance, lastResult: state.lastResult });
+    }
   } else if (label === 'second sentry') {
     await approach(page, 54);
     if ((await dawnrush(page))?.state !== 'dawnrush') await transformForReview(page);
@@ -309,8 +431,17 @@ async function clearCurrentSentry(page, label, captureResult = true) {
     await approach(page, 55);
     state = await attackAndWait(page, 'q');
     check('Solar Drive uses its distinct cost, authored action, reach and contact', 'PASS', { move: 'resonance', action: (await dawnrush(page))?.activeMove, enemyHp: state.enemyHp, result: state.lastResult });
+    if (state.enemyHp > 0) {
+      await approach(page, 42);
+      const ready = await dawnrush(page);
+      assert(ready?.finisherReady, `Dawnfall Breaker did not become earned after the successful first moves: ${JSON.stringify(ready)}`);
+      state = await attackAndWait(page, 'f');
+      assert(state.enemyHp < 8 && state.lastResult === 'HIT', `Dawnfall Breaker did not resolve an authoritative short-range hit: ${JSON.stringify(state)}`);
+      await capture(page, 'b05-dawnfall-breaker-hit');
+      check('Dawnfall Breaker spends its earned form/resonance resources and resolves its distinct hit', 'PASS', { enemyHp: state.enemyHp, result: state.lastResult, action: (await dawnrush(page))?.activeMove, remainingEnergy: (await dawnrush(page))?.energy, cooldownMs: (await dawnrush(page))?.finisherCooldownMs });
+    }
   }
-  const moves = ['k', 'q', 'k', 'j', 'k', 'k', 'j', 'k', 'q', 'k', 'j', 'k'];
+  const moves = label === 'first sentry' ? Array(12).fill('k') : ['k', 'q', 'k', 'j', 'k', 'k', 'j', 'k', 'q', 'k', 'j', 'k'];
   while (state.enemyHp > 0 && attempts < moves.length) {
     await approach(page, moves[attempts] === 'q' ? 60 : 42);
     const beforeHp = state.enemyHp;
@@ -339,7 +470,7 @@ async function viewportCheck(width, height, label) {
   const page = await context.newPage(); monitor(page, label);
   await page.goto(`${base}/?b05=1`, { waitUntil: 'domcontentloaded' });
   await page.locator('#start-button').click();
-  await waitFor(page, (state) => state.sceneType === 'B04VerticalSliceScene' && state.b04?.loadedTextures === 15 && state.b05?.loadedFrames === 76, `${label} scene loaded`);
+  await waitFor(page, (state) => state.sceneType === 'B04VerticalSliceScene' && state.b04?.loadedTextures === 15 && state.b05?.loadedFrames === 124, `${label} scene loaded`);
   const bounds = await page.locator('#game-root canvas').boundingBox();
   const screen = await page.evaluate(() => ({ width: innerWidth, height: innerHeight, overflowX: document.documentElement.scrollWidth > innerWidth, overflowY: document.documentElement.scrollHeight > innerHeight }));
   assert(bounds && bounds.width <= width && bounds.height <= height && !screen.overflowX && !screen.overflowY, `${label} viewport overflow: ${JSON.stringify({ bounds, screen })}`);
@@ -363,7 +494,7 @@ async function controllerCheck() {
   const page = await context.newPage(); monitor(page, 'controller');
   await page.goto(`${base}/?b05=1`, { waitUntil: 'domcontentloaded' });
   await page.locator('#start-button').click();
-  await waitFor(page, (state) => state.sceneType === 'B04VerticalSliceScene' && state.sceneActive && state.b04?.loadedTextures === 15 && state.b05?.loadedFrames === 76, 'controller B05 scene loaded');
+  await waitFor(page, (state) => state.sceneType === 'B04VerticalSliceScene' && state.sceneActive && state.b04?.loadedTextures === 15 && state.b05?.loadedFrames === 124, 'controller B05 scene loaded');
   await page.evaluate(() => window.__setSyntheticPad({ axes: [0.75, 0] }));
   await page.waitForFunction(() => { const state = window.__CROWNFLARE_QA__?.snapshot().combat; return state?.controllerIndex === 0 && state.playerX > 134; }, undefined, { timeout: 2500 });
   const rightX = (await combat(page)).playerX;
@@ -385,7 +516,7 @@ async function main() {
   await mkdir(recordingDir, { recursive: true });
   assert(await ready(`${base}/?b05=1`), `Vite did not start. ${serverErrors}`);
   browser = await chromium.launch({ channel: 'chrome', headless: false, args: ['--use-gl=angle', '--use-angle=swiftshader'] });
-  recordingContext = await browser.newContext({ viewport: { width: 1280, height: 720 }, recordVideo: { dir: recordingDir, size: { width: 1280, height: 720 } } });
+  recordingContext = await browser.newContext({ viewport: { width: 1280, height: 720 }, recordVideo: { dir: recordingDir, size: { width: 960, height: 540 } } });
   await initCapture(recordingContext);
   recordingPage = await recordingContext.newPage();
   monitor(recordingPage, 'main');
@@ -395,10 +526,10 @@ async function main() {
   check('dev-only B05 route presents original candidate slice title and review status', 'PASS', { title: await recordingPage.locator('#title-metadata').innerText(), notice: await recordingPage.locator('#preview-notice').innerText() });
   record('B05 title visible');
   await recordingPage.locator('#start-button').click();
-  await waitFor(recordingPage, (state) => state.sceneType === 'B04VerticalSliceScene' && state.sceneActive && state.b04?.loadedTextures === 15 && state.b05?.loadedFrames === 76, 'B05 scene, environment and generated Dawnrush frames load');
+  await waitFor(recordingPage, (state) => state.sceneType === 'B04VerticalSliceScene' && state.sceneActive && state.b04?.loadedTextures === 15 && state.b05?.loadedFrames === 124, 'B05 scene, environment and generated Dawnrush frames load');
   let state = await snapshot(recordingPage);
   assert(state.b04.missingTextures.length === 0 && state.b04.missingIonaFrames.length === 0 && state.b04.missingCombatArt.length === 0 && state.b05.missingFrames.length === 0, `Missing B05/Iona/combat art: ${JSON.stringify({ b04: state.b04, b05: state.b05 })}`);
-  check('B04 environment, sentry art, Base frames, B03 combat textures and all 76 generated B05 frames load', 'PASS', { environmentTextures: state.b04.loadedTextures, baseFrames: state.b04.loadedIonaFrames, dawnrushFrames: state.b05.loadedFrames, missing: [...state.b04.missingTextures, ...state.b04.missingIonaFrames, ...state.b04.missingCombatArt, ...state.b05.missingFrames] });
+  check('B04 environment, sentry art, Base frames, B03 combat textures and all 124 B05 runtime textures load', 'PASS', { environmentTextures: state.b04.loadedTextures, baseFrames: state.b04.loadedIonaFrames, dawnrushFrames: state.b05.loadedFrames, missing: [...state.b04.missingTextures, ...state.b04.missingIonaFrames, ...state.b04.missingCombatArt, ...state.b05.missingFrames] });
   await capture(recordingPage, 'b05-entry-1280x720');
   await recordingPage.keyboard.press('Escape');
   await recordingPage.waitForFunction(() => window.__CROWNFLARE_QA__?.snapshot().screen === 'paused', undefined, { timeout: 1500 });
@@ -409,13 +540,25 @@ async function main() {
   assert(transformBinding.includes('4'), `Transform binding did not expose its default LB / Button 4 mapping: ${transformBinding}`);
   assert(await recordingPage.locator('[data-capture="transform"]').isVisible(), 'Transform remap action is missing');
   check('controller settings expose and remap the Dawnrush transform action', 'PASS', { button: transformBinding, keyboard: 'R' });
+  const finisherBinding = await recordingPage.locator('[data-rebind="finisher"]').innerText();
+  assert(/7|RT|R2/.test(finisherBinding), `Dawnfall Breaker binding did not expose RT / R2 / Button 7: ${finisherBinding}`);
+  assert(await recordingPage.locator('[data-capture="finisher"]').isVisible(), 'Finisher remap action is missing');
+  check('controller settings expose the rebindable F / RT / R2 finisher action', 'PASS', { button: finisherBinding, keyboard: 'F' });
   await recordingPage.locator('#settings-cancel').click();
   await recordingPage.waitForTimeout(80);
   await recordingPage.locator('#resume-button').click();
   await waitFor(recordingPage, (value) => value.screen === 'b05Combat', 'pause resumes B05');
+  await exerciseInitialDawnrushShowcase(recordingPage);
   await recordingPage.waitForTimeout(100);
-  await recordingPage.keyboard.down('d'); await recordingPage.waitForTimeout(230); await recordingPage.keyboard.up('d');
+  await recordingPage.bringToFront();
+  await recordingPage.keyboard.down('d'); await recordingPage.waitForTimeout(320); await recordingPage.keyboard.up('d');
   state = await snapshot(recordingPage);
+  if (state.combat.playerX <= 130) {
+    await recordingPage.bringToFront();
+    await recordingPage.waitForTimeout(150);
+    await recordingPage.keyboard.down('d'); await recordingPage.waitForTimeout(420); await recordingPage.keyboard.up('d');
+    state = await snapshot(recordingPage);
+  }
   assert(state.combat.playerX > 130, `Keyboard movement did not advance from entry: ${JSON.stringify(state.combat)}`);
   check('keyboard movement advances the real Phaser player from the entry beacon', 'PASS', { fromX: 130, toX: state.combat.playerX });
   await recordingPage.keyboard.down('Space');
@@ -431,19 +574,21 @@ async function main() {
   await clearCurrentSentry(recordingPage, 'first sentry');
   await moveToX(recordingPage, 380, 17);
   await capture(recordingPage, 'b05-resonance-shard');
-  await keyTap(recordingPage, 'e');
+  await interactUntil(recordingPage, (value) => value.b04?.phase === 'sentry-two' && value.b04.rewardClaimed, 'shard interaction did not register');
   await waitFor(recordingPage, (value) => value.b04?.phase === 'sentry-two' && value.b04.rewardClaimed, 'shard collection wakes second sentry');
   state = await snapshot(recordingPage);
   assert(state.b04.playerHp >= 3, `Reward failed to restore health or second sentry: ${JSON.stringify(state.b04)}`);
   check('shard reward restores health and activates the second sentry', 'PASS', { phase: state.b04.phase, playerHp: state.b04.playerHp, rewardClaimed: state.b04.rewardClaimed, sentryX: state.combat.enemyX });
   record('shard claimed', state.b04);
+  await chargeDawnrushGauge(recordingPage);
+  check('QA-only preview charge restores the form gauge before the finisher demonstration', 'PASS', { energy: (await dawnrush(recordingPage))?.energy, debugFill: true });
   await recordingPage.waitForTimeout(900);
   await moveToX(recordingPage, 930, 22);
   await capture(recordingPage, 'b05-traverse-to-second-sentry');
   await clearCurrentSentry(recordingPage, 'second sentry');
-  await moveToX(recordingPage, 1480, 34);
+  await moveToX(recordingPage, 1480, 8);
   await capture(recordingPage, 'b05-open-exit-gate');
-  await keyTap(recordingPage, 'e');
+  await interactUntil(recordingPage, (value) => value.screen === 'b04Results' && value.b04?.phase === 'victory', 'exit gate interaction did not register');
   await waitFor(recordingPage, (value) => value.screen === 'b04Results' && value.b04?.phase === 'victory', 'exit gate produces the victory results state');
   const resultText = await recordingPage.locator('#b04-result-stats').innerText();
   assert(resultText.includes('CLEAR') && resultText.includes('RESONANCE SHARD RECOVERED'), `Victory stats are incomplete: ${resultText}`);
@@ -460,6 +605,38 @@ async function main() {
   await waitFor(recordingPage, (value) => value.screen === 'b05Combat' && value.b04?.phase === 'sentry-one' && value.b04.playerHp === 5, 'Replay resets player and encounter');
   check('Replay resets both waves, player health and reward state', 'PASS', { phase: (await b04(recordingPage)).phase, hp: (await b04(recordingPage)).playerHp });
   record('replay selected');
+  await keyTap(recordingPage, 'g');
+  await waitFor(recordingPage, (value) => value.b05?.energy === 100, 'KO review refills the Dawnrush gauge');
+  await keyTap(recordingPage, 'r');
+  await waitFor(recordingPage, (value) => value.b05?.state === 'dawnrush', 'KO review enters Dawnrush');
+  await moveToX(recordingPage, 230, 12);
+  const koDeadline = Date.now() + 30000;
+  let koSnapshot;
+  let transformedHurtCaptured = false;
+  while (Date.now() < koDeadline) {
+    koSnapshot = await snapshot(recordingPage);
+    if (!transformedHurtCaptured && koSnapshot?.b05?.form === 'Dawnrush' && /iona-b05-hurt-(flinch|stagger)/.test(koSnapshot.combat?.frame ?? '')) {
+      assert(koSnapshot.combat.playerHp > 0, `Dawnrush hurt capture was actually a KO: ${JSON.stringify(koSnapshot)}`);
+      check('Dawnrush flinch/stagger remains in-form after actual enemy contact', 'PASS', { hp: koSnapshot.combat.playerHp, frame: koSnapshot.combat.frame, state: koSnapshot.b05.state });
+      await capture(recordingPage, 'b05-dawnrush-hurt');
+      transformedHurtCaptured = true;
+    }
+    if (koSnapshot?.combat?.playerHp <= 0) break;
+    if (koSnapshot?.screen === 'b04Results') break;
+    await keyTap(recordingPage, 'g', 25);
+    await recordingPage.waitForTimeout(200);
+  }
+  assert(transformedHurtCaptured, `No live transformed hurt frame appeared before KO: ${JSON.stringify(koSnapshot)}`);
+  assert(koSnapshot?.combat?.playerHp <= 0, `Sentry did not produce a live KO during transformed review: ${JSON.stringify(koSnapshot)}`);
+  assert(koSnapshot.b05?.form === 'Dawnrush' && koSnapshot.combat.frame.includes('iona-b05-hurt-ko-'), `Transformed KO fell back to Base or lost the Dawnrush state: ${JSON.stringify(koSnapshot)}`);
+  check('live sentry KO keeps the authored Dawnrush KO pose instead of popping to Base', 'PASS', { hp: koSnapshot.combat.playerHp, form: koSnapshot.b05.form, frame: koSnapshot.combat.frame, state: koSnapshot.b05.state });
+  await capture(recordingPage, 'b05-dawnrush-ko');
+  await waitFor(recordingPage, (value) => value.screen === 'b04Results' && value.b04?.phase === 'defeat', 'transformed KO resolves the fair defeat result');
+  await capture(recordingPage, 'b05-transformed-defeat');
+  check('transformed KO still resolves into the existing defeat and retry flow', 'PASS', { hp: (await b04(recordingPage)).playerHp, phase: (await b04(recordingPage)).phase });
+  await recordingPage.waitForTimeout(500);
+  await recordingPage.locator('#b04-replay-button').click();
+  await waitFor(recordingPage, (value) => value.screen === 'b05Combat' && value.b04?.phase === 'sentry-one' && value.b04.playerHp === 5, 'second replay resets after transformed KO');
   await approach(recordingPage, 34);
   const attackVisualCheckStartedAt = await recordingPage.evaluate(() => performance.now());
   await waitFor(recordingPage, (value) => value.b04?.enemyState === 'telegraph', 'second run exposes enemy telegraph', 10000);
@@ -497,13 +674,13 @@ async function main() {
   assert(['anticipation', 'ignition', 'silhouette', 'dawnrush'].every((phase) => transformStates.includes(phase)), `Transformation timeline was incomplete: ${transformStates.join(', ')}`);
   const dawnrushVfxEvents = reportEvents.filter((event) => event.name === 'crownflare:b05-vfx');
   assert(dawnrushVfxEvents.length > 0, 'No generated Dawnrush VFX event was observed');
-  assert(['transform-charge', 'transform-ignition', 'dash', 'light', 'heavy', 'aerial', 'solar-drive'].every((cue) => audioCues.includes(cue)), `B05 audio events are missing cues: ${audioCues.join(', ')}`);
+  assert(['transform-charge', 'transform-ignition', 'transform-revert', 'dawnrush-hurt', 'dash', 'light', 'heavy', 'aerial', 'solar-drive', 'finisher'].every((cue) => audioCues.includes(cue)), `B05 audio events are missing cues: ${audioCues.join(', ')}`);
   check('hit VFX fires once on each successful combat contact; result flow records victory and defeat', 'PASS', { hits: hitCount, impactVfx: hitVfxEvents.length, misses: missCount, playerDamageEvents: damageEvents.length, audioEventCount: audioCues.length, cueNames: [...new Set(audioCues)] });
 
   const video = recordingPage.video();
   await recordingContext.close(); recordingContext = null;
   const tempVideo = await video.path();
-  const videoPath = path.join(evidence, 'b05-playable-chrome.webm');
+  const videoPath = path.join(evidence, 'b05-completion-playable-chrome.webm');
   await copyFile(tempVideo, videoPath);
   const probe = JSON.parse(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration,size:stream=codec_name,codec_type,width,height,avg_frame_rate', '-of', 'json', videoPath], { encoding: 'utf8' }));
   const stream = probe.streams.find((candidate) => candidate.codec_type === 'video');
@@ -519,9 +696,9 @@ async function main() {
   const source = await sourceDigest();
   const report = {
     result: errors.length === 0 ? 'PASS' : 'FAIL', capturedAt: new Date().toISOString(), route: '/?b05=1 (Vite development server)', browser: 'Google Chrome headed through Playwright', viewport: { width: 1280, height: 720 },
-    requirements: { realTimeChromeVideoSeconds: seconds, targetSeconds: 'actual continuous play; no title-screen padding; expected 30–180s', nativeImageGeneration: 'Used; four unmodified source sheets and 76 runtime sprites retained', ownerApproval: 'PENDING', audioHeardByAgent: 'NO', physicalController: 'NOT TESTED; synthetic standard pad exercised', normalSpeedHumanReview: 'PENDING; screenshots are automated and require owner review' },
+    requirements: { realTimeChromeVideoSeconds: seconds, targetSeconds: 'actual continuous play; no title-screen padding; expected 30–180s', nativeImageGeneration: 'Used; nine retained source sheets, 124 runtime textures, 24 direct true-left textures; art masters are unchanged except nearest-neighbor export cleanup', ownerApproval: 'PENDING', audioHeardByAgent: 'NO; generated WAV audits only', physicalController: 'NOT TESTED; synthetic standard pad exercised', normalSpeedHumanReview: 'PENDING; screenshots are automated and require owner review' },
     checks, actions, events: { total: reportEvents.length, combat: combatEvents.length, hits: hitCount, misses: missCount, playerDamage: damageEvents.length, audioCueNames: [...new Set(audioCues)], transformationStates: [...new Set(reportEvents.filter((event) => event.name === 'crownflare:b05-state').map((event) => event.detail?.state).filter(Boolean))], dawnrushVfx: reportEvents.filter((event) => event.name === 'crownflare:b05-vfx').length },
-    video: { path: 'review-evidence/b05/b05-playable-chrome.webm', sha256: videoHash, bytes: videoBytes, durationSeconds: seconds, width: stream?.width ?? null, height: stream?.height ?? null, frameRate: stream?.avg_frame_rate ?? null, codec: stream?.codec_name ?? null, audioTrack: probe.streams.some((candidate) => candidate.codec_type === 'audio') },
+    video: { path: 'review-evidence/b05-completion/b05-completion-playable-chrome.webm', sha256: videoHash, bytes: videoBytes, durationSeconds: seconds, width: stream?.width ?? null, height: stream?.height ?? null, frameRate: stream?.avg_frame_rate ?? null, codec: stream?.codec_name ?? null, audioTrack: probe.streams.some((candidate) => candidate.codec_type === 'audio') },
     sourceTree: source, errors, serverErrors,
   };
   await writeFile(path.join(evidence, 'qa-report.json'), `${JSON.stringify(report, null, 2)}\n`);

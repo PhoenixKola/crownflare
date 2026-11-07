@@ -23,6 +23,9 @@ SPECS = {
     "aerial": (0.24, "falling sine + airy noise"),
     "solar-drive": (0.72, "ascending sub pulse + layered bright partials"),
     "impact": (0.18, "soft low thump + short metallic partials"),
+    "transform-revert": (0.46, "descending solar harmonics + soft clothy release"),
+    "dawnrush-hurt": (0.22, "muted amber crack + short low pulse"),
+    "finisher": (0.84, "compressed opposing sub pulses + bright ring-clap tail"),
 }
 
 
@@ -53,6 +56,18 @@ def sample(cue: str, t: float, duration: float, rng: random.Random) -> float:
         f = 115 + 320 * min(1, u * 1.7)
         pulse = .75 + .25 * math.sin(2 * math.pi * (3.5 + u * 7) * t)
         return env * pulse * (.36 * math.sin(2 * math.pi * f * t) + .19 * math.sin(2 * math.pi * f * 2.02 * t) + .08 * math.sin(2 * math.pi * 1260 * t))
+    if cue == "transform-revert":
+        env = min(1, t / .025) * max(0, 1 - u) ** 1.45
+        f = 680 - 430 * u
+        return env * (.27 * math.sin(2 * math.pi * f * t) + .12 * math.sin(2 * math.pi * (f * 1.5) * t) + .08 * noise * math.exp(-t * 10))
+    if cue == "dawnrush-hurt":
+        env = max(0, 1 - u) ** 2.5
+        return env * (.26 * noise * math.exp(-t * 30) + .31 * math.sin(2 * math.pi * (112 + 48 * u) * t) + .08 * math.sin(2 * math.pi * 540 * t))
+    if cue == "finisher":
+        env = min(1, t / .012) * max(0, 1 - u) ** 1.1
+        f = 74 + 32 * math.sin(math.pi * min(1, u * 1.7))
+        ring = math.exp(-max(0, t - .28) * 8)
+        return env * (.34 * math.sin(2 * math.pi * f * t) + .18 * math.sin(2 * math.pi * f * 2.03 * t) + .17 * ring * math.sin(2 * math.pi * (1260 - 270 * u) * t) + .07 * noise * math.exp(-t * 24))
     env = max(0, 1 - u) ** 2.8
     return env * (.45 * math.sin(2 * math.pi * (78 - 22 * u) * t) + .11 * math.sin(2 * math.pi * 690 * t) + .08 * noise * math.exp(-t * 22))
 

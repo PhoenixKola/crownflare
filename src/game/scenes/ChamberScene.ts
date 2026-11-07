@@ -13,7 +13,8 @@ import { IONA_B01E_AUDIO_CUES, IonaB01eAudioEventGate, isIonaRunContactFrame, io
 import { beginAction, idleClock, stepAction, type ActionDef, type CombatClock, type CombatEvent } from '../combat/sim';
 import { B03_MOVES, canCancelIntoCombo, isBlockedByRect, moveHitbox, overlaps, combatantRect, resolveMoveContact, type B03MoveDefinition, type B03MoveId, type CombatRect } from '../combat/b03Moves';
 import { DAWNRUSH_MOVES } from '../combat/dawnrushMoves';
-import { dawnrushLocomotionFrame, dawnrushMoveFrame, DAWNRUSH_COMBAT_FRAMES, DAWNRUSH_LOCOMOTION_FRAMES, DAWNRUSH_TRANSFORM_FRAMES, DAWNRUSH_VFX_FRAMES } from '../animation/dawnrushAnimation';
+import { beginDawnrushReversion, canSwitchDawnrushForm, canUseDawnrushFinisher, DAWNRUSH_FINISHER_REQUIREMENTS, dawnrushActivationPhases, stepDawnrushForm, type DawnrushActivationMode, type DawnrushFormState } from '../combat/dawnrushLifecycle.ts';
+import { dawnrushLocomotionFrame, dawnrushMoveFrame, DAWNRUSH_AURA_FRAME_GROUPS, DAWNRUSH_AURA_FRAMES, DAWNRUSH_COMBAT_FRAMES, DAWNRUSH_LOCOMOTION_FRAMES, DAWNRUSH_REVERSION_FRAMES, DAWNRUSH_TRANSFORM_FRAMES, DAWNRUSH_VFX_FRAMES } from '../animation/dawnrushAnimation';
 import { IONA_B03_ENEMY_STATES, IONA_B03_POSES, IONA_B03_VFX_FRAMES, ionaB03EnemyTexture, ionaB03PoseTexture, type IonaB03EnemyState, type IonaB03Pose } from '../animation/ionaB03Art';
 import type { RebindableAction, ControlSettings } from '../input/controlSettings';
 
@@ -22,7 +23,7 @@ export type ArtReviewView = 'base' | 'forms' | 'silhouette' | 'direction' | 'mat
 export type ArtReviewContrast = 'calm' | 'light' | 'busy';
 export type ArtReviewSnapshot = { view: ArtReviewView; contrast: ArtReviewContrast; silhouetteHeight: 48 | 60 | 72; pixelGrid: boolean; loadedAssets: number; totalAssets: number; missingAssets: string[] };
 export type IonaPreviewSnapshot = { playerX:number; playerY:number; physicsAnchor:{x:number;y:number}; grounded:boolean; facing:IonaFacing; bodySize:{width:number;height:number}; action:string; frame:string; attackPhase:string; comboStep:number; targetX:number; targetHealth:number; lastCombatEvent:string; reviewScale:48|60|72; spriteScale:number; spriteOrigin:{x:number;y:number}; spritePosition:{x:number;y:number}; vfxEnabled:boolean; background:'calm'; audioEnabled:boolean; audioUnlocked:boolean; audioAssetsLoaded:number; audioVolume:number; audioStatus:string; controller:boolean; loadedTextures:number; missingTextures:string[] };
-export type B03CombatSnapshot = { playerX:number; playerY:number; playerHp:number; enemyX:number; enemyY:number; enemyHp:number; resonance:number; specialCooldownMs:number; move:string; phase:string; elapsedMs:number; bufferedMove:string|null; facing:IonaFacing; enemyState:string; frame:string; controllerIndex:number; lastResult:string; bodySize:{width:number;height:number}; spriteScale:number; vfxEnabled:boolean; vfxActive:boolean; background:ArtReviewContrast; reducedMotion:boolean; errors:string[] };
+export type B03CombatSnapshot = { playerX:number; playerY:number; playerHp:number; playerVelocity:{x:number;y:number}; playerInvulnerableMs:number; enemyX:number; enemyY:number; enemyHp:number; resonance:number; specialCooldownMs:number; move:string; phase:string; elapsedMs:number; bufferedMove:string|null; facing:IonaFacing; enemyState:string; frame:string; controllerIndex:number; lastResult:string; bodySize:{width:number;height:number}; spriteScale:number; vfxEnabled:boolean; vfxActive:boolean; background:ArtReviewContrast; reducedMotion:boolean; errors:string[] };
 const WORLD_WIDTH = 1560;
 const WORLD_HEIGHT = 270;
 const GROUND_TOP = 241;
@@ -137,9 +138,18 @@ export class ChamberScene extends Phaser.Scene {
   private specialVfxElapsed = 0;
   private specialVfxFacing: IonaFacing = 1;
   private b03FixedAccumulator = 0;
-  private b03InputQueue: Record<RebindableAction, boolean> = { jump:false, light:false, heavy:false, dash:false, special:false, interact:false, transform:false };
+  private b03InputQueue: Record<RebindableAction, boolean> = { jump:false, light:false, heavy:false, dash:false, special:false, interact:false, transform:false, finisher:false };
   private combatHitstopMs = 0;
   private specialVfxDistance = 62;
+  private finisherCooldownMs = 0;
+  private dawnrushTransformBufferMs = 0;
+  private dawnrushRecoveryMs = 0;
+  private b05AuraPressure?: Phaser.GameObjects.Image;
+  private b05AuraOrbit?: Phaser.GameObjects.Image;
+  private b05AuraSpeed?: Phaser.GameObjects.Image;
+  private b05AuraElapsedMs = 0;
+  private b05FinisherFx?: Phaser.GameObjects.Image;
+  private b05FinisherFxElapsedMs = 0;
   private b03LastControllerIndex = -1;
   private combatBlockers: CombatRect[] = [];
   private b03DebugVisible = false;
@@ -169,10 +179,12 @@ export class ChamberScene extends Phaser.Scene {
   private labAudioPaused = false;
   private lastAudioCue = 'none';
   private impactAudio?: AudioContext;
-  private dawnrushState: 'base' | 'anticipation' | 'ignition' | 'silhouette' | 'dawnrush' = 'base';
+  private dawnrushState: DawnrushFormState = 'base';
   private dawnrushPhaseMs = 0;
   private dawnrushEnergy = 70;
   private dawnrushLocomotionElapsed = 0;
+  private dawnrushActivationMode: DawnrushActivationMode = 'showcase';
+  private dawnrushShowcaseUsed = false;
 
   constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean } = {}) {
     super({ key: 'Chamber' });
@@ -273,8 +285,12 @@ export class ChamberScene extends Phaser.Scene {
         this.load.image(`iona-b05-${frame}-${facing}`, `./assets/characters/iona/b05/${frame}-${facing}.png`);
       }
       for (const frame of DAWNRUSH_TRANSFORM_FRAMES) this.load.image(`iona-b05-${frame}`, `./assets/characters/iona/b05/${frame}.png`);
+      for (const frame of DAWNRUSH_REVERSION_FRAMES) for (const facing of ['left', 'right'] as const) {
+        this.load.image(`iona-b05-${frame}-${facing}`, `./assets/characters/iona/b05/${frame}-${facing}.png`);
+      }
       for (const frame of DAWNRUSH_VFX_FRAMES) this.load.image(`iona-b05-${frame}`, `./assets/characters/iona/b05/${frame}.png`);
-      for (const cue of ['transform-charge', 'transform-ignition', 'dash', 'light', 'heavy', 'aerial', 'solar-drive', 'impact']) {
+      for (const frame of DAWNRUSH_AURA_FRAMES) this.load.image(`iona-b05-${frame}`, `./assets/characters/iona/b05/${frame}.png`);
+      for (const cue of ['transform-charge', 'transform-ignition', 'transform-revert', 'dawnrush-hurt', 'dash', 'light', 'heavy', 'aerial', 'solar-drive', 'impact', 'finisher']) {
         this.load.audio(`b05-${cue}`, `./assets/audio/b05/${cue}.wav`);
       }
     }
@@ -398,6 +414,7 @@ export class ChamberScene extends Phaser.Scene {
       if(this.b02Diagnostics)this.labDiagnosticLabel=add.text(this.actor.x,this.body.bottom-84,'',{fontFamily:'monospace',fontSize:'5px',color:'#b9fff0',backgroundColor:'#09111c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(40);
       if(this.b01eRuntime)this.input.on(Phaser.Input.Events.POINTER_DOWN,()=>this.unlockLabAudio());
       if (this.animationLab || this.previewMode) this.createTrainingTarget();
+      if (this.b05Mode) this.createB05AuraLayers();
       if (this.animationLab) {
         this.createAnimationReview();
         this.updateAnimationReviewVisibility();
@@ -466,7 +483,7 @@ export class ChamberScene extends Phaser.Scene {
           if (this.b03ReducedMotion) this.b03Status = 'VFX HELD OFF / REDUCED MOTION';
           else {
             this.b03VfxEnabled = !this.b03VfxEnabled;
-            if (!this.b03VfxEnabled) { this.specialVfx?.destroy(); this.specialVfx = undefined; }
+            if (!this.b03VfxEnabled) { this.specialVfx?.destroy(); this.specialVfx = undefined; this.b05FinisherFx?.destroy(); this.b05FinisherFx = undefined; }
             this.b03Status = `COMBAT VFX / ${this.b03VfxEnabled ? 'ON' : 'OFF'}`;
           }
         }
@@ -508,6 +525,7 @@ export class ChamberScene extends Phaser.Scene {
       if(this.b03Mode)this.updateB03Combat(input.actions,grounded,dt);
       else if(this.b01cMode||this.b01dMode||this.b01eRuntime)this.updateB01CCombat(input.actions.light,grounded,dt);
       else this.updateCombat(input.actions.light,grounded,dt);
+      if (this.b05Mode) { this.updateB05Aura(dt); this.updateB05FinisherFx(dt); }
       this.updateLabAnimation(grounded,moving,dt);
       this.drawAnimationDiagnostics();
       if (this.animationLab) this.updateAnimationReviewVisibility();
@@ -531,7 +549,7 @@ export class ChamberScene extends Phaser.Scene {
 
   resetTransientInput(): void {
     this.controller?.resetTransientState();
-    this.b03InputQueue = { jump:false, light:false, heavy:false, dash:false, special:false, interact:false, transform:false };
+    this.b03InputQueue = { jump:false, light:false, heavy:false, dash:false, special:false, interact:false, transform:false, finisher:false };
     this.labReviewRequested=false; this.labContrastRequested=false; this.labReviewScaleRequested=null; this.labABRequested=false; this.labVfxRequested=false; this.labDiagnosticsRequested=false;
   }
 
@@ -594,6 +612,7 @@ export class ChamberScene extends Phaser.Scene {
     ];
     return {
       playerX:Number(this.body.center.x.toFixed(2)), playerY:Number(this.body.center.y.toFixed(2)), playerHp:this.playerHp,
+      playerVelocity:{ x:Number(this.body.velocity.x.toFixed(2)), y:Number(this.body.velocity.y.toFixed(2)) }, playerInvulnerableMs:Number(this.playerInvulnerableMs.toFixed(1)),
       enemyX:Number(this.targetX.toFixed(2)), enemyY:Number((GROUND_TOP + this.enemyAirOffset).toFixed(2)), enemyHp:this.targetHealth,
       resonance:Number(this.resonance.toFixed(1)), specialCooldownMs:Number(this.specialCooldownMs.toFixed(1)),
       move:this.b03Move ?? 'none', phase:this.attackClock.phase, elapsedMs:this.attackClock.elapsedMs, bufferedMove:this.b03BufferedMove, facing:this.motion.facing, enemyState:this.enemyVisualState,
@@ -759,23 +778,33 @@ export class ChamberScene extends Phaser.Scene {
       this.b03FixedAccumulator -= fixedStepMs;
       steps += 1;
       const queued = this.b03InputQueue;
-      this.b03InputQueue = { jump:false, light:false, heavy:false, dash:false, special:false, interact:false, transform:false };
+      this.b03InputQueue = { jump:false, light:false, heavy:false, dash:false, special:false, interact:false, transform:false, finisher:false };
       this.stepB03CombatTick(queued, grounded, fixedStepMs);
     }
   }
 
   private stepB03CombatTick(input: Readonly<Record<RebindableAction, boolean>>, grounded: boolean, deltaMs: number): void {
     this.specialCooldownMs = Math.max(0, this.specialCooldownMs - deltaMs);
+    this.finisherCooldownMs = Math.max(0, this.finisherCooldownMs - deltaMs);
+    const previousHurtMs = this.playerHurtMs;
     this.playerHurtMs = Math.max(0, this.playerHurtMs - deltaMs);
+    this.dawnrushRecoveryMs = Math.max(0, this.dawnrushRecoveryMs - deltaMs);
+    if (previousHurtMs > 0 && this.playerHurtMs === 0 && this.b05Mode && this.dawnrushState === 'dawnrush' && this.playerHp > 0) this.dawnrushRecoveryMs = 160;
     this.playerInvulnerableMs = Math.max(0, this.playerInvulnerableMs - deltaMs);
     this.dashInvulnerabilityMs = Math.max(0, this.dashInvulnerabilityMs - deltaMs);
+    if (input.transform && this.b05Mode) this.dawnrushTransformBufferMs = 900;
     if (this.combatHitstopMs > 0) {
       this.combatHitstopMs = Math.max(0, this.combatHitstopMs - deltaMs);
       this.updateB03Vfx(deltaMs);
       return;
     }
     this.updateB05Transform(deltaMs);
-    if (input.transform && this.b05Mode && this.playerHp > 0 && !this.b03Move) this.toggleB05Transform();
+    const formSwitchReady = this.b05Mode && canSwitchDawnrushForm({ state: this.dawnrushState, phaseMs: this.dawnrushPhaseMs,
+      playerHp: this.playerHp, hurtMs: this.playerHurtMs, dashMs: this.motion.dashMs, moveActive: !!this.b03Move });
+    if (this.dawnrushTransformBufferMs > 0 && formSwitchReady) {
+      this.dawnrushTransformBufferMs = 0;
+      this.toggleB05Transform();
+    } else this.dawnrushTransformBufferMs = Math.max(0, this.dawnrushTransformBufferMs - deltaMs);
     if (input.interact && this.b04Mode && this.handleB04Interact()) return;
     if (input.interact && (this.playerHp <= 0 || this.targetHealth <= 0)) {
       this.resetB03Encounter();
@@ -790,8 +819,15 @@ export class ChamberScene extends Phaser.Scene {
           this.b03BufferedMove = (`light-${this.attackComboIndex + 2}`) as B03MoveId;
           this.b03Status = 'COMBO BUFFERED';
         } else if (this.attackComboIndex === 2) this.b03Status = 'COMBO END / RECOVER';
+      } else if (this.b03Move && input.finisher && this.b05Mode && this.dawnrushState === 'dawnrush') {
+        const current = this.activeMoveDefinition ?? this.moveDefinition(this.b03Move);
+        if (this.canStartDawnrushFinisher() && canCancelIntoCombo(current, this.attackClock.elapsedMs)) {
+          this.b03BufferedMove = 'finisher';
+          this.b03Status = 'DAWNFALL BREAKER BUFFERED';
+        } else this.b03Status = 'FINISHER BUFFERED ONLY IN RECOVERY / EARN 60 RESONANCE';
       } else if (!this.b03Move) {
         if (input.special) this.tryStartB03Move('resonance', grounded);
+        else if (input.finisher && this.b05Mode && this.dawnrushState === 'dawnrush') this.tryStartB03Move('finisher', grounded);
         else if (input.heavy) this.tryStartB03Move('heavy', grounded);
         else if (input.light) this.tryStartB03Move(grounded ? 'light-1' : 'air-light', grounded);
       }
@@ -818,8 +854,15 @@ export class ChamberScene extends Phaser.Scene {
     const move = this.moveDefinition(id);
     if (move.grounded && !grounded || move.airborne && grounded) { this.b03Status = move.airborne ? 'AIR STRIKE / JUMP FIRST' : 'GROUND MOVE / LAND FIRST'; return; }
     if (id === 'resonance' && this.specialCooldownMs > 0) { this.b03Status = `SPECIAL COOLDOWN / ${Math.ceil(this.specialCooldownMs / 100) / 10}s`; return; }
+    if (id === 'finisher' && !this.b05Mode) { this.b03Status = 'DAWNFALL BREAKER IS DAWNRUSH ONLY'; return; }
+    if (id === 'finisher' && this.finisherCooldownMs > 0) { this.b03Status = `FINISHER COOLDOWN / ${Math.ceil(this.finisherCooldownMs / 100) / 10}s`; return; }
+    if (id === 'finisher' && this.dawnrushEnergy < (move.dawnrushEnergyCost ?? 0)) { this.b03Status = `FINISHER NEEDS ${DAWNRUSH_FINISHER_REQUIREMENTS.energy} DAWNRUSH`; return; }
     if (this.resonance < move.resonanceCost) { this.b03Status = `NEED ${move.resonanceCost} RESONANCE`; return; }
     this.resonance = Math.max(0, this.resonance - move.resonanceCost);
+    if (id === 'finisher') {
+      this.dawnrushEnergy = Math.max(0, this.dawnrushEnergy - (move.dawnrushEnergyCost ?? 0));
+      this.finisherCooldownMs = move.cooldownMs;
+    }
     if (id === 'resonance') this.specialCooldownMs = move.cooldownMs;
     this.b03Move = id;
     this.activeMoveDefinition = move;
@@ -831,15 +874,16 @@ export class ChamberScene extends Phaser.Scene {
     this.activeAudioSequence = ++this.audioSequence;
     const whoosh: IonaB01eAudioCue = id === 'light-1' ? 'palm-whoosh' : id === 'light-2' || id === 'air-light' ? 'kick-whoosh' : 'forearm-whoosh';
     if (this.b05Mode && this.dawnrushState === 'dawnrush') {
-      this.body.setVelocityX(Phaser.Math.Clamp(this.body.velocity.x + this.attackFacing * (id === 'resonance' ? 92 : 62), -330, 330));
+      const lunge = id === 'resonance' ? 92 : id === 'finisher' ? 118 : 62;
+      this.body.setVelocityX(Phaser.Math.Clamp(this.body.velocity.x + this.attackFacing * lunge, -330, 330));
       this.motion = { ...this.motion, xVelocity: this.body.velocity.x };
-      this.playB05Cue(id === 'resonance' ? 'solar-drive' : id === 'heavy' ? 'heavy' : id === 'air-light' ? 'aerial' : 'light');
+      this.playB05Cue(id === 'resonance' ? 'solar-drive' : id === 'finisher' ? 'finisher' : id === 'heavy' ? 'heavy' : id === 'air-light' ? 'aerial' : 'light');
     } else this.playB01eCue(whoosh, `b03:${this.activeAudioSequence}:startup`);
     if (id === 'heavy') this.playCombatTone('heavy-charge');
     else if (id === 'air-light') this.playCombatTone('air-swing');
     else if (id === 'resonance') this.playCombatTone('resonance-charge');
     this.b03Status = id === 'resonance' ? 'RESONANCE IMPRINT / RELEASE' : id === 'heavy' ? 'HEAVY LAUNCHER / COMMIT' : id === 'air-light' ? 'AERIAL STRIKE' : `LIGHT ${this.attackComboIndex + 1} / CHAIN IN RECOVERY`;
-    if (this.b05Mode && this.dawnrushState === 'dawnrush') this.b03Status = id === 'resonance' ? 'SOLAR DRIVE / PRESSURE WAVE' : `DAWNRUSH ${id.toUpperCase()} / FORWARD PRESSURE`;
+    if (this.b05Mode && this.dawnrushState === 'dawnrush') this.b03Status = id === 'resonance' ? 'SOLAR DRIVE / PRESSURE WAVE' : id === 'finisher' ? 'DAWNFALL BREAKER / RELEASE' : `DAWNRUSH ${id.toUpperCase()} / FORWARD PRESSURE`;
     window.dispatchEvent(new CustomEvent('crownflare:b03-move-start', { detail: { move:id, facing:this.attackFacing, at:performance.now() } }));
   }
 
@@ -847,23 +891,34 @@ export class ChamberScene extends Phaser.Scene {
     return this.b05Mode && this.dawnrushState === 'dawnrush' ? DAWNRUSH_MOVES[id] : B03_MOVES[id];
   }
 
+  private canStartDawnrushFinisher(): boolean {
+    return this.b05Mode && canUseDawnrushFinisher({ state: this.dawnrushState, phaseMs: this.dawnrushPhaseMs, energy: this.dawnrushEnergy, resonance: this.resonance, cooldownMs: this.finisherCooldownMs });
+  }
+
   private toggleB05Transform(): void {
     if (!this.b05Mode) return;
-    if (this.dawnrushState !== 'base') {
-      this.dawnrushState = 'base';
-      this.dawnrushPhaseMs = 0;
-      this.b03Status = 'BACK TO BASE / DAWNRUSH STORED';
+    if (this.dawnrushState === 'dawnrush') {
+      const reversion = beginDawnrushReversion(this.dawnrushState, this.dawnrushEnergy);
+      this.dawnrushState = reversion.state;
+      this.dawnrushPhaseMs = reversion.phaseMs;
+      this.b03Status = 'DAWNRUSH RELEASE / RETURNING TO BASE';
+      this.playB05Cue('transform-revert');
+      this.createB05Fx('fx-orbit-1', this.body.center.x, this.body.bottom - 30, 92, 58);
       this.emitB05State();
       return;
     }
+    if (this.dawnrushState !== 'base') return;
     if (this.dawnrushEnergy < 20) {
       this.b03Status = `DAWNRUSH NEEDS 20 / ${Math.floor(this.dawnrushEnergy)} STORED`;
       this.emitB05State();
       return;
     }
     this.dawnrushEnergy -= 20;
+    const safeForShowcase = this.targetHealth <= 0 || Math.abs(this.targetX - this.body.center.x) > 120;
+    this.dawnrushActivationMode = safeForShowcase && !this.dawnrushShowcaseUsed ? 'showcase' : 'combat';
+    if (this.dawnrushActivationMode === 'showcase') this.dawnrushShowcaseUsed = true;
     this.dawnrushState = 'anticipation';
-    this.dawnrushPhaseMs = 500;
+    this.dawnrushPhaseMs = dawnrushActivationPhases(this.dawnrushActivationMode)[0];
     this.b03Status = 'DAWNRUSH / IGNITION';
     this.playB05Cue('transform-charge');
     this.createB05Fx('fx-transform-ring', this.body.center.x, this.body.bottom - 30, 92, 58);
@@ -873,38 +928,28 @@ export class ChamberScene extends Phaser.Scene {
 
   private updateB05Transform(deltaMs: number): void {
     if (!this.b05Mode) return;
-    if (this.dawnrushState === 'anticipation' || this.dawnrushState === 'ignition' || this.dawnrushState === 'silhouette') {
-      this.dawnrushPhaseMs = Math.max(0, this.dawnrushPhaseMs - deltaMs);
-      if (this.dawnrushPhaseMs === 0) {
-        if (this.dawnrushState === 'anticipation') {
-          this.dawnrushState = 'ignition';
-          this.dawnrushPhaseMs = 600;
-          this.playB05Cue('transform-ignition');
-          this.createB05Fx('fx-silhouette-burst', this.body.center.x, this.body.bottom - 32, 100, 62);
-        } else if (this.dawnrushState === 'ignition') {
-          this.dawnrushState = 'silhouette';
-          this.dawnrushPhaseMs = 600;
-          this.createB05Fx('fx-orbit-filaments', this.body.center.x, this.body.bottom - 31, 96, 58);
-        } else {
-          this.dawnrushState = 'dawnrush';
-          this.dawnrushPhaseMs = 240;
-          this.dawnrushLocomotionElapsed = 0;
-          this.b03Status = 'DAWNRUSH READY / LIGHT, HEAVY, Q SOLAR DRIVE';
-        }
-        this.emitB05State();
-      }
-      return;
-    }
-    if (this.dawnrushState === 'dawnrush') {
-      this.dawnrushPhaseMs = Math.max(0, this.dawnrushPhaseMs - deltaMs);
-      this.dawnrushEnergy = Math.max(0, this.dawnrushEnergy - deltaMs * .006);
-      if (this.dawnrushEnergy === 0) {
-        this.dawnrushState = 'base';
-        this.dawnrushPhaseMs = 0;
-        this.b03Status = 'DAWNRUSH SPENT / BUILD CHARGE THROUGH HITS';
-        this.emitB05State();
+    const step = stepDawnrushForm({ state: this.dawnrushState, phaseMs: this.dawnrushPhaseMs, energy: this.dawnrushEnergy, transitions: [] }, deltaMs, this.dawnrushActivationMode);
+    this.dawnrushState = step.state;
+    this.dawnrushPhaseMs = step.phaseMs;
+    this.dawnrushEnergy = step.energy;
+    for (const state of step.transitions) {
+      if (state === 'ignition') {
+        this.playB05Cue('transform-ignition');
+        this.createB05Fx('fx-silhouette-burst', this.body.center.x, this.body.bottom - 32, 100, 62);
+      } else if (state === 'silhouette') {
+        this.createB05Fx('fx-orbit-filaments', this.body.center.x, this.body.bottom - 31, 96, 58);
+      } else if (state === 'dawnrush') {
+        this.dawnrushLocomotionElapsed = 0;
+        this.b03Status = 'DAWNRUSH / F DAWNFALL BREAKER (60 RESONANCE + 25 FORM)';
+      } else if (state === 'reverting-contract') {
+        this.playB05Cue('transform-revert');
+        this.createB05Fx('fx-orbit-1', this.body.center.x, this.body.bottom - 30, 92, 58);
+        this.b03Status = this.dawnrushEnergy === 0 ? 'DAWNRUSH SPENT / RETURNING TO BASE' : 'DAWNRUSH RELEASE / RETURNING TO BASE';
+      } else if (state === 'base') {
+        this.b03Status = 'BASE RESTORED / BUILD DAWNRUSH THROUGH HITS';
       }
     }
+    if (step.transitions.length > 0) this.emitB05State();
   }
 
   private createB05Fx(frame: string, x: number, y: number, width: number, height: number, direction: IonaFacing = 1): void {
@@ -912,6 +957,55 @@ export class ChamberScene extends Phaser.Scene {
     const image = this.add.image(x, y, `iona-b05-${frame}`).setDisplaySize(width, height).setDepth(25).setFlipX(direction < 0);
     window.dispatchEvent(new CustomEvent('crownflare:b05-vfx', { detail: { kind: frame, x: Number(x.toFixed(1)), y: Number(y.toFixed(1)), facing: direction } }));
     this.tweens.add({ targets: image, x: x + direction * 10, alpha: 0, scaleX: image.scaleX * 1.08, scaleY: image.scaleY * 1.08, duration: 190, ease: 'Quad.out', onComplete: () => image.destroy() });
+  }
+
+  private createB05AuraLayers(): void {
+    if (!this.b05Mode || !this.labSprite) return;
+    const x = this.body.center.x;
+    const y = this.body.bottom - 30;
+    this.b05AuraPressure = this.add.image(x, y, `iona-b05-${DAWNRUSH_AURA_FRAME_GROUPS.pressure[0]}`).setDisplaySize(72, 58).setDepth(10).setAlpha(.34);
+    this.b05AuraSpeed = this.add.image(x, y, `iona-b05-${DAWNRUSH_AURA_FRAME_GROUPS.speed[0]}`).setDisplaySize(102, 42).setDepth(11).setAlpha(.28).setVisible(false);
+    this.b05AuraOrbit = this.add.image(x, y, `iona-b05-${DAWNRUSH_AURA_FRAME_GROUPS.orbit[0]}`).setDisplaySize(92, 64).setDepth(13).setAlpha(.28);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.b05AuraPressure?.destroy(); this.b05AuraOrbit?.destroy(); this.b05AuraSpeed?.destroy(); this.b05FinisherFx?.destroy();
+    });
+  }
+
+  private updateB05Aura(deltaMs: number): void {
+    if (!this.b05AuraPressure || !this.b05AuraOrbit || !this.b05AuraSpeed) return;
+    this.b05AuraElapsedMs += deltaMs;
+    const enabled = this.dawnrushState === 'dawnrush' && this.b03VfxEnabled && !this.b03ReducedMotion;
+    for (const layer of [this.b05AuraPressure, this.b05AuraOrbit, this.b05AuraSpeed]) layer.setVisible(enabled);
+    if (!enabled) return;
+    const x = this.body.center.x;
+    const y = this.body.bottom - 30;
+    const phase = Math.floor(this.b05AuraElapsedMs / 116) % 4;
+    this.b05AuraPressure.setTexture(`iona-b05-${DAWNRUSH_AURA_FRAME_GROUPS.pressure[phase]}`).setPosition(x, y)
+      .setAlpha(this.playerHurtMs > 0 ? .21 : .30 + (phase % 2) * .035);
+    this.b05AuraOrbit.setTexture(`iona-b05-${DAWNRUSH_AURA_FRAME_GROUPS.orbit[(phase + 1) % 4]}`).setPosition(x, y)
+      .setRotation(Math.sin(this.b05AuraElapsedMs / 760) * .045).setAlpha(.23 + (phase % 2) * .035);
+    const movingFast = this.motion.dashMs > 0 || Math.abs(this.body.velocity.x) > 135;
+    this.b05AuraSpeed.setVisible(movingFast).setTexture(`iona-b05-${DAWNRUSH_AURA_FRAME_GROUPS.speed[phase]}`)
+      .setPosition(x - this.motion.facing * 8, y + 10).setFlipX(this.motion.facing < 0).setAlpha(.25);
+  }
+
+  private createB05FinisherFx(facing: IonaFacing): void {
+    if (!this.b03VfxEnabled || this.b03ReducedMotion) return;
+    this.b05FinisherFx?.destroy();
+    this.b05FinisherFxElapsedMs = 0;
+    const frame = DAWNRUSH_AURA_FRAME_GROUPS.finisher[0];
+    this.b05FinisherFx = this.add.image(this.body.center.x + facing * 34, this.body.bottom - 31, `iona-b05-${frame}`)
+      .setDisplaySize(110, 58).setDepth(26).setFlipX(facing < 0);
+    window.dispatchEvent(new CustomEvent('crownflare:b05-vfx', { detail: { kind: 'dawnfall-breaker', facing, x: Number(this.b05FinisherFx.x.toFixed(1)), y: Number(this.b05FinisherFx.y.toFixed(1)) } }));
+  }
+
+  private updateB05FinisherFx(deltaMs: number): void {
+    if (!this.b05FinisherFx?.active) return;
+    this.b05FinisherFxElapsedMs += deltaMs;
+    const frameIndex = Math.min(3, Math.floor(this.b05FinisherFxElapsedMs / 54));
+    this.b05FinisherFx.setTexture(`iona-b05-${DAWNRUSH_AURA_FRAME_GROUPS.finisher[frameIndex]}`)
+      .setAlpha(Math.max(.2, 1 - this.b05FinisherFxElapsedMs / 260));
+    if (this.b05FinisherFxElapsedMs >= 216) { this.b05FinisherFx.destroy(); this.b05FinisherFx = undefined; }
   }
 
   private playB05Cue(cue: string): void {
@@ -927,14 +1021,22 @@ export class ChamberScene extends Phaser.Scene {
     if (state) window.dispatchEvent(new CustomEvent('crownflare:b05-state', { detail: { ...state, debugFill } }));
   }
 
-  dawnrushSnapshot(): { state: string; energy: number; phaseMs: number; move: string; form: 'Base' | 'Dawnrush'; loadedFrames: number; missingFrames: string[]; activeMove: string } | null {
+  dawnrushSnapshot(): { state: string; energy: number; phaseMs: number; move: string; form: 'Base' | 'Dawnrush'; loadedFrames: number; missingFrames: string[]; activeMove: string; finisherCooldownMs: number; finisherReady: boolean; finisherStatus: string } | null {
     if (!this.b05Mode || !this.labSprite) return null;
     const bodyFrames = [...new Set([...DAWNRUSH_LOCOMOTION_FRAMES, ...DAWNRUSH_COMBAT_FRAMES])].flatMap((frame) => ['left', 'right'].map((facing) => `iona-b05-${frame}-${facing}`));
-    const expected = [...bodyFrames, ...DAWNRUSH_TRANSFORM_FRAMES.map((frame) => `iona-b05-${frame}`), ...DAWNRUSH_VFX_FRAMES.map((frame) => `iona-b05-${frame}`)];
+    const expected = [...bodyFrames, ...DAWNRUSH_TRANSFORM_FRAMES.map((frame) => `iona-b05-${frame}`), ...DAWNRUSH_REVERSION_FRAMES.flatMap((frame) => ['left', 'right'].map((facing) => `iona-b05-${frame}-${facing}`)), ...DAWNRUSH_VFX_FRAMES.map((frame) => `iona-b05-${frame}`), ...DAWNRUSH_AURA_FRAMES.map((frame) => `iona-b05-${frame}`)];
     const missingFrames = expected.filter((key) => !this.textures.exists(key));
     return { state: this.dawnrushState, energy: Number(this.dawnrushEnergy.toFixed(1)), phaseMs: Number(this.dawnrushPhaseMs.toFixed(1)), move: this.labFrame,
       form: this.dawnrushState === 'base' ? 'Base' : 'Dawnrush', loadedFrames: expected.length - missingFrames.length, missingFrames,
-      activeMove: this.activeMoveDefinition?.action.id ?? 'none' };
+      activeMove: this.activeMoveDefinition?.action.id ?? 'none', finisherCooldownMs: Math.round(this.finisherCooldownMs), finisherReady: this.canStartDawnrushFinisher(), finisherStatus: this.dawnrushFinisherStatus() };
+  }
+
+  private dawnrushFinisherStatus(): string {
+    if (this.dawnrushState !== 'dawnrush' || this.dawnrushPhaseMs > 0) return 'FORM REQUIRED';
+    if (this.finisherCooldownMs > 0) return `COOLDOWN ${(this.finisherCooldownMs / 1000).toFixed(1)}s`;
+    if (this.dawnrushEnergy < DAWNRUSH_FINISHER_REQUIREMENTS.energy) return `NEED ${DAWNRUSH_FINISHER_REQUIREMENTS.energy} FORM`;
+    if (this.resonance < DAWNRUSH_FINISHER_REQUIREMENTS.resonance) return `NEED ${DAWNRUSH_FINISHER_REQUIREMENTS.resonance} RES`;
+    return 'READY';
   }
 
   private resolveB03CombatEvent(move: B03MoveDefinition, event: CombatEvent): void {
@@ -953,7 +1055,8 @@ export class ChamberScene extends Phaser.Scene {
       this.resonance = Math.min(100, this.resonance + (move.id === 'resonance' ? 0 : 7 + move.damage * 2));
       if (this.b05Mode && this.dawnrushState === 'dawnrush') {
         this.dawnrushEnergy = Math.min(100, this.dawnrushEnergy + 8 + move.damage * 2);
-        this.createB05Fx(move.id === 'resonance' ? 'fx-solar-pressure-wave' : move.id === 'heavy' ? 'fx-impact-star' : move.id === 'air-light' || move.id === 'light-3' ? 'fx-combo-arc' : 'fx-palm-arc', this.targetX, GROUND_TOP - 32, move.id === 'resonance' ? 104 : 78, 50, this.attackFacing);
+        if (move.id === 'finisher') this.createB05FinisherFx(this.attackFacing);
+        else this.createB05Fx(move.id === 'resonance' ? 'fx-solar-pressure-wave' : move.id === 'heavy' ? 'fx-impact-star' : move.id === 'air-light' || move.id === 'light-3' ? 'fx-combo-arc' : 'fx-palm-arc', this.targetX, GROUND_TOP - 32, move.id === 'resonance' ? 104 : 78, 50, this.attackFacing);
         this.playB05Cue('impact');
       }
       this.enemyVisualState = move.knockbackY < 0 ? 'stagger' : 'hurt';
@@ -966,7 +1069,7 @@ export class ChamberScene extends Phaser.Scene {
       if ((move.id === 'heavy' || move.id === 'light-3') && !this.b03ReducedMotion) this.cameras.main.shake(38, .0012);
       if (this.b03Mode) this.controller.requestRumble(move.id === 'heavy' ? .25 : .15);
       const hitCue: IonaB01eAudioCue = move.id === 'light-1' ? 'palm-hit' : move.id === 'light-2' || move.id === 'air-light' ? 'kick-hit' : 'forearm-hit';
-      this.playB01eCue(hitCue, `b03:${this.activeAudioSequence}:contact`);
+      if (!this.b05Mode) this.playB01eCue(hitCue, `b03:${this.activeAudioSequence}:contact`);
       if (move.id === 'heavy') this.playCombatTone('heavy-impact');
       this.createB03Impact(move);
       if (this.targetHealth <= 0) { this.enemyVisualState = 'ko'; this.enemyHitstunMs = 0; this.enemyAirOffset = 0; this.b03BufferedMove = null; }
@@ -1048,7 +1151,14 @@ export class ChamberScene extends Phaser.Scene {
     this.playerInvulnerableMs = 700;
     this.body.setVelocityX(-this.enemyFacing * 82);
     this.b03Status = this.playerHp <= 0 ? 'IONA DOWN / E INTERACT OR R RETRY' : `IONA HIT / ${this.playerHp} HP`;
-    this.playCombatTone(this.playerHp <= 0 ? 'ko' : 'hurt');
+    if (this.b05Mode && this.dawnrushState !== 'base') this.playB05Cue('dawnrush-hurt');
+    else this.playCombatTone(this.playerHp <= 0 ? 'ko' : 'hurt');
+    if (this.playerHp <= 0) {
+      this.b03Move = null;
+      this.activeMoveDefinition = null;
+      this.b03BufferedMove = null;
+      this.attackClock = idleClock;
+    }
     this.controller.requestRumble(this.playerHp <= 0 ? .25 : .16);
     window.dispatchEvent(new CustomEvent('crownflare:player-damage', { detail:{ hp:this.playerHp, source:'spindle-sentry-lunge' } }));
   }
@@ -1128,7 +1238,7 @@ export class ChamberScene extends Phaser.Scene {
     this.b03Move = null;
     this.activeMoveDefinition = null;
     this.b03BufferedMove = null;
-      this.b03InputQueue = { jump:false, light:false, heavy:false, dash:false, special:false, interact:false, transform:false };
+      this.b03InputQueue = { jump:false, light:false, heavy:false, dash:false, special:false, interact:false, transform:false, finisher:false };
     this.b03HitTargets.clear();
     this.targetHealth = this.enemyMaxHp;
     this.targetX = 285;
@@ -1146,6 +1256,11 @@ export class ChamberScene extends Phaser.Scene {
     this.dawnrushPhaseMs = 0;
     this.dawnrushEnergy = 70;
     this.dawnrushLocomotionElapsed = 0;
+    this.dawnrushActivationMode = 'showcase';
+    this.dawnrushShowcaseUsed = false;
+    this.dawnrushTransformBufferMs = 0;
+    this.dawnrushRecoveryMs = 0;
+    this.finisherCooldownMs = 0;
     this.specialCooldownMs = 0;
     this.playerHurtMs = 0;
     this.playerInvulnerableMs = 0;
@@ -1162,6 +1277,8 @@ export class ChamberScene extends Phaser.Scene {
     this.playerPresentation.present({ textureKey:ionaB01EAssetKey('idle-0','right'),x:80,footY:GROUND_TOP });
     this.specialVfx?.destroy();
     this.specialVfx = undefined;
+    this.b05FinisherFx?.destroy();
+    this.b05FinisherFx = undefined;
     this.b03Status = 'ENCOUNTER RESET / MOVE INTO RANGE';
     this.b03LastResult = 'RESET';
     this.drawTrainingTarget();
@@ -1318,10 +1435,23 @@ export class ChamberScene extends Phaser.Scene {
     const sprite = this.labSprite;
     if (!sprite) return;
     const facing = this.motion.facing < 0 ? 'left' : 'right';
-    if (this.b05Mode && this.dawnrushState !== 'base' && this.playerHp > 0 && this.playerHurtMs <= 0) {
+    if (this.b05Mode && this.dawnrushState !== 'base') {
       let textureKey: string;
       let frame: string;
-      if (this.dawnrushState === 'anticipation' || this.dawnrushState === 'ignition' || this.dawnrushState === 'silhouette') {
+      let authoredFacing = false;
+      if (this.playerHp <= 0) {
+        frame = 'hurt-ko';
+        textureKey = `iona-b05-${frame}-${facing}`;
+        authoredFacing = true;
+      } else if (this.playerHurtMs > 0) {
+        frame = Math.abs(this.body.velocity.x) > 145 ? 'hurt-stagger' : 'hurt-flinch';
+        textureKey = `iona-b05-${frame}-${facing}`;
+        authoredFacing = true;
+      } else if (this.dawnrushState === 'reverting-contract' || this.dawnrushState === 'reverting-release' || this.dawnrushState === 'reverting-handoff') {
+        frame = this.dawnrushState === 'reverting-contract' ? 'revert-contract' : this.dawnrushState === 'reverting-release' ? 'revert-release' : 'revert-handoff';
+        textureKey = `iona-b05-${frame}-${facing}`;
+        authoredFacing = true;
+      } else if (this.dawnrushState === 'anticipation' || this.dawnrushState === 'ignition' || this.dawnrushState === 'silhouette') {
         const transformIndex = this.dawnrushState === 'anticipation' ? 0 : this.dawnrushState === 'ignition' ? 1 : 2;
         frame = DAWNRUSH_TRANSFORM_FRAMES[transformIndex]!;
         textureKey = `iona-b05-${frame}`;
@@ -1333,6 +1463,11 @@ export class ChamberScene extends Phaser.Scene {
         frame = dawnrushMoveFrame(this.b03Move, phase, this.attackClock.elapsedMs);
         const attackFacing = this.attackFacing < 0 ? 'left' : 'right';
         textureKey = `iona-b05-${frame}-${attackFacing}`;
+        authoredFacing = true;
+      } else if (this.dawnrushRecoveryMs > 0) {
+        frame = 'hurt-recovery';
+        textureKey = `iona-b05-${frame}-${facing}`;
+        authoredFacing = true;
       } else {
         if (grounded && !this.wasGrounded) this.landingMs = 110;
         else this.landingMs = Math.max(0, this.landingMs - deltaMs);
@@ -1355,6 +1490,7 @@ export class ChamberScene extends Phaser.Scene {
       }
       sprite.anims.stop();
       this.labClipKey = '';
+      sprite.setFlipX(!authoredFacing && facing === 'left');
       this.labMode = this.b03Move && this.attackClock.phase !== 'idle' ? 'attack' : 'idle';
       this.labFrame = frame;
       this.playerPresentation.present({ textureKey, x: this.body.center.x, footY: this.body.bottom });
@@ -1363,6 +1499,7 @@ export class ChamberScene extends Phaser.Scene {
     let textureKey: string;
     let frame: string;
     let mode: IonaLocomotion | 'attack' = 'attack';
+    sprite.setFlipX(false);
     if (this.playerHp <= 0 || this.playerHurtMs > 0) {
       frame = this.playerHp <= 0 ? 'hurt-ko' : this.playerHurtMs > 240 ? 'hurt-flinch' : 'hurt-stagger';
       textureKey = ionaB03PoseTexture(frame as IonaB03Pose, facing);

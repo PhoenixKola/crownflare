@@ -17,6 +17,7 @@ const KEY_CODE: Readonly<Record<string, number>> = {
   KeyQ: Phaser.Input.Keyboard.KeyCodes.Q,
   KeyE: Phaser.Input.Keyboard.KeyCodes.E,
   KeyR: Phaser.Input.Keyboard.KeyCodes.R,
+  KeyF: Phaser.Input.Keyboard.KeyCodes.F,
 };
 
 export type MappedPlayInput = {
@@ -43,10 +44,10 @@ export class InputController {
   private settings: ControlSettings;
   private currentPadIndex = -1;
   private axisEngaged = false;
-  private previousPad: Record<RebindableAction, boolean> = { jump: false, light: false, heavy: false, dash: false, special: false, interact: false, transform: false };
+  private previousPad: Record<RebindableAction, boolean> = { jump: false, light: false, heavy: false, dash: false, special: false, interact: false, transform: false, finisher: false };
   private previousPause = false;
   private pointerPressed: Partial<Record<RebindableAction, boolean>> = {};
-  private actionEdges: Record<RebindableAction, boolean> = { jump: false, light: false, heavy: false, dash: false, special: false, interact: false, transform: false };
+  private actionEdges: Record<RebindableAction, boolean> = { jump: false, light: false, heavy: false, dash: false, special: false, interact: false, transform: false, finisher: false };
   readonly scene: Phaser.Scene;
 
   constructor(scene: Phaser.Scene, settings = safeSettings()) {
@@ -77,7 +78,7 @@ export class InputController {
   resetTransientState(): void {
     this.scene.input.keyboard?.resetKeys();
     this.pointerPressed = {};
-    this.actionEdges = { jump: false, light: false, heavy: false, dash: false, special: false, interact: false, transform: false };
+    this.actionEdges = { jump: false, light: false, heavy: false, dash: false, special: false, interact: false, transform: false, finisher: false };
     const pad = selectStandardPad(gamepads(), this.currentPadIndex);
     this.currentPadIndex = pad?.index ?? -1;
     const read = readPadActions(pad, this.settings);

@@ -7,7 +7,7 @@ function pad(index: number, buttons: number[] = [], axes: number[] = [0, 0], map
 }
 
 test('defaults use the documented ergonomic standard mapping', () => {
-  assert.deepEqual(DEFAULT_CONTROL_SETTINGS.buttons, { jump: 0, light: 2, heavy: 3, dash: 1, special: 5, interact: 12, transform: 4 });
+  assert.deepEqual(DEFAULT_CONTROL_SETTINGS.buttons, { jump: 0, light: 2, heavy: 3, dash: 1, special: 5, interact: 12, transform: 4, finisher: 7 });
 });
 
 test('malformed or duplicate stored bindings fall back without touching save namespace', () => {
@@ -53,8 +53,11 @@ test('remapping rejects Start and duplicate assignments with useful feedback', (
 test('legacy saved mappings receive a free transform button and the new action stays rebindable', () => {
   const legacy = { version: 1, deadZone: 0.2, rumbleEnabled: false, buttons: { jump: 0, light: 2, heavy: 3, dash: 1, special: 5, interact: 12 } };
   assert.equal(parseControlSettings(JSON.stringify(legacy)).buttons.transform, 4);
+  assert.equal(parseControlSettings(JSON.stringify(legacy)).buttons.finisher, 7);
   assert.equal(readPadActions(pad(0, [4]), DEFAULT_CONTROL_SETTINGS).pressed.transform, true);
+  assert.equal(readPadActions(pad(0, [7]), DEFAULT_CONTROL_SETTINGS).pressed.finisher, true);
   assert.equal(remapControlButton(DEFAULT_CONTROL_SETTINGS, 'transform', 9).ok, false);
+  assert.equal(remapControlButton(DEFAULT_CONTROL_SETTINGS, 'finisher', 9).ok, false);
 });
 
 test('controller labels only use Xbox or PlayStation names when the ID identifies a family', () => {

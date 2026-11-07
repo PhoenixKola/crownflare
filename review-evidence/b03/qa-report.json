@@ -1,6 +1,6 @@
 {
   "milestone": "B03",
-  "capturedAt": "2026-11-07T18:46:46.469Z",
+  "capturedAt": "2026-11-07T23:48:03.353Z",
   "result": "PASS",
   "browser": "Google Chrome headed, SwiftShader WebGL",
   "route": "http://127.0.0.1:4183/?b03=1",
@@ -16,7 +16,7 @@
     {
       "label": "button remap and reload persistence",
       "status": "PASS",
-      "lightButton": 4,
+      "lightButton": 6,
       "namespace": "project-crownflare:controls:v1"
     },
     {
@@ -151,8 +151,8 @@
     {
       "label": "pause/settings input isolation returns to the same live encounter",
       "status": "PASS",
-      "player": 3,
-      "enemy": 4
+      "player": 5,
+      "enemy": 8
     },
     {
       "label": "quit returns to title and candidate art remains development-only",
@@ -168,17 +168,22 @@
   ],
   "actions": [
     {
-      "time": 1794077061.02,
+      "time": 1794095138.81,
       "label": "settings axis live test",
       "status": "CONNECTED · Xbox Wireless Controller · XBOX LABELS · INDEX 0",
       "axis": "0.17"
     },
     {
-      "time": 1794077066.69,
+      "time": 1794095143.72,
       "label": "capture combat-entry",
       "playerX": 79.5,
       "playerY": 212.07,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 131.67
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 277,
       "enemyY": 241,
       "enemyHp": 8,
@@ -205,11 +210,16 @@
       "errors": []
     },
     {
-      "time": 1794077066.84,
+      "time": 1794095143.86,
       "label": "controller standard west button starts light attack",
-      "playerX": 92.34,
+      "playerX": 90.4,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 94.65,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 269.8,
       "enemyY": 241,
       "enemyHp": 8,
@@ -236,12 +246,17 @@
       "errors": []
     },
     {
-      "time": 1794077067.3,
+      "time": 1794095144.3,
       "label": "reset after controller light test",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 282.6,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 283.4,
       "enemyY": 241,
       "enemyHp": 8,
       "resonance": 55,
@@ -267,14 +282,14 @@
       "errors": []
     },
     {
-      "time": 1794077068.38,
+      "time": 1794095145.38,
       "label": "approach / melee range",
-      "gap": 30.22999999999999,
+      "gap": 30.340000000000003,
       "facing": 1,
       "enemyState": "idle"
     },
     {
-      "time": 1794077068.96,
+      "time": 1794095145.97,
       "label": "capture anatomy pose low-kick",
       "frame": "iona-b01e-combo-2-contact-right",
       "bodySize": {
@@ -283,14 +298,14 @@
       },
       "spriteScale": 1,
       "clip": {
-        "x": 481,
+        "x": 477,
         "y": 418,
         "width": 250,
         "height": 225
       }
     },
     {
-      "time": 1794077069.28,
+      "time": 1794095146.29,
       "label": "capture anatomy pose crouch",
       "frame": "iona-b01e-combo-3-windup-right",
       "bodySize": {
@@ -299,26 +314,31 @@
       },
       "spriteScale": 1,
       "clip": {
-        "x": 481,
+        "x": 477,
         "y": 418,
         "width": 250,
         "height": 225
       }
     },
     {
-      "time": 1794077069.49,
+      "time": 1794095146.48,
       "label": "capture combo-3-contact",
-      "playerX": 226.61,
+      "playerX": 225.27,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 278.6,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 279.4,
       "enemyY": 241,
       "enemyHp": 6,
       "resonance": 73,
       "specialCooldownMs": 0,
       "move": "light-3",
       "phase": "recovery",
-      "elapsedMs": 283.3333333333333,
+      "elapsedMs": 249.99999999999994,
       "bufferedMove": null,
       "facing": 1,
       "enemyState": "idle",
@@ -337,19 +357,24 @@
       "errors": []
     },
     {
-      "time": 1794077069.49,
+      "time": 1794095146.49,
       "label": "three-hit combo completed",
-      "playerX": 226.61,
+      "playerX": 225.27,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 278.6,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 279.4,
       "enemyY": 241,
       "enemyHp": 6,
       "resonance": 73,
       "specialCooldownMs": 0,
       "move": "light-3",
       "phase": "recovery",
-      "elapsedMs": 283.3333333333333,
+      "elapsedMs": 249.99999999999994,
       "bufferedMove": null,
       "facing": 1,
       "enemyState": "idle",
@@ -368,11 +393,16 @@
       "errors": []
     },
     {
-      "time": 1794077069.75,
+      "time": 1794095146.77,
       "label": "reset before combo pose capture",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 282.6,
       "enemyY": 241,
       "enemyHp": 8,
@@ -399,26 +429,31 @@
       "errors": []
     },
     {
-      "time": 1794077070.84,
+      "time": 1794095147.84,
       "label": "approach / melee range",
-      "gap": 31.039999999999992,
+      "gap": 32.95000000000002,
       "facing": 1,
       "enemyState": "idle"
     },
     {
-      "time": 1794077071.14,
+      "time": 1794095148.14,
       "label": "capture combo-1-contact",
-      "playerX": 224.07,
+      "playerX": 223.95,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 260.1,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 259.13,
       "enemyY": 241,
       "enemyHp": 7,
       "resonance": 64,
       "specialCooldownMs": 0,
       "move": "light-1",
       "phase": "recovery",
-      "elapsedMs": 249.99999999999994,
+      "elapsedMs": 233.3333333333333,
       "bufferedMove": null,
       "facing": 1,
       "enemyState": "hurt",
@@ -437,11 +472,16 @@
       "errors": []
     },
     {
-      "time": 1794077071.14,
+      "time": 1794095148.14,
       "label": "performed light-1",
-      "playerX": 224.07,
+      "playerX": 223.95,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 252.37,
       "enemyY": 241,
       "enemyHp": 7,
@@ -468,11 +508,16 @@
       "errors": []
     },
     {
-      "time": 1794077071.28,
+      "time": 1794095148.32,
       "label": "reset before heavy launcher",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 282.6,
       "enemyY": 241,
       "enemyHp": 8,
@@ -499,14 +544,14 @@
       "errors": []
     },
     {
-      "time": 1794077072.36,
+      "time": 1794095149.36,
       "label": "approach / melee range",
-      "gap": 33.129999999999995,
+      "gap": 35.06999999999999,
       "facing": 1,
       "enemyState": "idle"
     },
     {
-      "time": 1794077072.48,
+      "time": 1794095149.53,
       "label": "capture anatomy pose launcher",
       "frame": "iona-b03-heavy-windup-right",
       "bodySize": {
@@ -515,18 +560,23 @@
       },
       "spriteScale": 1,
       "clip": {
-        "x": 469,
+        "x": 467,
         "y": 418,
         "width": 250,
         "height": 225
       }
     },
     {
-      "time": 1794077072.75,
+      "time": 1794095149.74,
       "label": "capture heavy-contact",
-      "playerX": 222.32,
+      "playerX": 221.52,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 252.7,
       "enemyY": 236.71,
       "enemyHp": 6,
@@ -553,7 +603,7 @@
       "errors": []
     },
     {
-      "time": 1794077072.82,
+      "time": 1794095149.82,
       "label": "capture anatomy pose launcher-contact",
       "frame": "iona-b03-heavy-contact-right",
       "bodySize": {
@@ -562,18 +612,23 @@
       },
       "spriteScale": 1,
       "clip": {
-        "x": 469,
+        "x": 467,
         "y": 418,
         "width": 250,
         "height": 225
       }
     },
     {
-      "time": 1794077073.23,
+      "time": 1794095150.22,
       "label": "reset before air strike",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 282.6,
       "enemyY": 241,
       "enemyHp": 8,
@@ -600,26 +655,31 @@
       "errors": []
     },
     {
-      "time": 1794077074.32,
+      "time": 1794095151.33,
       "label": "approach / melee range",
-      "gap": 32.390000000000015,
+      "gap": 33.71000000000001,
       "facing": 1,
       "enemyState": "idle"
     },
     {
-      "time": 1794077074.61,
+      "time": 1794095151.65,
       "label": "capture air-contact",
-      "playerX": 222.56,
+      "playerX": 221.79,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 251.4,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 250.6,
       "enemyY": 241,
       "enemyHp": 8,
       "resonance": 55,
       "specialCooldownMs": 0,
       "move": "air-light",
       "phase": "recovery",
-      "elapsedMs": 249.99999999999994,
+      "elapsedMs": 266.66666666666663,
       "bufferedMove": null,
       "facing": 1,
       "enemyState": "telegraph",
@@ -638,7 +698,7 @@
       "errors": []
     },
     {
-      "time": 1794077074.67,
+      "time": 1794095151.76,
       "label": "capture anatomy pose air",
       "frame": "iona-b03-air-recovery-right",
       "bodySize": {
@@ -647,18 +707,23 @@
       },
       "spriteScale": 1,
       "clip": {
-        "x": 470,
+        "x": 468,
         "y": 418,
         "width": 250,
         "height": 225
       }
     },
     {
-      "time": 1794077074.93,
+      "time": 1794095151.97,
       "label": "reset before Resonance",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 282.6,
       "enemyY": 241,
       "enemyHp": 8,
@@ -685,29 +750,34 @@
       "errors": []
     },
     {
-      "time": 1794077075.99,
+      "time": 1794095153.05,
       "label": "approach / melee range",
-      "gap": 36.599999999999994,
+      "gap": 34.33000000000001,
       "facing": 1,
       "enemyState": "idle"
     },
     {
-      "time": 1794077076.53,
+      "time": 1794095153.78,
       "label": "capture resonance-contact",
-      "playerX": 217.88,
+      "playerX": 221.33,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 265.27,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 282.57,
       "enemyY": 241,
       "enemyHp": 6,
       "resonance": 20,
-      "specialCooldownMs": 383.3,
+      "specialCooldownMs": 216.7,
       "move": "resonance",
       "phase": "recovery",
-      "elapsedMs": 466.66666666666686,
+      "elapsedMs": 633.3333333333333,
       "bufferedMove": null,
       "facing": 1,
-      "enemyState": "stagger",
+      "enemyState": "idle",
       "frame": "iona-b03-special-recovery-right",
       "controllerIndex": 0,
       "lastResult": "HIT",
@@ -717,18 +787,23 @@
       },
       "spriteScale": 1,
       "vfxEnabled": true,
-      "vfxActive": true,
+      "vfxActive": false,
       "background": "calm",
       "reducedMotion": false,
       "errors": []
     },
     {
-      "time": 1794077077.03,
+      "time": 1794095154.19,
       "label": "reset before VFX-off test",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 281.8,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 280.2,
       "enemyY": 241,
       "enemyHp": 8,
       "resonance": 55,
@@ -754,29 +829,34 @@
       "errors": []
     },
     {
-      "time": 1794077078.37,
+      "time": 1794095155.42,
       "label": "approach / melee range",
-      "gap": 40.04000000000002,
+      "gap": 32.98999999999998,
       "facing": 1,
-      "enemyState": "telegraph"
+      "enemyState": "idle"
     },
     {
-      "time": 1794077078.97,
+      "time": 1794095156.22,
       "label": "capture vfx-off-busy-background",
-      "playerX": 208.55,
+      "playerX": 216.38,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 261.8,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 275.37,
       "enemyY": 241,
       "enemyHp": 6,
       "resonance": 20,
-      "specialCooldownMs": 316.7,
+      "specialCooldownMs": 116.7,
       "move": "resonance",
       "phase": "recovery",
-      "elapsedMs": 533.3333333333335,
+      "elapsedMs": 733.333333333333,
       "bufferedMove": null,
       "facing": 1,
-      "enemyState": "stagger",
+      "enemyState": "idle",
       "frame": "iona-b03-special-recovery-right",
       "controllerIndex": 0,
       "lastResult": "HIT",
@@ -792,12 +872,17 @@
       "errors": []
     },
     {
-      "time": 1794077079.35,
+      "time": 1794095156.62,
       "label": "reset before enemy telegraph",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 282.6,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 279.4,
       "enemyY": 241,
       "enemyHp": 8,
       "resonance": 55,
@@ -823,11 +908,16 @@
       "errors": []
     },
     {
-      "time": 1794077082.5,
+      "time": 1794095159.8,
       "label": "capture enemy-telegraph",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 161,
       "enemyY": 241,
       "enemyHp": 8,
@@ -839,7 +929,7 @@
       "bufferedMove": null,
       "facing": 1,
       "enemyState": "telegraph",
-      "frame": "iona-b01e-idle-0-right",
+      "frame": "iona-b01e-idle-1-right",
       "controllerIndex": 0,
       "lastResult": "RESET",
       "bodySize": {
@@ -854,12 +944,17 @@
       "errors": []
     },
     {
-      "time": 1794077083.04,
+      "time": 1794095160.22,
       "label": "sentry lunge response",
-      "playerX": 136.96,
+      "playerX": 132.66,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 131,
+      "playerVelocity": {
+        "x": 292.22,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 124.33,
       "enemyY": 241,
       "enemyHp": 8,
       "resonance": 55,
@@ -885,306 +980,16 @@
       "errors": []
     },
     {
-      "time": 1794077083.11,
+      "time": 1794095160.3,
       "label": "reset before explicit hurt-reaction capture",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 282.6,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b01e-jump-5-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
       },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077086.81,
-      "label": "capture hurt-flinch",
-      "playerX": 128.65,
-      "playerY": 226,
-      "playerHp": 4,
-      "enemyX": 131,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b03-hurt-flinch-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077086.87,
-      "label": "capture anatomy pose hurt",
-      "frame": "iona-b03-hurt-flinch-right",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "clip": {
-        "x": 219,
-        "y": 418,
-        "width": 250,
-        "height": 225
-      }
-    },
-    {
-      "time": 1794077086.92,
-      "label": "reset before directional contact",
-      "playerX": 79.5,
-      "playerY": 226,
-      "playerHp": 5,
-      "enemyX": 283.4,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b01e-jump-5-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077088.69,
-      "label": "capture left-facing-test",
-      "playerX": 298.29,
-      "playerY": 226,
-      "playerHp": 5,
-      "enemyX": 258.17,
-      "enemyY": 241,
-      "enemyHp": 7,
-      "resonance": 64,
-      "specialCooldownMs": 0,
-      "move": "light-1",
-      "phase": "recovery",
-      "elapsedMs": 183.33333333333331,
-      "bufferedMove": null,
-      "facing": -1,
-      "enemyState": "hurt",
-      "frame": "iona-b01e-combo-1-recovery-left",
-      "controllerIndex": 0,
-      "lastResult": "HIT",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077088.74,
-      "label": "dev reset after directional test",
-      "playerX": 79.5,
-      "playerY": 226,
-      "playerHp": 5,
-      "enemyX": 283.4,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b01e-jump-5-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077095.16,
-      "label": "retry in sustained play capture",
-      "playerX": 79.5,
-      "playerY": 226,
-      "playerHp": 5,
-      "enemyX": 282.6,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b01e-jump-5-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077101.55,
-      "label": "retry in sustained play capture",
-      "playerX": 79.5,
-      "playerY": 226,
-      "playerHp": 5,
-      "enemyX": 282.6,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b01e-jump-5-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077110.01,
-      "label": "retry in sustained play capture",
-      "playerX": 79.5,
-      "playerY": 226,
-      "playerHp": 5,
-      "enemyX": 282.6,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b01e-jump-5-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077118.51,
-      "label": "retry in sustained play capture",
-      "playerX": 79.5,
-      "playerY": 226,
-      "playerHp": 5,
-      "enemyX": 282.6,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b01e-jump-5-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077128.14,
-      "label": "retry in sustained play capture",
-      "playerX": 79.5,
-      "playerY": 226,
-      "playerHp": 5,
+      "playerInvulnerableMs": 0,
       "enemyX": 281.8,
       "enemyY": 241,
       "enemyHp": 8,
@@ -1211,11 +1016,140 @@
       "errors": []
     },
     {
-      "time": 1794077135.2,
-      "label": "retry in sustained play capture",
+      "time": 1794095164.02,
+      "label": "capture hurt-flinch",
+      "playerX": 134.2,
+      "playerY": 226,
+      "playerHp": 4,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 550,
+      "enemyX": 131,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b03-hurt-flinch-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095164.1,
+      "label": "capture anatomy pose hurt",
+      "frame": "iona-b03-hurt-flinch-right",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "clip": {
+        "x": 234,
+        "y": 418,
+        "width": 250,
+        "height": 225
+      }
+    },
+    {
+      "time": 1794095164.17,
+      "label": "reset before directional contact",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 283.4,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b01e-jump-5-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095165.95,
+      "label": "capture left-facing-test",
+      "playerX": 299.49,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 260.7,
+      "enemyY": 241,
+      "enemyHp": 7,
+      "resonance": 64,
+      "specialCooldownMs": 0,
+      "move": "light-1",
+      "phase": "recovery",
+      "elapsedMs": 183.33333333333331,
+      "bufferedMove": null,
+      "facing": -1,
+      "enemyState": "hurt",
+      "frame": "iona-b01e-combo-1-recovery-left",
+      "controllerIndex": 0,
+      "lastResult": "HIT",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095166.02,
+      "label": "dev reset after directional test",
+      "playerX": 79.5,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 282.6,
       "enemyY": 241,
       "enemyHp": 8,
@@ -1242,11 +1176,16 @@
       "errors": []
     },
     {
-      "time": 1794077143.56,
+      "time": 1794095174.71,
       "label": "retry in sustained play capture",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 282.6,
       "enemyY": 241,
       "enemyHp": 8,
@@ -1273,11 +1212,124 @@
       "errors": []
     },
     {
-      "time": 1794077151.98,
+      "time": 1794095183.3,
       "label": "retry in sustained play capture",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 281.8,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b01e-jump-5-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095191.93,
+      "label": "retry in sustained play capture",
+      "playerX": 79.5,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 280.2,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b01e-jump-5-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095199.83,
+      "label": "retry in sustained play capture",
+      "playerX": 79.5,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 281.8,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b01e-jump-5-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095208.39,
+      "label": "retry in sustained play capture",
+      "playerX": 79.5,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 282.6,
       "enemyY": 241,
       "enemyHp": 8,
@@ -1304,11 +1356,88 @@
       "errors": []
     },
     {
-      "time": 1794077161.66,
+      "time": 1794095218.1,
       "label": "retry in sustained play capture",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 281.8,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b01e-jump-5-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095226.98,
+      "label": "retry in sustained play capture",
+      "playerX": 79.5,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 281.8,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b01e-jump-5-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095233.49,
+      "label": "retry in sustained play capture",
+      "playerX": 79.5,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 282.6,
       "enemyY": 241,
       "enemyHp": 8,
@@ -1335,73 +1464,16 @@
       "errors": []
     },
     {
-      "time": 1794077168.88,
+      "time": 1794095241.36,
       "label": "retry in sustained play capture",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
-      "enemyX": 282.6,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b01e-jump-5-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
       },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077178.42,
-      "label": "retry in sustained play capture",
-      "playerX": 79.5,
-      "playerY": 226,
-      "playerHp": 5,
-      "enemyX": 282.6,
-      "enemyY": 241,
-      "enemyHp": 8,
-      "resonance": 55,
-      "specialCooldownMs": 0,
-      "move": "none",
-      "phase": "idle",
-      "elapsedMs": 0,
-      "bufferedMove": null,
-      "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b01e-jump-5-right",
-      "controllerIndex": 0,
-      "lastResult": "RESET",
-      "bodySize": {
-        "width": 15,
-        "height": 30
-      },
-      "spriteScale": 1,
-      "vfxEnabled": true,
-      "vfxActive": false,
-      "background": "calm",
-      "reducedMotion": false,
-      "errors": []
-    },
-    {
-      "time": 1794077185.51,
-      "label": "retry in sustained play capture",
-      "playerX": 79.5,
-      "playerY": 226,
-      "playerHp": 5,
+      "playerInvulnerableMs": 0,
       "enemyX": 281,
       "enemyY": 241,
       "enemyHp": 8,
@@ -1428,11 +1500,16 @@
       "errors": []
     },
     {
-      "time": 1794077194.14,
+      "time": 1794095250.42,
       "label": "retry in sustained play capture",
       "playerX": 79.5,
       "playerY": 226,
       "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
       "enemyX": 282.6,
       "enemyY": 241,
       "enemyHp": 8,
@@ -1459,25 +1536,138 @@
       "errors": []
     },
     {
-      "time": 1794077202.05,
+      "time": 1794095259.67,
+      "label": "retry in sustained play capture",
+      "playerX": 79.5,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 281.8,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b01e-jump-5-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095269.25,
+      "label": "retry in sustained play capture",
+      "playerX": 79.5,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 281.8,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b01e-jump-5-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095277.55,
+      "label": "retry in sustained play capture",
+      "playerX": 79.5,
+      "playerY": 226,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 279.4,
+      "enemyY": 241,
+      "enemyHp": 8,
+      "resonance": 55,
+      "specialCooldownMs": 0,
+      "move": "none",
+      "phase": "idle",
+      "elapsedMs": 0,
+      "bufferedMove": null,
+      "facing": 1,
+      "enemyState": "idle",
+      "frame": "iona-b01e-jump-5-right",
+      "controllerIndex": 0,
+      "lastResult": "RESET",
+      "bodySize": {
+        "width": 15,
+        "height": 30
+      },
+      "spriteScale": 1,
+      "vfxEnabled": true,
+      "vfxActive": false,
+      "background": "calm",
+      "reducedMotion": false,
+      "errors": []
+    },
+    {
+      "time": 1794095279.03,
       "label": "sustained active play capture complete",
-      "playerX": 89.39,
+      "playerX": 198.03,
       "playerY": 226,
-      "playerHp": 3,
-      "enemyX": 146.5,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 243.4,
       "enemyY": 241,
-      "enemyHp": 4,
-      "resonance": 14,
-      "specialCooldownMs": 683.3,
+      "enemyHp": 8,
+      "resonance": 20,
+      "specialCooldownMs": 600,
       "move": "resonance",
-      "phase": "startup",
-      "elapsedMs": 233.3333333333333,
+      "phase": "active",
+      "elapsedMs": 316.6666666666667,
       "bufferedMove": null,
       "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b03-special-windup-right",
+      "enemyState": "telegraph",
+      "frame": "iona-b03-special-contact-right",
       "controllerIndex": 0,
-      "lastResult": "HIT",
+      "lastResult": "RESET",
       "bodySize": {
         "width": 15,
         "height": 30
@@ -1490,25 +1680,30 @@
       "errors": []
     },
     {
-      "time": 1794077202.76,
+      "time": 1794095279.97,
       "label": "capture pause-controller-settings",
-      "playerX": 89.39,
+      "playerX": 198.03,
       "playerY": 226,
-      "playerHp": 3,
-      "enemyX": 146.5,
+      "playerHp": 5,
+      "playerVelocity": {
+        "x": 0,
+        "y": 0
+      },
+      "playerInvulnerableMs": 0,
+      "enemyX": 243.4,
       "enemyY": 241,
-      "enemyHp": 4,
-      "resonance": 14,
-      "specialCooldownMs": 683.3,
+      "enemyHp": 8,
+      "resonance": 20,
+      "specialCooldownMs": 600,
       "move": "resonance",
-      "phase": "startup",
-      "elapsedMs": 233.3333333333333,
+      "phase": "active",
+      "elapsedMs": 316.6666666666667,
       "bufferedMove": null,
       "facing": 1,
-      "enemyState": "idle",
-      "frame": "iona-b03-special-windup-right",
+      "enemyState": "telegraph",
+      "frame": "iona-b03-special-contact-right",
       "controllerIndex": 0,
-      "lastResult": "HIT",
+      "lastResult": "RESET",
       "bodySize": {
         "width": 15,
         "height": 30
@@ -1521,30 +1716,30 @@
       "errors": []
     },
     {
-      "time": 1794077203.77,
+      "time": 1794095281.6,
       "label": "B03 browser QA completed",
-      "eventCount": 1086,
+      "eventCount": 1059,
       "consoleErrors": 0
     }
   ],
   "consoleErrors": [],
-  "captureHead": "3f09e5598b8822ee11b4ac6a8e543973c8b88592",
+  "captureHead": "8b106db0ac5ddf1fefe511b509c0fe083613c397",
   "sourceTree": {
-    "sha256": "0e0827b2b095215b7a0cf0c30e8bd65fcc0e8bd325caca81581c952bbd0d344a",
-    "files": 89
+    "sha256": "922fa986c1e38ca3e81d95f55fa440825c479004629c6898e1065ddda4a3afbc",
+    "files": 99
   },
-  "activePlaySeconds": 135.55,
+  "activePlaySeconds": 135.46,
   "gameEvents": {
-    "count": 1086,
-    "combatContacts": 133,
-    "playerDamageEvents": 21,
-    "audioEvents": 798
+    "count": 1059,
+    "combatContacts": 125,
+    "playerDamageEvents": 34,
+    "audioEvents": 773
   },
   "video": {
     "path": "review-evidence/b03/b03-playable-chrome.webm",
-    "sha256": "bedc87b7cefca2e36d6f8cb7793cb2532d6b9992b40da49f3852e0232fc2ff3d",
-    "bytes": 15291462,
-    "durationSeconds": 125.6,
+    "sha256": "8054e65cf6b1f5597c6c9b72c806f32b44d2f620b6cfb72b48399b8d6d807cdd",
+    "bytes": 16074860,
+    "durationSeconds": 135.64,
     "width": 1280,
     "height": 720,
     "frameRate": "25/1",
