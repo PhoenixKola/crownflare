@@ -23,6 +23,17 @@ Codex can author **real original sprites, sprite edits, impact textures, VFX fli
 - Base left/right images are separate studies; they have not passed a consistency/animation check. Dawnrush's black silhouette is close to Base and deserves focused owner review. No idle, action, transformation animation, or ART-MOTION pass is claimed.
 - Do not start B01B until the owner chooses the canonical Base direction and confirms/revises the target size. B01B should then lock an immutable cleaned source and make one genuine in-game Base idle with directional alignment.
 
+## B01 overnight provisional animation pilot
+
+- The overnight brief authorizes replaceable art and a focused Phaser pilot before the B01A owner decision. It does **not** change B01A masters, lock a canonical model or accept the B01 gate.
+- New reference illustrations and all hand-authored frame sources live under art-source/characters/iona/overnight/; the separate art-source/manifests/iona-overnight-v1.json records provenance, SVG and PNG hashes, frame IDs, 64x64 canvases, common bottom-center pivot, timings and the single contact event.
+- The runtime art is newly hand-authored hard-edged SVG pixel clusters on an integer 64x64 grid, with a visible figure about 60 pixels tall. npm run art:iona:overnight:build rasterizes the retained sources using installed Chrome at 1x, without post-export resizing, into public/assets/characters/iona/overnight/. The generated illustrations are visual references only: the Base reference has an opaque baked checkerboard, and neither illustration is runtime art.
+- The authored right-facing frame is mirrored into a corrected left counterpart. This preserves the same costume and swaps the leading copper bracer and teal hair accent together. The sprite stays on a shared bottom anchor; the existing B00 15x30 Arcade body remains the collision authority.
+- The real game exposes the provisional work only at /?animationLab=1 in development. R opens the B01A before/after Base, Base left/right and four-form VFX-off review sheet; 1, 2 and 3 put Base at visible 48/60/72-pixel test heights; C cycles calm, light and busy comparison backgrounds. ?artReview=1 remains unchanged.
+- Idle, run, start/stop/turn, jump rise/apex/fall/land, dash/recovery and one light jab have authored pose frames. The 42 directional Base animation exports are supplemented by two Dawnrush VFX-off mass-distribution studies. Dawnrush now has a broader stepped shoulder shell and heavy copper pressure bracer; it has no action catalog. Stormhalo and Eclipse Warden remain unchanged B01A comparisons and are not cleaned or approved here.
+- stepMovement and Arcade Physics remain authoritative. The jab's 130ms startup, 100ms active window, 260ms recovery and contact at 162ms are declared in the action definition. The combat clock emits move/source/target identity once; the scene resolves a temporary dummy hit or miss at that event. A short original Web Audio triangle thump and target flash are feedback only. The WebM proof has no audio track.
+- Full runtime video, screenshots, local commands and owner review status are indexed in review-evidence/overnight/README.md. All art and motion remain PROVISIONAL_OWNER_REVIEW. No three-hit combo, full form animations, enemy AI or owner sign-off is claimed.
+
 ## Four form identities
 
 - Base: separate readable head/shoulder/hands/footwork, martial combo and sash secondary motion.

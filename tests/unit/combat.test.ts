@@ -10,3 +10,10 @@ test('an event at the action start fires once on the first simulation step', () 
   const result = stepAction(beginAction(starting), starting, 0);
   assert.deepEqual(result.events.map((event) => event.eventId), ['begin']);
 });
+test('combat contact carries move/source/target identity and remains single-fire', () => {
+  const action: ActionDef={id:'iona-light-hit',moveId:'iona-base-jab',sourceId:'iona-player',targetId:'training-dummy',startupMs:130,activeMs:100,recoveryMs:260,events:[{id:'contact',atMs:162}]};
+  let clock=beginAction(action);
+  const events=[];
+  for(const dt of [60,60,60,60,300]) {const next=stepAction(clock,action,dt);clock=next.clock;events.push(...next.events);}
+  assert.deepEqual(events,[{actionId:'iona-light-hit',eventId:'contact',atMs:162,moveId:'iona-base-jab',sourceId:'iona-player',targetId:'training-dummy'}]);
+});

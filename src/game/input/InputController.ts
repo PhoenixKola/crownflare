@@ -10,10 +10,14 @@ export class InputController {
     jumpW: Phaser.Input.Keyboard.Key;
     jumpUp: Phaser.Input.Keyboard.Key;
     dash: Phaser.Input.Keyboard.Key;
+    attack: Phaser.Input.Keyboard.Key;
   };
   private prevGamepadJump = false;
   private prevGamepadDash = false;
   private prevGamepadPause = false;
+  private pointerAttack = false;
+  private prevAttackKey = false;
+  private keyboardAttack = false;
   readonly scene: Phaser.Scene;
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -28,11 +32,19 @@ export class InputController {
       jumpW: manager.addKey(Phaser.Input.Keyboard.KeyCodes.W),
       jumpUp: manager.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
       dash: manager.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT),
+      attack: manager.addKey(Phaser.Input.Keyboard.KeyCodes.J),
     };
     scene.input.gamepad?.once('connected', () => { /* connected status is polled */ });
+    scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
+      if (pointer.button === 0) this.pointerAttack = true;
+    });
+    manager.on('keydown-J', (event: KeyboardEvent) => { if(!event.repeat)this.keyboardAttack = true; });
   }
   resetTransientState(): void {
     this.scene.input.keyboard?.resetKeys();
+    this.pointerAttack = false;
+    this.keyboardAttack = false;
+    this.prevAttackKey = this.keyboard.attack.isDown;
     const pad = this.scene.input.gamepad?.getPad(0);
     this.prevGamepadJump = !!pad?.buttons[0]?.pressed;
     this.prevGamepadDash = !!pad?.buttons[2]?.pressed;
@@ -55,5 +67,13 @@ export class InputController {
     const pause = padPause && !this.prevGamepadPause;
     this.prevGamepadJump = padJump; this.prevGamepadDash = padDash; this.prevGamepadPause = padPause;
     return { move: { axis, jumpPressed, jumpHeld: keys.jumpSpace.isDown || keys.jumpW.isDown || keys.jumpUp.isDown || padJump, dashPressed }, pause, controller };
+  }
+  readAttackPressed(): boolean {
+    const keyDown=this.keyboard.attack.isDown;
+    const pressed = (keyDown && !this.prevAttackKey) || this.pointerAttack || this.keyboardAttack;
+    this.prevAttackKey=keyDown;
+    this.pointerAttack = false;
+    this.keyboardAttack = false;
+    return pressed;
   }
 }

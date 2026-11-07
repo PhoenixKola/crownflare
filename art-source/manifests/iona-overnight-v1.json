@@ -1,0 +1,1736 @@
+{
+  "id": "iona-overnight-v1",
+  "version": 1,
+  "status": "PROVISIONAL_OWNER_REVIEW",
+  "created": "2026-11-07",
+  "target": {
+    "canvas": [
+      64,
+      64
+    ],
+    "visibleCharacterHeightPx": 60,
+    "origin": [
+      0.5,
+      1
+    ],
+    "footAnchor": [
+      32,
+      64
+    ],
+    "physicsBodyReference": [
+      15,
+      30
+    ]
+  },
+  "style": {
+    "palette": {
+      "ink": "#191b30",
+      "navy": "#282743",
+      "shade": "#44435f",
+      "slate": "#68657b",
+      "pearl": "#e4d7d0",
+      "light": "#f4eae0",
+      "teal": "#35aeb0",
+      "tealLight": "#69d0c6",
+      "copper": "#a8694e",
+      "copperLight": "#d88b63",
+      "skin": "#e9a480",
+      "skinShade": "#bd705f",
+      "coral": "#ec776f"
+    },
+    "outline": "2px deep navy hard edge; all contours use integer coordinates and crisp-edged rasterization",
+    "directions": "right pose is authored; left output is a reviewed horizontal counterpart with front bracer and teal lock remaining on the leading side"
+  },
+  "pipeline": {
+    "command": "npm run art:iona:overnight:build",
+    "source": "tools/art-export/build-iona-overnight.mjs",
+    "rasterizer": "Installed Chrome SVG and Canvas renderer at 64x64/deviceScaleFactor 1; no post-export scaling; transparent PNG",
+    "chromeVersion": "156.0.8078.80"
+  },
+  "sources": [
+    {
+      "path": "art-source/characters/iona/b01a/iona-base-recommended-master-source.png",
+      "usage": "palette and identity reference; not an animation frame",
+      "sha256": "c5cd65ee4eab727f389696638171f9cb0f23764c8ae8be3652c79e761bec7418"
+    },
+    {
+      "path": "art-source/characters/iona/b01a/iona-base-left-facing-study-source.png",
+      "usage": "directional asymmetry reference; not used as frame pixels",
+      "sha256": "d1108871dc7439b0ef2f56a04b578208dbe437d16b3c4f036705655f72c5da78"
+    },
+    {
+      "path": "art-source/characters/iona/overnight/iona-overnight-base-generated-reference.png",
+      "usage": "imagegen composition study; opaque checkerboard is not runtime art",
+      "tool": "OpenAI image_gen__imagegen",
+      "toolOutputId": "exec-08414fe6-7c68-48c3-bbb0-c6d7eefde2f7",
+      "alpha": "opaque; checkerboard baked into RGB",
+      "sha256": "8dea20083f3565f7b3702932168e45558d1f173f192f1259ae35281fe384b27c"
+    },
+    {
+      "path": "art-source/characters/iona/overnight/iona-overnight-dawnrush-generated-reference.png",
+      "usage": "imagegen mass-distribution study; white background is not runtime art",
+      "tool": "OpenAI image_gen__imagegen",
+      "toolOutputId": null,
+      "alpha": "opaque illustration background; retained for reference only",
+      "sha256": "fac29234ff715e3629aa56ae0a8616e52655ddcac04c090f1743069cafeee8d9"
+    }
+  ],
+  "authorship": {
+    "frameArtwork": "Manually authored geometric pixel clusters in retained SVG files; generated illustrations are references only.",
+    "license": "Original project work; no third-party character art incorporated. Final commercial clearance remains with the project owner."
+  },
+  "clips": [
+    {
+      "id": "base-idle",
+      "state": "idle",
+      "loop": true,
+      "frames": [
+        "idle-0",
+        "idle-1",
+        "idle-2",
+        "idle-1"
+      ],
+      "totalMs": 800
+    },
+    {
+      "id": "base-run",
+      "state": "run",
+      "loop": true,
+      "frames": [
+        "run-0",
+        "run-1",
+        "run-2",
+        "run-3"
+      ],
+      "totalMs": 380,
+      "cadence": "scaled from measured horizontal velocity"
+    },
+    {
+      "id": "base-jump-land",
+      "states": [
+        "jumpRise",
+        "jumpApex",
+        "fall",
+        "land"
+      ],
+      "loop": false,
+      "frames": [
+        "jump-rise",
+        "jump-apex",
+        "jump-fall",
+        "land-0",
+        "land-1"
+      ]
+    },
+    {
+      "id": "base-dash",
+      "states": [
+        "dash",
+        "dashRecover"
+      ],
+      "loop": false,
+      "frames": [
+        "dash-0",
+        "dash-1",
+        "dash-recover"
+      ]
+    },
+    {
+      "id": "base-light-hit",
+      "moveId": "iona-base-jab",
+      "loop": false,
+      "phases": {
+        "startupMs": 130,
+        "activeMs": 100,
+        "recoveryMs": 260
+      },
+      "frames": [
+        "hit-windup",
+        "hit-contact",
+        "hit-recover"
+      ],
+      "events": [
+        {
+          "id": "contact",
+          "atMs": 162,
+          "frame": "hit-contact",
+          "sourceId": "iona-player",
+          "targetId": "training-dummy"
+        }
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "id": "idle-0-right",
+      "state": "idle",
+      "facing": "right",
+      "durationMs": 180,
+      "edit": "neutral guard; stable paired boot anchors",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/idle-0-right.svg",
+      "sourceSha256": "1d74bba3ab9662c3d35791f1aeccaf253f26a69c62da34d996a4d75317df0784",
+      "output": "public/assets/characters/iona/overnight/idle-0-right.png",
+      "outputSha256": "3f0b5411960a4481d907ba6ff15a878c451ab7c37892ec2c1ec2d8838392cb9a",
+      "alphaPixelCount": 1911,
+      "alphaBounds": [
+        2,
+        2,
+        55,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "idle-0-left",
+      "state": "idle",
+      "facing": "left",
+      "durationMs": 180,
+      "edit": "neutral guard; stable paired boot anchors",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/idle-0-left.svg",
+      "sourceSha256": "f1b88a802b2f20862dcf253eb28e333ad4e6d817e24b877644cde7943ab010fb",
+      "output": "public/assets/characters/iona/overnight/idle-0-left.png",
+      "outputSha256": "45a809fe0654fd4a4ba531c814856ad431efc85fa723fa37cceba2c47722deb3",
+      "alphaPixelCount": 1913,
+      "alphaBounds": [
+        9,
+        2,
+        62,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "idle-1-right",
+      "state": "idle",
+      "facing": "right",
+      "durationMs": 220,
+      "edit": "breath lifts chest and head by one pixel; hand settles",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/idle-1-right.svg",
+      "sourceSha256": "fd42cf06c47ffdcffaba19696869cbbd8f1f9340981fb1f706eff67845babd23",
+      "output": "public/assets/characters/iona/overnight/idle-1-right.png",
+      "outputSha256": "8be28f5a99a7c9f04fd160f925f07ec620b3147e6edae425fcd6ac0aa781d919",
+      "alphaPixelCount": 1940,
+      "alphaBounds": [
+        2,
+        1,
+        56,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "idle-1-left",
+      "state": "idle",
+      "facing": "left",
+      "durationMs": 220,
+      "edit": "breath lifts chest and head by one pixel; hand settles",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/idle-1-left.svg",
+      "sourceSha256": "959dc90cc28bff553065b696ad6fd3d00ecdd78d010a6187799b89c9a48572b0",
+      "output": "public/assets/characters/iona/overnight/idle-1-left.png",
+      "outputSha256": "a8c4ee49a41b8cc88b073b1158b29cc27b2c40a79691028b4db24eb1254404a7",
+      "alphaPixelCount": 1943,
+      "alphaBounds": [
+        8,
+        1,
+        62,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "idle-2-right",
+      "state": "idle",
+      "facing": "right",
+      "durationMs": 180,
+      "edit": "weight returns; lead glove lowers and sash angles back",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/idle-2-right.svg",
+      "sourceSha256": "6933b5e0c6c13d721cd3857789208e68c2f175e72b1421b1fdcfeba1f2682552",
+      "output": "public/assets/characters/iona/overnight/idle-2-right.png",
+      "outputSha256": "f8c1f4627195105260e4efef44eaccc0c2836ab4defd7adb8d5a43055d0f8f71",
+      "alphaPixelCount": 1909,
+      "alphaBounds": [
+        2,
+        2,
+        55,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "idle-2-left",
+      "state": "idle",
+      "facing": "left",
+      "durationMs": 180,
+      "edit": "weight returns; lead glove lowers and sash angles back",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/idle-2-left.svg",
+      "sourceSha256": "197a7699eea8ced5d4ecc6e2f02da9a73d45003be6dee40b75dc4c3e18fe5c0d",
+      "output": "public/assets/characters/iona/overnight/idle-2-left.png",
+      "outputSha256": "5abdcd4507b375366b2515022b898fef17372244d7d80574fc13dd262372b4d7",
+      "alphaPixelCount": 1911,
+      "alphaBounds": [
+        9,
+        2,
+        62,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "start-0-right",
+      "state": "start",
+      "facing": "right",
+      "durationMs": 70,
+      "edit": "knees compress and shoulders lean into movement",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/start-0-right.svg",
+      "sourceSha256": "437b2fb96dc9ebcc9f84d6cd032b5efa332ff7b3798aa729ac265fadbfe456fa",
+      "output": "public/assets/characters/iona/overnight/start-0-right.png",
+      "outputSha256": "e00cf8edbd23ef9e20e5193a11aea88913a3a913ed7436738413cdb1e7fe8455",
+      "alphaPixelCount": 1951,
+      "alphaBounds": [
+        2,
+        2,
+        58,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "start-0-left",
+      "state": "start",
+      "facing": "left",
+      "durationMs": 70,
+      "edit": "knees compress and shoulders lean into movement",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/start-0-left.svg",
+      "sourceSha256": "2ec5fb88b1018be24e9844f24c3fa3e8d7bca2be3410bd04df8d848c2c8fe0d6",
+      "output": "public/assets/characters/iona/overnight/start-0-left.png",
+      "outputSha256": "ae905855c6a33f89b7d845677cf11378196e01ef0865fc90136bd8e21f1ae97e",
+      "alphaPixelCount": 1957,
+      "alphaBounds": [
+        6,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "run-0-right",
+      "state": "run",
+      "facing": "right",
+      "durationMs": 90,
+      "edit": "lead foot plants; rear boot drives behind; arms counter-swing",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/run-0-right.svg",
+      "sourceSha256": "8642714e4ac3f6af2cf7273ba4f1fe51ee1764986570e6c3cbbcde2a96e6e7e3",
+      "output": "public/assets/characters/iona/overnight/run-0-right.png",
+      "outputSha256": "60e64114f875b3f489ab51abccb843992e0fc00a6c5f21d260f5597a3a107503",
+      "alphaPixelCount": 1789,
+      "alphaBounds": [
+        2,
+        2,
+        55,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "run-0-left",
+      "state": "run",
+      "facing": "left",
+      "durationMs": 90,
+      "edit": "lead foot plants; rear boot drives behind; arms counter-swing",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/run-0-left.svg",
+      "sourceSha256": "22d4d485aa0c8c0781788cfb51bae2ce3876d308f3678cdb7116f78b604a59b4",
+      "output": "public/assets/characters/iona/overnight/run-0-left.png",
+      "outputSha256": "afd3f12a749c5a163e7423e93c1ed2436f1b2c6aadf632944ed4a2237da3967e",
+      "alphaPixelCount": 1790,
+      "alphaBounds": [
+        9,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "run-1-right",
+      "state": "run",
+      "facing": "right",
+      "durationMs": 100,
+      "edit": "rear foot plants; lead knee passes through; torso rebounds",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/run-1-right.svg",
+      "sourceSha256": "0088eb0ba47465180016befc19cd53843374be781f62306ce00ec7e56d2c1546",
+      "output": "public/assets/characters/iona/overnight/run-1-right.png",
+      "outputSha256": "3f8400fc76e8a490e9c26ee5cffca2e966f3d39b2955b519c090a16376d2000d",
+      "alphaPixelCount": 2008,
+      "alphaBounds": [
+        2,
+        2,
+        60,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "run-1-left",
+      "state": "run",
+      "facing": "left",
+      "durationMs": 100,
+      "edit": "rear foot plants; lead knee passes through; torso rebounds",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/run-1-left.svg",
+      "sourceSha256": "f433f97489ead148b060be2ca1f947e0e7ee6a33827d0e454494588ef5b0e0f4",
+      "output": "public/assets/characters/iona/overnight/run-1-left.png",
+      "outputSha256": "2c33bea7320dd76ff4a7e6608a62fe03908c12eaca629792f01016f98a98d0b4",
+      "alphaPixelCount": 2011,
+      "alphaBounds": [
+        4,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "run-2-right",
+      "state": "run",
+      "facing": "right",
+      "durationMs": 90,
+      "edit": "lead foot reaches; pelvis lowers under impact",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/run-2-right.svg",
+      "sourceSha256": "492807fc201c124108fd38eeebfade11aecd41e0f1cecd0fe78aae1dfa3287a6",
+      "output": "public/assets/characters/iona/overnight/run-2-right.png",
+      "outputSha256": "451c3cc4c4e0946aecb29dcc12acc688e1161057ed28748e985fc97d32a7a1ba",
+      "alphaPixelCount": 1792,
+      "alphaBounds": [
+        2,
+        2,
+        52,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "run-2-left",
+      "state": "run",
+      "facing": "left",
+      "durationMs": 90,
+      "edit": "lead foot reaches; pelvis lowers under impact",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/run-2-left.svg",
+      "sourceSha256": "c3290dcdd82cc17be8904de5adfc13690334836d6665c41cfbf94453c1b2ff37",
+      "output": "public/assets/characters/iona/overnight/run-2-left.png",
+      "outputSha256": "a37e023e8aa032cc59327605a621e073556606cd0a9f1648742f7f66dbdbec11",
+      "alphaPixelCount": 1795,
+      "alphaBounds": [
+        12,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "run-3-right",
+      "state": "run",
+      "facing": "right",
+      "durationMs": 100,
+      "edit": "weight crosses over planted lead boot; arms pass guard",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/run-3-right.svg",
+      "sourceSha256": "ee0648f0b412795bd4566bdf2c1f21eb2bb7d45b9f5b16c142e204f3ac624ca4",
+      "output": "public/assets/characters/iona/overnight/run-3-right.png",
+      "outputSha256": "6ccd58c150796897350dc2d45d3550f10f6e9e72fd2b910fae9a120b5df40396",
+      "alphaPixelCount": 1986,
+      "alphaBounds": [
+        2,
+        2,
+        57,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "run-3-left",
+      "state": "run",
+      "facing": "left",
+      "durationMs": 100,
+      "edit": "weight crosses over planted lead boot; arms pass guard",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/run-3-left.svg",
+      "sourceSha256": "c7186e93c04af3d092f8a87fa679333065c2a3c2a57c321de399981b96342fc4",
+      "output": "public/assets/characters/iona/overnight/run-3-left.png",
+      "outputSha256": "c1d21b2d231ebb6acdf0be10c9bb02a68fa5e9cc7c0614834f84fa6dbcafe8df",
+      "alphaPixelCount": 1986,
+      "alphaBounds": [
+        7,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "stop-0-right",
+      "state": "stop",
+      "facing": "right",
+      "durationMs": 85,
+      "edit": "heel braces and hips sit behind stopping force",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/stop-0-right.svg",
+      "sourceSha256": "afc010fb6fce61247800e8fd947b2f5f641bc49ff23230f4bc318700f587317c",
+      "output": "public/assets/characters/iona/overnight/stop-0-right.png",
+      "outputSha256": "fbfa056c09946adf095ad5d2d61d01dcb301242034121c7a178c6046ea9c8bbc",
+      "alphaPixelCount": 2007,
+      "alphaBounds": [
+        2,
+        2,
+        60,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "stop-0-left",
+      "state": "stop",
+      "facing": "left",
+      "durationMs": 85,
+      "edit": "heel braces and hips sit behind stopping force",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/stop-0-left.svg",
+      "sourceSha256": "f49aa5e195571557a9dfd9e828c4b3cdcf5b3809e2082a8be1233d3bfee1301a",
+      "output": "public/assets/characters/iona/overnight/stop-0-left.png",
+      "outputSha256": "1d799433e85a3dbb3ad14d4a14882533181f128d8d8e360accfa06a87e37a37e",
+      "alphaPixelCount": 2008,
+      "alphaBounds": [
+        4,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "turn-0-right",
+      "state": "turn",
+      "facing": "right",
+      "durationMs": 90,
+      "edit": "compact guard turns with a one-pixel head and shoulder lead",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/turn-0-right.svg",
+      "sourceSha256": "355ea6f454966eef4e113521201901682b6f38d64d9fcecc3196cab531b0c957",
+      "output": "public/assets/characters/iona/overnight/turn-0-right.png",
+      "outputSha256": "41d426e3737bc75db978fcc56062f77df71d1e89028003fcdc2f98bbca09a6f4",
+      "alphaPixelCount": 1927,
+      "alphaBounds": [
+        2,
+        1,
+        57,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "turn-0-left",
+      "state": "turn",
+      "facing": "left",
+      "durationMs": 90,
+      "edit": "compact guard turns with a one-pixel head and shoulder lead",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/turn-0-left.svg",
+      "sourceSha256": "b6c56a9a210fbd59d5313d6334a356f7fcfcd1fd500734b952bbf297b51fc107",
+      "output": "public/assets/characters/iona/overnight/turn-0-left.png",
+      "outputSha256": "7901fbe3b1e639586a1ab860f19d7050d12d185022fb521b8836807c9be3318b",
+      "alphaPixelCount": 1934,
+      "alphaBounds": [
+        7,
+        1,
+        62,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "jump-rise-right",
+      "state": "jumpRise",
+      "facing": "right",
+      "durationMs": 95,
+      "edit": "takeoff draws knees and lifts guarded hands",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/jump-rise-right.svg",
+      "sourceSha256": "ba6f9a6fb3e6470a702beeb2191fee444fba8ed4da15f62f1a0f556a0fd6539c",
+      "output": "public/assets/characters/iona/overnight/jump-rise-right.png",
+      "outputSha256": "dd957db604fc346f05851624376bc7ca3780fd044623d08cff16ce6269d0c785",
+      "alphaPixelCount": 1957,
+      "alphaBounds": [
+        2,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "jump-rise-left",
+      "state": "jumpRise",
+      "facing": "left",
+      "durationMs": 95,
+      "edit": "takeoff draws knees and lifts guarded hands",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/jump-rise-left.svg",
+      "sourceSha256": "1d58526bc18b7a1f6f1f1605491bef79ef18706b8cfce4efc5db63436e203ec5",
+      "output": "public/assets/characters/iona/overnight/jump-rise-left.png",
+      "outputSha256": "36d319b590961c4d211a1785491b04ee56ab22fd3919e59868df737f9a8dd0a8",
+      "alphaPixelCount": 1960,
+      "alphaBounds": [
+        2,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "jump-apex-right",
+      "state": "jumpApex",
+      "facing": "right",
+      "durationMs": 115,
+      "edit": "apex tucks knees with separated boots and open guard",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/jump-apex-right.svg",
+      "sourceSha256": "7ca1c852f9fadf1400533688433bb60d59a6042f93ad493f00bc86d92b5bee3c",
+      "output": "public/assets/characters/iona/overnight/jump-apex-right.png",
+      "outputSha256": "1854d99c2ec830a88c3a7982b4cadd2e3816cab08b19924eb26d8eeba1d57798",
+      "alphaPixelCount": 1936,
+      "alphaBounds": [
+        2,
+        2,
+        61,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "jump-apex-left",
+      "state": "jumpApex",
+      "facing": "left",
+      "durationMs": 115,
+      "edit": "apex tucks knees with separated boots and open guard",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/jump-apex-left.svg",
+      "sourceSha256": "1ea08b7826b0be10a86601eea7f80063bb2c76b2d7579b0302111bafecdd7d14",
+      "output": "public/assets/characters/iona/overnight/jump-apex-left.png",
+      "outputSha256": "d9fa481c0fef5d004c48ca9a7fe1c2500008b137ca7beaf6c3a54bf9db36d3f2",
+      "alphaPixelCount": 1934,
+      "alphaBounds": [
+        3,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "jump-fall-right",
+      "state": "fall",
+      "facing": "right",
+      "durationMs": 100,
+      "edit": "falls into forward-facing guard; lead boot reaches down",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/jump-fall-right.svg",
+      "sourceSha256": "b4f7fa188c56a31605fd9bdc512c36ad64e65c2b2602f0a641ed205523bb6a0d",
+      "output": "public/assets/characters/iona/overnight/jump-fall-right.png",
+      "outputSha256": "60ec3f16058e4e0f9793f013fbcdc54f3ee3a02f9d3749710dffe6f61141ec04",
+      "alphaPixelCount": 1807,
+      "alphaBounds": [
+        2,
+        2,
+        54,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "jump-fall-left",
+      "state": "fall",
+      "facing": "left",
+      "durationMs": 100,
+      "edit": "falls into forward-facing guard; lead boot reaches down",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/jump-fall-left.svg",
+      "sourceSha256": "2567e31a0af3d38eac3f97b1db8c5ab7f41ef372b3c77b28e3db157adc1c0ca1",
+      "output": "public/assets/characters/iona/overnight/jump-fall-left.png",
+      "outputSha256": "882348b9e4c842f2dfca1fc4f6da29eb292c2baf85482e86019c6f5a56755f96",
+      "alphaPixelCount": 1806,
+      "alphaBounds": [
+        10,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "land-0-right",
+      "state": "land",
+      "facing": "right",
+      "durationMs": 75,
+      "edit": "two knees absorb landing without moving the floor anchor",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/land-0-right.svg",
+      "sourceSha256": "c87dd24f64dca03ad75f82dfe6103ffd74b944ab9969bf3f59753460f069beb7",
+      "output": "public/assets/characters/iona/overnight/land-0-right.png",
+      "outputSha256": "16fcb190ddeaec683ca77dece5fd10256477a62bda813293e4c7b5f70948aec1",
+      "alphaPixelCount": 1984,
+      "alphaBounds": [
+        2,
+        2,
+        58,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "land-0-left",
+      "state": "land",
+      "facing": "left",
+      "durationMs": 75,
+      "edit": "two knees absorb landing without moving the floor anchor",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/land-0-left.svg",
+      "sourceSha256": "0b1ee258e9f6f97e66e4cecc4089f3c30d22cde28fe946beda69d0ff8a795d04",
+      "output": "public/assets/characters/iona/overnight/land-0-left.png",
+      "outputSha256": "7bcf0025b149af3f00e754ac7accc7fc0460484aa7770bfd83602b9fb38e8785",
+      "alphaPixelCount": 1989,
+      "alphaBounds": [
+        6,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "land-1-right",
+      "state": "land",
+      "facing": "right",
+      "durationMs": 100,
+      "edit": "shoulder and cloth recover over planted boots",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/land-1-right.svg",
+      "sourceSha256": "aad745c7bf521c5880de8e2e4dd69ebd44279ca708eedfc085549731d1d602f6",
+      "output": "public/assets/characters/iona/overnight/land-1-right.png",
+      "outputSha256": "f737e36154c991fdbf3e2c1cf91cbb0e5fe0a2fe5c1e2344afb07fe774d1660b",
+      "alphaPixelCount": 1942,
+      "alphaBounds": [
+        2,
+        2,
+        56,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "land-1-left",
+      "state": "land",
+      "facing": "left",
+      "durationMs": 100,
+      "edit": "shoulder and cloth recover over planted boots",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/land-1-left.svg",
+      "sourceSha256": "e26310a7c6e8e0eb89b81c6743dbf382f22f561b8211ee9ee047ee111f5fe2d9",
+      "output": "public/assets/characters/iona/overnight/land-1-left.png",
+      "outputSha256": "fdf432d23841a340a43da7d7211ce69256a7b003c9c87f84f14b2e8f0b9f0d13",
+      "alphaPixelCount": 1943,
+      "alphaBounds": [
+        8,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dash-0-right",
+      "state": "dash",
+      "facing": "right",
+      "durationMs": 55,
+      "edit": "hips and shoulder compress into a low driving shape",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/dash-0-right.svg",
+      "sourceSha256": "59dfadffea74f95e9147c6a94d2087c7671810fb431c5ae15b773ded66ae043b",
+      "output": "public/assets/characters/iona/overnight/dash-0-right.png",
+      "outputSha256": "89ecd78f7fdb8ac66a52586259ec146a9cdb855da9681b59bab3c6c6ea55a2c3",
+      "alphaPixelCount": 1924,
+      "alphaBounds": [
+        2,
+        2,
+        59,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dash-0-left",
+      "state": "dash",
+      "facing": "left",
+      "durationMs": 55,
+      "edit": "hips and shoulder compress into a low driving shape",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/dash-0-left.svg",
+      "sourceSha256": "72c237fe2a8cf6afa0a6ff8acebd4b5c6e43ae1112210d613a634dbceb4f4ebf",
+      "output": "public/assets/characters/iona/overnight/dash-0-left.png",
+      "outputSha256": "5e29669acff02ab801a6149925055c40119740e01937f4811a15cae4094a269a",
+      "alphaPixelCount": 1927,
+      "alphaBounds": [
+        5,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dash-1-right",
+      "state": "dash",
+      "facing": "right",
+      "durationMs": 70,
+      "edit": "body extends through a long brace; rear sash streams",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/dash-1-right.svg",
+      "sourceSha256": "7eb54f8c6667a8b3bd39c48b0ce5007892dd98481c00d109cce5286cecf86e78",
+      "output": "public/assets/characters/iona/overnight/dash-1-right.png",
+      "outputSha256": "7cbd9c15cf011631fddfa5c3141b00f657e76f9ac072dd72907fee1e0e604539",
+      "alphaPixelCount": 1772,
+      "alphaBounds": [
+        2,
+        2,
+        51,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dash-1-left",
+      "state": "dash",
+      "facing": "left",
+      "durationMs": 70,
+      "edit": "body extends through a long brace; rear sash streams",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/dash-1-left.svg",
+      "sourceSha256": "31ca845110b2a0d417faefb89e957f58ee66563bed8957557804f797f0dc5df7",
+      "output": "public/assets/characters/iona/overnight/dash-1-left.png",
+      "outputSha256": "0012ac8348ca0c6549a6b3b13feb9350af78d9c86ce366b70adeec37016e0c63",
+      "alphaPixelCount": 1771,
+      "alphaBounds": [
+        13,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dash-recover-right",
+      "state": "dashRecover",
+      "facing": "right",
+      "durationMs": 100,
+      "edit": "shoulders rise as knees replant after dash",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/dash-recover-right.svg",
+      "sourceSha256": "473356095e88e5729777da3c66e75fd267e49a9d25cb1884294d5f8068dbd711",
+      "output": "public/assets/characters/iona/overnight/dash-recover-right.png",
+      "outputSha256": "44d74bdfe46722633db66dbf86aaf2ab86273e1a7b3eb4f1441074ec9300317d",
+      "alphaPixelCount": 1946,
+      "alphaBounds": [
+        2,
+        2,
+        57,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dash-recover-left",
+      "state": "dashRecover",
+      "facing": "left",
+      "durationMs": 100,
+      "edit": "shoulders rise as knees replant after dash",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/dash-recover-left.svg",
+      "sourceSha256": "e6fa64793db0da296a205d2c50c9c46a9cb31b6b5b914ba7433ceb1cce1617ce",
+      "output": "public/assets/characters/iona/overnight/dash-recover-left.png",
+      "outputSha256": "6b8248019aa8ed754c254d02995a64f2358c242ab764fd28210d3b71dc602440",
+      "alphaPixelCount": 1946,
+      "alphaBounds": [
+        7,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "hit-windup-right",
+      "state": "attack",
+      "facing": "right",
+      "durationMs": 130,
+      "edit": "hip turns and armored fist chambers close to ribs",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/hit-windup-right.svg",
+      "sourceSha256": "a5532828ef79cf81bf58f760fa6b53c81755c0b7c75630f1267acae1a9ad624f",
+      "output": "public/assets/characters/iona/overnight/hit-windup-right.png",
+      "outputSha256": "851e8e27a8bea0c0f5be489db86f467344c80b96854122aaf290e6d9f518c1bf",
+      "alphaPixelCount": 1939,
+      "alphaBounds": [
+        2,
+        2,
+        57,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "hit-windup-left",
+      "state": "attack",
+      "facing": "left",
+      "durationMs": 130,
+      "edit": "hip turns and armored fist chambers close to ribs",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/hit-windup-left.svg",
+      "sourceSha256": "3a6d8889e163d82c9ac97e4f3aeee8b7b083349ff1c59e9110313085c54ac616",
+      "output": "public/assets/characters/iona/overnight/hit-windup-left.png",
+      "outputSha256": "3448ac61764334dbca05dd5360942b1292fac23f38a5088d356e980dc34b6342",
+      "alphaPixelCount": 1939,
+      "alphaBounds": [
+        7,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "hit-contact-right",
+      "state": "attack",
+      "facing": "right",
+      "durationMs": 90,
+      "edit": "shoulder drives extended bracer fist; rear boot pushes",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [
+        "contact"
+      ],
+      "source": "art-source/characters/iona/overnight/frames/hit-contact-right.svg",
+      "sourceSha256": "d46180be0a382f69bdc6851bc8ed12009bf4e23888602060057c8e9f258bbbae",
+      "output": "public/assets/characters/iona/overnight/hit-contact-right.png",
+      "outputSha256": "bab4ae1ee2d69e0a5ebd1d1f14ee0b526000b300e8c84c17a8dcf773f085aacd",
+      "alphaPixelCount": 1924,
+      "alphaBounds": [
+        2,
+        2,
+        61,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "hit-contact-left",
+      "state": "attack",
+      "facing": "left",
+      "durationMs": 90,
+      "edit": "shoulder drives extended bracer fist; rear boot pushes",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [
+        "contact"
+      ],
+      "source": "art-source/characters/iona/overnight/frames/hit-contact-left.svg",
+      "sourceSha256": "0dc86b4613d964a1f08cefc0ffd23d4e64d5ac667bbc26247488aa0b589407e7",
+      "output": "public/assets/characters/iona/overnight/hit-contact-left.png",
+      "outputSha256": "fe01c091f2a6bda88a4e522b68bf620553d1e74009627b2e58f8de9908833241",
+      "alphaPixelCount": 1925,
+      "alphaBounds": [
+        3,
+        2,
+        62,
+        64
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "hit-recover-right",
+      "state": "attack",
+      "facing": "right",
+      "durationMs": 260,
+      "edit": "arm recoils through guard into measured recovery",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/hit-recover-right.svg",
+      "sourceSha256": "0f6bb9a82eec64d77b87416ede32b8eb208a419d1640e91c8222847c34da478b",
+      "output": "public/assets/characters/iona/overnight/hit-recover-right.png",
+      "outputSha256": "a66ef534a8e8f5860b2c5072a368d6b757188cd4ea2e49610b5c4603fffed071",
+      "alphaPixelCount": 1884,
+      "alphaBounds": [
+        2,
+        2,
+        55,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "hit-recover-left",
+      "state": "attack",
+      "facing": "left",
+      "durationMs": 260,
+      "edit": "arm recoils through guard into measured recovery",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/hit-recover-left.svg",
+      "sourceSha256": "87d22f22971caeb4c44523c0808ef9ff49512222b4ab00ec22e0048ff71870a4",
+      "output": "public/assets/characters/iona/overnight/hit-recover-left.png",
+      "outputSha256": "421e7021168cfe4cc45814da1a7f59e9484c96fc56a8150eac6ec68423ed38e5",
+      "alphaPixelCount": 1887,
+      "alphaBounds": [
+        9,
+        2,
+        62,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dawnrush-silhouette-right",
+      "state": "comparison",
+      "facing": "right",
+      "durationMs": null,
+      "edit": "same Base identity with broader shoulder shell and copper pressure forearm; VFX off",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/dawnrush-silhouette-right.svg",
+      "sourceSha256": "b46a8734a8af474a05ab32b3215eb8501dd551d27e42ceffcd8896d020a600ec",
+      "output": "public/assets/characters/iona/overnight/dawnrush-silhouette-right.png",
+      "outputSha256": "de5abf9a54f8733d73578f6ad9e8448233bf5f95232d233632cd005f0539edeb",
+      "alphaPixelCount": 2161,
+      "alphaBounds": [
+        2,
+        2,
+        61,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "dawnrush-silhouette-left",
+      "state": "comparison",
+      "facing": "left",
+      "durationMs": null,
+      "edit": "same Base identity with broader shoulder shell and copper pressure forearm; VFX off",
+      "pivot": {
+        "origin": [
+          0.5,
+          1
+        ],
+        "feet": [
+          32,
+          64
+        ]
+      },
+      "eventIds": [],
+      "source": "art-source/characters/iona/overnight/frames/dawnrush-silhouette-left.svg",
+      "sourceSha256": "af6ad49cc53663df9f79099af22997c99835148f3474a7a30c9a20cb1c0ed240",
+      "output": "public/assets/characters/iona/overnight/dawnrush-silhouette-left.png",
+      "outputSha256": "d063b1f3d6a1169e88526ba59885c27f4a3a7a353eb77063ac9c2495e9841615",
+      "alphaPixelCount": 2168,
+      "alphaBounds": [
+        3,
+        2,
+        62,
+        63
+      ],
+      "transparentCorners": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "id": "base-before",
+      "path": "public/assets/characters/iona/b01a/base-60.png",
+      "status": "B01A candidate; before"
+    },
+    {
+      "id": "base-after",
+      "path": "public/assets/characters/iona/overnight/idle-0-right.png",
+      "status": "hand-authored pixel candidate; after"
+    },
+    {
+      "id": "stormhalo",
+      "path": "public/assets/characters/iona/b01a/stormhalo-60.png",
+      "status": "B01A comparison preserved"
+    },
+    {
+      "id": "eclipse-warden",
+      "path": "public/assets/characters/iona/b01a/eclipse-warden-60.png",
+      "status": "B01A comparison preserved; atmospheric source is not considered cleaned"
+    }
+  ],
+  "notes": [
+    "Dawnrush comparison is a VFX-off silhouette sample only; no full form catalog was produced.",
+    "Stormhalo and Eclipse Warden are displayed from unchanged B01A outputs; their cleanup remains incomplete.",
+    "All candidate images are provisional and do not approve canonical identity, scale, or motion."
+  ]
+}

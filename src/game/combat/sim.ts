@@ -1,7 +1,7 @@
-/** A single deterministic action/event clock. B00 foundation only: no damaging attacks. */
+/** One deterministic action/event clock; callers resolve effects only when its typed events fire. */
 export type ActionPhase = 'idle' | 'startup' | 'active' | 'recovery';
-export type CombatEvent = { readonly actionId: string; readonly eventId: string; readonly atMs: number };
-export type ActionDef = { readonly id: string; readonly startupMs: number; readonly activeMs: number; readonly recoveryMs: number; readonly events: readonly { readonly id: string; readonly atMs: number }[] };
+export type CombatEvent = { readonly actionId: string; readonly eventId: string; readonly atMs: number; readonly moveId?: string; readonly sourceId?: string; readonly targetId?: string };
+export type ActionDef = { readonly id: string; readonly startupMs: number; readonly activeMs: number; readonly recoveryMs: number; readonly moveId?: string; readonly sourceId?: string; readonly targetId?: string; readonly events: readonly { readonly id: string; readonly atMs: number }[] };
 export type CombatClock = { readonly elapsedMs: number; readonly phase: ActionPhase; readonly actionId: string | null; readonly emitted: readonly string[] };
 export const idleClock: CombatClock = { elapsedMs: 0, phase: 'idle', actionId: null, emitted: [] };
 export function beginAction(def: ActionDef): CombatClock {
@@ -20,7 +20,13 @@ export function stepAction(clock: CombatClock, def: ActionDef, elapsedMs: number
   const events: CombatEvent[] = [];
   for (const event of def.events) {
     if (event.atMs >= previous && event.atMs <= next && !emitted.has(event.id)) {
-      emitted.add(event.id); events.push({ actionId: def.id, eventId: event.id, atMs: event.atMs });
+      emitted.add(event.id);
+      events.push({
+        actionId: def.id, eventId: event.id, atMs: event.atMs,
+        ...(def.moveId ? { moveId: def.moveId } : {}),
+        ...(def.sourceId ? { sourceId: def.sourceId } : {}),
+        ...(def.targetId ? { targetId: def.targetId } : {}),
+      });
     }
   }
   const phase: ActionPhase = next >= total ? 'idle' : next < def.startupMs ? 'startup' : next < def.startupMs + def.activeMs ? 'active' : 'recovery';

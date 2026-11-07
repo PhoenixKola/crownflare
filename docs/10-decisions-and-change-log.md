@@ -17,6 +17,14 @@
 
 ## Owner gates still pending
 
-1. B01 visual lock: review true-scale 48/60/72-pixel silhouettes for all four forms, with VFX disabled and in the actual chamber; choose one immutable Iona master and approve it before producing functional sprite sheets.
-2. Later: first playable animation, combat slice, each transformation, and full release each need their own owner review. No B01–B13 production work is included in this B00 implementation.
+1. B01 visual lock: review the overnight hand-authored Base at 48/60/72px and the four VFX-off silhouette comparison in the real chamber; approve or revise the side-view face, proportions and Dawnrush mass before choosing an immutable master.
+2. Later: a complete production animation catalog, three-hit combat combo, each transformation, and full release still need their own owner review. The overnight pilot is not owner approval and does not complete B01B.
 3. All public names (`Crownflare`, `Iona Rell`, and form names) remain subject to commercial name clearance.
+
+## 2026-11-07 — B01 overnight provisional pilot
+
+- Added a separate 64x64 hard-edged hand-authored Base sprite source and 44 reproducible PNG outputs: 21 Base poses for each facing plus two Dawnrush VFX-off studies. The visible Base is about 60px tall, with common bottom-center feet alignment and source/output SHA-256s in `art-source/manifests/iona-overnight-v1.json`. Imagegen outputs are retained only as opaque reference illustrations; they were not used as frame pixels.
+- Added the dev-only `/?animationLab=1` route. It maps existing B00 Arcade body and `stepMovement` state to Base idle/run/jump/land/dash and action poses; left uses the reviewed counterpart. The review overlay compares B01A before, overnight right/left, Base scale 48/60/72 and the four form silhouettes.
+- Added a timed provisional jab and training dummy. The typed combat clock owns its startup/active/recovery phases and one contact event; contact records hit or miss once. A buffered input can launch the next jab after recovery. Original procedural Web Audio and a small flash provide hit feedback; no audio is included in browser video.
+- Local installed Chrome normal-speed QA retains a 21-second video plus idle/run/jump/dash/contact/review captures in `review-evidence/overnight/`. Status: **TECH: PASS for the pilot; ART-MOTION: provisional pilot, incomplete catalog; OWNER APPROVAL: PENDING**.
+- Not included: a three-hit combo, full Dawnrush/Stormhalo/Eclipse Warden actions, target AI, approved scale/master, or B02/B03 work. B01A source images and manifest remain unchanged.

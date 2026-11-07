@@ -1,6 +1,8 @@
 import * as Phaser from 'phaser';
 import { InputController } from '../input/InputController';
 import { initialMoveState, stepMovement, type MoveState } from '../movement/motion';
+import { animationAssetKey, frameAt, IONA_ATTACK_FRAMES, IONA_CLIPS, type IonaFacing, type IonaLocomotion } from '../animation/ionaAnimation';
+import { beginAction, idleClock, stepAction, type ActionDef, type CombatClock, type CombatEvent } from '../combat/sim';
 
 export type ChamberSnapshot = { x: number; y: number; grounded: boolean; facing: number; dashActive: boolean; cameraX: number; controller: boolean };
 export type ArtReviewView = 'base' | 'forms' | 'silhouette' | 'direction' | 'materials';
@@ -14,6 +16,12 @@ const ART_REVIEW_ASSET_KEYS = FORM_KEYS.flatMap((form) => [48, 60, 72].flatMap((
   `b01a-${form}-${height}`,
   `b01a-${form}-${height}-silhouette`,
 ])).concat(['b01a-base-left-60', 'b01a-base-left-60-silhouette']);
+const IONA_FRAME_IDS = [...new Set(Object.values(IONA_CLIPS).flatMap((clip) => clip.map((frame) => frame.id)).concat(Object.values(IONA_ATTACK_FRAMES)))];
+const LIGHT_HIT: ActionDef = {
+  id:'iona-light-hit', moveId:'iona-base-jab', sourceId:'iona-player', targetId:'training-dummy',
+  startupMs:130, activeMs:100, recoveryMs:260, events:[{id:'contact',atMs:162}],
+};
+export type AnimationLabSnapshot = { mode:string; frame:string; facing:IonaFacing; attackPhase:string; targetHealth:number; targetX:number; lastCombatEvent:string; assetCount:number; missingAssets:string[]; reviewVisible:boolean; contrast:ArtReviewContrast; reviewScale:48|60|72 };
 
 /** B00 collision-test chamber; geometry remains programmer art and is never treated as production art. */
 export class ChamberScene extends Phaser.Scene {
@@ -27,6 +35,7 @@ export class ChamberScene extends Phaser.Scene {
   private onPauseRequested: () => void;
   private onControllerState: (active: boolean) => void;
   private readonly artReview: boolean;
+  private readonly animationLab: boolean;
   private reviewView: ArtReviewView = 'base';
   private reviewContrast: ArtReviewContrast = 'calm';
   private silhouetteHeight: 48 | 60 | 72 = 60;
@@ -35,12 +44,44 @@ export class ChamberScene extends Phaser.Scene {
   private reviewObjects: Phaser.GameObjects.GameObject[] = [];
   private backgroundLayers!: Record<ArtReviewContrast, Phaser.GameObjects.Graphics>;
   private busyLayer!: Phaser.GameObjects.Graphics;
+  private labSprite?: Phaser.GameObjects.Image;
+  private labFrame = 'idle-0';
+  private labMode: IonaLocomotion | 'attack' = 'idle';
+  private labElapsed = 0;
+  private wasMoving = false;
+  private wasGrounded = false;
+  private landingMs = 0;
+  private startMs = 0;
+  private stopMs = 0;
+  private turnMs = 0;
+  private dashRecoverMs = 0;
+  private attackClock: CombatClock = idleClock;
+  private attackBufferMs = 0;
+  private targetHealth = 3;
+  private lastCombatEvent = 'none';
+  private readonly targetX = 151;
+  private targetVisual?: Phaser.GameObjects.Graphics;
+  private targetLabel?: Phaser.GameObjects.Text;
+  private hitFlashMs = 0;
+  private labHud?: Phaser.GameObjects.Text;
+  private labReviewVisible = false;
+  private labReviewScale:48|60|72=60;
+  private labReviewScaleRequested:48|60|72|null=null;
+  private labReviewSub?:Phaser.GameObjects.Text;
+  private labReviewImages:Phaser.GameObjects.Image[]=[];
+  private labReviewObjects: Array<Phaser.GameObjects.Rectangle | Phaser.GameObjects.Image | Phaser.GameObjects.Text> = [];
+  private labReviewSilhouettes: Phaser.GameObjects.Image[] = [];
+  private labReviewPanel?: Phaser.GameObjects.Rectangle;
+  private labReviewRequested = false;
+  private labContrastRequested = false;
+  private impactAudio?: AudioContext;
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean } = {}) {
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean } = {}) {
     super({ key: 'Chamber' });
     this.onPauseRequested = onPauseRequested;
     this.onControllerState = onControllerState;
     this.artReview = options.artReview === true;
+    this.animationLab = options.animationLab === true && !this.artReview;
     const params = new URLSearchParams(window.location.search);
     const view = params.get('view');
     const contrast = params.get('contrast');
@@ -49,17 +90,29 @@ export class ChamberScene extends Phaser.Scene {
     if (view === 'base' || view === 'forms' || view === 'silhouette' || view === 'direction' || view === 'materials') this.reviewView = view;
     if (contrast === 'calm' || contrast === 'light' || contrast === 'busy') this.reviewContrast = contrast;
     if (height === 48 || height === 60 || height === 72) this.silhouetteHeight = height;
+    this.labReviewVisible = this.animationLab && params.get('review') === '1';
   }
 
   preload(): void {
-    if (!this.artReview) return;
-    for (const form of FORM_KEYS) for (const height of [48, 60, 72]) {
-      const filename = `${form}-${height}`;
-      this.load.image(`b01a-${filename}`, `./assets/characters/iona/b01a/${filename}.png`);
-      this.load.image(`b01a-${filename}-silhouette`, `./assets/characters/iona/b01a/${filename}-silhouette.png`);
+    if (this.artReview) {
+      for (const form of FORM_KEYS) for (const height of [48, 60, 72]) {
+        const filename = `${form}-${height}`;
+        this.load.image(`b01a-${filename}`, `./assets/characters/iona/b01a/${filename}.png`);
+        this.load.image(`b01a-${filename}-silhouette`, `./assets/characters/iona/b01a/${filename}-silhouette.png`);
+      }
+      this.load.image('b01a-base-left-60', './assets/characters/iona/b01a/base-left-60.png');
+      this.load.image('b01a-base-left-60-silhouette', './assets/characters/iona/b01a/base-left-60-silhouette.png');
     }
-    this.load.image('b01a-base-left-60', './assets/characters/iona/b01a/base-left-60.png');
-    this.load.image('b01a-base-left-60-silhouette', './assets/characters/iona/b01a/base-left-60-silhouette.png');
+    if (this.animationLab) {
+      for (const id of IONA_FRAME_IDS) for (const side of ['right','left']) this.load.image(`iona-${id}-${side}`, `./assets/characters/iona/overnight/${id}-${side}.png`);
+      for (const side of ['right','left']) this.load.image(`iona-dawnrush-silhouette-${side}`, `./assets/characters/iona/overnight/dawnrush-silhouette-${side}.png`);
+      this.load.image('iona-review-before','./assets/characters/iona/b01a/base-60.png');
+      this.load.image('iona-review-after','./assets/characters/iona/overnight/idle-0-right.png');
+      this.load.image('iona-review-left','./assets/characters/iona/overnight/idle-0-left.png');
+      this.load.image('iona-review-dawnrush','./assets/characters/iona/overnight/dawnrush-silhouette-right.png');
+      this.load.image('iona-review-stormhalo','./assets/characters/iona/b01a/stormhalo-60-silhouette.png');
+      this.load.image('iona-review-eclipse','./assets/characters/iona/b01a/eclipse-warden-60-silhouette.png');
+    }
   }
 
   create(): void {
@@ -118,7 +171,7 @@ export class ChamberScene extends Phaser.Scene {
       add.text(1057, 205, 'DASH BARRIER', { fontFamily: 'monospace', fontSize: '8px', color: '#edab91' });
       add.text(1270, 127, 'BEYOND THE BROKEN DAY', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#314852' : '#85c3bd' });
     }
-    add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART Â· NOT OWNER APPROVED' : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'monospace', fontSize: this.artReview ? '6px' : '7px', color: this.artReview ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
+    add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART / OWNER REVIEW PENDING' : this.animationLab ? 'B01 OVERNIGHT / PROVISIONAL OWNER REVIEW' : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'monospace', fontSize: this.artReview || this.animationLab ? '6px' : '7px', color: this.artReview || this.animationLab ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
 
     if (this.artReview) {
       this.createArtReview();
@@ -135,6 +188,23 @@ export class ChamberScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.actor, false, .12, .12, 0, 15);
     this.cameras.main.setDeadzone(90, 46);
     this.controller = new InputController(this);
+    if (this.animationLab) {
+      this.actor.setAlpha(0);
+      this.labSprite = add.image(this.actor.x,this.body.bottom,'iona-idle-0-right').setOrigin(.5,1).setDepth(12);
+      this.labHud = add.text(6,5,'B01 PROVISIONAL  |  IDLE  |  J HIT  |  R REVIEW  |  C BG', {fontFamily:'monospace',fontSize:'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
+      this.input.keyboard?.on('keydown-R',(event:KeyboardEvent)=>{if(!event.repeat)this.labReviewRequested=true;});
+      this.input.keyboard?.on('keydown-C',(event:KeyboardEvent)=>{if(!event.repeat)this.labContrastRequested=true;});
+      this.input.keyboard?.on('keydown',(event:KeyboardEvent)=>{
+        if(event.code==='Digit1')this.labReviewScaleRequested=48;
+        else if(event.code==='Digit2')this.labReviewScaleRequested=60;
+        else if(event.code==='Digit3')this.labReviewScaleRequested=72;
+      });
+      this.createTrainingTarget();
+      this.createAnimationReview();
+      this.updateAnimationReviewVisibility();
+      this.input.keyboard?.addCapture(['J','R','C']);
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN,()=>{void this.impactAudio?.close();this.impactAudio=undefined;});
+    }
     this.input.keyboard?.addCapture(['SPACE', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'SHIFT']);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.input.keyboard?.removeCapture(['SPACE', 'UP', 'DOWN', 'LEFT', 'RIGHT', 'SHIFT']));
   }
@@ -145,7 +215,11 @@ export class ChamberScene extends Phaser.Scene {
     if (input.pause) { this.onPauseRequested(); return; }
     if (input.controller !== this.controllerConnected) { this.controllerConnected = input.controller; this.onControllerState(input.controller); }
     const grounded = this.body.blocked.down || this.body.touching.down;
-    const movement = stepMovement({ ...this.motion, xVelocity: this.body.velocity.x, yVelocity: this.body.velocity.y }, input.move, grounded, Math.min(delta, 50));
+    const oldFacing = this.motion.facing;
+    const wasDashing = this.motion.dashMs > 0;
+    const wasMoving = this.wasMoving;
+    const dt = Math.min(delta, 50);
+    const movement = stepMovement({ ...this.motion, xVelocity: this.body.velocity.x, yVelocity: this.body.velocity.y }, input.move, grounded, dt);
     this.motion = movement.next;
     this.body.setVelocityX(movement.next.xVelocity);
     if (movement.jumped) this.body.setVelocityY(movement.next.yVelocity);
@@ -153,21 +227,239 @@ export class ChamberScene extends Phaser.Scene {
     this.actor.setFillStyle(movement.next.dashMs > 0 ? 0xf1ab85 : 0xe7dfce);
     this.actor.setAngle(movement.next.dashMs > 0 ? -7 * movement.next.facing : 0);
     this.groundContact = grounded;
+    if (this.animationLab) {
+      if (this.labReviewRequested) { this.labReviewVisible=!this.labReviewVisible; this.labReviewRequested=false; }
+      if (this.labContrastRequested) {
+        this.labContrastRequested=false;
+        const contrasts: ArtReviewContrast[] = ['calm','light','busy'];
+        this.reviewContrast = contrasts[(contrasts.indexOf(this.reviewContrast)+1)%contrasts.length]!;
+        this.applyReviewContrast();
+      }
+      if(this.labReviewScaleRequested!==null){
+        this.labReviewScale=this.labReviewScaleRequested;
+        this.labReviewScaleRequested=null;
+        for(const image of this.labReviewImages)image.setDisplaySize(this.labReviewScale+4,this.labReviewScale+4);
+        this.labReviewSub?.setText('BASE TEST HEIGHT: '+this.labReviewScale+' PX  /  1-2-3 SCALE  /  R CLOSES  /  C CYCLES CALM-LIGHT-BUSY');
+      }
+      const moving = Math.abs(movement.next.xVelocity) > 12 && movement.next.dashMs === 0;
+      if (moving && !wasMoving) this.startMs = 70;
+      if (!moving && wasMoving) this.stopMs = 85;
+      if (oldFacing !== movement.next.facing) this.turnMs = 90;
+      if (wasDashing && movement.next.dashMs === 0) this.dashRecoverMs = 100;
+      this.updateCombat(this.controller.readAttackPressed(), grounded, dt);
+      this.updateLabAnimation(grounded,moving,dt);
+      this.labSprite?.setPosition(this.actor.x,this.body.bottom);
+      this.updateAnimationReviewVisibility();
+      if (this.labHud) this.labHud.setText('B01 PROVISIONAL  |  ' + this.labMode.toUpperCase() + ' / ' + this.labFrame + '  |  J HIT  |  R REVIEW  |  C BG');
+      this.wasMoving = moving;
+      this.wasGrounded = grounded;
+      this.hitFlashMs = Math.max(0,this.hitFlashMs-dt);
+      this.drawTrainingTarget();
+    }
     this.lastTelemetry += delta;
     if (this.lastTelemetry > 200) { this.lastTelemetry = 0; window.dispatchEvent(new CustomEvent('crownflare:tick')); }
   }
 
-  resetTransientInput(): void { this.controller?.resetTransientState(); }
+  resetTransientInput(): void {
+    this.controller?.resetTransientState();
+    this.labReviewRequested=false; this.labContrastRequested=false; this.labReviewScaleRequested=null;
+  }
 
   snapshot(): ChamberSnapshot | null {
     if (!this.actor || !this.body) return null;
     return { x: Number(this.actor.x.toFixed(1)), y: Number(this.actor.y.toFixed(1)), grounded: this.groundContact, facing: this.motion.facing, dashActive: this.motion.dashMs > 0, cameraX: Math.round(this.cameras.main.scrollX), controller: this.controllerConnected };
   }
 
+  animationSnapshot(): AnimationLabSnapshot | null {
+    if (!this.animationLab || !this.labSprite) return null;
+    const all = IONA_FRAME_IDS.flatMap((id) => [-1,1].map((facing) => animationAssetKey(id,facing as IonaFacing)))
+      .concat([-1,1].map((facing)=>animationAssetKey('dawnrush-silhouette',facing as IonaFacing)));
+    const missingAssets = all.filter((key) => !this.textures.exists(key));
+    return { mode:this.labMode, frame:this.labFrame, facing:this.motion.facing, attackPhase:this.attackClock.phase, targetHealth:this.targetHealth, targetX:this.targetX, lastCombatEvent:this.lastCombatEvent, assetCount:all.length-missingAssets.length, missingAssets, reviewVisible:this.labReviewVisible, contrast:this.reviewContrast, reviewScale:this.labReviewScale };
+  }
+
   reviewSnapshot(): ArtReviewSnapshot | null {
     if (!this.artReview) return null;
     const missingAssets = ART_REVIEW_ASSET_KEYS.filter((key) => !this.textures.exists(key));
     return { view: this.reviewView, contrast: this.reviewContrast, silhouetteHeight: this.silhouetteHeight, pixelGrid: this.reviewGrid, loadedAssets: ART_REVIEW_ASSET_KEYS.length - missingAssets.length, totalAssets: ART_REVIEW_ASSET_KEYS.length, missingAssets };
+  }
+
+  private createTrainingTarget(): void {
+    this.targetVisual = this.add.graphics().setDepth(9);
+    this.targetLabel = this.add.text(this.targetX,GROUND_TOP-42,'TRAINING DUMMY / 3', {fontFamily:'monospace',fontSize:'6px',color:'#f0cda8',align:'center',backgroundColor:'#171b2c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(20);
+    this.drawTrainingTarget();
+  }
+
+  private drawTrainingTarget(): void {
+    if (!this.targetVisual) return;
+    const x=this.targetX, top=GROUND_TOP-31;
+    this.targetVisual.clear();
+    this.targetVisual.fillStyle(this.hitFlashMs>0?0xffd888:0x8c6c68,1).fillRect(x-8,top,16,27);
+    this.targetVisual.fillStyle(0x302a3b,1).fillRect(x-11,top+4,22,4);
+    this.targetVisual.fillStyle(0xe4d7d0,1).fillRect(x-4,top+7,8,3);
+    this.targetVisual.fillStyle(0x35aeb0,1).fillRect(x-3,top+8,2,2);
+    this.targetVisual.fillStyle(0xa8694e,1).fillRect(x-10,top+14,20,4);
+    this.targetVisual.fillStyle(0x282743,1).fillRect(x-5,GROUND_TOP-4,10,4);
+    this.targetLabel?.setText('TRAINING DUMMY / '+this.targetHealth+' HP');
+  }
+
+  private updateCombat(pressed: boolean, grounded: boolean, deltaMs: number): void {
+    if (this.attackBufferMs>0) this.attackBufferMs=Math.max(0,this.attackBufferMs-deltaMs);
+    if (pressed) {
+      if (this.attackClock.phase==='idle' && grounded && this.motion.dashMs===0) this.attackClock=beginAction(LIGHT_HIT);
+      else if (this.attackClock.phase!=='idle') this.attackBufferMs=650;
+    }
+    if (this.attackClock.phase!=='idle') {
+      const result=stepAction(this.attackClock,LIGHT_HIT,deltaMs);
+      this.attackClock=result.clock;
+      for (const event of result.events) this.resolveCombatEvent(event);
+    }
+    if (this.attackClock.phase==='idle' && this.attackBufferMs>0 && grounded && this.motion.dashMs===0) {
+      this.attackBufferMs=0;
+      this.attackClock=beginAction(LIGHT_HIT);
+    }
+  }
+
+  private resolveCombatEvent(event: CombatEvent): void {
+    if (event.eventId!=='contact' || event.moveId!=='iona-base-jab' || event.sourceId!=='iona-player' || event.targetId!=='training-dummy') return;
+    const offset=this.targetX-this.actor.x;
+    const hit=Math.abs(offset)<=42 && Math.sign(offset)===this.motion.facing && this.targetHealth>0;
+    if (hit) {
+      this.targetHealth=Math.max(0,this.targetHealth-1);
+      this.hitFlashMs=90;
+      this.playImpactSound();
+      const burst=this.add.graphics().setDepth(24).setPosition(this.targetX,GROUND_TOP-21);
+      burst.lineStyle(2,0xffd890,1).lineBetween(-7,0,7,0).lineBetween(0,-7,0,7).lineBetween(-5,-5,5,5).lineBetween(-5,5,5,-5);
+      this.tweens.add({targets:burst,alpha:0,scale:1.8,duration:150,onComplete:()=>burst.destroy()});
+      this.lastCombatEvent='HIT / '+event.moveId+' -> '+event.targetId;
+    } else this.lastCombatEvent='MISS / '+event.moveId+' -> '+event.targetId;
+    window.dispatchEvent(new CustomEvent('crownflare:combat-event',{detail:{...event,result:hit?'hit':'miss',targetHealth:this.targetHealth}}));
+  }
+
+  private playImpactSound(): void {
+    const AudioCtor=window.AudioContext;
+    if(!AudioCtor)return;
+    this.impactAudio??=new AudioCtor();
+    const context=this.impactAudio;
+    if(context.state==='suspended')void context.resume();
+    const now=context.currentTime;
+    const oscillator=context.createOscillator();
+    const gain=context.createGain();
+    oscillator.type='triangle';
+    oscillator.frequency.setValueAtTime(142,now);
+    oscillator.frequency.exponentialRampToValueAtTime(68,now+.075);
+    gain.gain.setValueAtTime(.12,now);
+    gain.gain.exponentialRampToValueAtTime(.001,now+.09);
+    oscillator.connect(gain).connect(context.destination);
+    oscillator.start(now);
+    oscillator.stop(now+.095);
+  }
+
+  private updateLabAnimation(grounded: boolean, moving: boolean, deltaMs: number): void {
+    if (!this.labSprite) return;
+    if (grounded && !this.wasGrounded) this.landingMs=175;
+    else this.landingMs=Math.max(0,this.landingMs-deltaMs);
+    this.startMs=Math.max(0,this.startMs-deltaMs);
+    this.stopMs=Math.max(0,this.stopMs-deltaMs);
+    this.turnMs=Math.max(0,this.turnMs-deltaMs);
+    this.dashRecoverMs=Math.max(0,this.dashRecoverMs-deltaMs);
+    let next: IonaLocomotion | 'attack';
+    let frame: string;
+    if (this.attackClock.phase!=='idle') {
+      next='attack';
+      frame=this.attackClock.phase==='startup'?IONA_ATTACK_FRAMES.windup:this.attackClock.phase==='active'?IONA_ATTACK_FRAMES.contact:IONA_ATTACK_FRAMES.recovery;
+    } else if (this.motion.dashMs>0) {
+      next='dash'; frame=frameAt(IONA_CLIPS.dash,125-this.motion.dashMs);
+    } else if (!grounded) {
+      if (this.motion.yVelocity < -65) next='jumpRise';
+      else if (this.motion.yVelocity < 62) next='jumpApex';
+      else next='fall';
+      frame=IONA_CLIPS[next][0]!.id;
+    } else if (this.landingMs>0) {
+      next='land'; frame=frameAt(IONA_CLIPS.land,175-this.landingMs);
+    } else if (this.dashRecoverMs>0) {
+      next='dashRecover'; frame=IONA_CLIPS.dashRecover[0]!.id;
+    } else if (this.turnMs>0) {
+      next='turn'; frame=IONA_CLIPS.turn[0]!.id;
+    } else if (moving && this.startMs>0) {
+      next='start'; frame=IONA_CLIPS.start[0]!.id;
+    } else if (moving) {
+      next='run'; frame=frameAt(IONA_CLIPS.run,this.labElapsed);
+    } else if (this.stopMs>0) {
+      next='stop'; frame=IONA_CLIPS.stop[0]!.id;
+    } else {
+      next='idle'; frame=frameAt(IONA_CLIPS.idle,this.labElapsed);
+    }
+    if (next!==this.labMode) this.labElapsed=0;
+    else {
+      const speed=Math.abs(this.body.velocity.x);
+      const cadence=next==='run'?0.45+0.55*Math.min(1,speed/155):1;
+      this.labElapsed+=deltaMs*cadence;
+      if (next==='run') frame=frameAt(IONA_CLIPS.run,this.labElapsed);
+      if (next==='idle') frame=frameAt(IONA_CLIPS.idle,this.labElapsed);
+    }
+    this.labMode=next;
+    this.labFrame=frame;
+    this.labSprite.setTexture(animationAssetKey(frame,this.motion.facing));
+    this.labSprite.setFlipX(false);
+    this.labSprite.setPosition(this.actor.x,this.body.bottom);
+    this.labSprite.setAlpha(1);
+  }
+
+  private createAnimationReview(): void {
+    const addPanel=(x:number,y:number,w:number,h:number):void=>{
+      const bg=this.add.rectangle(x,y,w,h,0x0b1220,.96).setStrokeStyle(1,0xa9cdbf,.9).setScrollFactor(0).setDepth(49);
+      this.labReviewPanel=bg;
+      this.labReviewObjects.push(bg);
+    };
+    addPanel(240,135,464,230);
+      const title=this.add.text(240,25,'OVERNIGHT PIXEL REVIEW / PROVISIONAL OWNER REVIEW', {fontFamily:'monospace',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      this.labReviewObjects.push(title);
+      const sub=this.add.text(240,36,'BASE TEST HEIGHT: 60 PX  /  1-2-3 SCALE  /  R CLOSES  /  C BACKGROUNDS', {fontFamily:'monospace',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      this.labReviewSub=sub;
+      this.labReviewObjects.push(sub);
+      const topCards=[
+        {key:'iona-review-before',label:'BEFORE / B01A',x:112},
+        {key:'iona-review-after',label:'AFTER / RIGHT',x:240},
+        {key:'iona-review-left',label:'AFTER / LEFT',x:368},
+      ];
+      for(const card of topCards){
+        const image=this.add.image(card.x,145,card.key).setOrigin(.5,1).setDisplaySize(64,64).setScrollFactor(0).setDepth(52);
+        this.labReviewImages.push(image);
+        this.labReviewObjects.push(image);
+        const label=this.add.text(card.x,57,card.label,{fontFamily:'monospace',fontSize:'6px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        this.labReviewObjects.push(label);
+      }
+      const body=this.add.rectangle(240,130,15,30,0,0).setStrokeStyle(1,0xffa17f,1).setScrollFactor(0).setDepth(54);
+      this.labReviewObjects.push(body);
+      const bodyLabel=this.add.text(240,146,'B00 BODY 15 x 30 / GROUND ANCHOR',{fontFamily:'monospace',fontSize:'4px',color:'#ffb99c',backgroundColor:'#171b2c',padding:{x:1,y:1},align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      this.labReviewObjects.push(bodyLabel);
+      const forms=[
+        {key:'iona-review-after',label:'BASE',x:58,tint:0x10131c},
+        {key:'iona-review-dawnrush',label:'DAWNRUSH',x:179,tint:0x10131c},
+        {key:'iona-review-stormhalo',label:'STORMHALO',x:300,tint:0xffffff},
+        {key:'iona-review-eclipse',label:'ECLIPSE',x:421,tint:0xffffff},
+      ];
+      const formsTitle=this.add.text(240,158,'VFX OFF / FORM SILHOUETTE COMPARISON',{fontFamily:'monospace',fontSize:'6px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      this.labReviewObjects.push(formsTitle);
+      for(const form of forms){
+        const image=this.add.image(form.x,235,form.key).setOrigin(.5,1).setDisplaySize(52,52).setTint(form.tint).setTintMode(Phaser.TintModes.FILL).setScrollFactor(0).setDepth(52);
+        const label=this.add.text(form.x,181,form.label,{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        this.labReviewObjects.push(image,label);
+        this.labReviewSilhouettes.push(image);
+      }
+  }
+
+  private updateAnimationReviewVisibility(): void {
+    for (const item of this.labReviewObjects) item.setVisible(this.labReviewVisible);
+    if(this.labReviewPanel){
+      const colors:Record<ArtReviewContrast,number>={calm:0x101a2b,light:0xe5ded0,busy:0x29233c};
+      this.labReviewPanel.setFillStyle(colors[this.reviewContrast],.97);
+      const silhouetteTint=this.reviewContrast==='light'?0x202330:this.reviewContrast==='busy'?0xffdab0:0xd8e2dc;
+      for(const image of this.labReviewSilhouettes)image.setTint(silhouetteTint).setTintMode(Phaser.TintModes.FILL);
+      const textColor=this.reviewContrast==='light'?'#222536':'#eef0e8';
+      for(const item of this.labReviewObjects)if(item instanceof Phaser.GameObjects.Text)item.setColor(textColor);
+    }
   }
 
   private createArtReview(): void {

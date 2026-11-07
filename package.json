@@ -14,7 +14,9 @@
     "test": "node --experimental-strip-types --test tests/unit/*.test.ts",
     "audit:assets": "node tools/audit-assets/audit.mjs",
     "art:b01a:build": "node tools/art-export/build-b01a-previews.mjs",
+    "art:iona:overnight:build": "node tools/art-export/build-iona-overnight.mjs",
     "qa:b01a": "node tools/local-qa/b01a-visual-review.mjs",
+    "qa:iona:overnight": "node tools/local-qa/iona-overnight-smoke.mjs",
     "qa:chrome:local": "node tools/local-qa/chrome-smoke.mjs --headed",
     "qa:controller:local": "node tools/local-qa/controller-start-smoke.mjs",
     "qa:chrome:headless": "node tools/local-qa/chrome-smoke.mjs --headless"

@@ -3,7 +3,7 @@ import type * as Phaser from 'phaser';
 import { createGame } from './game/createGame';
 import { loadSave } from './game/persistence/save';
 import { GamepadStartEdge } from './game/input/gamepadStartEdge';
-import type { ArtReviewSnapshot, ChamberScene, ChamberSnapshot } from './game/scenes/ChamberScene';
+import type { AnimationLabSnapshot, ArtReviewSnapshot, ChamberScene, ChamberSnapshot } from './game/scenes/ChamberScene';
 import { SAVE_NAMESPACE } from './game/persistence/save';
 const byId = <T extends HTMLElement>(id: string): T => { const el = document.getElementById(id); if (!el) throw new Error(`Missing UI: ${id}`); return el as T; };
 const title = byId<HTMLElement>('title-screen');
@@ -21,6 +21,7 @@ let active = false;
 let paused = false;
 let debug = false;
 let artReviewMode = false;
+let animationLabMode = false;
 let pausedGamepadFrame = 0;
 const pausedGamepadStart = new GamepadStartEdge();
 loadSave({ getItem: (key) => window.localStorage.getItem(key) }); // access stays inside loadSave's permission-error fallback
@@ -38,11 +39,11 @@ function pollPausedGamepad(): void {
   if (pausedGamepadStart.poll(gamepadStartDown())) { pausedGamepadFrame = 0; togglePause('Resumed with controller Start.'); return; }
   pausedGamepadFrame = window.requestAnimationFrame(pollPausedGamepad);
 }
-function start(artReview = false): void {
+function start(artReview = false, animationLab = false): void {
   if (active) return;
-  active = true; paused = false; artReviewMode = artReview;
-  setVisible(title, false); setVisible(hud, !artReview); setVisible(pauseScreen, false);
-  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview });
+  active = true; paused = false; artReviewMode = artReview; animationLabMode = animationLab;
+  setVisible(title, false); setVisible(hud, !artReview && !animationLab); setVisible(pauseScreen, false);
+  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab });
   game = instance.game; chamber = instance.scene;
 }
 function togglePause(reason = 'The Spindle is still.'): void {
@@ -68,7 +69,7 @@ function quit(): void {
   if (!active) return;
   stopPausedGamepadMonitor();
   game?.destroy(true);
-  game = null; chamber = null; active = false; paused = false; debug = false; artReviewMode = false;
+  game = null; chamber = null; active = false; paused = false; debug = false; artReviewMode = false; animationLabMode = false;
   setVisible(debugOverlay, false); setVisible(pauseScreen, false); setVisible(hud, false); setVisible(title, true);
   startButton.focus();
 }
@@ -92,11 +93,13 @@ window.addEventListener('crownflare:tick', () => {
 if (import.meta.env.DEV) {
   // QA hook is read-only and never changes game rules or bypasses play input.
   Object.defineProperty(window, '__CROWNFLARE_QA__', { configurable: true, value: {
-    snapshot: (): { screen: 'title' | 'playing' | 'paused' | 'review'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null } => ({
-      screen: !active ? 'title' : artReviewMode ? 'review' : paused ? 'paused' : 'playing',
+    snapshot: (): { screen: 'title' | 'playing' | 'paused' | 'review' | 'animationLab'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null } => ({
+      screen: !active ? 'title' : artReviewMode ? 'review' : paused ? 'paused' : animationLabMode ? 'animationLab' : 'playing',
       player: active && !artReviewMode ? chamber?.snapshot() ?? null : null,
       review: active && artReviewMode ? chamber?.reviewSnapshot() ?? null : null,
+      lab: active && animationLabMode ? chamber?.animationSnapshot() ?? null : null,
     }),
   } });
 }
 if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('artReview') === '1') start(true);
+if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('animationLab') === '1') start(false,true);
