@@ -1,0 +1,3009 @@
+{
+  "result": "PASS",
+  "capturedAt": "2026-11-07T21:56:35.474Z",
+  "route": "/?b05=1 (Vite development server)",
+  "browser": "Google Chrome headed through Playwright",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "requirements": {
+    "realTimeChromeVideoSeconds": 111.84,
+    "targetSeconds": "actual continuous play; no title-screen padding; expected 30–180s",
+    "nativeImageGeneration": "Used; four unmodified source sheets and 76 runtime sprites retained",
+    "ownerApproval": "PENDING",
+    "audioHeardByAgent": "NO",
+    "physicalController": "NOT TESTED; synthetic standard pad exercised",
+    "normalSpeedHumanReview": "PENDING; screenshots are automated and require owner review"
+  },
+  "checks": [
+    {
+      "label": "dev-only B05 route presents original candidate slice title and review status",
+      "status": "PASS",
+      "title": "B05 DAWNRUSH / IMAGEGENERATED CANDIDATE / NOT APPROVED",
+      "notice": "B05 DAWNRUSH TRANSFORMATION / DEVELOPMENT REVIEW / OWNER APPROVAL PENDING"
+    },
+    {
+      "label": "B04 environment, sentry art, Base frames, B03 combat textures and all 76 generated B05 frames load",
+      "status": "PASS",
+      "environmentTextures": 15,
+      "baseFrames": 70,
+      "dawnrushFrames": 76,
+      "missing": []
+    },
+    {
+      "label": "pause overlay freezes the combat scene and remains accessible",
+      "status": "PASS"
+    },
+    {
+      "label": "controller settings expose and remap the Dawnrush transform action",
+      "status": "PASS",
+      "button": "Button 4",
+      "keyboard": "R"
+    },
+    {
+      "label": "keyboard movement advances the real Phaser player from the entry beacon",
+      "status": "PASS",
+      "fromX": 130,
+      "toX": 174.8
+    },
+    {
+      "label": "jump produces live vertical movement while preserving the existing player controller",
+      "status": "PASS",
+      "peakObservedPlayerY": 222
+    },
+    {
+      "label": "entry walk feeds the first live sentry encounter",
+      "status": "PASS",
+      "phase": "sentry-one",
+      "playerX": 181.56,
+      "sentryX": 285,
+      "health": 5
+    },
+    {
+      "label": "Base light attack remains available before transformation",
+      "status": "PASS",
+      "enemyHp": 8,
+      "form": "Base"
+    },
+    {
+      "label": "Dawnrush transformation completes anticipation, ignition, silhouette and ready phases",
+      "status": "PASS",
+      "phases": [
+        "anticipation",
+        "ignition",
+        "silhouette",
+        "dawnrush"
+      ],
+      "totalCinematicMs": 1700
+    },
+    {
+      "label": "Dawnrush 1-2-3 light chain buffers through three authored attacks",
+      "status": "PASS",
+      "enemyHp": 3,
+      "lastResult": "HIT"
+    },
+    {
+      "label": "first sentry combat uses shared B03 moves and advances B05 encounter phase",
+      "status": "PASS",
+      "attempts": 0,
+      "playerHp": 1,
+      "damageDealt": 8,
+      "result": "HIT",
+      "nextPhase": "reward"
+    },
+    {
+      "label": "shard reward restores health and activates the second sentry",
+      "status": "PASS",
+      "phase": "sentry-two",
+      "playerHp": 3,
+      "rewardClaimed": true,
+      "sentryX": 1278
+    },
+    {
+      "label": "Dawnrush transformation completes anticipation, ignition, silhouette and ready phases",
+      "status": "PASS",
+      "phases": [
+        "anticipation",
+        "ignition",
+        "silhouette",
+        "dawnrush"
+      ],
+      "totalCinematicMs": 1700
+    },
+    {
+      "label": "Dawnrush aerial attack uses the transformed move table and source frame",
+      "status": "PASS",
+      "move": "air-light",
+      "enemyHp": 8,
+      "result": "OBSTRUCTED"
+    },
+    {
+      "label": "Solar Drive uses its distinct cost, authored action, reach and contact",
+      "status": "PASS",
+      "move": "resonance",
+      "action": "none",
+      "enemyHp": 4,
+      "result": "HIT"
+    },
+    {
+      "label": "second sentry combat uses shared B03 moves and advances B05 encounter phase",
+      "status": "PASS",
+      "attempts": 2,
+      "playerHp": 1,
+      "damageDealt": 8,
+      "result": "HIT",
+      "nextPhase": "exit"
+    },
+    {
+      "label": "exit gate completes the encounter and displays clear time, damage and reward status",
+      "status": "PASS",
+      "resultText": "CLEAR · 1:01 · 6 DAMAGE TAKEN · RESONANCE SHARD RECOVERED",
+      "elapsedMs": 61024
+    },
+    {
+      "label": "victory choices follow a visible keyboard tab order",
+      "status": "PASS",
+      "tabTarget": "b04-title-button",
+      "reverseTabTarget": "b04-replay-button"
+    },
+    {
+      "label": "Replay resets both waves, player health and reward state",
+      "status": "PASS",
+      "phase": "sentry-one",
+      "hp": 5
+    },
+    {
+      "label": "sentry telegraph stays attached to its core and advances into the generated lunge streak",
+      "status": "PASS",
+      "telegraphEffect": "single attached thrust cue",
+      "lungeEffect": "lunge-1"
+    },
+    {
+      "label": "a second live encounter can end in defeat and present retry/title actions",
+      "status": "PASS",
+      "hp": 0,
+      "damageTaken": 5,
+      "resultText": "DEFEAT · 0:12 · 5 DAMAGE TAKEN · SHARD UNCLAIMED"
+    },
+    {
+      "label": "hit VFX fires once on each successful combat contact; result flow records victory and defeat",
+      "status": "PASS",
+      "hits": 8,
+      "impactVfx": 8,
+      "misses": 1,
+      "playerDamageEvents": 11,
+      "audioEventCount": 132,
+      "cueNames": [
+        "land",
+        "sunderglass-ambience",
+        "step-a",
+        "step-b",
+        "jump",
+        "b03-telegraph",
+        "b03-hurt",
+        "palm-whoosh",
+        "miss",
+        "transform-charge",
+        "transform-ignition",
+        "dash",
+        "dash-start",
+        "dash-brake",
+        "light",
+        "impact",
+        "palm-hit",
+        "kick-hit",
+        "forearm-hit",
+        "heavy",
+        "b03-heavy-charge",
+        "b03-heavy-impact",
+        "atrium-clear",
+        "sentry-ko",
+        "atrium-reward",
+        "atrium-shard",
+        "aerial",
+        "b03-air-swing",
+        "solar-drive",
+        "b03-resonance-charge",
+        "b03-resonance-release",
+        "atrium-gate",
+        "gate-open",
+        "b03-ko"
+      ]
+    },
+    {
+      "label": "small-640x360 viewport keeps the game canvas inside the window without page overflow",
+      "status": "PASS",
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 360
+      },
+      "screen": {
+        "width": 640,
+        "height": 360,
+        "overflowX": false,
+        "overflowY": false
+      }
+    },
+    {
+      "label": "portrait-360x780 viewport keeps the game canvas inside the window without page overflow",
+      "status": "PASS",
+      "viewport": {
+        "width": 360,
+        "height": 780
+      },
+      "canvas": {
+        "x": 0,
+        "y": 432.75,
+        "width": 360,
+        "height": 202.5
+      },
+      "screen": {
+        "width": 360,
+        "height": 780,
+        "overflowX": false,
+        "overflowY": false
+      }
+    },
+    {
+      "label": "16x10-1280x800 viewport keeps the game canvas inside the window without page overflow",
+      "status": "PASS",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "canvas": {
+        "x": 0,
+        "y": 60,
+        "width": 1280,
+        "height": 720
+      },
+      "screen": {
+        "width": 1280,
+        "height": 800,
+        "overflowX": false,
+        "overflowY": false
+      }
+    },
+    {
+      "label": "ultrawide-1920x720 viewport keeps the game canvas inside the window without page overflow",
+      "status": "PASS",
+      "viewport": {
+        "width": 1920,
+        "height": 720
+      },
+      "canvas": {
+        "x": 480,
+        "y": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "screen": {
+        "width": 1920,
+        "height": 720,
+        "overflowX": false,
+        "overflowY": false
+      }
+    },
+    {
+      "label": "standard gamepad axes move the same player left and right through the B03 controller path",
+      "status": "PASS",
+      "rightX": 134.81,
+      "leftX": 130.43,
+      "controllerIndex": 0,
+      "physicalController": "NOT TESTED"
+    },
+    {
+      "label": "synthetic standard controller LB / button 4 activates the persisted transform binding",
+      "status": "PASS",
+      "state": "anticipation",
+      "energy": 50,
+      "button": 4,
+      "physicalController": "NOT TESTED"
+    }
+  ],
+  "actions": [
+    {
+      "time": 1794088456.98,
+      "label": "B05 title visible"
+    },
+    {
+      "time": 1794088459.51,
+      "label": "capture b05-entry-1280x720",
+      "screen": "b05Combat",
+      "player": {
+        "x": 130,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 0,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 130,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 129.5,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-1",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 285,
+        "targetHealth": 8,
+        "lastCombatEvent": "none",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 129.5,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 129.5,
+        "playerY": 226,
+        "playerHp": 5,
+        "enemyX": 285,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 55,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 0,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "idle",
+        "frame": "iona-b01e-idle-1-right",
+        "controllerIndex": -1,
+        "lastResult": "none",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-one",
+        "wave": 1,
+        "playerHp": 5,
+        "enemyHp": 8,
+        "resonance": 55,
+        "playerX": 129.5,
+        "enemyState": "idle",
+        "rewardClaimed": false,
+        "damageTaken": 0,
+        "elapsedMs": 565,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": false,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "base",
+          "energy": 70,
+          "phaseMs": 0,
+          "move": "idle-1",
+          "form": "Base",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "base",
+        "energy": 70,
+        "phaseMs": 0,
+        "move": "idle-1",
+        "form": "Base",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088461.6,
+      "label": "capture b05-entry-traverse",
+      "screen": "b05Combat",
+      "player": {
+        "x": 182.1,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 0,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 182.06,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 181.56,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-1",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 285,
+        "targetHealth": 8,
+        "lastCombatEvent": "none",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 181.56,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 181.56,
+        "playerY": 226,
+        "playerHp": 5,
+        "enemyX": 285,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 55,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 0,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "idle",
+        "frame": "iona-b01e-idle-1-right",
+        "controllerIndex": -1,
+        "lastResult": "none",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-one",
+        "wave": 1,
+        "playerHp": 5,
+        "enemyHp": 8,
+        "resonance": 55,
+        "playerX": 181.56,
+        "enemyState": "idle",
+        "rewardClaimed": false,
+        "damageTaken": 0,
+        "elapsedMs": 2050,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "base",
+          "energy": 70,
+          "phaseMs": 0,
+          "move": "idle-1",
+          "form": "Base",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "base",
+        "energy": 70,
+        "phaseMs": 0,
+        "move": "idle-1",
+        "form": "Base",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088462.62,
+      "label": "positioned for melee",
+      "gap": 43.55000000000001,
+      "playerX": 241.45,
+      "enemyX": 285,
+      "facing": 1
+    },
+    {
+      "time": 1794088464.67,
+      "label": "attack light-1",
+      "beforeHp": 8,
+      "afterHp": 8,
+      "result": "MISS",
+      "playerHp": 4,
+      "move": "none"
+    },
+    {
+      "time": 1794088465.49,
+      "label": "Dawnrush transform anticipation",
+      "state": "anticipation",
+      "energy": 80,
+      "phaseMs": 333.3,
+      "move": "transform-anticipation",
+      "form": "Dawnrush",
+      "loadedFrames": 76,
+      "missingFrames": [],
+      "activeMove": "none"
+    },
+    {
+      "time": 1794088465.86,
+      "label": "Dawnrush transform ignition",
+      "state": "ignition",
+      "energy": 80,
+      "phaseMs": 566.7,
+      "move": "hurt-stagger",
+      "form": "Dawnrush",
+      "loadedFrames": 76,
+      "missingFrames": [],
+      "activeMove": "none"
+    },
+    {
+      "time": 1794088466.44,
+      "label": "Dawnrush transform silhouette",
+      "state": "silhouette",
+      "energy": 80,
+      "phaseMs": 583.3,
+      "move": "transform-silhouette",
+      "form": "Dawnrush",
+      "loadedFrames": 76,
+      "missingFrames": [],
+      "activeMove": "none"
+    },
+    {
+      "time": 1794088467.23,
+      "label": "Dawnrush transform dawnrush",
+      "state": "dawnrush",
+      "energy": 78.8,
+      "phaseMs": 40,
+      "move": "transform-ready",
+      "form": "Dawnrush",
+      "loadedFrames": 76,
+      "missingFrames": [],
+      "activeMove": "none"
+    },
+    {
+      "time": 1794088467.94,
+      "label": "capture b05-transform-ready",
+      "screen": "b05Combat",
+      "player": {
+        "x": 255.2,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 0,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 255.22,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 254.72,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "attack",
+        "frame": "hurt-flinch",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 261.67,
+        "targetHealth": 8,
+        "lastCombatEvent": "MISS / light-1 @ 112ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 254.72,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 254.72,
+        "playerY": 226,
+        "playerHp": 2,
+        "enemyX": 261.67,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 55,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 340,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "lunge",
+        "frame": "iona-b03-hurt-flinch-right",
+        "controllerIndex": -1,
+        "lastResult": "MISS",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-one",
+        "wave": 1,
+        "playerHp": 2,
+        "enemyHp": 8,
+        "resonance": 55,
+        "playerX": 254.72,
+        "enemyState": "lunge",
+        "rewardClaimed": false,
+        "damageTaken": 3,
+        "elapsedMs": 8326,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "lunge-2",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 74.8,
+          "phaseMs": 0,
+          "move": "hurt-flinch",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 74.8,
+        "phaseMs": 0,
+        "move": "hurt-flinch",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088469.64,
+      "label": "capture b05-dawnrush-dash",
+      "screen": "b05Combat",
+      "player": {
+        "x": 439.9,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 155,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 439.92,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 439.42,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-breath-1",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 241.67,
+        "targetHealth": 8,
+        "lastCombatEvent": "MISS / light-1 @ 112ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 439.42,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 439.42,
+        "playerY": 226,
+        "playerHp": 2,
+        "enemyX": 241.67,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 55,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 340,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "idle",
+        "frame": "iona-b05-idle-breath-1-right",
+        "controllerIndex": -1,
+        "lastResult": "MISS",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-one",
+        "wave": 1,
+        "playerHp": 2,
+        "enemyHp": 8,
+        "resonance": 55,
+        "playerX": 439.42,
+        "enemyState": "idle",
+        "rewardClaimed": false,
+        "damageTaken": 3,
+        "elapsedMs": 10056,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 64.4,
+          "phaseMs": 0,
+          "move": "idle-breath-1",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 64.4,
+        "phaseMs": 0,
+        "move": "idle-breath-1",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088473.86,
+      "label": "positioned for melee",
+      "gap": 38.02000000000001,
+      "playerX": 279.69,
+      "enemyX": 241.67,
+      "facing": -1
+    },
+    {
+      "time": 1794088476.36,
+      "label": "Dawnrush combo attempt interrupted; resynchronizing after sentry lunge",
+      "attempt": 1,
+      "move": "none",
+      "elapsedMs": 264,
+      "playerHp": 1,
+      "enemyState": "telegraph",
+      "error": "page.waitForFunction: Timeout 1200ms exceeded."
+    },
+    {
+      "time": 1794088477,
+      "label": "positioned for melee",
+      "gap": 41.25,
+      "playerX": 269.88,
+      "enemyX": 311.13,
+      "facing": 1
+    },
+    {
+      "time": 1794088478.59,
+      "label": "capture b05-dawnrush-light-combo-contact",
+      "screen": "b05Combat",
+      "player": {
+        "x": 273.8,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 76,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 273.79,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 273.29,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-breath-2",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 386.53,
+        "targetHealth": 3,
+        "lastCombatEvent": "HIT / light-3 @ 149ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 273.29,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 273.29,
+        "playerY": 226,
+        "playerHp": 1,
+        "enemyX": 386.53,
+        "enemyY": 241,
+        "enemyHp": 3,
+        "resonance": 93,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 369,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "idle",
+        "frame": "iona-b05-idle-breath-2-right",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-one",
+        "wave": 1,
+        "playerHp": 1,
+        "enemyHp": 3,
+        "resonance": 93,
+        "playerX": 273.29,
+        "enemyState": "idle",
+        "rewardClaimed": false,
+        "damageTaken": 4,
+        "elapsedMs": 19023,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 53.9,
+          "phaseMs": 0,
+          "move": "idle-breath-2",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 53.9,
+        "phaseMs": 0,
+        "move": "idle-breath-2",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088478.62,
+      "label": "Dawnrush light combo buffered through three authored moves",
+      "enemyHp": 3,
+      "lastResult": "HIT"
+    },
+    {
+      "time": 1794088478.62,
+      "label": "Dawnrush combo completed after a fresh post-lunge opening",
+      "attempt": 2
+    },
+    {
+      "time": 1794088479.57,
+      "label": "positioned for melee",
+      "gap": 43.27999999999997,
+      "playerX": 343.25,
+      "enemyX": 386.53,
+      "facing": 1
+    },
+    {
+      "time": 1794088479.87,
+      "label": "attack heavy",
+      "beforeHp": 3,
+      "afterHp": 0,
+      "result": "HIT",
+      "playerHp": 1,
+      "move": "heavy"
+    },
+    {
+      "time": 1794088480.71,
+      "label": "capture b05-hit-confirmation-vfx",
+      "screen": "b05Combat",
+      "player": {
+        "x": 350.4,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 76,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 350.4,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 349.9,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-ready",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 386.53,
+        "targetHealth": 0,
+        "lastCombatEvent": "HIT / heavy @ 220ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 349.9,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 349.9,
+        "playerY": 226,
+        "playerHp": 1,
+        "enemyX": 386.53,
+        "enemyY": 241,
+        "enemyHp": 0,
+        "resonance": 100,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 555,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "ko",
+        "frame": "iona-b05-idle-ready-right",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "reward",
+        "wave": 1,
+        "playerHp": 1,
+        "enemyHp": 0,
+        "resonance": 100,
+        "playerX": 349.9,
+        "enemyState": "ko",
+        "rewardClaimed": false,
+        "damageTaken": 4,
+        "elapsedMs": 21136,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 55.7,
+          "phaseMs": 0,
+          "move": "idle-ready",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 55.7,
+        "phaseMs": 0,
+        "move": "idle-ready",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088480.75,
+      "label": "Dawnrush heavy sentry contact",
+      "enemyHp": 0,
+      "lastResult": "HIT"
+    },
+    {
+      "time": 1794088481.8,
+      "label": "capture b05-first-sentry-cleared",
+      "screen": "b05Combat",
+      "player": {
+        "x": 350.4,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 76,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 350.4,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 349.9,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-breath-2",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 386.53,
+        "targetHealth": 0,
+        "lastCombatEvent": "HIT / heavy @ 220ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 349.9,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 349.9,
+        "playerY": 226,
+        "playerHp": 1,
+        "enemyX": 386.53,
+        "enemyY": 241,
+        "enemyHp": 0,
+        "resonance": 100,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 555,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "ko",
+        "frame": "iona-b05-idle-breath-2-right",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "reward",
+        "wave": 1,
+        "playerHp": 1,
+        "enemyHp": 0,
+        "resonance": 100,
+        "playerX": 349.9,
+        "enemyState": "ko",
+        "rewardClaimed": false,
+        "damageTaken": 4,
+        "elapsedMs": 22169,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 49.5,
+          "phaseMs": 0,
+          "move": "idle-breath-2",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 49.5,
+        "phaseMs": 0,
+        "move": "idle-breath-2",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088483.13,
+      "label": "capture b05-resonance-shard",
+      "screen": "b05Combat",
+      "player": {
+        "x": 378.9,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 94,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 378.87,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 378.37,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-breath-1",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 386.53,
+        "targetHealth": 0,
+        "lastCombatEvent": "HIT / heavy @ 220ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 378.37,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 378.37,
+        "playerY": 226,
+        "playerHp": 1,
+        "enemyX": 386.53,
+        "enemyY": 241,
+        "enemyHp": 0,
+        "resonance": 100,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 555,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "ko",
+        "frame": "iona-b05-idle-breath-1-right",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "reward",
+        "wave": 1,
+        "playerHp": 1,
+        "enemyHp": 0,
+        "resonance": 100,
+        "playerX": 378.37,
+        "enemyState": "ko",
+        "rewardClaimed": false,
+        "damageTaken": 4,
+        "elapsedMs": 23580,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 41.1,
+          "phaseMs": 0,
+          "move": "idle-breath-1",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 41.1,
+        "phaseMs": 0,
+        "move": "idle-breath-1",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088484.44,
+      "label": "shard claimed",
+      "phase": "sentry-two",
+      "wave": 2,
+      "playerHp": 3,
+      "enemyHp": 8,
+      "resonance": 100,
+      "playerX": 378.37,
+      "enemyState": "idle",
+      "rewardClaimed": true,
+      "damageTaken": 4,
+      "elapsedMs": 24863,
+      "vfxEnabled": true,
+      "reducedMotion": false,
+      "audioUnlocked": true,
+      "loadedTextures": 15,
+      "missingTextures": [],
+      "loadedIonaFrames": 70,
+      "missingIonaFrames": [],
+      "missingCombatArt": [],
+      "attackFxState": "hidden",
+      "dawnrush": {
+        "state": "dawnrush",
+        "energy": 33.4,
+        "phaseMs": 0,
+        "move": "idle-ready",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      }
+    },
+    {
+      "time": 1794088492.47,
+      "label": "capture b05-traverse-to-second-sentry",
+      "screen": "b05Combat",
+      "player": {
+        "x": 915.8,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 631,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 915.78,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 915.28,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-3",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 1278,
+        "targetHealth": 8,
+        "lastCombatEvent": "HIT / heavy @ 220ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 915.28,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 915.28,
+        "playerY": 226,
+        "playerHp": 3,
+        "enemyX": 1278,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 100,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 555,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "idle",
+        "frame": "iona-b01e-idle-3-right",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-two",
+        "wave": 2,
+        "playerHp": 3,
+        "enemyHp": 8,
+        "resonance": 100,
+        "playerX": 915.28,
+        "enemyState": "idle",
+        "rewardClaimed": true,
+        "damageTaken": 4,
+        "elapsedMs": 32875,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "base",
+          "energy": 0,
+          "phaseMs": 0,
+          "move": "idle-3",
+          "form": "Base",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "base",
+        "energy": 0,
+        "phaseMs": 0,
+        "move": "idle-3",
+        "form": "Base",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088501.18,
+      "label": "positioned for melee",
+      "gap": 61.049999999999955,
+      "playerX": 1425.72,
+      "enemyX": 1364.67,
+      "facing": -1
+    },
+    {
+      "time": 1794088502.08,
+      "label": "Dawnrush transform anticipation",
+      "state": "anticipation",
+      "energy": 80,
+      "phaseMs": 66.7,
+      "move": "transform-anticipation",
+      "form": "Dawnrush",
+      "loadedFrames": 76,
+      "missingFrames": [],
+      "activeMove": "none"
+    },
+    {
+      "time": 1794088502.97,
+      "label": "Dawnrush transform ignition",
+      "state": "ignition",
+      "energy": 80,
+      "phaseMs": 516.7,
+      "move": "transform-ignition",
+      "form": "Dawnrush",
+      "loadedFrames": 76,
+      "missingFrames": [],
+      "activeMove": "none"
+    },
+    {
+      "time": 1794088505.19,
+      "label": "Dawnrush transform silhouette",
+      "state": "dawnrush",
+      "energy": 68.9,
+      "phaseMs": 0,
+      "move": "idle-breath-2",
+      "form": "Dawnrush",
+      "loadedFrames": 76,
+      "missingFrames": [],
+      "activeMove": "none"
+    },
+    {
+      "time": 1794088505.81,
+      "label": "Dawnrush transform dawnrush",
+      "state": "dawnrush",
+      "energy": 65.6,
+      "phaseMs": 0,
+      "move": "idle-ready",
+      "form": "Dawnrush",
+      "loadedFrames": 76,
+      "missingFrames": [],
+      "activeMove": "none"
+    },
+    {
+      "time": 1794088506.81,
+      "label": "capture b05-transform-ready",
+      "screen": "b05Combat",
+      "player": {
+        "x": 1425.7,
+        "y": 226,
+        "grounded": true,
+        "facing": -1,
+        "dashActive": false,
+        "cameraX": 1080,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 1425.7,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 1425.2,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": -1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-breath-2",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 1364.67,
+        "targetHealth": 8,
+        "lastCombatEvent": "HIT / heavy @ 220ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 1425.2,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 1425.2,
+        "playerY": 226,
+        "playerHp": 3,
+        "enemyX": 1364.67,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 100,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 555,
+        "bufferedMove": null,
+        "facing": -1,
+        "enemyState": "idle",
+        "frame": "iona-b05-idle-breath-2-left",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-two",
+        "wave": 2,
+        "playerHp": 3,
+        "enemyHp": 8,
+        "resonance": 100,
+        "playerX": 1425.2,
+        "enemyState": "idle",
+        "rewardClaimed": true,
+        "damageTaken": 4,
+        "elapsedMs": 47229,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 59.1,
+          "phaseMs": 0,
+          "move": "idle-breath-2",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 59.1,
+        "phaseMs": 0,
+        "move": "idle-breath-2",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088507.87,
+      "label": "capture b05-dawnrush-dash",
+      "screen": "b05Combat",
+      "player": {
+        "x": 1511.6,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 1080,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 1511.62,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 1511.12,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-ready",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 1364.67,
+        "targetHealth": 8,
+        "lastCombatEvent": "HIT / heavy @ 220ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 1511.12,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 1511.12,
+        "playerY": 226,
+        "playerHp": 3,
+        "enemyX": 1364.67,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 100,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 555,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "idle",
+        "frame": "iona-b05-idle-ready-right",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-two",
+        "wave": 2,
+        "playerHp": 3,
+        "enemyHp": 8,
+        "resonance": 100,
+        "playerX": 1511.12,
+        "enemyState": "idle",
+        "rewardClaimed": true,
+        "damageTaken": 4,
+        "elapsedMs": 48293,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 52.7,
+          "phaseMs": 0,
+          "move": "idle-ready",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 52.7,
+        "phaseMs": 0,
+        "move": "idle-ready",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088509.25,
+      "label": "positioned for melee",
+      "gap": 42.36999999999989,
+      "playerX": 1407.04,
+      "enemyX": 1364.67,
+      "facing": -1
+    },
+    {
+      "time": 1794088512.85,
+      "label": "attack air-light",
+      "beforeHp": 8,
+      "afterHp": 8,
+      "result": "OBSTRUCTED",
+      "playerHp": 1,
+      "move": "none"
+    },
+    {
+      "time": 1794088512.87,
+      "label": "Dawnrush aerial strike resolved",
+      "form": "Dawnrush",
+      "move": "air-light",
+      "result": "OBSTRUCTED"
+    },
+    {
+      "time": 1794088513.36,
+      "label": "positioned for melee",
+      "gap": 55.819999999999936,
+      "playerX": 1463.82,
+      "enemyX": 1408,
+      "facing": -1
+    },
+    {
+      "time": 1794088514.44,
+      "label": "attack resonance",
+      "beforeHp": 8,
+      "afterHp": 4,
+      "result": "HIT",
+      "playerHp": 1,
+      "move": "none"
+    },
+    {
+      "time": 1794088515.43,
+      "label": "positioned for melee",
+      "gap": 38.13999999999987,
+      "playerX": 1392.87,
+      "enemyX": 1354.73,
+      "facing": -1
+    },
+    {
+      "time": 1794088515.79,
+      "label": "attack heavy",
+      "beforeHp": 4,
+      "afterHp": 1,
+      "result": "HIT",
+      "playerHp": 1,
+      "move": "heavy"
+    },
+    {
+      "time": 1794088516.5,
+      "label": "positioned for melee",
+      "gap": 55.25,
+      "playerX": 1367.48,
+      "enemyX": 1312.23,
+      "facing": -1
+    },
+    {
+      "time": 1794088516.87,
+      "label": "attack resonance",
+      "beforeHp": 1,
+      "afterHp": 0,
+      "result": "HIT",
+      "playerHp": 1,
+      "move": "resonance"
+    },
+    {
+      "time": 1794088518.29,
+      "label": "capture b05-second-sentry-cleared",
+      "screen": "b05Combat",
+      "player": {
+        "x": 1362.9,
+        "y": 226,
+        "grounded": true,
+        "facing": -1,
+        "dashActive": false,
+        "cameraX": 1080,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 1362.87,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 1362.37,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": -1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-ready",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 1312.23,
+        "targetHealth": 0,
+        "lastCombatEvent": "HIT / resonance @ 251ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 1362.37,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 1362.37,
+        "playerY": 226,
+        "playerHp": 1,
+        "enemyX": 1312.23,
+        "enemyY": 241,
+        "enemyHp": 0,
+        "resonance": 49,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 657,
+        "bufferedMove": null,
+        "facing": -1,
+        "enemyState": "ko",
+        "frame": "iona-b05-idle-ready-left",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "exit",
+        "wave": 2,
+        "playerHp": 1,
+        "enemyHp": 0,
+        "resonance": 49,
+        "playerX": 1362.37,
+        "enemyState": "ko",
+        "rewardClaimed": true,
+        "damageTaken": 6,
+        "elapsedMs": 58701,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 37.7,
+          "phaseMs": 0,
+          "move": "idle-ready",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 37.7,
+        "phaseMs": 0,
+        "move": "idle-ready",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088520.58,
+      "label": "capture b05-open-exit-gate",
+      "screen": "b05Combat",
+      "player": {
+        "x": 1459.5,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 1080,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 1459.54,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 1459.04,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-breath-1",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 1312.23,
+        "targetHealth": 0,
+        "lastCombatEvent": "HIT / resonance @ 251ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 1459.04,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 1459.04,
+        "playerY": 226,
+        "playerHp": 1,
+        "enemyX": 1312.23,
+        "enemyY": 241,
+        "enemyHp": 0,
+        "resonance": 49,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 657,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "ko",
+        "frame": "iona-b05-idle-breath-1-right",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "exit",
+        "wave": 2,
+        "playerHp": 1,
+        "enemyHp": 0,
+        "resonance": 49,
+        "playerX": 1459.04,
+        "enemyState": "ko",
+        "rewardClaimed": true,
+        "damageTaken": 6,
+        "elapsedMs": 60984,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 24,
+          "phaseMs": 0,
+          "move": "idle-breath-1",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 24,
+        "phaseMs": 0,
+        "move": "idle-breath-1",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088523.27,
+      "label": "capture b05-victory",
+      "screen": "b04Results",
+      "player": {
+        "x": 1459.5,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 1080,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 1459.54,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 1459.04,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-breath-1",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 1312.23,
+        "targetHealth": 0,
+        "lastCombatEvent": "HIT / resonance @ 251ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 1459.04,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "PAUSED",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 1459.04,
+        "playerY": 226,
+        "playerHp": 1,
+        "enemyX": 1312.23,
+        "enemyY": 241,
+        "enemyHp": 0,
+        "resonance": 49,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 657,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "ko",
+        "frame": "iona-b05-idle-breath-1-right",
+        "controllerIndex": -1,
+        "lastResult": "HIT",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "victory",
+        "wave": 2,
+        "playerHp": 1,
+        "enemyHp": 0,
+        "resonance": 49,
+        "playerX": 1459.04,
+        "enemyState": "ko",
+        "rewardClaimed": true,
+        "damageTaken": 6,
+        "elapsedMs": 61024,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "dawnrush",
+          "energy": 23.7,
+          "phaseMs": 0,
+          "move": "idle-breath-1",
+          "form": "Dawnrush",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "dawnrush",
+        "energy": 23.7,
+        "phaseMs": 0,
+        "move": "idle-breath-1",
+        "form": "Dawnrush",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": false
+    },
+    {
+      "time": 1794088524.99,
+      "label": "replay selected"
+    },
+    {
+      "time": 1794088527.84,
+      "label": "positioned for melee",
+      "gap": 39.95999999999998,
+      "playerX": 288.37,
+      "enemyX": 328.33,
+      "facing": 1
+    },
+    {
+      "time": 1794088528.79,
+      "label": "capture b05-sentry-telegraph",
+      "screen": "b05Combat",
+      "player": {
+        "x": 291.8,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 7,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 291.83,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 291.33,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "attack",
+        "frame": "hurt-stagger",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 285,
+        "targetHealth": 8,
+        "lastCombatEvent": "HIT / resonance @ 251ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 291.33,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 291.33,
+        "playerY": 226,
+        "playerHp": 4,
+        "enemyX": 285,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 55,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 0,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "idle",
+        "frame": "iona-b03-hurt-stagger-right",
+        "controllerIndex": -1,
+        "lastResult": "RESET",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-one",
+        "wave": 1,
+        "playerHp": 4,
+        "enemyHp": 8,
+        "resonance": 55,
+        "playerX": 291.33,
+        "enemyState": "idle",
+        "rewardClaimed": false,
+        "damageTaken": 1,
+        "elapsedMs": 3933,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "base",
+          "energy": 70,
+          "phaseMs": 0,
+          "move": "hurt-stagger",
+          "form": "Base",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "base",
+        "energy": 70,
+        "phaseMs": 0,
+        "move": "hurt-stagger",
+        "form": "Base",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088530.56,
+      "label": "capture b05-sentry-lunge-effect",
+      "screen": "b05Combat",
+      "player": {
+        "x": 291.8,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 7,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 291.83,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 291.33,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "idle",
+        "frame": "idle-0",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 328.33,
+        "targetHealth": 8,
+        "lastCombatEvent": "HIT / resonance @ 251ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 291.33,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "ON",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 291.33,
+        "playerY": 226,
+        "playerHp": 4,
+        "enemyX": 328.33,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 55,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 0,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "telegraph",
+        "frame": "iona-b01e-idle-0-right",
+        "controllerIndex": -1,
+        "lastResult": "RESET",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "sentry-one",
+        "wave": 1,
+        "playerHp": 4,
+        "enemyHp": 8,
+        "resonance": 55,
+        "playerX": 291.33,
+        "enemyState": "telegraph",
+        "rewardClaimed": false,
+        "damageTaken": 1,
+        "elapsedMs": 5732,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "telegraph",
+        "dawnrush": {
+          "state": "base",
+          "energy": 70,
+          "phaseMs": 0,
+          "move": "idle-0",
+          "form": "Base",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "base",
+        "energy": 70,
+        "phaseMs": 0,
+        "move": "idle-0",
+        "form": "Base",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": true
+    },
+    {
+      "time": 1794088539.82,
+      "label": "capture b05-defeat",
+      "screen": "b04Results",
+      "player": {
+        "x": 297.4,
+        "y": 226,
+        "grounded": true,
+        "facing": 1,
+        "dashActive": false,
+        "cameraX": 12,
+        "controller": false,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        }
+      },
+      "review": null,
+      "lab": null,
+      "preview": {
+        "playerX": 297.41,
+        "playerY": 226,
+        "physicsAnchor": {
+          "x": 296.91,
+          "y": 241
+        },
+        "grounded": true,
+        "facing": 1,
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "action": "attack",
+        "frame": "hurt-ko",
+        "attackPhase": "idle",
+        "comboStep": 0,
+        "targetX": 308.33,
+        "targetHealth": 8,
+        "lastCombatEvent": "HIT / resonance @ 251ms",
+        "reviewScale": 60,
+        "spriteScale": 1,
+        "spriteOrigin": {
+          "x": 0.5,
+          "y": 1
+        },
+        "spritePosition": {
+          "x": 296.91,
+          "y": 241
+        },
+        "vfxEnabled": false,
+        "background": "calm",
+        "audioEnabled": true,
+        "audioUnlocked": true,
+        "audioAssetsLoaded": 13,
+        "audioVolume": 0.68,
+        "audioStatus": "PAUSED",
+        "controller": false,
+        "loadedTextures": 70,
+        "missingTextures": []
+      },
+      "combat": {
+        "playerX": 296.91,
+        "playerY": 226,
+        "playerHp": 0,
+        "enemyX": 308.33,
+        "enemyY": 241,
+        "enemyHp": 8,
+        "resonance": 55,
+        "specialCooldownMs": 0,
+        "move": "none",
+        "phase": "idle",
+        "elapsedMs": 0,
+        "bufferedMove": null,
+        "facing": 1,
+        "enemyState": "lunge",
+        "frame": "iona-b03-hurt-ko-right",
+        "controllerIndex": -1,
+        "lastResult": "RESET",
+        "bodySize": {
+          "width": 15,
+          "height": 30
+        },
+        "spriteScale": 1,
+        "vfxEnabled": true,
+        "vfxActive": false,
+        "background": "calm",
+        "reducedMotion": false,
+        "errors": []
+      },
+      "b04": {
+        "phase": "defeat",
+        "wave": 1,
+        "playerHp": 0,
+        "enemyHp": 8,
+        "resonance": 55,
+        "playerX": 296.91,
+        "enemyState": "lunge",
+        "rewardClaimed": false,
+        "damageTaken": 5,
+        "elapsedMs": 12839,
+        "vfxEnabled": true,
+        "reducedMotion": false,
+        "audioUnlocked": true,
+        "loadedTextures": 15,
+        "missingTextures": [],
+        "loadedIonaFrames": 70,
+        "missingIonaFrames": [],
+        "missingCombatArt": [],
+        "attackFxState": "hidden",
+        "dawnrush": {
+          "state": "base",
+          "energy": 70,
+          "phaseMs": 0,
+          "move": "hurt-ko",
+          "form": "Base",
+          "loadedFrames": 76,
+          "missingFrames": [],
+          "activeMove": "none"
+        }
+      },
+      "b05": {
+        "state": "base",
+        "energy": 70,
+        "phaseMs": 0,
+        "move": "hurt-ko",
+        "form": "Base",
+        "loadedFrames": 76,
+        "missingFrames": [],
+        "activeMove": "none"
+      },
+      "sceneType": "B04VerticalSliceScene",
+      "sceneActive": false
+    },
+    {
+      "time": 1794088585.46,
+      "label": "viewport small-640x360",
+      "viewport": {
+        "width": 640,
+        "height": 360
+      },
+      "canvas": {
+        "x": 0,
+        "y": 0,
+        "width": 640,
+        "height": 360
+      }
+    },
+    {
+      "time": 1794088587.35,
+      "label": "viewport portrait-360x780",
+      "viewport": {
+        "width": 360,
+        "height": 780
+      },
+      "canvas": {
+        "x": 0,
+        "y": 432.75,
+        "width": 360,
+        "height": 202.5
+      }
+    },
+    {
+      "time": 1794088589.67,
+      "label": "viewport 16x10-1280x800",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "canvas": {
+        "x": 0,
+        "y": 60,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "time": 1794088593.13,
+      "label": "viewport ultrawide-1920x720",
+      "viewport": {
+        "width": 1920,
+        "height": 720
+      },
+      "canvas": {
+        "x": 480,
+        "y": 0,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "time": 1794088595.24,
+      "label": "synthetic standard controller movement",
+      "rightX": 134.81,
+      "leftX": 130.43
+    }
+  ],
+  "events": {
+    "total": 10200,
+    "combat": 10,
+    "hits": 8,
+    "misses": 1,
+    "playerDamage": 11,
+    "audioCueNames": [
+      "land",
+      "sunderglass-ambience",
+      "step-a",
+      "step-b",
+      "jump",
+      "b03-telegraph",
+      "b03-hurt",
+      "palm-whoosh",
+      "miss",
+      "transform-charge",
+      "transform-ignition",
+      "dash",
+      "dash-start",
+      "dash-brake",
+      "light",
+      "impact",
+      "palm-hit",
+      "kick-hit",
+      "forearm-hit",
+      "heavy",
+      "b03-heavy-charge",
+      "b03-heavy-impact",
+      "atrium-clear",
+      "sentry-ko",
+      "atrium-reward",
+      "atrium-shard",
+      "aerial",
+      "b03-air-swing",
+      "solar-drive",
+      "b03-resonance-charge",
+      "b03-resonance-release",
+      "atrium-gate",
+      "gate-open",
+      "b03-ko"
+    ],
+    "transformationStates": [
+      "base",
+      "anticipation",
+      "ignition",
+      "silhouette",
+      "dawnrush"
+    ],
+    "dawnrushVfx": 17
+  },
+  "video": {
+    "path": "review-evidence/b05/b05-playable-chrome.webm",
+    "sha256": "4ef24a317b99c91f065a3aaabeae8684aa32061ad63b1e6427f408fe00dcc8cf",
+    "bytes": 11121875,
+    "durationSeconds": 111.84,
+    "width": 1280,
+    "height": 720,
+    "frameRate": "25/1",
+    "codec": "vp8",
+    "audioTrack": false
+  },
+  "sourceTree": {
+    "sha256": "3b425295253a4b912267a8de4b20166f322d9706098024474dd72d88947abf76",
+    "files": 141
+  },
+  "errors": [],
+  "serverErrors": ""
+}

@@ -1,0 +1,1595 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "IONA_B05_DAWNRUSH_GENERATED_FORM_V1",
+  "status": "B05_DEV_REVIEW / OWNER_APPROVAL_PENDING",
+  "productionRoute": "unchanged; B05 is available only via the development route ?b05=1",
+  "physicsBody": {
+    "width": 15,
+    "height": 30,
+    "authority": "unchanged B00 Arcade body"
+  },
+  "canvas": {
+    "width": 128,
+    "height": 80,
+    "pivot": {
+      "x": 64,
+      "feetY": 80
+    },
+    "standingVisibleHeightPx": 60
+  },
+  "processing": {
+    "fixedSourceScale": 0.24896266,
+    "resampling": "nearest-neighbor",
+    "alphaThreshold": 192,
+    "directionPolicy": "right-facing source sheets; left-facing sprites are intentional horizontal mirrors",
+    "poseScalePolicy": "one standing-reference factor shared by all locomotion and combat poses; alpha bounds never change runtime sprite scale"
+  },
+  "sourceSheets": [
+    {
+      "path": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sha256": "c4624a78515d0c9a447365f3235a3be9fe4a40b6a5079b4cfdcc9270c8fd807c",
+      "outputId": "exec-627ee475-0398-4599-8d40-c9859be00bc6.png",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sha256": "dd6844f05ae3ac3a01f0ee4b0f26b2e157316604fcce3abef9a19f0ba954bac8",
+      "outputId": "exec-f55da20c-05d2-48cd-b373-7dace065c93d.png",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/b05/generation/dawnrush-transformation-01a1b353.png",
+      "sha256": "81aa6625bba7ddd5361d138ed646e5d98a9368a3a71a9841d10d8d48dc18cc0a",
+      "outputId": "exec-13fea4fa-c29d-4680-83b4-cc736b10478e.png",
+      "dimensions": [
+        1247,
+        1261
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/b05/generation/dawnrush-vfx-01a1b353.png",
+      "sha256": "410289ee3e16a18d789251ea75a1d2389d458aacf3bdfcb9246ece8cacbf6840",
+      "outputId": "exec-c16678b6-f4df-4a7d-8369-2ab0bfe491d3.png",
+      "dimensions": [
+        1774,
+        887
+      ]
+    }
+  ],
+  "runtimeFrameCount": 76,
+  "runtimeFrames": [
+    {
+      "file": "public/assets/characters/iona/b05/idle-ready-right.png",
+      "sha256": "db864cf95dc557edd2170cfdf5944d6949e109cbf32cc2548079d6a2f473d1d6",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 0,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        42,
+        20,
+        83,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/idle-ready-left.png",
+      "sha256": "1292de77df8666d79656bd6fe1c32bb84fb804cac51d6b5b2efc40dca9a94c07",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 0,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        45,
+        20,
+        86,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/idle-breath-1-right.png",
+      "sha256": "7e70eef03a7bf0bc074ffee43f02e8051024421d93875dc29eaad6b489b8fae3",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 1,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        44,
+        19,
+        81,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/idle-breath-1-left.png",
+      "sha256": "e996fd4c44f2dbcb671c486a8fb095e51f113cf98bc6972e57870b0e14c1f260",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 1,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        47,
+        19,
+        84,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/idle-breath-2-right.png",
+      "sha256": "06dcbfd3db3e9cdf75ff67c6f6434d957f2a98ac21a890314fee0dc508713098",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 2,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        44,
+        20,
+        83,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/idle-breath-2-left.png",
+      "sha256": "fb9f72742fd5582d91442f04bfb534a0b3efd1f0d8d1297dccdbce9d2e30aace",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 2,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        45,
+        20,
+        84,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/sprint-start-right.png",
+      "sha256": "a4ed6dfc71f30ef82160aef8ea11a553f88c7ba2c232181d9977ec7e53c36090",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 3,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        38,
+        24,
+        88,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/sprint-start-left.png",
+      "sha256": "8328051073421d26e9ed704e1ff8eae2c3c1c3ab0b6604fa92a63d061be501af",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 3,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        40,
+        24,
+        90,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/run-forward-0-right.png",
+      "sha256": "405fc28f9413c7bb13a3578eb9d3db93d32ae405e70db445e880a40685ea70a2",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 4,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        39,
+        23,
+        91,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/run-forward-0-left.png",
+      "sha256": "664de644d8a24207fc57cb1ceaa9b2952b5da7a6cd04b5abf4f8aa9e761c24a4",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 4,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        37,
+        23,
+        89,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/run-forward-1-right.png",
+      "sha256": "dd7ab622ca2d2e4bc5e781e15deb71b9ff8a335a0091aaa5abcd53d2205605e3",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 5,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        40,
+        22,
+        87,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/run-forward-1-left.png",
+      "sha256": "603f44a8939f668497cc9caa173fb5e21a39dafd4618014f27ab868b171ba423",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 5,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        41,
+        22,
+        88,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/run-crossing-right.png",
+      "sha256": "132945e41d7c36acb288c89de9c7f8c1682974cb1b69004db0b2bcf429464eac",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 6,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        39,
+        24,
+        93,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/run-crossing-left.png",
+      "sha256": "e06a13428c40348ef742f936b636be916f8101b3695e4f2f51de80e376535cba",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 6,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        35,
+        24,
+        89,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/run-contact-right.png",
+      "sha256": "07c62f9d3de8baabb2e682f6ca55c7e555f88243d02eb62ff841155ad38cabed",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 7,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        43,
+        22,
+        87,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/run-contact-left.png",
+      "sha256": "ff48198c83914fbe149f991f064f96e090aab8c7210212d2150daa91c96f4cb6",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 7,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        41,
+        22,
+        85,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/jump-rise-right.png",
+      "sha256": "916b83893e0cbd464d700fc6feca029706c7c83909cc19946ee70625f13af6c4",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 8,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        44,
+        20,
+        88,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/jump-rise-left.png",
+      "sha256": "84ed37fc32c4f6620be210e2d9ce19feb16457e36d993f59eea34bf2f461c7a6",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 8,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        40,
+        20,
+        84,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/jump-apex-right.png",
+      "sha256": "db8f4d0b7d442fe175a98bfe0cd91223f85b7f40b6303aa502455f860e0d8620",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 9,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        41,
+        26,
+        83,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/jump-apex-left.png",
+      "sha256": "6c5a9d8d1942f1fd30a10a8e0c8dae153853ab3e431387f940e399c34c2327e2",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 9,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        45,
+        26,
+        87,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/jump-fall-right.png",
+      "sha256": "2be1bfe722bc5773f2d0110f619986fc37c05bc87eb0b219e6549fbabdb37f44",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 10,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        38,
+        20,
+        81,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/jump-fall-left.png",
+      "sha256": "7778ec0d4c4caf3739c4df6571f23860d02cbed94b53605fcd4307bcbbb766fb",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 10,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        47,
+        20,
+        90,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/landing-right.png",
+      "sha256": "561711dbd450296f213d08cac82be99a381ff7bd357c94a4f29514f978255850",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 11,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        37,
+        32,
+        85,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/landing-left.png",
+      "sha256": "33ef3530c473622de16081336526ccb9901d0a1026c8e4ba4eeb127da97db3a0",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 11,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        43,
+        32,
+        91,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/dash-ignition-right.png",
+      "sha256": "300dab095187cdf7f9b90caf8dfcc22277ccfaa5ff3d29508a84a844c4460a03",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 12,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        37,
+        25,
+        92,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/dash-ignition-left.png",
+      "sha256": "477ad954e17387b9c5fd0e4d4548fc712af0ca7f83923563340969d2ab280743",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 12,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        36,
+        25,
+        91,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/dash-streamline-right.png",
+      "sha256": "37a98eceaf598dee9d64f9b69df5b5251892ba918dbc59136ba746339c018683",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 13,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        33,
+        31,
+        99,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/dash-streamline-left.png",
+      "sha256": "87d88af9968996e4e4b74f4db8c16f5513009d0928ce37440a1ffb8063bd3da4",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 13,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        29,
+        31,
+        95,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/dash-brake-right.png",
+      "sha256": "70fc10b7dd6ebdac819513af8cfd446e164b0efe69222b7b0f48a8a6f5ac0d6f",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 14,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        36,
+        24,
+        92,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/dash-brake-left.png",
+      "sha256": "91e62d50eb4d84a0fd0c1726dfeb5277cf9434a4c31c1d18ffddfcacdbc59dbe",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 14,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        36,
+        24,
+        92,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/turn-ready-right.png",
+      "sha256": "efc82473836a66aee50d452ac7dd0a0281857ad85608cc7819e4bcc1534c6d2c",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 15,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        43,
+        21,
+        85,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/turn-ready-left.png",
+      "sha256": "8168470facc9f29a84a7a8bcd25362a305f3b9db27ea0c62754e1fb76677cdd8",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-locomotion-01a1b353.png",
+      "sourceCell": 15,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        43,
+        21,
+        85,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-1-windup-right.png",
+      "sha256": "dfdff492039f4d3386d2befe31131fc5f57bfb331fff0a601b06acf16da6e206",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 0,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        44,
+        20,
+        91,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-1-windup-left.png",
+      "sha256": "04727502a75da095add4360f6648223dc8f4426a228addd0a588af6bd04aba64",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 0,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        37,
+        20,
+        84,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-1-contact-right.png",
+      "sha256": "1f8d372d1efd44313fbf32545e7dec42880db2e73f1b7dd10a7aa3dc2fdb78fc",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 1,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        43,
+        21,
+        101,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-1-contact-left.png",
+      "sha256": "c83c8abf2699e5529113eb2683dd1499c64e5ce4a949d84b8ac716595c158492",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 1,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        27,
+        21,
+        85,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-2-contact-right.png",
+      "sha256": "5d64f19b09630a57e1ac03de798dedddfff2e7c2f04f08856011139a7955f8e1",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 2,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        42,
+        21,
+        96,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-2-contact-left.png",
+      "sha256": "f695dcd801300cb7b5b0f7d0a51fe55a24f3824cb81d30b94f2c16578942a904",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 2,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        32,
+        21,
+        86,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-3-contact-right.png",
+      "sha256": "cb0258e94fd6de7605d27e3642e8f996dcfe3d944a8b7e3f987d9c5614a8c2f2",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 3,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        38,
+        21,
+        98,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-3-contact-left.png",
+      "sha256": "f9142810bcba1c1427f20f30681615bb07f75073d6d3005dfda5fe3c6dfe8d89",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 3,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        30,
+        21,
+        90,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-recovery-right.png",
+      "sha256": "eb233830b7355a561d797afd5b81e94e5873e880da743f15a895de8a78383b7a",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 4,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        43,
+        22,
+        81,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/light-recovery-left.png",
+      "sha256": "e1fc43b9aa928fe6de2a4ec7af72ec8b902f148047c8aaa32b83865c5fae83ae",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 4,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        47,
+        22,
+        85,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/heavy-windup-right.png",
+      "sha256": "591779ec3b81a2b8ddc695fbc574e417842c6237e7bc1873118f0ba957a78842",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 5,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        41,
+        26,
+        86,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/heavy-windup-left.png",
+      "sha256": "15de90f65fced845733c4581037b1ac46c417fe1d7d3846f6ade5b40bb9d860d",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 5,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        42,
+        26,
+        87,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/heavy-contact-right.png",
+      "sha256": "eae318ff2cb19c2dbc38a3e6370d209ffe37b824421f852a6ab4121a1eae4cad",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 6,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        35,
+        35,
+        97,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/heavy-contact-left.png",
+      "sha256": "b7a8adb4cadb0a20760468852a2e8b70bf4cacb11a9a7be51705f25e1530a9a3",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 6,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        31,
+        35,
+        93,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/heavy-recovery-right.png",
+      "sha256": "9c383ca89abee01ce28d911716fdd781c53f5d4c004772f7a9457b690c6b50e4",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 7,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        42,
+        23,
+        91,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/heavy-recovery-left.png",
+      "sha256": "b3c8289367fbc6394843c4c8a796621ee6fd37c6294220a1006312522f396e67",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 7,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        37,
+        23,
+        86,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/aerial-windup-right.png",
+      "sha256": "6ee9aee3cbd97a61ece4d453fc1df56ae2fc80b66ec7b7c5558733b794dd9863",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 8,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        43,
+        25,
+        85,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/aerial-windup-left.png",
+      "sha256": "718ae41d938260f9def3a11cd36ed99ad92d47fd901a3f8762299d8721b9aefc",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 8,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        43,
+        25,
+        85,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/aerial-contact-right.png",
+      "sha256": "bfdf9331a405ce45c28674c1b839cb6349d4a7388f1fa7ff3681d7a9a04f1113",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 9,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        34,
+        30,
+        97,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/aerial-contact-left.png",
+      "sha256": "176128697c46b54b3e6dc6e8b26b095d8fa341ec386541642019b0c3de6215e1",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 9,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        31,
+        30,
+        94,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/aerial-recovery-right.png",
+      "sha256": "ab6955337eb6cb312cce6ade191fc09f3d5b084c3fc08e2f6d911a10f20b56ba",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 10,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        40,
+        22,
+        82,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/aerial-recovery-left.png",
+      "sha256": "1a10a09f3b103b85e468adbf7fe98f00bdee2d9b03333e09f4929b98823fa111",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 10,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        46,
+        22,
+        88,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-gather-right.png",
+      "sha256": "3381ccb969a85047d30c442d8e45b75f26f19960de22a80e38ace9f00eb8c33a",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 11,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        42,
+        23,
+        87,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-gather-left.png",
+      "sha256": "a0d0970102a81fc625d4ba61bb23701452eca3256c6c1a46ddd968ab576b33b8",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 11,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        41,
+        23,
+        86,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-ignite-right.png",
+      "sha256": "7fbe3883e0c4468a86cf5bfd950e19b2de65c5312ec36dd3ff3baf4cf81bd526",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 12,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        41,
+        22,
+        89,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-ignite-left.png",
+      "sha256": "25a5a1c7f281712f2f9c822b5d46efdb4e96885075791b0d8fdb449fdec248ac",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 12,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        39,
+        22,
+        87,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-drive-right.png",
+      "sha256": "a4b114f8e5dd5de515920599a9ef6ec86948cc1a60fd8c9915065c5d210e692b",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 13,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        33,
+        27,
+        110,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-drive-left.png",
+      "sha256": "e3e146d567ba00feaa3d98005b2b7dfc07f3f93f80ba2c20ac77f6300758d019",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 13,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        18,
+        27,
+        95,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-lash-right.png",
+      "sha256": "d8d4443657316e3a409912d510c8cd0f1eb7488821099aec025f5697909e71de",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 14,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        40,
+        25,
+        113,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-lash-left.png",
+      "sha256": "2a3ed477f5285f92a8cee7a0128646dc7e930c11a213ef9ebf340afa8809744e",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 14,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        15,
+        25,
+        88,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-recovery-right.png",
+      "sha256": "034041f7f1b6452522b5aac8a8d83d16eed409f65cb398cf69abf5304f956080",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 15,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        37,
+        30,
+        90,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/solar-recovery-left.png",
+      "sha256": "b745836986f61132368b1b0fcabd1b803af21b467de45df12c578b782a17b0f0",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-combat-01a1b353.png",
+      "sourceCell": 15,
+      "facing": "left-mirrored",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        38,
+        30,
+        91,
+        80
+      ],
+      "scale": 0.248963,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/transform-anticipation.png",
+      "sha256": "5b0227329f17b8a0ad0dcfd9fb1ff71f9e1f5b975ff349fa5faff2d3d6d9a131",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-transformation-01a1b353.png",
+      "sourceCell": 0,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        45,
+        20,
+        83,
+        80
+      ],
+      "scale": 0.101351,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/transform-ignition.png",
+      "sha256": "ef4e9b63f478bfeef792c32317996fd34e11e76bb68ffc219b08af639561efd5",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-transformation-01a1b353.png",
+      "sourceCell": 1,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        45,
+        20,
+        82,
+        80
+      ],
+      "scale": 0.101351,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/transform-silhouette.png",
+      "sha256": "8fe2495f008c9524f45b4e6295c8b1fe348d5740c20f985724975fd43fec9681",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-transformation-01a1b353.png",
+      "sourceCell": 2,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        44,
+        20,
+        87,
+        80
+      ],
+      "scale": 0.101351,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/transform-ready.png",
+      "sha256": "14b9a5212249ae78d94f4d054e3bbf575d3c0a721679701254120df1c230de56",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-transformation-01a1b353.png",
+      "sourceCell": 3,
+      "facing": "right",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        44,
+        20,
+        84,
+        80
+      ],
+      "scale": 0.101351,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/fx-transform-ring.png",
+      "sha256": "790b7a3cf6f4591880a877f98f6fcf5b5821161a902755a778a77462c1a33eb3",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-vfx-01a1b353.png",
+      "sourceCell": 0,
+      "facing": "omnidirectional",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        34,
+        10,
+        94,
+        69
+      ],
+      "scale": null,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/fx-silhouette-burst.png",
+      "sha256": "08bd5c0323c82c9e1ba533e688f972c4431691c48fb7e01aaf95228a0c55cd53",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-vfx-01a1b353.png",
+      "sourceCell": 1,
+      "facing": "omnidirectional",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        27,
+        7,
+        101,
+        72
+      ],
+      "scale": null,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/fx-orbit-filaments.png",
+      "sha256": "c1306582e838022b21df2935ddcfbedae5b7f9f1a1dce9fcc24307d07f2f5724",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-vfx-01a1b353.png",
+      "sourceCell": 2,
+      "facing": "omnidirectional",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        21,
+        9,
+        107,
+        71
+      ],
+      "scale": null,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/fx-dash-streak.png",
+      "sha256": "0f22de704de23af20588b7eede28e6a3fd50d2d69f081b8769329d2eae825365",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-vfx-01a1b353.png",
+      "sourceCell": 3,
+      "facing": "omnidirectional",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        5,
+        20,
+        123,
+        60
+      ],
+      "scale": null,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/fx-palm-arc.png",
+      "sha256": "397872768ecb5b99146f94fabf517bd603c583a62ee4788560fc5c0f0ff9295d",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-vfx-01a1b353.png",
+      "sourceCell": 4,
+      "facing": "omnidirectional",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        30,
+        7,
+        98,
+        73
+      ],
+      "scale": null,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/fx-combo-arc.png",
+      "sha256": "b77b0f242151f04c56f31db616ff120e9ebc210f723da1538c62c8ed24ecc3a0",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-vfx-01a1b353.png",
+      "sourceCell": 5,
+      "facing": "omnidirectional",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        24,
+        7,
+        106,
+        73
+      ],
+      "scale": null,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/fx-impact-star.png",
+      "sha256": "60b7d188c265e4e65245de865f4cd6be8911d6713ad072679e59fe8c69a43799",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-vfx-01a1b353.png",
+      "sourceCell": 6,
+      "facing": "omnidirectional",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        25,
+        7,
+        101,
+        71
+      ],
+      "scale": null,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    },
+    {
+      "file": "public/assets/characters/iona/b05/fx-solar-pressure-wave.png",
+      "sha256": "19d0dee2cbc0dc76e77179f0ee2f807ddbbacb5c81ad0b12e8cfd7a47f023b9d",
+      "sourceSheet": "art-source/characters/iona/b05/generation/dawnrush-vfx-01a1b353.png",
+      "sourceCell": 7,
+      "facing": "omnidirectional",
+      "canvas": [
+        128,
+        80
+      ],
+      "alphaBounds": [
+        22,
+        7,
+        106,
+        72
+      ],
+      "scale": null,
+      "resampling": "nearest-neighbor",
+      "alphaThreshold": 192
+    }
+  ],
+  "evidence": [
+    "review-evidence/b05/dawnrush-generated-source-sheets.png",
+    "review-evidence/b05/dawnrush-runtime-contact.png",
+    "review-evidence/b05/dawnrush-base-same-scale-48-60-72.png",
+    "review-evidence/b05/dawnrush-transformation-keys.png",
+    "review-evidence/b05/dawnrush-solar-drive-still.png"
+  ]
+}

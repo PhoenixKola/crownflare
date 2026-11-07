@@ -34,8 +34,10 @@ export class B04VerticalSliceScene extends ChamberScene {
   private hudSpecial?: Phaser.GameObjects.Text;
   private hudEncounter?: Phaser.GameObjects.Text;
   private hudControls?: Phaser.GameObjects.Text;
+  private hudDawnrush?: Phaser.GameObjects.Text;
   private ambience?: Phaser.Sound.BaseSound;
   private audioUnlocked = false;
+  private readonly b05ReviewMode: boolean;
 
   private readonly combatListener = (event: Event): void => {
     const detail = (event as CustomEvent<{ result?: string; moveId?: string }>).detail;
@@ -44,8 +46,9 @@ export class B04VerticalSliceScene extends ChamberScene {
     window.dispatchEvent(new CustomEvent('crownflare:b04-combat-event', { detail: { result: detail?.result ?? 'unknown', moveId: detail?.moveId ?? 'unknown', phase: this.flow.phase } }));
   };
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void) {
-    super(onPauseRequested, onControllerState, { ionaPreview: true, b03Combat: true, b04: true });
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { b05?: boolean } = {}) {
+    super(onPauseRequested, onControllerState, { ionaPreview: true, b03Combat: true, b04: true, b05: options.b05 === true });
+    this.b05ReviewMode = options.b05 === true;
   }
 
   override preload(): void {
@@ -145,6 +148,7 @@ export class B04VerticalSliceScene extends ChamberScene {
     vfxEnabled: boolean; reducedMotion: boolean; audioUnlocked: boolean; loadedTextures: number; missingTextures: string[];
     loadedIonaFrames: number; missingIonaFrames: string[]; missingCombatArt: string[];
     attackFxState: 'hidden' | 'telegraph' | 'lunge-0' | 'lunge-1' | 'lunge-2';
+    dawnrush: ReturnType<ChamberScene['dawnrushSnapshot']>;
   } | null {
     const combat = this.currentCombat ?? this.combatSnapshot();
     if (!combat) return null;
@@ -158,6 +162,7 @@ export class B04VerticalSliceScene extends ChamberScene {
       audioUnlocked: this.audioUnlocked, loadedTextures: EXPECTED_IMAGES.length - missingTextures.length, missingTextures,
       loadedIonaFrames: iona?.loadedTextures ?? 0, missingIonaFrames: iona?.missingTextures ?? [], missingCombatArt: combat.errors,
       attackFxState: this.attackFxState,
+      dawnrush: this.dawnrushSnapshot(),
     };
   }
 
@@ -191,9 +196,10 @@ export class B04VerticalSliceScene extends ChamberScene {
   private createHud(): void {
     this.hudGraphics = this.add.graphics().setScrollFactor(0).setDepth(45);
     const style = { fontFamily: 'monospace', fontSize: '6px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2 };
-    this.add.text(10, 8, 'THE SUNDERGLASS ATRIUM', { ...style, fontSize: '8px', color: '#f4d0a8' }).setScrollFactor(0).setDepth(46);
+    this.add.text(10, 8, this.b05ReviewMode ? 'SUNDERGLASS / DAWNRUSH REVIEW' : 'THE SUNDERGLASS ATRIUM', { ...style, fontSize: this.b05ReviewMode ? '7px' : '8px', color: '#f4d0a8' }).setScrollFactor(0).setDepth(46);
     this.hudVitals = this.add.text(10, 23, '', style).setScrollFactor(0).setDepth(46);
     this.hudSpecial = this.add.text(10, 34, '', { ...style, fontSize: '5px', color: '#a9e4dc' }).setScrollFactor(0).setDepth(46);
+    if (this.b05ReviewMode) this.hudDawnrush = this.add.text(10, 43, 'DAWNRUSH / R OR LB', { ...style, fontSize: '5px', color: '#ffd08f' }).setScrollFactor(0).setDepth(46);
     this.hudEncounter = this.add.text(472, 9, '', { ...style, align: 'right', color: '#f0d9bc' }).setOrigin(1, 0).setScrollFactor(0).setDepth(46);
     this.hudControls = this.add.text(8, 255, '', { ...style, fontSize: '5px', color: '#e4ddd0', backgroundColor: '#0b1620d9', padding: { x: 4, y: 3 } }).setScrollFactor(0).setDepth(46);
   }
@@ -244,13 +250,20 @@ export class B04VerticalSliceScene extends ChamberScene {
     if (!combat || !this.hudGraphics) return;
     const g = this.hudGraphics;
     g.clear();
-    g.fillStyle(0x07131d, .86).fillRect(6, 5, 181, 42).lineStyle(1, 0x735e4d, .85).strokeRect(6.5, 5.5, 181, 42);
+    const leftPanelHeight = this.b05ReviewMode ? 56 : 42;
+    g.fillStyle(0x07131d, .86).fillRect(6, 5, 181, leftPanelHeight).lineStyle(1, 0x735e4d, .85).strokeRect(6.5, 5.5, 181, leftPanelHeight);
     g.fillStyle(0x07131d, .86).fillRect(314, 5, 160, 31).lineStyle(1, 0x735e4d, .85).strokeRect(314.5, 5.5, 160, 31);
     g.fillStyle(0x09141d, .84).fillRect(5, 249, 288, 15).lineStyle(1, 0x3d6570, .68).strokeRect(5.5, 249.5, 288, 15);
     g.fillStyle(0x182630, 1).fillRect(84, 25, 83, 5);
     g.fillStyle(0xc66e62, 1).fillRect(84, 25, 83 * combat.playerHp / 5, 5);
     g.fillStyle(0x182630, 1).fillRect(84, 35, 83, 4);
     g.fillStyle(0x58c8bd, 1).fillRect(84, 35, 83 * combat.resonance / 100, 4);
+    const dawnrush = this.b05ReviewMode ? this.dawnrushSnapshot() : null;
+    if (dawnrush) {
+      g.fillStyle(0x182630, 1).fillRect(84, 45, 83, 4);
+      g.fillStyle(0xf3a85f, 1).fillRect(84, 45, 83 * dawnrush.energy / 100, 4);
+      this.hudDawnrush?.setText(`${dawnrush.form.toUpperCase()}  ${Math.floor(dawnrush.energy)}%  /  R OR LB TRANSFORM`);
+    }
     for (let i = 0; i < 5; i += 1) {
       g.fillStyle(i < combat.playerHp ? 0xf1c99a : 0x3a3c43, i < combat.playerHp ? 1 : .72).fillRect(56 + i * 6, 25, 4, 5);
     }
@@ -260,6 +273,9 @@ export class B04VerticalSliceScene extends ChamberScene {
     this.hudVitals?.setText(`INTEGRITY   ${combat.playerHp}/5      RESONANCE   ${Math.floor(combat.resonance)}`);
     this.hudSpecial?.setText(`RESONANCE IMPRINT  ${combat.specialCooldownMs > 0 ? `${(combat.specialCooldownMs / 1000).toFixed(1)}s` : 'READY'}`);
     this.hudEncounter?.setText(this.encounterLabel(combat));
+    if (this.b05ReviewMode) this.hudControls?.setText(combat.controllerIndex >= 0
+      ? 'STICK MOVE / SOUTH JUMP / WEST LIGHT / NORTH HEAVY / EAST DODGE / RB SOLAR DRIVE / LB TRANSFORM / G CHARGE'
+      : 'A/D MOVE / SPACE JUMP / SHIFT DODGE / J COMBO / K HEAVY / Q SOLAR DRIVE / R TRANSFORM / G DEV CHARGE');
     this.hudControls?.setPosition(8, 254).setText(combat.controllerIndex >= 0
       ? 'STICK MOVE  ·  SOUTH JUMP  ·  WEST LIGHT  ·  NORTH HEAVY  ·  EAST DODGE  ·  RB IMPRINT  ·  START PAUSE'
       : 'A/D MOVE  ·  SPACE JUMP  ·  SHIFT DODGE  ·  J COMBO  ·  K HEAVY  ·  Q IMPRINT  ·  E INTERACT  ·  ESC PAUSE');

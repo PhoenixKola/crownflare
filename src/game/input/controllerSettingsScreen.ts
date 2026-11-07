@@ -2,7 +2,7 @@ import { CONTROL_SETTINGS_NAMESPACE, DEFAULT_CONTROL_SETTINGS, REBINDABLE_ACTION
 
 type SettingsHooks = { readonly onClose: () => void; readonly onApply: (settings: ControlSettings) => void };
 type HapticActuator = { readonly type?: string; playEffect?: (type: string, options: { duration: number; strongMagnitude: number; weakMagnitude: number }) => Promise<string>; reset?: () => Promise<void> };
-const actionTitle: Record<RebindableAction, string> = { jump: 'Jump', light: 'Light / Combo', heavy: 'Heavy / Launcher', dash: 'Dodge / Dash', special: 'Resonance Special', interact: 'Interact' };
+const actionTitle: Record<RebindableAction, string> = { jump: 'Jump', light: 'Light / Combo', heavy: 'Heavy / Launcher', dash: 'Dodge / Dash', special: 'Resonance Special', interact: 'Interact', transform: 'Dawnrush Transform' };
 
 function byId<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);

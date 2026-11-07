@@ -46,6 +46,7 @@ let animationLabMode = false;
 let ionaPreviewMode = false;
 let b03CombatMode = false;
 let b04Mode = false;
+let b05Mode = false;
 let b04ResultVisible = false;
 let b04ResultsFrame = 0;
 let b04PreviousAccept = false;
@@ -56,6 +57,7 @@ let settingsReturnToPause = false;
 const query = new URLSearchParams(window.location.search);
 const b03CombatRequested = import.meta.env.DEV && query.get('b03') === '1';
 const b04Requested = import.meta.env.DEV && query.get('b04') === '1';
+const b05Requested = import.meta.env.DEV && query.get('b05') === '1';
 const ionaPreviewRequested = shouldEnableIonaPreview(import.meta.env.DEV, query.get('ionaPreview') === '1' || b03CombatRequested ? '1' : null);
 let pausedGamepadFrame = 0;
 const pausedGamepadStart = new GamepadStartEdge();
@@ -76,10 +78,10 @@ function pollPausedGamepad(): void {
   if (pausedGamepadStart.poll(gamepadStartDown())) { pausedGamepadFrame = 0; togglePause('Resumed with controller Start.'); return; }
   pausedGamepadFrame = window.requestAnimationFrame(pollPausedGamepad);
 }
-function start(artReview = false, animationLab = false, ionaPreview = false, b03Combat = false, b04 = false): void {
+function start(artReview = false, animationLab = false, ionaPreview = false, b03Combat = false, b04 = false, b05 = false): void {
   if (active) return;
-  active = true; paused = false; artReviewMode = artReview; animationLabMode = animationLab; ionaPreviewMode = ionaPreview || b04; b03CombatMode = b03Combat; b04Mode = b04; b04ResultVisible = false;
-  setVisible(title, false); setVisible(hud, !artReview && !animationLab && !b04); setVisible(pauseScreen, false); setVisible(b04Results, false);
+  active = true; paused = false; artReviewMode = artReview; animationLabMode = animationLab; ionaPreviewMode = ionaPreview || b04 || b05; b03CombatMode = b03Combat; b04Mode = b04 || b05; b05Mode = b05; b04ResultVisible = false;
+  setVisible(title, false); setVisible(hud, !artReview && !animationLab && !b04 && !b05); setVisible(pauseScreen, false); setVisible(b04Results, false);
   setVisible(byId<HTMLElement>('target-health'), b03Combat);
   setVisible(byId<HTMLElement>('b03-status'), b03Combat);
   hud.classList.toggle('preview-hud', ionaPreview);
@@ -89,6 +91,9 @@ function start(artReview = false, animationLab = false, ionaPreview = false, b03
   if (b03Combat) {
     hudMode.textContent = '/ B03 COMBAT CANDIDATE';
     byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE · SPACE JUMP · SHIFT DODGE · J / WEST LIGHT · K / NORTH HEAVY · Q / RB RESONANCE · E INTERACT · ESC / START PAUSE';
+  } else if (b05) {
+    hudMode.textContent = '/ B05 DAWNRUSH REVIEW';
+    byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE · SPACE JUMP · SHIFT DODGE · J LIGHT COMBO · K HEAVY · Q SOLAR DRIVE · R TRANSFORM · G DEV CHARGE';
   } else if (ionaPreview) {
     hudMode.textContent = '/ PROVISIONAL IONA';
     byId<HTMLElement>('controls-tip').textContent = 'A/D OR ARROWS MOVE · SPACE/W/↑ JUMP · SHIFT / EAST DODGE · J OR WEST LIGHT · K OR NORTH HEAVY · Q / RB SPECIAL · ESC PAUSE';
@@ -96,7 +101,7 @@ function start(artReview = false, animationLab = false, ionaPreview = false, b03
     hudMode.textContent = '/ CHAMBER 00';
     byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE · SPACE JUMP · SHIFT DASH · ESC PAUSE';
   }
-  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab, ionaPreview, b03Combat, b04 });
+  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab, ionaPreview, b03Combat, b04, b05 });
   game = instance.game; chamber = instance.scene;
   focusGameCanvas();
 }
@@ -146,7 +151,7 @@ function quit(): void {
   stopPausedGamepadMonitor();
   stopB04ResultsMonitor();
   game?.destroy(true);
-  game = null; chamber = null; active = false; paused = false; debug = false; artReviewMode = false; animationLabMode = false; ionaPreviewMode = false; b03CombatMode = false; b04Mode = false; b04ResultVisible = false;
+  game = null; chamber = null; active = false; paused = false; debug = false; artReviewMode = false; animationLabMode = false; ionaPreviewMode = false; b03CombatMode = false; b04Mode = false; b05Mode = false; b04ResultVisible = false;
   setVisible(debugOverlay, false); setVisible(pauseScreen, false); setVisible(hud, false); setVisible(previewTools, false); setVisible(previewReadout, false); setVisible(b04Results, false); hud.classList.remove('preview-hud'); hud.classList.remove('b03-hud'); setVisible(title, true);
   startButton.focus();
 }
@@ -182,7 +187,7 @@ function finishB04Result(event: Event): void {
   chamber?.setLabAudioPaused(true);
   paused = true; b04ResultVisible = true;
   const victory = result.result === 'victory';
-  b04ResultHeading.textContent = victory ? 'ATRIUM RESTORED' : 'THE SPINDLE FALLS SILENT';
+  b04ResultHeading.textContent = b05Mode ? victory ? 'DAWNRUSH RELEASED' : 'THE SOLAR CURRENT FADES' : victory ? 'ATRIUM RESTORED' : 'THE SPINDLE FALLS SILENT';
   const minutes = Math.floor(result.elapsedMs / 60000);
   const seconds = Math.floor((result.elapsedMs % 60000) / 1000).toString().padStart(2, '0');
   b04ResultStats.textContent = `${victory ? 'CLEAR' : 'DEFEAT'}  ·  ${minutes}:${seconds}  ·  ${result.damageTaken} DAMAGE TAKEN  ·  ${result.rewardClaimed ? 'RESONANCE SHARD RECOVERED' : 'SHARD UNCLAIMED'}`;
@@ -197,7 +202,7 @@ b04ReplayButton.addEventListener('click', () => {
   chamber.resetB04Run(); chamber.setLabAudioPaused(false); game.scene.resume('Chamber'); focusGameCanvas(); stopB04ResultsMonitor();
 });
 b04TitleButton.addEventListener('click', quit);
-startButton.addEventListener('click', () => start(false, false, ionaPreviewRequested, b03CombatRequested, b04Requested));
+startButton.addEventListener('click', () => start(false, false, ionaPreviewRequested, b03CombatRequested, b04Requested, b05Requested));
 titleSettingsButton.addEventListener('click', () => openControllerSettings(false));
 pauseSettingsButton.addEventListener('click', () => openControllerSettings(true));
 resumeButton.addEventListener('click', () => { if (paused) togglePause(); });
@@ -266,14 +271,15 @@ previewAudioVolume.addEventListener('change', focusGameCanvas);
 if (import.meta.env.DEV) {
   // QA hook is read-only and never changes game rules or bypasses play input.
   Object.defineProperty(window, '__CROWNFLARE_QA__', { configurable: true, value: {
-    snapshot: (): { screen: 'title' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b04Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; sceneType: string | null; sceneActive: boolean } => ({
-      screen: !active ? 'title' : b04ResultVisible ? 'b04Results' : artReviewMode ? 'review' : paused ? 'paused' : animationLabMode ? 'animationLab' : b04Mode ? 'b04Combat' : b03CombatMode ? 'b03Combat' : ionaPreviewMode ? 'ionaPreview' : 'playing',
+    snapshot: (): { screen: 'title' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b05Combat' | 'b04Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; b05: ReturnType<ChamberScene['dawnrushSnapshot']>; sceneType: string | null; sceneActive: boolean } => ({
+      screen: !active ? 'title' : b04ResultVisible ? 'b04Results' : artReviewMode ? 'review' : paused ? 'paused' : animationLabMode ? 'animationLab' : b05Mode ? 'b05Combat' : b04Mode ? 'b04Combat' : b03CombatMode ? 'b03Combat' : ionaPreviewMode ? 'ionaPreview' : 'playing',
       player: active && !artReviewMode ? chamber?.snapshot() ?? null : null,
       review: active && artReviewMode ? chamber?.reviewSnapshot() ?? null : null,
       lab: active && animationLabMode ? chamber?.animationSnapshot() ?? null : null,
       preview: active && ionaPreviewMode ? chamber?.previewSnapshot() ?? null : null,
       combat: active && (b03CombatMode || b04Mode) ? chamber?.combatSnapshot() ?? null : null,
       b04: active && b04Mode && chamber instanceof B04VerticalSliceScene ? chamber.b04Snapshot() : null,
+      b05: active && b05Mode ? chamber?.dawnrushSnapshot() ?? null : null,
       sceneType: chamber?.constructor.name ?? null,
       sceneActive: chamber?.sys.isActive() ?? false,
     }),
@@ -290,6 +296,12 @@ if (b04Requested) {
   previewNotice.textContent = 'B04 DEVELOPMENT SLICE / OWNER REVIEW PENDING';
   titleMetadata.textContent = 'B04 COMBAT VERTICAL SLICE / ORIGINAL CANDIDATE ART / NOT APPROVED';
   startButton.innerHTML = 'ENTER THE SUNDERGLASS ATRIUM <span aria-hidden="true">&gt;</span>';
+}
+if (b05Requested) {
+  setVisible(previewNotice, true);
+  previewNotice.textContent = 'B05 DAWNRUSH TRANSFORMATION / DEVELOPMENT REVIEW / OWNER APPROVAL PENDING';
+  titleMetadata.textContent = 'B05 DAWNRUSH / IMAGEGENERATED CANDIDATE / NOT APPROVED';
+  startButton.innerHTML = 'ENTER DAWNRUSH PLAYTEST <span aria-hidden="true">&gt;</span>';
 }
 if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('artReview') === '1') start(true);
 if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('animationLab') === '1') start(false,true);

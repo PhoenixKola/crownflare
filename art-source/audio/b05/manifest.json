@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "candidateId": "IONA_B05_DAWNRUSH_AUDIO_V1",
+  "source": "original deterministic procedural synthesis; no external samples",
+  "status": "technical-audit-only / human-listening-review-pending",
+  "cues": [
+    {
+      "cue": "transform-charge",
+      "file": "public/assets/audio/b05/transform-charge.wav",
+      "sha256": "bc56ba5acf8121df3390a24337adc94f9f2d7de716594978ddda226096633756",
+      "durationMs": 620,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "rising three-part sine + glass partials",
+      "seed": 5105,
+      "peak": 0.48797
+    },
+    {
+      "cue": "transform-ignition",
+      "file": "public/assets/audio/b05/transform-ignition.wav",
+      "sha256": "93534ffe58d21eb1a582bde590611206050a2662f3289e483c6a28cf70bfbbb7",
+      "durationMs": 480,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "short pressure burst + harmonic ring",
+      "seed": 5106,
+      "peak": 0.67213
+    },
+    {
+      "cue": "dash",
+      "file": "public/assets/audio/b05/dash.wav",
+      "sha256": "42c828efed4a4ca7c985ce01d6d79b4f01208f1c44e299a5b99b3a851b222647",
+      "durationMs": 220,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "filtered noise sweep + low sine glide",
+      "seed": 5107,
+      "peak": 0.49579
+    },
+    {
+      "cue": "light",
+      "file": "public/assets/audio/b05/light.wav",
+      "sha256": "0902aaa4dce6c1bec45ba3bb8bd130a162cd754da0b097f4f5f10344e12f39ac",
+      "durationMs": 160,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "bright short sine stack",
+      "seed": 5108,
+      "peak": 0.36711
+    },
+    {
+      "cue": "heavy",
+      "file": "public/assets/audio/b05/heavy.wav",
+      "sha256": "62339b00a54125e0b82de39365570714922f7356c9e447d8313ebfa37ce43023",
+      "durationMs": 340,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "low triangle drop + restrained noise transient",
+      "seed": 5109,
+      "peak": 0.59891
+    },
+    {
+      "cue": "aerial",
+      "file": "public/assets/audio/b05/aerial.wav",
+      "sha256": "f2a59653d4977b9b769204d4290fa459ccdc3874c984cbd36daa139442d838e2",
+      "durationMs": 240,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "falling sine + airy noise",
+      "seed": 5110,
+      "peak": 0.38047
+    },
+    {
+      "cue": "solar-drive",
+      "file": "public/assets/audio/b05/solar-drive.wav",
+      "sha256": "fddb48ed0169c484302da6264713baa994e239dca50abdc28592181cb50cb897",
+      "durationMs": 720,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "ascending sub pulse + layered bright partials",
+      "seed": 5111,
+      "peak": 0.57831
+    },
+    {
+      "cue": "impact",
+      "file": "public/assets/audio/b05/impact.wav",
+      "sha256": "dca662aaffb2ad2217d5cc12cf0da1374a806c805535da79db21fb02aa2bdb91",
+      "durationMs": 180,
+      "sampleRate": 24000,
+      "channels": 1,
+      "bitDepth": 16,
+      "design": "soft low thump + short metallic partials",
+      "seed": 5112,
+      "peak": 0.57912
+    }
+  ]
+}
