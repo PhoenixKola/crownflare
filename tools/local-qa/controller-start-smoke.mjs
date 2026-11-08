@@ -32,6 +32,7 @@ try {
   await page.goto(`http://127.0.0.1:${port}/`, { waitUntil: 'domcontentloaded' });
   await page.getByRole('button', { name: /ENTER THE SPINDLE/ }).click();
   await page.waitForFunction(() => window.__CROWNFLARE_QA__?.snapshot().screen === 'playing' && window.__CROWNFLARE_QA__?.snapshot().player?.grounded === true);
+  await page.locator('#game-root canvas').evaluate((canvas) => canvas.focus());
 
   await page.evaluate(() => {
     const syntheticPad = {
@@ -60,6 +61,7 @@ try {
   await page.evaluate(() => { window.__CROWNFLARE_SYNTHETIC_PAD__.buttons[9].pressed = false; });
 
   // Keyboard pause and the UI resume remain available after controller resume.
+  await page.locator('#game-root canvas').evaluate((canvas) => canvas.focus());
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => window.__CROWNFLARE_QA__?.snapshot().screen === 'paused');
   await page.getByRole('button', { name: /^RESUME/ }).click();

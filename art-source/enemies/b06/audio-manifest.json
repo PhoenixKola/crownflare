@@ -1,0 +1,168 @@
+{
+  "version": "B06-AUDIO-1",
+  "heard": "NO",
+  "cues": [
+    {
+      "cue": "runner-step",
+      "path": "public/assets/audio/b06/runner-step.wav",
+      "sha256": "6bb98c0b225db3bf7b21f2cb2047d50d93df5f8a3d62f0b86ee5df0b3aed648b",
+      "durationSeconds": 0.115,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "runner-tell",
+      "path": "public/assets/audio/b06/runner-tell.wav",
+      "sha256": "3aad7bff05d6e88fa12708ffca10c99921dcf02db2503d6bc8fb93d824fa2336",
+      "durationSeconds": 0.42,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "runner-slash",
+      "path": "public/assets/audio/b06/runner-slash.wav",
+      "sha256": "9aa00a3800109519651c289ed4fcc8e35fe44e0455b16ca2b5df13da16e4b46c",
+      "durationSeconds": 0.31,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "wisp-hover",
+      "path": "public/assets/audio/b06/wisp-hover.wav",
+      "sha256": "0866442d3ef74083eb9053b64cd7b54a8adb7573a9fc6fbbaec5e5ed9bf56292",
+      "durationSeconds": 0.82,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "wisp-charge",
+      "path": "public/assets/audio/b06/wisp-charge.wav",
+      "sha256": "71f0a18da4e234735784ab70a37713285ed3739943f47ea780c373bfaeff905c",
+      "durationSeconds": 0.7,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "wisp-shot",
+      "path": "public/assets/audio/b06/wisp-shot.wav",
+      "sha256": "11aaa6cae9eda7350e7e44963c1344b11c6364a4018453310e1a1c598bc3c3ed",
+      "durationSeconds": 0.46,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "wisp-impact",
+      "path": "public/assets/audio/b06/wisp-impact.wav",
+      "sha256": "efcf56ebf90b438551f4b150c8da1cb57ee8008f317a76443e814d443f428c92",
+      "durationSeconds": 0.28,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "bastion-step",
+      "path": "public/assets/audio/b06/bastion-step.wav",
+      "sha256": "afa189dfb596aaaea27475e6a64c50be7b1908cfb481cd165e231f1e3a9c4e7b",
+      "durationSeconds": 0.24,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "bastion-tell",
+      "path": "public/assets/audio/b06/bastion-tell.wav",
+      "sha256": "5c5d8ac8e66395f46bc6e201decc51f2e19b650e3e3fe113cf7abb403abc633f",
+      "durationSeconds": 0.88,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "bastion-impact",
+      "path": "public/assets/audio/b06/bastion-impact.wav",
+      "sha256": "01cf169eb68393f85a1caff18e8fe5000d307a9fef9d83bcdfa85a8c5c838a9a",
+      "durationSeconds": 0.36,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "bastion-block",
+      "path": "public/assets/audio/b06/bastion-block.wav",
+      "sha256": "ec845484e4932887c5d988bb5307438d603a08c4284b736acc4e51eb950abd1b",
+      "durationSeconds": 0.18,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "bastion-break",
+      "path": "public/assets/audio/b06/bastion-break.wav",
+      "sha256": "482b8b4e9333394575aacbe9755e057c29bcc209e80a1d5a01827582bbfafd80",
+      "durationSeconds": 0.43,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "cantor-intro",
+      "path": "public/assets/audio/b06/cantor-intro.wav",
+      "sha256": "0a271b87c9e7746e5c8f99a1598f09ca5900acbd7ec008a13d1f781b05077571",
+      "durationSeconds": 1.65,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "cantor-sweep",
+      "path": "public/assets/audio/b06/cantor-sweep.wav",
+      "sha256": "7e9915922e46f76ac7a0234b74f03386418eecb3b17cadffe0576741f6ce966f",
+      "durationSeconds": 0.56,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "cantor-pulse",
+      "path": "public/assets/audio/b06/cantor-pulse.wav",
+      "sha256": "7377348473c2122d88fc0ab2734698812ea0a0c297a323fd1ee5c9021185d09a",
+      "durationSeconds": 0.72,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "enemy-ko",
+      "path": "public/assets/audio/b06/enemy-ko.wav",
+      "sha256": "cd56ac72803d619c4ed589f3a6410c6785e42f95348443a8d5799b2a323cee01",
+      "durationSeconds": 0.72,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "wave-clear",
+      "path": "public/assets/audio/b06/wave-clear.wav",
+      "sha256": "53a8a219794f13fc72d78b5f96ef3c35312bbce5282d5c42b6e70cfecdedffd5",
+      "durationSeconds": 0.9,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    },
+    {
+      "cue": "shard-reward",
+      "path": "public/assets/audio/b06/shard-reward.wav",
+      "sha256": "4f264b082238afbfb1d873d33981a49ca8e2c34d460774d04dacc07d8b3bc08f",
+      "durationSeconds": 0.78,
+      "sampleRate": 44100,
+      "channels": 1,
+      "source": "deterministic original procedural synthesis / no samples"
+    }
+  ]
+}

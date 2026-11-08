@@ -1,0 +1,992 @@
+{
+  "version": "B06-ENEMY-ATLAS-1",
+  "sourceMode": "Codex native image_gen; exact output IDs and prompts recorded in provenance.md",
+  "characters": {
+    "shardrunner": {
+      "master": "art-source/enemies/b06/generated-master/shardrunner-atlas.png",
+      "masterSha256": "aad27fc8415dd7d6d2ce03d1edb7a52d75e8d7cebeac6f45ae486305fb0c4713",
+      "masterDimensions": [
+        1774,
+        887
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "runtimeFrames": [
+        {
+          "state": "idle",
+          "sourceCell": 0,
+          "sourceCrop": [
+            0,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/shardrunner-idle.png",
+          "sha256": "119ce66508c643a020af700b324acbb48861c33fa16e53be0e80bca7795aa9ad",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            22,
+            23,
+            58,
+            75
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "move",
+          "sourceCell": 1,
+          "sourceCrop": [
+            1,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/shardrunner-move.png",
+          "sha256": "dcdf734a7b7d22af10ec8426083485bbb81fed08f336708f5872be78b151da14",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            10,
+            24,
+            68,
+            75
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "turn",
+          "sourceCell": 2,
+          "sourceCrop": [
+            2,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/shardrunner-turn.png",
+          "sha256": "dd8c2f1baca3e01bbcf134359892eaea9dce72ee4679cd67eba4c9ca2a29ea44",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            17,
+            23,
+            64,
+            75
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "attack",
+          "sourceCell": 3,
+          "sourceCrop": [
+            3,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/shardrunner-attack.png",
+          "sha256": "606fe780cf9381cfbcf7cc146ca823d5aff9c24c37588f55713a1bef601da93d",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            2,
+            34,
+            76,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "telegraph",
+          "sourceCell": 4,
+          "sourceCrop": [
+            0,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/shardrunner-telegraph.png",
+          "sha256": "d45055de18338625913de4e2eb507a53b0130c056e4254a1aede670e5498d713",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            7,
+            24,
+            72,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "recovery",
+          "sourceCell": 5,
+          "sourceCrop": [
+            1,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/shardrunner-recovery.png",
+          "sha256": "2f052746fa4e5a934089a061cc2280d6d0d7aae56037d90d257051bbd077d4cf",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            15,
+            23,
+            64,
+            75
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "hurt",
+          "sourceCell": 6,
+          "sourceCrop": [
+            2,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/shardrunner-hurt.png",
+          "sha256": "01559d6246ebd746fc2ef61d3bf0852e1616ebc9e73163fd610b0ad44e783327",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            14,
+            23,
+            66,
+            75
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "ko",
+          "sourceCell": 7,
+          "sourceCrop": [
+            3,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/shardrunner-ko.png",
+          "sha256": "f6026179796c73f5fccdefcc0d69edce292aa48eb8fb44905d7220346b05f677",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            4,
+            44,
+            76,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        }
+      ]
+    },
+    "orbit-wisp": {
+      "master": "art-source/enemies/b06/generated-master/orbit-wisp-atlas.png",
+      "masterSha256": "af550adedde0c323f0d482287587fc651cb66c9ffb292d1d5da58fc13db04035",
+      "masterDimensions": [
+        1774,
+        887
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "runtimeFrames": [
+        {
+          "state": "idle",
+          "sourceCell": 0,
+          "sourceCrop": [
+            0,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/orbit-wisp-idle.png",
+          "sha256": "a29eb223b38a02823724afb10a754994ccd4a879f5a1407c42600e87a701560c",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            24,
+            2,
+            56,
+            39
+          ],
+          "pivot": "center-x, hover-center-y=40/80"
+        },
+        {
+          "state": "move",
+          "sourceCell": 1,
+          "sourceCrop": [
+            1,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/orbit-wisp-move.png",
+          "sha256": "cec12093ebf6aa4ae4ebc4e8751cafd75abe71d0e15990cd1986d6bff7cf000a",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            21,
+            2,
+            58,
+            39
+          ],
+          "pivot": "center-x, hover-center-y=40/80"
+        },
+        {
+          "state": "telegraph",
+          "sourceCell": 2,
+          "sourceCrop": [
+            2,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/orbit-wisp-telegraph.png",
+          "sha256": "7b0401685db160e1d4566d03f99acee6eeca8bb97b05075e06b0f3a0473315b9",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            24,
+            2,
+            56,
+            39
+          ],
+          "pivot": "center-x, hover-center-y=40/80"
+        },
+        {
+          "state": "attack",
+          "sourceCell": 3,
+          "sourceCrop": [
+            3,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/orbit-wisp-attack.png",
+          "sha256": "815441a3792aad0b2c50e3e7f56aef37279908bc9396edb8abe2b67c5e99a47a",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            21,
+            2,
+            56,
+            39
+          ],
+          "pivot": "center-x, hover-center-y=40/80"
+        },
+        {
+          "state": "recovery",
+          "sourceCell": 4,
+          "sourceCrop": [
+            0,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/orbit-wisp-recovery.png",
+          "sha256": "d4a794a3552d294200ccf5b954e362805c0f4f1d882e354df6141d2446baa46b",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            24,
+            2,
+            55,
+            39
+          ],
+          "pivot": "center-x, hover-center-y=40/80"
+        },
+        {
+          "state": "hurt",
+          "sourceCell": 5,
+          "sourceCrop": [
+            1,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/orbit-wisp-hurt.png",
+          "sha256": "dfad014d59a4dd2e8503691dee05d5b6cdb5d4a4c726daa09b01f5dc457f1ed0",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            23,
+            2,
+            57,
+            39
+          ],
+          "pivot": "center-x, hover-center-y=40/80"
+        },
+        {
+          "state": "stagger",
+          "sourceCell": 6,
+          "sourceCrop": [
+            2,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/orbit-wisp-stagger.png",
+          "sha256": "8edfd4305c5d75683cccd1ecb038811090bee1d642063d251b55fb08b30b513b",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            22,
+            2,
+            57,
+            39
+          ],
+          "pivot": "center-x, hover-center-y=40/80"
+        },
+        {
+          "state": "ko",
+          "sourceCell": 7,
+          "sourceCrop": [
+            3,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/orbit-wisp-ko.png",
+          "sha256": "974185b25a301f11dae536769c8e6beb0809ea0257d62a22eb4f1f087a0567fc",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            21,
+            2,
+            58,
+            39
+          ],
+          "pivot": "center-x, hover-center-y=40/80"
+        }
+      ]
+    },
+    "pressure-bastion": {
+      "master": "art-source/enemies/b06/generated-master/pressure-bastion-atlas.png",
+      "masterSha256": "a343c4bb796594786da102967a97470024c55299918a78b10b29b64f28c97f68",
+      "masterDimensions": [
+        1774,
+        887
+      ],
+      "grid": [
+        4,
+        2
+      ],
+      "runtimeFrames": [
+        {
+          "state": "idle",
+          "sourceCell": 0,
+          "sourceCrop": [
+            0,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/pressure-bastion-idle.png",
+          "sha256": "511345e2f85174656f81b01151c78ca3595dbb756b0a7976f615cf4b46e80214",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            9,
+            21,
+            70,
+            75
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "move",
+          "sourceCell": 1,
+          "sourceCrop": [
+            1,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/pressure-bastion-move.png",
+          "sha256": "7da4b6326edddcc7e90d59f0c6e24cb2e8dfb0e129266e982b2b2a2de40e9edd",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            10,
+            22,
+            70,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "guard",
+          "sourceCell": 2,
+          "sourceCrop": [
+            2,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/pressure-bastion-guard.png",
+          "sha256": "4d17cf9ee21820ab333a839ed435afde557bf4b239d96a57121c1b150679f9e0",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            9,
+            22,
+            71,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "telegraph",
+          "sourceCell": 3,
+          "sourceCrop": [
+            3,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/pressure-bastion-telegraph.png",
+          "sha256": "59e3630908f8926ec3bfb6f02f5723e5b4d2bc5161471115c7eada7c7ff9680f",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            14,
+            21,
+            66,
+            75
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "attack",
+          "sourceCell": 4,
+          "sourceCrop": [
+            0,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/pressure-bastion-attack.png",
+          "sha256": "a91e93eda6b1402450ec4ab3230c5f3614dcd6bb28a3329f113537b067b0384f",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            5,
+            22,
+            75,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "recovery",
+          "sourceCell": 5,
+          "sourceCrop": [
+            1,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/pressure-bastion-recovery.png",
+          "sha256": "cf00d800108c37999f02225b3c2ade01112c22278b55a75c4623ece13d571194",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            5,
+            22,
+            74,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "guard-break",
+          "sourceCell": 6,
+          "sourceCrop": [
+            2,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/pressure-bastion-guard-break.png",
+          "sha256": "054149ec041a3543a2eb2fd4d2df63f9e9488737b8b21d14ffb4a818d0b1c90d",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            7,
+            22,
+            73,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "ko",
+          "sourceCell": 7,
+          "sourceCrop": [
+            3,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/pressure-bastion-ko.png",
+          "sha256": "3a4a4b300cf7c87dcbe5c00d7cef779716edd3240283d02617fde90eef9ca542",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            3,
+            36,
+            76,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        }
+      ]
+    },
+    "cantor": {
+      "master": "art-source/enemies/b06/generated-master/cantor-atlas.png",
+      "masterSha256": "dc03660bb29442d432fe83ec45faf53381d4054f25ae87d5d7929a026d612db4",
+      "masterDimensions": [
+        1448,
+        1086
+      ],
+      "grid": [
+        4,
+        3
+      ],
+      "runtimeFrames": [
+        {
+          "state": "intro",
+          "sourceCell": 0,
+          "sourceCrop": [
+            0,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-intro.png",
+          "sha256": "850c8b2387c7270275635a68b2af0185c320373ca6aa960349e8203336890314",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            15,
+            10,
+            65,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "idle",
+          "sourceCell": 1,
+          "sourceCrop": [
+            1,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-idle.png",
+          "sha256": "3c6d5417eac5ff6dbf3d7c0e28209e02c26b281807cc2e883911929590c8b869",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            11,
+            11,
+            68,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "move",
+          "sourceCell": 2,
+          "sourceCrop": [
+            2,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-move.png",
+          "sha256": "a804c0b977eace475b9086616c4ab09e57b18e75b1198784925b3510e5b8da74",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            11,
+            10,
+            69,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "sweep-telegraph",
+          "sourceCell": 3,
+          "sourceCrop": [
+            3,
+            0
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-sweep-telegraph.png",
+          "sha256": "c49fc11d74953de5ba9aa562d1cd146f209c8059fd92c01ad97b759d0592240c",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            11,
+            9,
+            69,
+            67
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "sweep-attack",
+          "sourceCell": 4,
+          "sourceCrop": [
+            0,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-sweep-attack.png",
+          "sha256": "850d71d5dfed2070ed3714ade56b164c14ffd9c9f3dfddb4c5ab6acbffaed02c",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            4,
+            13,
+            78,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "sweep-recovery",
+          "sourceCell": 5,
+          "sourceCrop": [
+            1,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-sweep-recovery.png",
+          "sha256": "a06a226f3eddd6863df4e5dc31fddbfa8a9ac144a0fd6f0406dadb711aec9142",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            4,
+            10,
+            74,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "pulse-telegraph",
+          "sourceCell": 6,
+          "sourceCrop": [
+            2,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-pulse-telegraph.png",
+          "sha256": "74c53883fba2c61fb0257f493d32a5db369e59ff4aea7467cf57b694bedce74a",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            13,
+            9,
+            67,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "pulse-attack",
+          "sourceCell": 7,
+          "sourceCrop": [
+            3,
+            1
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-pulse-attack.png",
+          "sha256": "8cf5759c6b07dd1ab7dd8dd57972362a789d80b1400a4378b07b3665038a6474",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            6,
+            8,
+            74,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "vulnerable",
+          "sourceCell": 8,
+          "sourceCrop": [
+            0,
+            2
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-vulnerable.png",
+          "sha256": "3c02fa3415a7670aafcd820e12a13c238a27a59448c7934de9897edc3bddd647",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            8,
+            10,
+            71,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "hurt",
+          "sourceCell": 9,
+          "sourceCrop": [
+            1,
+            2
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-hurt.png",
+          "sha256": "b44283ccdc1f42639816595eda13597d05c32ab6565e50cae8d2b22292b00e57",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            8,
+            9,
+            72,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "ko",
+          "sourceCell": 10,
+          "sourceCrop": [
+            2,
+            2
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-ko.png",
+          "sha256": "5b1a4318f3787447ceeb4513abbaeb30cba0d7041c86e14b55341ee3efda98dc",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            2,
+            15,
+            76,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        },
+        {
+          "state": "disperse",
+          "sourceCell": 11,
+          "sourceCrop": [
+            3,
+            2
+          ],
+          "runtime": "public/assets/enemies/b06/cantor-disperse.png",
+          "sha256": "10a79a5b9c00a315a3d7736eec918f898b9c41bc5a97eef6cc580b37474ddd6d",
+          "canvas": [
+            80,
+            80
+          ],
+          "alphaBounds": [
+            4,
+            23,
+            76,
+            74
+          ],
+          "pivot": "center-x, baseline-y=76/80"
+        }
+      ]
+    }
+  },
+  "effects": [
+    {
+      "state": "runner-dash",
+      "sourceCell": 0,
+      "sourceCrop": [
+        0,
+        0
+      ],
+      "runtime": "public/assets/enemies/b06/fx-runner-dash.png",
+      "sha256": "b0fe40468cf6b55436bd4966444865f31b1b28f495ea4137ed9476ee6b6404b3",
+      "canvas": [
+        96,
+        72
+      ],
+      "alphaBounds": [
+        6,
+        34,
+        90,
+        66
+      ]
+    },
+    {
+      "state": "runner-impact",
+      "sourceCell": 1,
+      "sourceCrop": [
+        1,
+        0
+      ],
+      "runtime": "public/assets/enemies/b06/fx-runner-impact.png",
+      "sha256": "835d3eaca2b47ce406fab1626a3081d65ed91a79be512dfb557e29f2301df654",
+      "canvas": [
+        96,
+        72
+      ],
+      "alphaBounds": [
+        20,
+        6,
+        76,
+        66
+      ]
+    },
+    {
+      "state": "wisp-charge",
+      "sourceCell": 2,
+      "sourceCrop": [
+        2,
+        0
+      ],
+      "runtime": "public/assets/enemies/b06/fx-wisp-charge.png",
+      "sha256": "5cfb21934dac3ddf899e98843b48a4d244f76551c3f2d55d76f4e3e0fc4d6278",
+      "canvas": [
+        96,
+        72
+      ],
+      "alphaBounds": [
+        15,
+        6,
+        81,
+        66
+      ]
+    },
+    {
+      "state": "wisp-projectile",
+      "sourceCell": 3,
+      "sourceCrop": [
+        3,
+        0
+      ],
+      "runtime": "public/assets/enemies/b06/fx-wisp-projectile.png",
+      "sha256": "0f42b392fe567a8f3a2f23214f33f12be694568fc2ec27f89849dabfc05ba4f9",
+      "canvas": [
+        96,
+        72
+      ],
+      "alphaBounds": [
+        6,
+        44,
+        90,
+        66
+      ]
+    },
+    {
+      "state": "wisp-impact",
+      "sourceCell": 4,
+      "sourceCrop": [
+        0,
+        1
+      ],
+      "runtime": "public/assets/enemies/b06/fx-wisp-impact.png",
+      "sha256": "27091db740cc255940e44ea0cd6d32f4007f6915d318437faf25a59fef248f6d",
+      "canvas": [
+        96,
+        72
+      ],
+      "alphaBounds": [
+        19,
+        6,
+        76,
+        66
+      ]
+    },
+    {
+      "state": "bastion-shockfront",
+      "sourceCell": 5,
+      "sourceCrop": [
+        1,
+        1
+      ],
+      "runtime": "public/assets/enemies/b06/fx-bastion-shockfront.png",
+      "sha256": "d391d7486fe374b1ab26cdf17c50ddbf75add5cc688269014922715cfdac4083",
+      "canvas": [
+        96,
+        72
+      ],
+      "alphaBounds": [
+        5,
+        36,
+        90,
+        66
+      ]
+    },
+    {
+      "state": "bastion-guard-break",
+      "sourceCell": 6,
+      "sourceCrop": [
+        2,
+        1
+      ],
+      "runtime": "public/assets/enemies/b06/fx-bastion-guard-break.png",
+      "sha256": "6fb35418e9961e3d4a97dd21cd2ca579a9fadd9522c618e801816db97b1833a2",
+      "canvas": [
+        96,
+        72
+      ],
+      "alphaBounds": [
+        16,
+        6,
+        80,
+        66
+      ]
+    },
+    {
+      "state": "cantor-ring-sweep",
+      "sourceCell": 7,
+      "sourceCrop": [
+        3,
+        1
+      ],
+      "runtime": "public/assets/enemies/b06/fx-cantor-ring-sweep.png",
+      "sha256": "618ef6320fd23a86f86e01c9dcbadec7ae144ca04632a2071a91428c75226b11",
+      "canvas": [
+        96,
+        72
+      ],
+      "alphaBounds": [
+        6,
+        9,
+        90,
+        66
+      ]
+    }
+  ],
+  "effectsMaster": {
+    "master": "art-source/enemies/b06/generated-master/enemy-signature-fx-atlas.png",
+    "masterSha256": "37a196bbfd1b75d9072fa41983ff06a121680d0322c19b74e160c56c52692e80",
+    "masterDimensions": [
+      1774,
+      887
+    ],
+    "grid": [
+      4,
+      2
+    ]
+  }
+}

@@ -13,6 +13,8 @@ import { IONA_B01E_AUDIO_CUES, IonaB01eAudioEventGate, isIonaRunContactFrame, io
 import { beginAction, idleClock, stepAction, type ActionDef, type CombatClock, type CombatEvent } from '../combat/sim';
 import { B03_MOVES, canCancelIntoCombo, isBlockedByRect, moveHitbox, overlaps, combatantRect, resolveMoveContact, type B03MoveDefinition, type B03MoveId, type CombatRect } from '../combat/b03Moves';
 import { DAWNRUSH_MOVES } from '../combat/dawnrushMoves';
+import { resolveB06MoveTargets, type B06PlayerThreatFrame } from '../enemies/b06EnemyModel';
+import type { ContactResult } from '../combat/b03Moves';
 import { beginDawnrushReversion, canSwitchDawnrushForm, canUseDawnrushFinisher, DAWNRUSH_FINISHER_REQUIREMENTS, dawnrushActivationPhases, stepDawnrushForm, type DawnrushActivationMode, type DawnrushFormState } from '../combat/dawnrushLifecycle.ts';
 import { dawnrushLocomotionFrame, dawnrushMoveFrame, DAWNRUSH_AURA_FRAME_GROUPS, DAWNRUSH_AURA_FRAMES, DAWNRUSH_COMBAT_FRAMES, DAWNRUSH_LOCOMOTION_FRAMES, DAWNRUSH_REVERSION_FRAMES, DAWNRUSH_TRANSFORM_FRAMES, DAWNRUSH_VFX_FRAMES } from '../animation/dawnrushAnimation';
 import { IONA_B03_ENEMY_STATES, IONA_B03_POSES, IONA_B03_VFX_FRAMES, ionaB03EnemyTexture, ionaB03PoseTexture, type IonaB03EnemyState, type IonaB03Pose } from '../animation/ionaB03Art';
@@ -24,6 +26,8 @@ export type ArtReviewContrast = 'calm' | 'light' | 'busy';
 export type ArtReviewSnapshot = { view: ArtReviewView; contrast: ArtReviewContrast; silhouetteHeight: 48 | 60 | 72; pixelGrid: boolean; loadedAssets: number; totalAssets: number; missingAssets: string[] };
 export type IonaPreviewSnapshot = { playerX:number; playerY:number; physicsAnchor:{x:number;y:number}; grounded:boolean; facing:IonaFacing; bodySize:{width:number;height:number}; action:string; frame:string; attackPhase:string; comboStep:number; targetX:number; targetHealth:number; lastCombatEvent:string; reviewScale:48|60|72; spriteScale:number; spriteOrigin:{x:number;y:number}; spritePosition:{x:number;y:number}; vfxEnabled:boolean; background:'calm'; audioEnabled:boolean; audioUnlocked:boolean; audioAssetsLoaded:number; audioVolume:number; audioStatus:string; controller:boolean; loadedTextures:number; missingTextures:string[] };
 export type B03CombatSnapshot = { playerX:number; playerY:number; playerHp:number; playerVelocity:{x:number;y:number}; playerInvulnerableMs:number; enemyX:number; enemyY:number; enemyHp:number; resonance:number; specialCooldownMs:number; move:string; phase:string; elapsedMs:number; bufferedMove:string|null; facing:IonaFacing; enemyState:string; frame:string; controllerIndex:number; lastResult:string; bodySize:{width:number;height:number}; spriteScale:number; vfxEnabled:boolean; vfxActive:boolean; background:ArtReviewContrast; reducedMotion:boolean; errors:string[] };
+export type B06CombatTarget = { readonly id: string; readonly archetype?: string; readonly x: number; readonly y: number; readonly width: number; readonly height: number; readonly hp: number; readonly alive: boolean; readonly invulnerableMs?: number; readonly guarding?: boolean; readonly guardBreakable?: boolean };
+export type B06PlayerCombatFrame = B06PlayerThreatFrame & { readonly resonance: number; readonly facing: IonaFacing; readonly velocityX: number; readonly velocityY: number; readonly dawnrush: string; readonly grounded: boolean };
 const WORLD_WIDTH = 1560;
 const WORLD_HEIGHT = 270;
 const GROUND_TOP = 241;
@@ -66,6 +70,7 @@ export class ChamberScene extends Phaser.Scene {
   private readonly b03Mode: boolean;
   private readonly b04Mode: boolean;
   private readonly b05Mode: boolean;
+  private readonly b06Mode: boolean;
   private readonly b02Diagnostics: boolean;
   private readonly playerPresentation = new IonaPlayerPresentation();
   private labCompareB01c = false;
@@ -186,7 +191,7 @@ export class ChamberScene extends Phaser.Scene {
   private dawnrushActivationMode: DawnrushActivationMode = 'showcase';
   private dawnrushShowcaseUsed = false;
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean } = {}) {
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean } = {}) {
     super({ key: 'Chamber' });
     this.onPauseRequested = onPauseRequested;
     this.onControllerState = onControllerState;
@@ -196,6 +201,7 @@ export class ChamberScene extends Phaser.Scene {
     this.b03Mode = this.previewMode && options.b03Combat === true;
     this.b04Mode = this.b03Mode && options.b04 === true;
     this.b05Mode = this.b04Mode && options.b05 === true;
+    this.b06Mode = this.b05Mode && options.b06 === true;
     const params = new URLSearchParams(window.location.search);
     this.b02Diagnostics = this.previewMode && params.get('b02diag') === '1';
     this.b03DebugVisible = this.b03Mode && params.get('b03diag') === '1';
@@ -625,6 +631,61 @@ export class ChamberScene extends Phaser.Scene {
 
   protected handleB04Interact(): boolean { return false; }
 
+  protected b06CombatTargets(): readonly B06CombatTarget[] { return []; }
+  protected onB06ContactResult(_target: B06CombatTarget, _result: ContactResult, _move: B03MoveDefinition, _event: CombatEvent, _guardBreak: boolean): void {}
+  protected onB06ThreatEvent(_event: { readonly sourceId: string; readonly result: 'hit' | 'dodged' | 'invulnerable'; readonly damage: number }): void {}
+
+  protected getB06PlayerFrame(): B06PlayerCombatFrame {
+    return {
+      x: this.body.center.x, y: this.body.center.y, width: this.body.width, height: this.body.height, hp: this.playerHp,
+      invulnerableMs: this.playerInvulnerableMs, dashInvulnerableMs: this.dashInvulnerabilityMs, resonance: this.resonance,
+      facing: this.motion.facing, velocityX: this.body.velocity.x, velocityY: this.body.velocity.y,
+      dawnrush: this.dawnrushState, grounded: this.body.blocked.down || this.body.touching.down,
+    };
+  }
+
+  protected getB06Blockers(): readonly CombatRect[] { return this.combatBlockers; }
+  protected get b06HitstopActive(): boolean { return this.combatHitstopMs > 0; }
+  protected get b06AudioPermitted(): boolean { return this.labAudioEnabled && !this.labAudioPaused && !this.sound.locked; }
+
+  protected applyB06PlayerThreat(sourceId: string, damage: number, knockback: -1 | 1): 'hit' | 'dodged' | 'invulnerable' {
+    if (this.playerHp <= 0) return 'invulnerable';
+    if (this.dashInvulnerabilityMs > 0) {
+      this.resonance = Math.min(100, this.resonance + 6);
+      this.b03Status = 'DODGED / +6 RESONANCE';
+      this.playCombatTone('dodge');
+      this.controller.requestRumble(.1, 32);
+      this.onB06ThreatEvent({ sourceId, result: 'dodged', damage: 0 });
+      return 'dodged';
+    }
+    if (this.playerInvulnerableMs > 0) {
+      this.b03Status = 'HURT WINDOW / NO DAMAGE';
+      this.onB06ThreatEvent({ sourceId, result: 'invulnerable', damage: 0 });
+      return 'invulnerable';
+    }
+    this.playerHp = Math.max(0, this.playerHp - Math.max(1, Math.round(damage)));
+    this.playerHurtMs = this.playerHp <= 0 ? 999999 : 430;
+    this.playerInvulnerableMs = 700;
+    this.body.setVelocityX(knockback * 82);
+    this.b03Status = this.playerHp <= 0 ? 'IONA DOWN' : `IONA HIT / ${this.playerHp} HP`;
+    if (this.b05Mode && this.dawnrushState !== 'base') this.playB05Cue('dawnrush-hurt');
+    else this.playCombatTone(this.playerHp <= 0 ? 'ko' : 'hurt');
+    if (this.playerHp <= 0) { this.b03Move = null; this.activeMoveDefinition = null; this.b03BufferedMove = null; this.attackClock = idleClock; }
+    this.controller.requestRumble(this.playerHp <= 0 ? .25 : .16);
+    window.dispatchEvent(new CustomEvent('crownflare:player-damage', { detail: { hp: this.playerHp, source: sourceId } }));
+    this.onB06ThreatEvent({ sourceId, result: 'hit', damage });
+    return 'hit';
+  }
+
+  protected grantB06Reward(health: number, resonance: number, dawnrushEnergy: number): void {
+    this.playerHp = Phaser.Math.Clamp(this.playerHp + Math.max(0, Math.round(health)), 1, this.playerMaxHp);
+    this.resonance = Math.min(100, this.resonance + Math.max(0, resonance));
+    if (this.b05Mode) this.dawnrushEnergy = Math.min(100, this.dawnrushEnergy + Math.max(0, dawnrushEnergy));
+    this.playerHurtMs = 0;
+    this.playerInvulnerableMs = 0;
+    this.dashInvulnerabilityMs = 0;
+  }
+
   /** B04 consumes contextual interaction before the B03 practice retry behavior. */
   protected setB04Target(x: number, hp = this.enemyMaxHp): void {
     if (!this.b04Mode) return;
@@ -732,6 +793,7 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   private createTrainingTarget(): void {
+    if (this.b06Mode) return;
     if (this.b03Mode) {
       this.enemySprite = this.add.image(this.targetX, GROUND_TOP, ionaB03EnemyTexture('idle')).setOrigin(.5, 1).setDepth(13);
       this.enemyTell = this.add.graphics().setDepth(11);
@@ -806,13 +868,13 @@ export class ChamberScene extends Phaser.Scene {
       this.toggleB05Transform();
     } else this.dawnrushTransformBufferMs = Math.max(0, this.dawnrushTransformBufferMs - deltaMs);
     if (input.interact && this.b04Mode && this.handleB04Interact()) return;
-    if (input.interact && (this.playerHp <= 0 || this.targetHealth <= 0)) {
+    if (!this.b06Mode && input.interact && (this.playerHp <= 0 || this.targetHealth <= 0)) {
       this.resetB03Encounter();
       return;
     }
-    if (input.interact && this.playerHp > 0 && this.targetHealth > 0) this.b03Status = 'NO INTERACTABLE / MOVE INTO THE SENTRY';
+    if (!this.b06Mode && input.interact && this.playerHp > 0 && this.targetHealth > 0) this.b03Status = 'NO INTERACTABLE / MOVE INTO THE SENTRY';
     const b05CanAct = !this.b05Mode || this.dawnrushState === 'base' || this.dawnrushState === 'dawnrush' && this.dawnrushPhaseMs <= 0;
-    if (this.playerHp > 0 && this.targetHealth > 0 && this.playerHurtMs <= 0 && this.motion.dashMs === 0 && b05CanAct && !input.transform) {
+    if (this.playerHp > 0 && (this.b06Mode || this.targetHealth > 0) && this.playerHurtMs <= 0 && this.motion.dashMs === 0 && b05CanAct && !input.transform) {
       if (this.b03Move && input.light && this.b03Move.startsWith('light-')) {
         const current = this.activeMoveDefinition ?? this.moveDefinition(this.b03Move);
         if (this.attackComboIndex < 2 && canCancelIntoCombo(current, this.attackClock.elapsedMs)) {
@@ -843,10 +905,10 @@ export class ChamberScene extends Phaser.Scene {
       this.b03BufferedMove = null;
       this.b03Move = null;
       this.activeMoveDefinition = null;
-      if (next && this.playerHp > 0 && this.targetHealth > 0 && grounded) this.tryStartB03Move(next, grounded);
+      if (next && this.playerHp > 0 && (this.b06Mode || this.targetHealth > 0) && grounded) this.tryStartB03Move(next, grounded);
       else { this.attackComboIndex = 0; this.b03Status = this.targetHealth <= 0 ? 'SENTRY KO / E INTERACT OR R RETRY' : 'RECOVER / DODGE REMAINS AVAILABLE'; }
     }
-    this.updateB03Enemy(deltaMs);
+    if (!this.b06Mode) this.updateB03Enemy(deltaMs);
     this.updateB03Vfx(deltaMs);
   }
 
@@ -1040,6 +1102,7 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   private resolveB03CombatEvent(move: B03MoveDefinition, event: CombatEvent): void {
+    if (this.b06Mode) { this.resolveB06CombatEvent(move, event); return; }
     if (event.eventId !== 'contact' || this.b03HitTargets.has('spindle-sentry')) return;
     this.b03HitTargets.add('spindle-sentry');
     const result = resolveMoveContact(move, { x:this.body.center.x, footY:this.body.bottom, facing:this.attackFacing }, {
@@ -1078,6 +1141,56 @@ export class ChamberScene extends Phaser.Scene {
       this.playB01eCue('miss', `b03:${this.activeAudioSequence}:contact`);
       if (move.id === 'resonance') this.createB03SpecialWave(result);
     }
+  }
+
+  private resolveB06CombatEvent(move: B03MoveDefinition, event: CombatEvent): void {
+    if (event.eventId !== 'contact') return;
+    const attacker = { x: this.body.center.x, footY: this.body.bottom, facing: this.attackFacing };
+    const targets = this.b06CombatTargets();
+    const resolution = resolveB06MoveTargets(move, attacker, targets, this.b03HitTargets, this.combatBlockers);
+    for (const id of resolution.hitTargets) this.b03HitTargets.add(id);
+    let firstResult: ContactResult = 'miss';
+    let firstHit: B06CombatTarget | undefined;
+    let hitCount = 0;
+    for (const { target, result, guardBreak } of resolution.contacts) {
+      if (firstResult === 'miss') firstResult = result;
+      if (result === 'hit') {
+        hitCount += 1;
+        firstHit ??= target;
+        if (this.b05Mode && this.dawnrushState === 'dawnrush' && hitCount === 1) {
+          this.dawnrushEnergy = Math.min(100, this.dawnrushEnergy + 8 + move.damage * 2);
+          if (move.id === 'finisher') this.createB05FinisherFx(this.attackFacing);
+          else this.createB05Fx(move.id === 'resonance' ? 'fx-solar-pressure-wave' : move.id === 'heavy' ? 'fx-impact-star' : move.id === 'air-light' || move.id === 'light-3' ? 'fx-combo-arc' : 'fx-palm-arc', target.x, target.y, move.id === 'resonance' ? 104 : 78, 50, this.attackFacing);
+          this.playB05Cue('impact');
+        }
+        this.combatHitstopMs = Math.max(this.combatHitstopMs, move.hitstopMs);
+        if ((move.id === 'heavy' || move.id === 'light-3') && !this.b03ReducedMotion) this.cameras.main.shake(38, .0012);
+        this.controller.requestRumble(move.id === 'heavy' ? .25 : .15);
+      }
+      this.onB06ContactResult(target, result, move, { ...event, targetId: target.id }, guardBreak);
+      window.dispatchEvent(new CustomEvent('crownflare:b06-combat-event', { detail: { ...event, targetId: target.id, archetype: target.archetype ?? 'unknown', result, damage: result === 'hit' ? move.damage : 0, guardBreak } }));
+      this.lastCombatEvent = `${result.toUpperCase()} / ${move.id} → ${target.id} @ ${event.atMs}ms`;
+    }
+    if (hitCount > 0) {
+      this.resonance = Math.min(100, this.resonance + (move.id === 'resonance' ? 0 : 7 + move.damage * 2));
+      if (move.id === 'resonance') this.playCombatTone('resonance-release');
+      this.b03Status = `${move.id.toUpperCase()} / ${hitCount} ${hitCount === 1 ? 'HIT' : 'HITS'}`;
+      this.b03LastResult = 'HIT';
+      if (!this.b05Mode) {
+        const hitCue: IonaB01eAudioCue = move.id === 'light-1' ? 'palm-hit' : move.id === 'light-2' || move.id === 'air-light' ? 'kick-hit' : 'forearm-hit';
+        this.playB01eCue(hitCue, `b06:${this.activeAudioSequence}:contact`);
+      }
+      if (move.id === 'heavy') this.playCombatTone('heavy-impact');
+    } else {
+      this.b03LastResult = firstResult.toUpperCase();
+      this.b03Status = firstResult === 'obstructed' ? 'PRESSURE WAVE BLOCKED' : firstResult === 'blocked' ? 'BASTION SHIELD HOLDS / BREAK ITS GUARD' : firstResult === 'invulnerable' ? 'TARGET INTERRUPT WINDOW' : 'MISS / REPOSITION';
+      this.playB01eCue('miss', `b06:${this.activeAudioSequence}:contact`);
+    }
+    if (targets.length === 0) {
+      this.lastCombatEvent = `MISS / ${move.id} / NO ACTIVE TARGETS @ ${event.atMs}ms`;
+      window.dispatchEvent(new CustomEvent('crownflare:b06-combat-event', { detail: { ...event, result: 'miss', targetId: null, damage: 0 } }));
+    }
+    if (firstHit && move.id === 'resonance' && this.b05Mode && this.dawnrushState === 'base') this.createB03SpecialWave('hit');
   }
 
   private updateB03Enemy(deltaMs: number): void {
