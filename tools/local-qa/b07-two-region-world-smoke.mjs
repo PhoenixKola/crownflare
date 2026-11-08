@@ -10,6 +10,7 @@ import { chromium } from 'playwright';
 const port = 4197;
 const base = `http://127.0.0.1:${port}`;
 const evidence = 'review-evidence/b07';
+const noRecord = process.argv.includes('--no-record');
 let recordingDir;
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', '--host', '127.0.0.1', '--port', String(port), '--strictPort'], { stdio: 'pipe' });
 let serverErrors = '';
@@ -136,7 +137,7 @@ async function branchWithKeyboard(page, route, optionIndex) {
 }
 
 async function runBaseSafeRoute() {
-  recordingContext = await browser.newContext({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1, recordVideo: { dir: recordingDir, size: { width: 1280, height: 720 } } });
+  recordingContext = await browser.newContext({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1, ...(noRecord ? {} : { recordVideo: { dir: recordingDir, size: { width: 1280, height: 720 } } }) });
   recordingPage = await recordingContext.newPage();
   monitor(recordingPage, 'base-route');
   await enter(recordingPage, `${base}/?b07=1&seed=13031988`);
@@ -228,9 +229,9 @@ async function runBaseSafeRoute() {
   assert(results.b07?.result === 'victory' && results.b07.visited.at(-1) === 'vl-night-side-threshold', `B07 result did not honestly stop at the boss threshold: ${JSON.stringify(results.b07)}`);
   await capture(recordingPage, 'b07-route-complete-results');
   record('Base safe-recovery route crosses the Vesper region and stops before B08 boss', { status: 'PASS', visited: results.b07.visited, seed: results.b07.seed, repairCharges: results.b07.repairCharges, resonance: results.b07.resonance });
-  const videoPath = await recordingPage.video().path();
+  const videoPath = noRecord ? null : await recordingPage.video()?.path();
   await recordingContext.close(); recordingContext = undefined; recordingPage = undefined;
-  await copyFile(videoPath, path.join(evidence, 'b07-base-safe-expedition.webm'));
+  if (videoPath) await copyFile(videoPath, path.join(evidence, 'b07-base-safe-expedition.webm'));
   return results.b07;
 }
 
@@ -335,7 +336,8 @@ try {
     buildHash: { algorithm: 'SHA-256', digest: buildHash, file: `dist/${bundleMatch[0]}` },
     checks, screenshots, runtimeErrors: errors, sourceArtManifest: 'art-source/environments/b07/asset-manifest.json',
     audio: 'Vesper drone is synthesized in Web Audio and the Sunderglass source ambience WAV is loaded. No human listening signoff or system-audio recording was performed.',
-    limitations: ['This evidence is a development route preview; owner art-motion, audio listening and physical-controller gates remain pending.', 'B08 boss and ending are not implemented.'],
+    recording: noRecord ? 'Disabled by --no-record; screenshots and live checks retained.' : 'One normal-speed Playwright recording retained under review-evidence/b07.',
+    limitations: ['This evidence is a development route preview; owner art-motion, audio listening and physical-controller gates remain pending.', 'B08 boss and three-boss route were exercised separately in the B08 regression run.'],
   };
   await writeFile(path.join(evidence, 'b07-qa-report.json'), `${JSON.stringify(report, null, 2)}\n`);
   await writeFile(path.join(evidence, 'b07-browser-errors.json'), `${JSON.stringify(errors, null, 2)}\n`);

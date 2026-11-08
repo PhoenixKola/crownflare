@@ -462,7 +462,7 @@ export class ChamberScene extends Phaser.Scene {
     const movement = stepMovement({ ...this.motion, xVelocity: this.body.velocity.x, yVelocity: this.body.velocity.y }, movementInput, grounded, dt);
     this.motion = movement.next;
     if (movement.dashed && this.b03Mode) {
-      this.dashInvulnerabilityMs = this.b04Mode ? 150 : 75;
+      this.dashInvulnerabilityMs = Math.min(220, (this.b04Mode ? 150 : 75) + Math.max(0, Math.min(70, this.additionalDashInvulnerabilityMs())));
       if (this.b05Mode && this.dawnrushState === 'dawnrush') {
         this.playB05Cue('dash');
         this.createB05Fx('fx-dash-streak', this.body.center.x, this.body.bottom - 30, 106, 38, this.motion.facing);
@@ -639,7 +639,9 @@ export class ChamberScene extends Phaser.Scene {
 
   protected b06CombatTargets(): readonly B06CombatTarget[] { return []; }
   protected onB06ContactResult(_target: B06CombatTarget, _result: ContactResult, _move: B03MoveDefinition, _event: CombatEvent, _guardBreak: boolean): void {}
-  protected onB06ThreatEvent(_event: { readonly sourceId: string; readonly result: 'hit' | 'dodged' | 'invulnerable'; readonly damage: number }): void {}
+  protected onB06ThreatEvent(_event: { readonly sourceId: string; readonly result: 'hit' | 'dodged' | 'invulnerable' | 'blocked'; readonly damage: number }): void {}
+  protected additionalDashInvulnerabilityMs(): number { return 0; }
+  protected adjustB06ThreatDamage(_sourceId: string, damage: number, _playerHp: number): { readonly damage: number; readonly blocked: boolean } { return { damage, blocked: false }; }
 
   protected getB06PlayerFrame(): B06PlayerCombatFrame {
     return {
@@ -670,7 +672,7 @@ export class ChamberScene extends Phaser.Scene {
   protected get b06HitstopActive(): boolean { return this.combatHitstopMs > 0; }
   protected get b06AudioPermitted(): boolean { return this.labAudioEnabled && !this.labAudioPaused && !this.sound.locked; }
 
-  protected applyB06PlayerThreat(sourceId: string, damage: number, knockback: -1 | 1): 'hit' | 'dodged' | 'invulnerable' {
+  protected applyB06PlayerThreat(sourceId: string, damage: number, knockback: -1 | 1): 'hit' | 'dodged' | 'invulnerable' | 'blocked' {
     if (this.playerHp <= 0) return 'invulnerable';
     if (this.dashInvulnerabilityMs > 0) {
       this.resonance = Math.min(100, this.resonance + 6);
@@ -685,7 +687,14 @@ export class ChamberScene extends Phaser.Scene {
       this.onB06ThreatEvent({ sourceId, result: 'invulnerable', damage: 0 });
       return 'invulnerable';
     }
-    this.playerHp = Math.max(0, this.playerHp - Math.max(1, Math.round(damage)));
+    const adjusted = this.adjustB06ThreatDamage(sourceId, damage, this.playerHp);
+    if (adjusted.blocked || adjusted.damage <= 0) {
+      this.b03Status = 'UPGRADE SHIELD / HIT BLOCKED';
+      this.onB06ThreatEvent({ sourceId, result: 'blocked', damage: 0 });
+      return 'blocked';
+    }
+    const actualDamage = Math.max(1, Math.round(adjusted.damage));
+    this.playerHp = Math.max(0, this.playerHp - actualDamage);
     this.playerHurtMs = this.playerHp <= 0 ? 999999 : 430;
     this.playerInvulnerableMs = 700;
     this.body.setVelocityX(knockback * 82);
@@ -695,7 +704,7 @@ export class ChamberScene extends Phaser.Scene {
     if (this.playerHp <= 0) { this.b03Move = null; this.activeMoveDefinition = null; this.b03BufferedMove = null; this.attackClock = idleClock; }
     this.controller.requestRumble(this.playerHp <= 0 ? .25 : .16);
     window.dispatchEvent(new CustomEvent('crownflare:player-damage', { detail: { hp: this.playerHp, source: sourceId } }));
-    this.onB06ThreatEvent({ sourceId, result: 'hit', damage });
+    this.onB06ThreatEvent({ sourceId, result: 'hit', damage: actualDamage });
     return 'hit';
   }
 
@@ -707,6 +716,10 @@ export class ChamberScene extends Phaser.Scene {
     this.playerInvulnerableMs = 0;
     this.dashInvulnerabilityMs = 0;
   }
+
+  protected grantB09CombatResonance(amount: number): void { this.resonance = Phaser.Math.Clamp(this.resonance + Math.max(0, Math.round(amount)), 0, 100); }
+  protected spendB09CombatResonance(amount: number): void { this.resonance = Math.max(0, this.resonance - Math.max(0, Math.round(amount))); }
+  protected grantB09DawnrushEnergy(amount: number): void { if (this.b05Mode) this.dawnrushEnergy = Phaser.Math.Clamp(this.dawnrushEnergy + Math.max(0, Math.round(amount)), 0, 100); }
 
   protected restorePlayerHealth(amount: number): number {
     if (this.playerHp <= 0) return 0;

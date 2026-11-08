@@ -1,11 +1,11 @@
 {
   "milestone": "B07",
   "status": "PASS",
-  "date": "2026-11-08T03:39:25.284Z",
+  "date": "2026-11-08T12:46:11.385Z",
   "browser": "Chromium via Playwright; standard controller input synthesized using existing mapping",
   "sourceHash": {
     "algorithm": "SHA-256",
-    "digest": "ae1d54758b331cc12c4ecd1671d397c8e04b2232f94484b4a0210c5066afa399",
+    "digest": "6b2d518b0d81367e65373b5539503e7ef01f36f64975e9f0318d44ffcd4df99e",
     "files": [
       "src/game/scenes/B07ExpeditionScene.ts",
       "src/game/scenes/ChamberScene.ts",
@@ -19,8 +19,8 @@
   },
   "buildHash": {
     "algorithm": "SHA-256",
-    "digest": "fefacd6f61ba7e527144c86c615b5f8fe0a6e0a9b490dc75a68d7539539c3f6c",
-    "file": "dist/assets/index-lbFRT0vp.js"
+    "digest": "56e5d4d2fe4d8b187521042428443fd967f211c2ad5191a2f549c90440b9b8a6",
+    "file": "dist/assets/index-CmzvgzU3.js"
   },
   "checks": [
     {
@@ -35,14 +35,14 @@
     {
       "name": "Vesper spindle lift moves through its authored travel range",
       "status": "PASS",
-      "startY": 171.5,
-      "laterY": 197.8
+      "startY": 170.5,
+      "laterY": 196.8
     },
     {
       "name": "moving lift travels during safe-route traversal",
       "status": "PASS",
-      "startY": 171.5,
-      "laterY": 197.8
+      "startY": 170.5,
+      "laterY": 196.8
     },
     {
       "name": "thread press warning, active collision, damage event and recovery state",
@@ -53,7 +53,7 @@
         "phase": "active",
         "result": "hit",
         "damage": 1,
-        "elapsedMs": 39715
+        "elapsedMs": 39500
       }
     },
     {
@@ -99,7 +99,7 @@
         "enemyId": "sg-conduit-annex:annex-sentry",
         "archetype": "spindle-sentry",
         "action": "sentry-lunge",
-        "elapsedMs": 9248
+        "elapsedMs": 9397
       },
       "dawnrush": "Dawnrush"
     },
@@ -113,35 +113,35 @@
           "sourceId": "annex-conduit-arc",
           "damage": 1,
           "hp": 4,
-          "elapsedMs": 10114
+          "elapsedMs": 10097
         },
         {
           "type": "player-hit",
           "sourceId": "sg-conduit-annex:annex-sentry",
           "damage": 1,
           "hp": 3,
-          "elapsedMs": 11031
+          "elapsedMs": 11181
         },
         {
           "type": "player-hit",
           "sourceId": "annex-conduit-arc",
           "damage": 1,
           "hp": 2,
-          "elapsedMs": 13315
+          "elapsedMs": 13298
         },
         {
           "type": "player-hit",
           "sourceId": "sg-conduit-annex:annex-sentry",
           "damage": 1,
           "hp": 1,
-          "elapsedMs": 15965
+          "elapsedMs": 16115
         },
         {
           "type": "player-hit",
           "sourceId": "sg-conduit-annex:annex-sentry",
           "damage": 1,
           "hp": 0,
-          "elapsedMs": 18432
+          "elapsedMs": 18582
         }
       ]
     },
@@ -219,8 +219,9 @@
   "runtimeErrors": [],
   "sourceArtManifest": "art-source/environments/b07/asset-manifest.json",
   "audio": "Vesper drone is synthesized in Web Audio and the Sunderglass source ambience WAV is loaded. No human listening signoff or system-audio recording was performed.",
+  "recording": "Disabled by --no-record; screenshots and live checks retained.",
   "limitations": [
     "This evidence is a development route preview; owner art-motion, audio listening and physical-controller gates remain pending.",
-    "B08 boss and ending are not implemented."
+    "B08 boss and three-boss route were exercised separately in the B08 regression run."
   ]
 }

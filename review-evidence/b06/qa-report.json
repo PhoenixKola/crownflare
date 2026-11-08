@@ -1,11 +1,16 @@
 {
-  "result": "PASS",
-  "capturedAt": "2026-11-08T01:43:42.575Z",
+  "result": "FAIL",
+  "capturedAt": "2026-11-08T12:59:18.815Z",
   "route": "/?b06=1 (Vite development server)",
-  "browser": "Google Chrome headed through Playwright",
+  "browser": "156.0.8078.80",
   "viewport": {
     "width": 1280,
     "height": 720
+  },
+  "sourceTree": {
+    "sha256": "51d6cadc1441fadf36ad4dca97620b5d8740636c1c5917317609816636b1cbe6",
+    "files": 86,
+    "scope": "B06 implementation and generated inputs; review evidence excluded"
   },
   "checks": [
     {
@@ -56,2377 +61,2183 @@
       ]
     },
     {
-      "label": "pause/resume preserves the live encounter",
-      "status": "PASS"
-    },
-    {
       "label": "normal R input activates Dawnrush from the route’s initial 70% charge",
       "status": "PASS",
       "state": "dawnrush",
       "chargeSource": "authored initial player resource"
     },
     {
-      "label": "dawnrush gauntlet reaches its live victory/results state",
-      "status": "PASS",
-      "phase": "victory",
-      "rewardClaimed": true,
-      "wavesCleared": 4
-    },
-    {
-      "label": "dawnrush event log contains authored telegraph, strike and player-contact events",
-      "status": "PASS",
-      "sceneEvents": 104,
-      "telemetryEvents": 7199,
-      "activeEffectsAtEnd": 0
-    },
-    {
-      "label": "dawnrush headed Chrome recording contains actual time-speed Phaser play",
-      "status": "PASS",
-      "seconds": 69.36,
-      "width": 1280,
-      "height": 720,
-      "codec": "vp8",
-      "audioTrack": false,
-      "sha256": "fa3fedfdfd1685ed8cd76d9c50464f6d15a5647e7e17f8f410f700cbfa997c68"
-    },
-    {
-      "label": "developer route enters the authored Shardrunner familiarization encounter",
-      "status": "PASS",
-      "phase": "familiarization",
-      "enemies": [
-        {
-          "id": "wave-1:shardrunner:1",
-          "archetype": "shardrunner"
-        }
-      ]
-    },
-    {
       "label": "pause/resume preserves the live encounter",
       "status": "PASS"
     },
     {
-      "label": "Base-only run starts without using the form refill shortcut",
-      "status": "PASS",
-      "state": "base",
-      "energy": 70
-    },
-    {
-      "label": "base gauntlet reaches its live victory/results state",
-      "status": "PASS",
-      "phase": "victory",
-      "rewardClaimed": true,
-      "wavesCleared": 4
-    },
-    {
-      "label": "base event log contains authored telegraph, strike and player-contact events",
-      "status": "PASS",
-      "sceneEvents": 85,
-      "telemetryEvents": 6708,
-      "activeEffectsAtEnd": 0
-    },
-    {
-      "label": "base headed Chrome recording contains actual time-speed Phaser play",
-      "status": "PASS",
-      "seconds": 62.88,
-      "width": 1280,
-      "height": 720,
-      "codec": "vp8",
-      "audioTrack": false,
-      "sha256": "a82f8299c6610c4d81e9a45927e4faf39188735145fc3936c1308ffd5709f6b3"
+      "label": "dawnrush gauntlet reaches its live four-wave victory",
+      "status": "FAIL",
+      "phase": "defeat",
+      "playerHp": 0,
+      "damageTaken": 5,
+      "wavesCleared": 0
     }
   ],
   "actions": [
     {
-      "time": 1794102083.46,
+      "time": 1794142683.83,
       "label": "capture b06-roster-base-true-scale",
       "screen": "b06Combat"
     },
     {
-      "time": 1794102085.59,
+      "time": 1794142685.86,
       "label": "capture b06-roster-dawnrush-true-scale",
       "screen": "b06Combat"
     },
     {
-      "time": 1794102088.66,
+      "time": 1794142688.96,
       "label": "capture b06-reduced-motion-telegraph",
       "screen": "b06Combat"
     },
     {
-      "time": 1794102092.45,
+      "time": 1794142690.69,
       "label": "capture b06-gauntlet-entry",
       "screen": "b06Combat"
     },
     {
-      "time": 1794102094.49,
+      "time": 1794142692.71,
       "label": "capture b06-gauntlet-dawnrush",
       "screen": "b06Combat"
     },
     {
-      "time": 1794102094.58,
-      "label": "attack selected threat",
+      "time": 1794142693.05,
+      "label": "spend ready Resonance on a close enemy",
       "target": "wave-1:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "recover",
-      "hp": 4
+      "hp": 4,
+      "resonance": 55
     },
     {
-      "time": 1794102095.04,
+      "time": 1794142693.92,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 130.77,
+      "endX": 100.77,
+      "hpBefore": 4,
+      "hpAfter": 4
+    },
+    {
+      "time": 1794142694.14,
+      "label": "spend ready Resonance on a close enemy",
+      "target": "wave-1:shardrunner:1",
+      "hp": 4,
+      "resonance": 61
+    },
+    {
+      "time": 1794142694.42,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 51.12,
+      "distance": 100.7
+    },
+    {
+      "time": 1794142694.76,
       "label": "capture b06-shardrunner-enemy-telegraph",
       "screen": "b06Combat"
     },
     {
-      "time": 1794102095.31,
+      "time": 1794142694.94,
       "label": "capture b06-shardrunner-enemy-strike",
       "screen": "b06Combat"
     },
     {
-      "time": 1794102095.44,
+      "time": 1794142694.99,
       "label": "advance on selected threat",
       "target": "wave-1:shardrunner:1",
-      "x": 130.22,
-      "distance": 53.5
+      "x": 54.88,
+      "distance": 73.5
     },
     {
-      "time": 1794102095.93,
+      "time": 1794142695.7,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 58.31,
+      "endX": 117.01,
+      "hpBefore": 4,
+      "hpAfter": 4
+    },
+    {
+      "time": 1794142695.84,
+      "label": "spend ready Resonance on a close enemy",
+      "target": "wave-1:shardrunner:1",
+      "hp": 4,
+      "resonance": 35
+    },
+    {
+      "time": 1794142696.32,
       "label": "attack selected threat",
       "target": "wave-1:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "commit",
-      "hp": 3
-    },
-    {
-      "time": 1794102096.24,
-      "label": "attack selected threat",
-      "target": "wave-1:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "hurt",
-      "hp": 2
-    },
-    {
-      "time": 1794102096.52,
-      "label": "attack selected threat",
-      "target": "wave-1:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 2
-    },
-    {
-      "time": 1794102096.79,
-      "label": "attack selected threat",
-      "target": "wave-1:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "hurt",
-      "hp": 1
-    },
-    {
-      "time": 1794102097.07,
-      "label": "attack selected threat",
-      "target": "wave-1:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 1
-    },
-    {
-      "time": 1794102098.15,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 141.77,
-      "distance": 360.2
-    },
-    {
-      "time": 1794102098.54,
-      "label": "capture b06-shardrunner-enemy-ko",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102098.72,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 158.22,
-      "distance": 343.8
-    },
-    {
-      "time": 1794102099.05,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 177.56,
-      "distance": 324.4
-    },
-    {
-      "time": 1794102099.36,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 192.21,
-      "distance": 309.8
-    },
-    {
-      "time": 1794102099.66,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 208.77,
-      "distance": 293.2
-    },
-    {
-      "time": 1794102100.01,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 223.02,
-      "distance": 279
-    },
-    {
-      "time": 1794102100.33,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 238.85,
-      "distance": 263.1
-    },
-    {
-      "time": 1794102100.63,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 255.89,
-      "distance": 246.1
-    },
-    {
-      "time": 1794102100.92,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 272.98,
-      "distance": 212.1
-    },
-    {
-      "time": 1794102101.37,
-      "label": "capture b06-phase-mixed",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102101.47,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 287.3,
-      "distance": 177
-    },
-    {
-      "time": 1794102101.72,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 301.5,
-      "distance": 119.9
-    },
-    {
-      "time": 1794102101.95,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 307.93,
-      "distance": 94
-    },
-    {
-      "time": 1794102102.17,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 312.17,
-      "distance": 72.8
-    },
-    {
-      "time": 1794102102.41,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 316.24,
-      "distance": 68.8
-    },
-    {
-      "time": 1794102102.66,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 320.3,
-      "distance": 64.7
-    },
-    {
-      "time": 1794102102.98,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "commit",
-      "hp": 4
-    },
-    {
-      "time": 1794102103.24,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
       "attack": "j",
       "enemyPhase": "recover",
       "hp": 4
     },
     {
-      "time": 1794102103.52,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "hurt",
-      "hp": 3
+      "time": 1794142697.33,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 133,
+      "startX": 141.92,
+      "endX": 209.22,
+      "hpBefore": 3,
+      "hpAfter": 3
     },
     {
-      "time": 1794102103.79,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 3
-    },
-    {
-      "time": 1794102104.11,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "hurt",
-      "hp": 2
-    },
-    {
-      "time": 1794102104.41,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 2
-    },
-    {
-      "time": 1794102104.66,
+      "time": 1794142697.4,
       "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 327.55,
-      "distance": 50.6
+      "target": "wave-1:shardrunner:1",
+      "x": 212.84,
+      "distance": 84.4
     },
     {
-      "time": 1794102104.94,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 1
-    },
-    {
-      "time": 1794102105.3,
+      "time": 1794142697.66,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 331.98,
-      "distance": 333
+      "target": "wave-1:shardrunner:1",
+      "x": 222.82,
+      "distance": 94.4
     },
     {
-      "time": 1794102105.99,
+      "time": 1794142697.95,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 350.37,
-      "distance": 314.6
+      "target": "wave-1:shardrunner:1",
+      "x": 216.25,
+      "distance": 83.9
     },
     {
-      "time": 1794102106.91,
+      "time": 1794142698.98,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 83,
+      "startX": 212.35,
+      "endX": 297.94,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142699.08,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 425.5,
-      "distance": 239.5
+      "target": "wave-1:shardrunner:1",
+      "x": 300.53,
+      "distance": 136.2
     },
     {
-      "time": 1794102107.58,
+      "time": 1794142699.42,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 452.65,
-      "distance": 204
+      "target": "wave-1:shardrunner:1",
+      "x": 304.64,
+      "distance": 140.3
     },
     {
-      "time": 1794102108.22,
-      "label": "capture b06-orbitwisp-enemy-telegraph",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102109.21,
+      "time": 1794142699.66,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 504.57,
-      "distance": 152
+      "target": "wave-1:shardrunner:1",
+      "x": 284.19,
+      "distance": 105.6
     },
     {
-      "time": 1794102110.01,
-      "label": "capture b06-orbitwisp-enemy-strike",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102110.46,
+      "time": 1794142700,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 524.27,
-      "distance": 132.3
+      "target": "wave-1:shardrunner:1",
+      "x": 279.31,
+      "distance": 81.2
     },
     {
-      "time": 1794102110.78,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 533.45,
-      "distance": 126.1
+      "time": 1794142700.65,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 258.28,
+      "endX": 306.28,
+      "hpBefore": 2,
+      "hpAfter": 2
     },
     {
-      "time": 1794102111.24,
+      "time": 1794142700.77,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 546.1,
-      "distance": 128.1
+      "target": "wave-1:shardrunner:1",
+      "x": 324.74,
+      "distance": 95.8
     },
     {
-      "time": 1794102111.56,
+      "time": 1794142701.04,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 567.38,
-      "distance": 128.3
+      "target": "wave-1:shardrunner:1",
+      "x": 335.54,
+      "distance": 106.6
     },
     {
-      "time": 1794102111.86,
+      "time": 1794142701.31,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 575.37,
-      "distance": 121.6
+      "target": "wave-1:shardrunner:1",
+      "x": 329.64,
+      "distance": 100.7
     },
     {
-      "time": 1794102112.17,
+      "time": 1794142701.59,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 581.98,
-      "distance": 115
+      "target": "wave-1:shardrunner:1",
+      "x": 325.15,
+      "distance": 83.2
     },
     {
-      "time": 1794102112.43,
+      "time": 1794142702.4,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 321.1,
+      "endX": 384.11,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142702.5,
       "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 591.07,
+      "target": "wave-1:shardrunner:1",
+      "x": 387.99,
+      "distance": 114
+    },
+    {
+      "time": 1794142703.02,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 400.45,
+      "distance": 126.4
+    },
+    {
+      "time": 1794142703.28,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 391.63,
       "distance": 105.9
     },
     {
-      "time": 1794102112.7,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 596.45,
-      "distance": 100.5
-    },
-    {
-      "time": 1794102113.04,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 605.7,
-      "distance": 91.3
-    },
-    {
-      "time": 1794102113.42,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 613.38,
-      "distance": 83.6
-    },
-    {
-      "time": 1794102113.67,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 628.71,
-      "distance": 68.3
-    },
-    {
-      "time": 1794102114.6,
-      "label": "capture b06-wisp-aerial-contact-approach",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102114.6,
-      "label": "aerial approach snapshot",
-      "playerY": 176.94,
-      "targetY": 168
-    },
-    {
-      "time": 1794102114.68,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 226
-    },
-    {
-      "time": 1794102115.24,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 226
-    },
-    {
-      "time": 1794102115.56,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 189.87
-    },
-    {
-      "time": 1794102116.13,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 226
-    },
-    {
-      "time": 1794102117.35,
-      "label": "capture b06-phase-escalation",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102117.45,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 638.02,
-      "distance": 157
-    },
-    {
-      "time": 1794102117.86,
-      "label": "capture b06-orbitwisp-enemy-ko",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102117.96,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 652.54,
-      "distance": 102.5
-    },
-    {
-      "time": 1794102118.24,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 659.59,
-      "distance": 81.8
-    },
-    {
-      "time": 1794102118.52,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 665,
-      "distance": 76.4
-    },
-    {
-      "time": 1794102118.94,
-      "label": "capture b06-spindlesentry-enemy-telegraph",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102119.05,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "j",
-      "enemyPhase": "recover",
-      "hp": 6
-    },
-    {
-      "time": 1794102119.47,
-      "label": "capture b06-spindlesentry-enemy-strike",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102119.57,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 5
-    },
-    {
-      "time": 1794102119.85,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "j",
-      "enemyPhase": "hurt",
-      "hp": 4
-    },
-    {
-      "time": 1794102120.2,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 4
-    },
-    {
-      "time": 1794102120.47,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "j",
-      "enemyPhase": "hurt",
-      "hp": 3
-    },
-    {
-      "time": 1794102120.76,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 3
-    },
-    {
-      "time": 1794102121.06,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 673.87,
-      "distance": 49.2
-    },
-    {
-      "time": 1794102121.37,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 2
-    },
-    {
-      "time": 1794102121.64,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 679.64,
-      "distance": 49.9
-    },
-    {
-      "time": 1794102122.02,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "j",
-      "enemyPhase": "telegraph",
-      "hp": 1
-    },
-    {
-      "time": 1794102122.28,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 683.75,
-      "distance": 102.3
-    },
-    {
-      "time": 1794102122.74,
-      "label": "capture b06-spindlesentry-enemy-ko",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102123.03,
-      "label": "capture b06-pressurebastion-enemy-telegraph",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102123.14,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 690.51,
-      "distance": 95.5
-    },
-    {
-      "time": 1794102123.55,
-      "label": "capture b06-pressurebastion-enemy-strike",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102123.64,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 696.36,
-      "distance": 89.6
-    },
-    {
-      "time": 1794102123.93,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 701.35,
-      "distance": 84.6
-    },
-    {
-      "time": 1794102124.18,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 706.91,
-      "distance": 79.1
-    },
-    {
-      "time": 1794102124.46,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 711.97,
-      "distance": 74
-    },
-    {
-      "time": 1794102124.73,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 718.8,
-      "distance": 67.2
-    },
-    {
-      "time": 1794102124.97,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 722.54,
-      "distance": 63.5
-    },
-    {
-      "time": 1794102125.23,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 726.5,
-      "distance": 59.5
-    },
-    {
-      "time": 1794102125.47,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 731.97,
-      "distance": 54
-    },
-    {
-      "time": 1794102125.73,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 736.31,
-      "distance": 49.7
-    },
-    {
-      "time": 1794102126.01,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "recover",
-      "hp": 7
-    },
-    {
-      "time": 1794102126.27,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "hurt",
-      "hp": 4
-    },
-    {
-      "time": 1794102126.51,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 741.15,
-      "distance": 55.8
-    },
-    {
-      "time": 1794102126.8,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 744.97,
-      "distance": 52.2
-    },
-    {
-      "time": 1794102127.1,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 4
-    },
-    {
-      "time": 1794102127.41,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "hurt",
-      "hp": 1
-    },
-    {
-      "time": 1794102127.7,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 752.5,
-      "distance": 55.8
-    },
-    {
-      "time": 1794102127.96,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 756.36,
-      "distance": 51.9
-    },
-    {
-      "time": 1794102128.25,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 1
-    },
-    {
-      "time": 1794102129.46,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 762.27,
-      "distance": 367.7
-    },
-    {
-      "time": 1794102129.92,
-      "label": "capture b06-pressurebastion-enemy-ko",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102130.07,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 778.98,
-      "distance": 351
-    },
-    {
-      "time": 1794102130.38,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 795.25,
-      "distance": 334.8
-    },
-    {
-      "time": 1794102130.7,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 810.99,
-      "distance": 319
-    },
-    {
-      "time": 1794102131.02,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 828.09,
-      "distance": 301.9
-    },
-    {
-      "time": 1794102131.35,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 841.37,
-      "distance": 288.6
-    },
-    {
-      "time": 1794102131.67,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 857.03,
-      "distance": 273
-    },
-    {
-      "time": 1794102132.19,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 872.95,
-      "distance": 257
-    },
-    {
-      "time": 1794102132.72,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 888.88,
-      "distance": 241.1
-    },
-    {
-      "time": 1794102133.07,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 920.21,
-      "distance": 198.4
-    },
-    {
-      "time": 1794102133.58,
-      "label": "capture b06-phase-elite",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102133.68,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 937.55,
-      "distance": 173.9
-    },
-    {
-      "time": 1794102134.09,
-      "label": "capture b06-cantor-enemy-telegraph",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102134.22,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 952.03,
-      "distance": 159.4
-    },
-    {
-      "time": 1794102134.63,
-      "label": "capture b06-cantor-enemy-strike",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102134.76,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 964.13,
-      "distance": 147.3
-    },
-    {
-      "time": 1794102135.03,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 976.81,
-      "distance": 134.6
-    },
-    {
-      "time": 1794102135.28,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 987.35,
-      "distance": 124.1
-    },
-    {
-      "time": 1794102135.54,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 995.28,
-      "distance": 116.1
-    },
-    {
-      "time": 1794102135.81,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1003.14,
-      "distance": 108.3
-    },
-    {
-      "time": 1794102136.08,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1008.66,
-      "distance": 102.7
-    },
-    {
-      "time": 1794102136.34,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1012.54,
-      "distance": 98.9
-    },
-    {
-      "time": 1794102136.61,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1017.32,
-      "distance": 94.1
-    },
-    {
-      "time": 1794102136.87,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1022.07,
-      "distance": 89.3
-    },
-    {
-      "time": 1794102137.12,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1026.51,
-      "distance": 84.9
-    },
-    {
-      "time": 1794102137.37,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1031.62,
-      "distance": 79.8
-    },
-    {
-      "time": 1794102137.63,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1037.49,
-      "distance": 73.9
-    },
-    {
-      "time": 1794102137.9,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1043.64,
-      "distance": 67.8
-    },
-    {
-      "time": 1794102138.16,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1047.47,
-      "distance": 63.9
-    },
-    {
-      "time": 1794102138.43,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1054.58,
-      "distance": 56.8
-    },
-    {
-      "time": 1794102138.69,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1058.52,
-      "distance": 52.9
-    },
-    {
-      "time": 1794102138.96,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1061.87,
-      "distance": 49.5
-    },
-    {
-      "time": 1794102139.25,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 12
-    },
-    {
-      "time": 1794102139.54,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 12
-    },
-    {
-      "time": 1794102139.79,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1067.09,
-      "distance": 49.8
-    },
-    {
-      "time": 1794102140.1,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 10
-    },
-    {
-      "time": 1794102140.42,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 10
-    },
-    {
-      "time": 1794102140.68,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1069.93,
-      "distance": 52.9
-    },
-    {
-      "time": 1794102140.94,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1074.76,
-      "distance": 48.3
-    },
-    {
-      "time": 1794102141.28,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 8
-    },
-    {
-      "time": 1794102141.57,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "stagger",
-      "hp": 6
-    },
-    {
-      "time": 1794102141.85,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1079.51,
-      "distance": 49.1
-    },
-    {
-      "time": 1794102142.16,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 6
-    },
-    {
-      "time": 1794102142.53,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 6
-    },
-    {
-      "time": 1794102142.79,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1085.67,
-      "distance": 49.1
-    },
-    {
-      "time": 1794102143.08,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 4
-    },
-    {
-      "time": 1794102143.52,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "stagger",
-      "hp": 2
-    },
-    {
-      "time": 1794102143.78,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1090.1,
-      "distance": 50.7
-    },
-    {
-      "time": 1794102144.05,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1092.64,
-      "distance": 48.2
-    },
-    {
-      "time": 1794102144.38,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 2
-    },
-    {
-      "time": 1794102146.22,
-      "label": "capture b06-phase-reward",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102150.99,
-      "label": "capture b06-phase-exit",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102157.9,
-      "label": "capture b06-gauntlet-victory",
-      "screen": "b04Results"
-    },
-    {
-      "time": 1794102158.44,
-      "label": "Chrome video complete",
-      "durationSeconds": 69.36,
-      "bytes": 8583722
-    },
-    {
-      "time": 1794102162,
-      "label": "capture b06-gauntlet-entry",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102162.22,
+      "time": 1794142703.55,
       "label": "advance on selected threat",
       "target": "wave-1:shardrunner:1",
-      "x": 129.5,
-      "distance": 135.8
-    },
-    {
-      "time": 1794102162.47,
-      "label": "advance on selected threat",
-      "target": "wave-1:shardrunner:1",
-      "x": 132.76,
-      "distance": 106.5
-    },
-    {
-      "time": 1794102162.69,
-      "label": "advance on selected threat",
-      "target": "wave-1:shardrunner:1",
-      "x": 138.42,
-      "distance": 81.4
-    },
-    {
-      "time": 1794102162.93,
-      "label": "advance on selected threat",
-      "target": "wave-1:shardrunner:1",
-      "x": 142.51,
-      "distance": 72.1
-    },
-    {
-      "time": 1794102163.36,
-      "label": "capture b06-shardrunner-enemy-telegraph",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102163.43,
-      "label": "advance on selected threat",
-      "target": "wave-1:shardrunner:1",
-      "x": 145.41,
-      "distance": 63.3
-    },
-    {
-      "time": 1794102163.87,
-      "label": "capture b06-shardrunner-enemy-strike",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102163.95,
-      "label": "attack selected threat",
-      "target": "wave-1:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "recover",
-      "hp": 4
-    },
-    {
-      "time": 1794102164.21,
-      "label": "attack selected threat",
-      "target": "wave-1:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "recover",
-      "hp": 4
-    },
-    {
-      "time": 1794102164.49,
-      "label": "attack selected threat",
-      "target": "wave-1:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "stagger",
-      "hp": 2
-    },
-    {
-      "time": 1794102164.78,
-      "label": "attack selected threat",
-      "target": "wave-1:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "idle",
-      "hp": 2
-    },
-    {
-      "time": 1794102165.12,
-      "label": "attack selected threat",
-      "target": "wave-1:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 2
-    },
-    {
-      "time": 1794102166.06,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 150.31,
-      "distance": 351.7
-    },
-    {
-      "time": 1794102166.44,
-      "label": "capture b06-shardrunner-enemy-ko",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102166.57,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 168.13,
-      "distance": 333.9
-    },
-    {
-      "time": 1794102166.88,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 183.94,
-      "distance": 318.1
-    },
-    {
-      "time": 1794102167.19,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 200.69,
-      "distance": 301.3
-    },
-    {
-      "time": 1794102167.48,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 217.75,
-      "distance": 284.3
-    },
-    {
-      "time": 1794102167.79,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 232.15,
-      "distance": 269.9
-    },
-    {
-      "time": 1794102168.09,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 249.61,
-      "distance": 252.4
-    },
-    {
-      "time": 1794102168.4,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 266,
-      "distance": 223
-    },
-    {
-      "time": 1794102168.7,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 282.98,
-      "distance": 182.6
-    },
-    {
-      "time": 1794102169.13,
-      "label": "capture b06-phase-mixed",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102169.21,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 298.6,
-      "distance": 144.9
-    },
-    {
-      "time": 1794102169.45,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 309.65,
-      "distance": 93.6
-    },
-    {
-      "time": 1794102169.71,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 314.93,
-      "distance": 74
-    },
-    {
-      "time": 1794102169.95,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 324.21,
-      "distance": 64.7
-    },
-    {
-      "time": 1794102170.2,
-      "label": "advance on selected threat",
-      "target": "wave-2:shardrunner:1",
-      "x": 329.83,
-      "distance": 59.1
-    },
-    {
-      "time": 1794102170.47,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "recover",
-      "hp": 4
-    },
-    {
-      "time": 1794102170.74,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "recover",
-      "hp": 4
-    },
-    {
-      "time": 1794102171.03,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "recover",
-      "hp": 4
-    },
-    {
-      "time": 1794102171.3,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "stagger",
-      "hp": 2
-    },
-    {
-      "time": 1794102171.57,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 2
-    },
-    {
-      "time": 1794102171.85,
-      "label": "attack selected threat",
-      "target": "wave-2:shardrunner:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 2
-    },
-    {
-      "time": 1794102172.17,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 340.49,
-      "distance": 324.5
-    },
-    {
-      "time": 1794102172.48,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 356.96,
-      "distance": 308
-    },
-    {
-      "time": 1794102172.81,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 375.12,
-      "distance": 289.9
-    },
-    {
-      "time": 1794102173.12,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 391.55,
-      "distance": 273.4
-    },
-    {
-      "time": 1794102173.42,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 409.43,
-      "distance": 255.6
-    },
-    {
-      "time": 1794102173.72,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 425.3,
-      "distance": 239.7
-    },
-    {
-      "time": 1794102174.03,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 439.95,
-      "distance": 213.6
-    },
-    {
-      "time": 1794102174.36,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 457.73,
-      "distance": 192
-    },
-    {
-      "time": 1794102174.89,
-      "label": "capture b06-orbitwisp-enemy-telegraph",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102175.6,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 475.05,
-      "distance": 174.7
-    },
-    {
-      "time": 1794102175.89,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 566.35,
-      "distance": 92.5
-    },
-    {
-      "time": 1794102176.44,
-      "label": "capture b06-orbitwisp-enemy-strike",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102176.63,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 573.15,
-      "distance": 118
-    },
-    {
-      "time": 1794102176.9,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 582.51,
-      "distance": 114.5
-    },
-    {
-      "time": 1794102177.23,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 587.03,
-      "distance": 110
-    },
-    {
-      "time": 1794102177.55,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 592.83,
-      "distance": 104.2
-    },
-    {
-      "time": 1794102177.94,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 601.8,
-      "distance": 95.2
-    },
-    {
-      "time": 1794102178.3,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 604.83,
-      "distance": 92.2
-    },
-    {
-      "time": 1794102178.55,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 625.2,
-      "distance": 71.8
-    },
-    {
-      "time": 1794102179.23,
-      "label": "capture b06-wisp-aerial-contact-approach",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102179.23,
-      "label": "aerial approach snapshot",
-      "playerY": 181.08,
-      "targetY": 168
-    },
-    {
-      "time": 1794102179.31,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 226
-    },
-    {
-      "time": 1794102179.55,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 630.17,
-      "distance": 68.4
-    },
-    {
-      "time": 1794102179.78,
-      "label": "advance on selected threat",
-      "target": "wave-2:orbit-wisp:1",
-      "x": 635.39,
-      "distance": 68.5
-    },
-    {
-      "time": 1794102180.3,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 226
-    },
-    {
-      "time": 1794102180.57,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 187.59
-    },
-    {
-      "time": 1794102181.11,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 226
-    },
-    {
-      "time": 1794102181.37,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 185.54
-    },
-    {
-      "time": 1794102181.89,
-      "label": "jump/light against airborne wisp",
-      "target": "wave-2:orbit-wisp:1",
-      "playerY": 226
-    },
-    {
-      "time": 1794102183.08,
-      "label": "capture b06-phase-escalation",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102183.17,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 640.2,
-      "distance": 152.4
-    },
-    {
-      "time": 1794102183.54,
-      "label": "capture b06-orbitwisp-enemy-ko",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102183.61,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 653.92,
-      "distance": 107.5
-    },
-    {
-      "time": 1794102183.85,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 660.67,
-      "distance": 88.7
-    },
-    {
-      "time": 1794102184.09,
-      "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 665.11,
+      "x": 386.8,
       "distance": 80.3
     },
     {
-      "time": 1794102184.47,
-      "label": "capture b06-spindlesentry-enemy-telegraph",
-      "screen": "b06Combat"
+      "time": 1794142704.38,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 382.22,
+      "endX": 456.62,
+      "hpBefore": 2,
+      "hpAfter": 2
     },
     {
-      "time": 1794102184.53,
+      "time": 1794142704.52,
       "label": "advance on selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "x": 670.3,
-      "distance": 51.8
+      "target": "wave-1:shardrunner:1",
+      "x": 459.27,
+      "distance": 123.4
     },
     {
-      "time": 1794102184.9,
-      "label": "capture b06-spindlesentry-enemy-strike",
-      "screen": "b06Combat"
+      "time": 1794142704.78,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 456.47,
+      "distance": 120.6
     },
     {
-      "time": 1794102184.98,
+      "time": 1794142705.04,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 447.95,
+      "distance": 112.1
+    },
+    {
+      "time": 1794142705.32,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 440.29,
+      "distance": 82.3
+    },
+    {
+      "time": 1794142706.08,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 435.48,
+      "endX": 483.48,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142706.21,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 501.81,
+      "distance": 113
+    },
+    {
+      "time": 1794142706.48,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 512.16,
+      "distance": 123.4
+    },
+    {
+      "time": 1794142706.75,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 503.27,
+      "distance": 114.5
+    },
+    {
+      "time": 1794142707.05,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 493.66,
+      "distance": 89.3
+    },
+    {
+      "time": 1794142707.86,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 487.64,
+      "endX": 535.64,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142707.99,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 553.3,
+      "distance": 112.9
+    },
+    {
+      "time": 1794142708.25,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 563.27,
+      "distance": 122.9
+    },
+    {
+      "time": 1794142708.49,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 554.23,
+      "distance": 113.8
+    },
+    {
+      "time": 1794142708.74,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 549.54,
+      "distance": 101.3
+    },
+    {
+      "time": 1794142708.98,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 543.24,
+      "distance": 75.5
+    },
+    {
+      "time": 1794142709.68,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 537.99,
+      "endX": 579.99,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142709.81,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 603.21,
+      "distance": 107.4
+    },
+    {
+      "time": 1794142710.07,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 612.61,
+      "distance": 116.8
+    },
+    {
+      "time": 1794142710.33,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 605.34,
+      "distance": 109.5
+    },
+    {
+      "time": 1794142710.58,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 595.77,
+      "distance": 90.9
+    },
+    {
+      "time": 1794142711.45,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 592.04,
+      "endX": 645.64,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142711.57,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 658.6,
+      "distance": 113.8
+    },
+    {
+      "time": 1794142711.84,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 669.69,
+      "distance": 124.9
+    },
+    {
+      "time": 1794142712.1,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 661.31,
+      "distance": 116.5
+    },
+    {
+      "time": 1794142712.33,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 655.74,
+      "distance": 101.8
+    },
+    {
+      "time": 1794142712.57,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 651.5,
+      "distance": 79.4
+    },
+    {
+      "time": 1794142713.3,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 646.21,
+      "endX": 693.99,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142713.42,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 711.66,
+      "distance": 110.1
+    },
+    {
+      "time": 1794142713.68,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 721.17,
+      "distance": 119.6
+    },
+    {
+      "time": 1794142713.95,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 715.41,
+      "distance": 113.8
+    },
+    {
+      "time": 1794142714.26,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 708.49,
+      "distance": 93.9
+    },
+    {
+      "time": 1794142715.12,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 704.92,
+      "endX": 752.92,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142715.26,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 770.94,
+      "distance": 113.9
+    },
+    {
+      "time": 1794142715.52,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 781.39,
+      "distance": 124.4
+    },
+    {
+      "time": 1794142715.78,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 773.94,
+      "distance": 116.9
+    },
+    {
+      "time": 1794142716.03,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 764.82,
+      "distance": 97.4
+    },
+    {
+      "time": 1794142716.28,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 760.7,
+      "distance": 73.8
+    },
+    {
+      "time": 1794142716.95,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 756.33,
+      "endX": 804.33,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142717.1,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 825.04,
+      "distance": 112.5
+    },
+    {
+      "time": 1794142717.39,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 831.87,
+      "distance": 119.4
+    },
+    {
+      "time": 1794142717.64,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 824.89,
+      "distance": 112.4
+    },
+    {
+      "time": 1794142717.88,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 819.78,
+      "distance": 95.6
+    },
+    {
+      "time": 1794142718.12,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 816.07,
+      "distance": 73.7
+    },
+    {
+      "time": 1794142718.79,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 808.9,
+      "endX": 856.9,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142718.92,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 875.56,
+      "distance": 107.6
+    },
+    {
+      "time": 1794142719.28,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 886.33,
+      "distance": 118.3
+    },
+    {
+      "time": 1794142719.55,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 871.99,
+      "distance": 104
+    },
+    {
+      "time": 1794142719.82,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 864.73,
+      "distance": 77.2
+    },
+    {
+      "time": 1794142720.54,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 859.97,
+      "endX": 907.97,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142720.67,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 927.29,
+      "distance": 111.7
+    },
+    {
+      "time": 1794142720.93,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 939.1,
+      "distance": 123.5
+    },
+    {
+      "time": 1794142721.21,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 931.63,
+      "distance": 116
+    },
+    {
+      "time": 1794142721.59,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 923.56,
+      "distance": 84.6
+    },
+    {
+      "time": 1794142722.36,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 920.01,
+      "endX": 968.01,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142722.53,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 985.58,
+      "distance": 113.2
+    },
+    {
+      "time": 1794142722.8,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 994.74,
+      "distance": 122.3
+    },
+    {
+      "time": 1794142723.05,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 983.44,
+      "distance": 111
+    },
+    {
+      "time": 1794142723.29,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 976.64,
+      "distance": 92.5
+    },
+    {
+      "time": 1794142724.17,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 972.89,
+      "endX": 1014.89,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142724.3,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1039.06,
+      "distance": 113.8
+    },
+    {
+      "time": 1794142724.55,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1049.1,
+      "distance": 123.8
+    },
+    {
+      "time": 1794142724.79,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1041.05,
+      "distance": 115.8
+    },
+    {
+      "time": 1794142725.03,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1036.34,
+      "distance": 104.5
+    },
+    {
+      "time": 1794142725.31,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1032.01,
+      "distance": 78.1
+    },
+    {
+      "time": 1794142726.04,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 1026.47,
+      "endX": 1080.07,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142726.18,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1093.37,
+      "distance": 111.4
+    },
+    {
+      "time": 1794142726.45,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1104.8,
+      "distance": 122.8
+    },
+    {
+      "time": 1794142726.73,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1094.71,
+      "distance": 112.7
+    },
+    {
+      "time": 1794142727.07,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1087.89,
+      "distance": 83.8
+    },
+    {
+      "time": 1794142727.87,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 1084.23,
+      "endX": 1132.23,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142728.01,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1146.01,
+      "distance": 109.8
+    },
+    {
+      "time": 1794142728.27,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1158.35,
+      "distance": 122.1
+    },
+    {
+      "time": 1794142728.52,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1153.09,
+      "distance": 116.9
+    },
+    {
+      "time": 1794142728.76,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1145.04,
+      "distance": 97.1
+    },
+    {
+      "time": 1794142729,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1139.96,
+      "distance": 73.9
+    },
+    {
+      "time": 1794142729.68,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 1136.7,
+      "endX": 1184.7,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142729.81,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1203.18,
+      "distance": 111.5
+    },
+    {
+      "time": 1794142730.07,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1213.87,
+      "distance": 122.2
+    },
+    {
+      "time": 1794142730.32,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1206.37,
+      "distance": 114.7
+    },
+    {
+      "time": 1794142730.6,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1199.76,
+      "distance": 97.7
+    },
+    {
+      "time": 1794142731.53,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 1195.44,
+      "endX": 1243.24,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142731.65,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1260.15,
+      "distance": 113.1
+    },
+    {
+      "time": 1794142732.09,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1268.69,
+      "distance": 121.6
+    },
+    {
+      "time": 1794142732.38,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1260.37,
+      "distance": 106.8
+    },
+    {
+      "time": 1794142732.66,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1253.64,
+      "distance": 79.2
+    },
+    {
+      "time": 1794142733.39,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 17,
+      "startX": 1248.75,
+      "endX": 1290.75,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142733.52,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1311.09,
+      "distance": 105.9
+    },
+    {
+      "time": 1794142733.8,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1324.84,
+      "distance": 119.6
+    },
+    {
+      "time": 1794142734.07,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1316.23,
+      "distance": 111
+    },
+    {
+      "time": 1794142734.36,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1307.63,
+      "distance": 86.8
+    },
+    {
+      "time": 1794142735.21,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 17,
+      "startX": 1302.98,
+      "endX": 1371.26,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142735.32,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1378.25,
+      "distance": 122.8
+    },
+    {
+      "time": 1794142735.6,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1385.87,
+      "distance": 130.4
+    },
+    {
+      "time": 1794142735.9,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1375.04,
+      "distance": 119.5
+    },
+    {
+      "time": 1794142736.14,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1366.79,
+      "distance": 94.4
+    },
+    {
+      "time": 1794142737.03,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 17,
+      "startX": 1361.68,
+      "endX": 1409.68,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142737.15,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1427.34,
+      "distance": 113.8
+    },
+    {
+      "time": 1794142737.42,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1436.93,
+      "distance": 123.4
+    },
+    {
+      "time": 1794142737.67,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1426.15,
+      "distance": 112.7
+    },
+    {
+      "time": 1794142737.91,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1421.34,
+      "distance": 97.4
+    },
+    {
+      "time": 1794142738.15,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1417.8,
+      "distance": 75.7
+    },
+    {
+      "time": 1794142738.89,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 17,
+      "startX": 1413.17,
+      "endX": 1466.18,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142739.02,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1478.38,
+      "distance": 108.1
+    },
+    {
+      "time": 1794142739.28,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1487.68,
+      "distance": 117.4
+    },
+    {
+      "time": 1794142739.56,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1478.73,
+      "distance": 108.4
+    },
+    {
+      "time": 1794142739.8,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1470.66,
+      "distance": 87.4
+    },
+    {
+      "time": 1794142740.62,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 1466.57,
+      "endX": 1412.79,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142740.76,
       "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "k",
+      "target": "wave-1:shardrunner:1",
+      "attack": "j",
       "enemyPhase": "recover",
-      "hp": 6
-    },
-    {
-      "time": 1794102185.23,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 6
-    },
-    {
-      "time": 1794102185.5,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "k",
-      "enemyPhase": "hurt",
       "hp": 4
     },
     {
-      "time": 1794102185.76,
+      "time": 1794142741.04,
       "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
+      "target": "wave-1:shardrunner:1",
+      "attack": "j",
+      "enemyPhase": "recover",
       "hp": 4
     },
     {
-      "time": 1794102186.02,
+      "time": 1794142741.34,
       "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
+      "target": "wave-1:shardrunner:1",
+      "attack": "j",
+      "enemyPhase": "recover",
       "hp": 4
     },
     {
-      "time": 1794102186.3,
+      "time": 1794142742.07,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 1389.08,
+      "endX": 1341.07,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142742.19,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1327.28,
+      "distance": 66.4
+    },
+    {
+      "time": 1794142742.43,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1315.05,
+      "distance": 78.7
+    },
+    {
+      "time": 1794142742.66,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1318.83,
+      "distance": 74.9
+    },
+    {
+      "time": 1794142743.53,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 1322.46,
+      "endX": 1268.68,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142743.66,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1251.78,
+      "distance": 116.3
+    },
+    {
+      "time": 1794142744,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1243.11,
+      "distance": 125
+    },
+    {
+      "time": 1794142744.41,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1251.67,
+      "distance": 106
+    },
+    {
+      "time": 1794142744.66,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1256.88,
+      "distance": 81.3
+    },
+    {
+      "time": 1794142745.42,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 0,
+      "startX": 1260.38,
+      "endX": 1218.38,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142745.55,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1198.65,
+      "distance": 108.8
+    },
+    {
+      "time": 1794142745.81,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1186.1,
+      "distance": 121.4
+    },
+    {
+      "time": 1794142746.22,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1191.79,
+      "distance": 115.7
+    },
+    {
+      "time": 1794142746.46,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1199.57,
+      "distance": 85.8
+    },
+    {
+      "time": 1794142747.27,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 17,
+      "startX": 1204.73,
+      "endX": 1156.93,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142747.38,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1142.84,
+      "distance": 109.2
+    },
+    {
+      "time": 1794142747.63,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1130.29,
+      "distance": 121.7
+    },
+    {
+      "time": 1794142747.89,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1137.98,
+      "distance": 114
+    },
+    {
+      "time": 1794142748.14,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1143.21,
+      "distance": 98.4
+    },
+    {
+      "time": 1794142748.39,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1147.35,
+      "distance": 74.8
+    },
+    {
+      "time": 1794142749.11,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 17,
+      "startX": 1151.38,
+      "endX": 1103.56,
+      "hpBefore": 2,
+      "hpAfter": 2
+    },
+    {
+      "time": 1794142749.23,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1085.97,
+      "distance": 109.2
+    },
+    {
+      "time": 1794142749.48,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1076.96,
+      "distance": 118.2
+    },
+    {
+      "time": 1794142749.74,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1082.59,
+      "distance": 112.6
+    },
+    {
+      "time": 1794142749.99,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1089.17,
+      "distance": 96.9
+    },
+    {
+      "time": 1794142751.24,
       "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "k",
-      "enemyPhase": "commit",
+      "target": "wave-1:shardrunner:1",
+      "attack": "j",
+      "enemyPhase": "recover",
       "hp": 4
     },
     {
-      "time": 1794102186.58,
+      "time": 1794142751.62,
       "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "k",
-      "enemyPhase": "hurt",
-      "hp": 2
-    },
-    {
-      "time": 1794102186.84,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 2
-    },
-    {
-      "time": 1794102187.11,
-      "label": "attack selected threat",
-      "target": "wave-3:spindle-sentry:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 2
-    },
-    {
-      "time": 1794102187.36,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 678.47,
-      "distance": 113.5
-    },
-    {
-      "time": 1794102187.73,
-      "label": "capture b06-spindlesentry-enemy-ko",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102187.79,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 683.87,
-      "distance": 103.6
-    },
-    {
-      "time": 1794102188.14,
-      "label": "capture b06-pressurebastion-enemy-telegraph",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102188.21,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 687.71,
-      "distance": 99.8
-    },
-    {
-      "time": 1794102188.46,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 692.56,
-      "distance": 94.9
-    },
-    {
-      "time": 1794102188.83,
-      "label": "capture b06-pressurebastion-enemy-strike",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102188.89,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 695.56,
-      "distance": 91.9
-    },
-    {
-      "time": 1794102189.14,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 699.74,
-      "distance": 87.8
-    },
-    {
-      "time": 1794102189.39,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 703.51,
-      "distance": 84
-    },
-    {
-      "time": 1794102189.65,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 705.72,
-      "distance": 81.8
-    },
-    {
-      "time": 1794102189.9,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 712.94,
-      "distance": 74.6
-    },
-    {
-      "time": 1794102190.14,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 716.44,
-      "distance": 71.1
-    },
-    {
-      "time": 1794102190.39,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 720.63,
-      "distance": 66.9
-    },
-    {
-      "time": 1794102190.63,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 725.35,
-      "distance": 62.1
-    },
-    {
-      "time": 1794102190.88,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 729.55,
-      "distance": 58
-    },
-    {
-      "time": 1794102191.12,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 732.61,
-      "distance": 54.9
-    },
-    {
-      "time": 1794102191.36,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 737.51,
-      "distance": 50
-    },
-    {
-      "time": 1794102191.63,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 7
-    },
-    {
-      "time": 1794102191.89,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 7
-    },
-    {
-      "time": 1794102192.14,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 742.61,
-      "distance": 50.3
-    },
-    {
-      "time": 1794102192.41,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 5
-    },
-    {
-      "time": 1794102192.67,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 5
-    },
-    {
-      "time": 1794102192.94,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 5
-    },
-    {
-      "time": 1794102193.19,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 747.74,
-      "distance": 50.9
-    },
-    {
-      "time": 1794102193.43,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 750.64,
-      "distance": 48.5
-    },
-    {
-      "time": 1794102193.69,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 3
-    },
-    {
-      "time": 1794102193.97,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 3
-    },
-    {
-      "time": 1794102194.2,
-      "label": "advance on selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "x": 753.56,
-      "distance": 50.8
-    },
-    {
-      "time": 1794102194.47,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 1
-    },
-    {
-      "time": 1794102194.73,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 1
-    },
-    {
-      "time": 1794102195,
-      "label": "attack selected threat",
-      "target": "wave-3:pressure-bastion:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 1
-    },
-    {
-      "time": 1794102196.03,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 758.3,
-      "distance": 371.7
-    },
-    {
-      "time": 1794102196.43,
-      "label": "capture b06-pressurebastion-enemy-ko",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102196.55,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 773.76,
-      "distance": 356.2
-    },
-    {
-      "time": 1794102196.85,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 789.1,
-      "distance": 340.9
-    },
-    {
-      "time": 1794102197.16,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 804.61,
-      "distance": 325.4
-    },
-    {
-      "time": 1794102197.45,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 819.26,
-      "distance": 310.7
-    },
-    {
-      "time": 1794102197.76,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 835.71,
-      "distance": 294.3
-    },
-    {
-      "time": 1794102198.06,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 851.06,
-      "distance": 278.9
-    },
-    {
-      "time": 1794102198.34,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 866.41,
-      "distance": 263.6
-    },
-    {
-      "time": 1794102198.65,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 882.38,
-      "distance": 247.6
-    },
-    {
-      "time": 1794102198.95,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 898.97,
-      "distance": 223.8
-    },
-    {
-      "time": 1794102199.25,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 914.89,
-      "distance": 197.1
-    },
-    {
-      "time": 1794102199.59,
-      "label": "capture b06-phase-elite",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102199.71,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 929.12,
-      "distance": 177.5
-    },
-    {
-      "time": 1794102200.06,
-      "label": "capture b06-cantor-enemy-telegraph",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102200.16,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 943.95,
-      "distance": 162.6
-    },
-    {
-      "time": 1794102200.44,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 955.87,
-      "distance": 150.7
-    },
-    {
-      "time": 1794102200.88,
-      "label": "capture b06-cantor-enemy-strike",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102200.98,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 968.14,
-      "distance": 138.5
-    },
-    {
-      "time": 1794102201.23,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 977.02,
-      "distance": 129.6
-    },
-    {
-      "time": 1794102201.48,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 986.17,
-      "distance": 120.4
-    },
-    {
-      "time": 1794102201.74,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 993.17,
-      "distance": 113.4
-    },
-    {
-      "time": 1794102201.99,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 999.27,
-      "distance": 107.3
-    },
-    {
-      "time": 1794102202.23,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1004.11,
-      "distance": 102.5
-    },
-    {
-      "time": 1794102202.79,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1007.72,
-      "distance": 98.9
-    },
-    {
-      "time": 1794102203.05,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1050.85,
-      "distance": 55.8
-    },
-    {
-      "time": 1794102203.35,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1054.73,
-      "distance": 51.9
-    },
-    {
-      "time": 1794102203.61,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 12
-    },
-    {
-      "time": 1794102203.91,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "telegraph",
-      "hp": 12
-    },
-    {
-      "time": 1794102204.23,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1060.49,
-      "distance": 51.5
-    },
-    {
-      "time": 1794102204.51,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 10
-    },
-    {
-      "time": 1794102204.78,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 10
-    },
-    {
-      "time": 1794102205.08,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1066.27,
-      "distance": 51.4
-    },
-    {
-      "time": 1794102205.34,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1069.58,
-      "distance": 48.7
-    },
-    {
-      "time": 1794102205.63,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 8
-    },
-    {
-      "time": 1794102205.9,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 8
-    },
-    {
-      "time": 1794102206.18,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "stagger",
-      "hp": 6
-    },
-    {
-      "time": 1794102206.58,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 6
-    },
-    {
-      "time": 1794102206.9,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 6
-    },
-    {
-      "time": 1794102207.18,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1076.71,
-      "distance": 53.1
-    },
-    {
-      "time": 1794102207.45,
-      "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1080.34,
-      "distance": 49.8
-    },
-    {
-      "time": 1794102207.72,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
+      "target": "wave-1:shardrunner:1",
+      "attack": "j",
+      "enemyPhase": "recover",
       "hp": 4
     },
     {
-      "time": 1794102208.01,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 4
+      "time": 1794142752.67,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 17,
+      "startX": 1096.92,
+      "endX": 1043.32,
+      "hpBefore": 1,
+      "hpAfter": 1
     },
     {
-      "time": 1794102208.28,
+      "time": 1794142752.77,
       "label": "advance on selected threat",
-      "target": "wave-4:cantor:1",
-      "x": 1085.04,
-      "distance": 50.6
+      "target": "wave-1:shardrunner:1",
+      "x": 1029.71,
+      "distance": 92.7
     },
     {
-      "time": 1794102208.58,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 2
+      "time": 1794142753.04,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1017.95,
+      "distance": 104.5
     },
     {
-      "time": 1794102208.96,
-      "label": "attack selected threat",
-      "target": "wave-4:cantor:1",
-      "attack": "k",
-      "enemyPhase": "vulnerable",
-      "hp": 2
+      "time": 1794142753.54,
+      "label": "advance on selected threat",
+      "target": "wave-1:shardrunner:1",
+      "x": 1024.02,
+      "distance": 88
     },
     {
-      "time": 1794102209.98,
-      "label": "capture b06-phase-reward",
-      "screen": "b06Combat"
+      "time": 1794142754.6,
+      "label": "dash out of the committed attack lane",
+      "target": "wave-1:shardrunner:1",
+      "action": "runner-dash",
+      "phase": "commit",
+      "tellElapsedMs": 83,
+      "startX": 1028.56,
+      "endX": 1028.56,
+      "hpBefore": 0,
+      "hpAfter": 0
     },
     {
-      "time": 1794102214.91,
-      "label": "capture b06-phase-exit",
-      "screen": "b06Combat"
-    },
-    {
-      "time": 1794102222.29,
-      "label": "capture b06-gauntlet-victory",
+      "time": 1794142758.82,
+      "label": "capture b06-gauntlet-defeat",
       "screen": "b04Results"
-    },
-    {
-      "time": 1794102222.53,
-      "label": "Chrome video complete",
-      "durationSeconds": 62.88,
-      "bytes": 7617138
     }
   ],
-  "encounters": [
+  "failureDiagnoses": [
     {
+      "route": "/?b06=1",
       "form": "dawnrush",
-      "phase": "victory",
-      "wavesCleared": 4,
-      "rewardClaimed": true,
-      "playerHp": 5,
-      "damageTaken": 1,
-      "eventCount": 104
-    },
-    {
-      "form": "base",
-      "phase": "victory",
-      "wavesCleared": 4,
-      "rewardClaimed": true,
-      "playerHp": 5,
-      "damageTaken": 2,
-      "eventCount": 85
+      "seed": null,
+      "seedMode": "fixed authored wave sequence; no random seed parameter",
+      "browser": "156.0.8078.80",
+      "controls": [
+        "A/D move",
+        "Space jump",
+        "Shift dash during tell",
+        "J light",
+        "K heavy",
+        "Q Resonance special",
+        "R Dawnrush",
+        "F finisher",
+        "Escape pause"
+      ],
+      "phase": "defeat",
+      "elapsedMs": 63648,
+      "wavesCleared": 0,
+      "rewardClaimed": false,
+      "player": {
+        "x": 1028.56,
+        "y": 226,
+        "velocity": {
+          "x": 67.3,
+          "y": 0
+        },
+        "hp": 0,
+        "form": "Base",
+        "dawnrushState": "base",
+        "resonance": 30,
+        "damageTaken": 5
+      },
+      "enemies": [
+        {
+          "id": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "x": 1091.8,
+          "y": 214,
+          "hp": 3,
+          "maxHp": 4,
+          "facing": -1,
+          "phase": "commit",
+          "phaseMs": 83,
+          "action": "runner-dash",
+          "actionFacing": -1,
+          "actionHit": true
+        }
+      ],
+      "playerDamage": [
+        {
+          "name": "crownflare:player-damage",
+          "detail": {
+            "hp": 4,
+            "source": "wave-1:shardrunner:1"
+          },
+          "atMs": 3074,
+          "sample": {
+            "playerX": 129.5,
+            "playerY": 226,
+            "playerHp": 5,
+            "enemies": [
+              {
+                "id": "wave-1:shardrunner:1",
+                "archetype": "shardrunner",
+                "x": 193.1,
+                "phase": "commit",
+                "phaseMs": 83
+              }
+            ]
+          }
+        },
+        {
+          "name": "crownflare:player-damage",
+          "detail": {
+            "hp": 3,
+            "source": "wave-1:shardrunner:1"
+          },
+          "atMs": 7802,
+          "sample": {
+            "playerX": 143.6,
+            "playerY": 226,
+            "playerHp": 4,
+            "enemies": [
+              {
+                "id": "wave-1:shardrunner:1",
+                "archetype": "shardrunner",
+                "x": 112.6,
+                "phase": "commit",
+                "phaseMs": 83
+              }
+            ]
+          }
+        },
+        {
+          "name": "crownflare:player-damage",
+          "detail": {
+            "hp": 2,
+            "source": "wave-1:shardrunner:1"
+          },
+          "atMs": 9379,
+          "sample": {
+            "playerX": 212.35,
+            "playerY": 226,
+            "playerHp": 3,
+            "enemies": [
+              {
+                "id": "wave-1:shardrunner:1",
+                "archetype": "shardrunner",
+                "x": 148.6,
+                "phase": "commit",
+                "phaseMs": 83
+              }
+            ]
+          }
+        },
+        {
+          "name": "crownflare:player-damage",
+          "detail": {
+            "hp": 1,
+            "source": "wave-1:shardrunner:1"
+          },
+          "atMs": 61546,
+          "sample": {
+            "playerX": 1095.69,
+            "playerY": 226,
+            "playerHp": 2,
+            "enemies": [
+              {
+                "id": "wave-1:shardrunner:1",
+                "archetype": "shardrunner",
+                "x": 1159.4,
+                "phase": "commit",
+                "phaseMs": 83
+              }
+            ]
+          }
+        },
+        {
+          "name": "crownflare:player-damage",
+          "detail": {
+            "hp": 0,
+            "source": "wave-1:shardrunner:1"
+          },
+          "atMs": 65002,
+          "sample": {
+            "playerX": 1028.56,
+            "playerY": 226,
+            "playerHp": 1,
+            "enemies": [
+              {
+                "id": "wave-1:shardrunner:1",
+                "archetype": "shardrunner",
+                "x": 1091.8,
+                "phase": "commit",
+                "phaseMs": 83
+              }
+            ]
+          }
+        }
+      ],
+      "enemyStrikes": [
+        {
+          "atMs": 1784,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 1,
+          "result": "hit",
+          "damage": 1,
+          "rect": {
+            "left": 136.0666666666659,
+            "right": 190.0666666666659,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 3242,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 2,
+          "result": "dodged",
+          "damage": 0,
+          "rect": {
+            "left": 110.4999999999992,
+            "right": 164.4999999999992,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 4987,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 3,
+          "result": "dodged",
+          "damage": 0,
+          "rect": {
+            "left": 61.53333333333231,
+            "right": 115.53333333333231,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 6440,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 4,
+          "result": "hit",
+          "damage": 1,
+          "rect": {
+            "left": 115.6333333333323,
+            "right": 169.6333333333323,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 8019,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 5,
+          "result": "hit",
+          "damage": 1,
+          "rect": {
+            "left": 151.59999999999908,
+            "right": 205.59999999999908,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 9967,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 6,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 216.16666666666612,
+            "right": 270.1666666666661,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 11669,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 7,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 261.23333333333295,
+            "right": 315.23333333333295,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 13590,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 8,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 323.1999999999996,
+            "right": 377.1999999999996,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 15385,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 9,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 376.06666666666615,
+            "right": 430.06666666666615,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 17168,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 10,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 427.6333333333327,
+            "right": 481.6333333333327,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 19000,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 11,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 483.0999999999993,
+            "right": 537.0999999999992,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 20755,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 12,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 532.0666666666658,
+            "right": 586.0666666666658,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 22604,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 13,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 588.8333333333318,
+            "right": 642.8333333333318,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 24435,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 14,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 644.2999999999978,
+            "right": 698.2999999999978,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 26273,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 15,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 699.7666666666638,
+            "right": 753.7666666666638,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 28100,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 16,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 755.2333333333298,
+            "right": 809.2333333333298,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 29835,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 17,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 802.8999999999961,
+            "right": 856.8999999999961,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 31686,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 18,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 859.6666666666621,
+            "right": 913.6666666666621,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 33483,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 19,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 912.5333333333282,
+            "right": 966.5333333333282,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 35336,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 20,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 969.2999999999942,
+            "right": 1023.2999999999942,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 37154,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 21,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1023.4666666666602,
+            "right": 1077.4666666666603,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 38986,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 22,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1078.9333333333261,
+            "right": 1132.9333333333261,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 40818,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 23,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1134.3999999999921,
+            "right": 1188.3999999999921,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 42688,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 24,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1192.466666666658,
+            "right": 1246.466666666658,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 44455,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 25,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1242.7333333333243,
+            "right": 1296.7333333333243,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 46320,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 26,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1300.7999999999902,
+            "right": 1354.7999999999902,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 48173,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 27,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1357.5666666666561,
+            "right": 1411.5666666666561,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 49921,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 28,
+          "result": "dodged",
+          "damage": 0,
+          "rect": {
+            "left": 1406.5333333333224,
+            "right": 1460.5333333333224,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 51367,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 29,
+          "result": "dodged",
+          "damage": 0,
+          "rect": {
+            "left": 1352.4333333333225,
+            "right": 1406.4333333333225,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 52820,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 30,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1326.8666666666554,
+            "right": 1380.8666666666554,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 54717,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 31,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1266.1999999999896,
+            "right": 1320.1999999999896,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 56556,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 32,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1210.7333333333236,
+            "right": 1264.7333333333236,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 58405,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 33,
+          "result": "miss",
+          "damage": 0,
+          "rect": {
+            "left": 1153.9666666666576,
+            "right": 1207.9666666666576,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 60186,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 34,
+          "result": "hit",
+          "damage": 1,
+          "rect": {
+            "left": 1102.3999999999915,
+            "right": 1156.3999999999915,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 61922,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 35,
+          "result": "dodged",
+          "damage": 0,
+          "rect": {
+            "left": 1081.1447891086668,
+            "right": 1135.1447891086668,
+            "top": 201,
+            "bottom": 238
+          }
+        },
+        {
+          "atMs": 63641,
+          "type": "enemy-strike",
+          "enemyId": "wave-1:shardrunner:1",
+          "archetype": "shardrunner",
+          "action": "runner-dash",
+          "sequence": 36,
+          "result": "hit",
+          "damage": 1,
+          "rect": {
+            "left": 1034.7781224420005,
+            "right": 1088.7781224420005,
+            "top": 201,
+            "bottom": 238
+          }
+        }
+      ],
+      "recentInputs": [],
+      "sourceTree": {
+        "sha256": "51d6cadc1441fadf36ad4dca97620b5d8740636c1c5917317609816636b1cbe6",
+        "files": 86,
+        "scope": "B06 implementation and generated inputs; review evidence excluded"
+      }
     }
   ],
-  "videos": [
-    {
-      "form": "dawnrush",
-      "path": "review-evidence/b06/b06-dawnrush-playable-chrome.webm",
-      "sha256": "fa3fedfdfd1685ed8cd76d9c50464f6d15a5647e7e17f8f410f700cbfa997c68",
-      "bytes": 8583722,
-      "durationSeconds": 69.36,
-      "width": 1280,
-      "height": 720,
-      "frameRate": "25/1",
-      "codec": "vp8",
-      "audioTrack": false
-    },
-    {
-      "form": "base",
-      "path": "review-evidence/b06/b06-base-playable-chrome.webm",
-      "sha256": "a82f8299c6610c4d81e9a45927e4faf39188735145fc3936c1308ffd5709f6b3",
-      "bytes": 7617138,
-      "durationSeconds": 62.88,
-      "width": 1280,
-      "height": 720,
-      "frameRate": "25/1",
-      "codec": "vp8",
-      "audioTrack": false
-    }
+  "errors": [
+    "dawnrush did not complete every wave, claim the reward and reach the exit: {\"phase\":\"defeat\",\"wavesCleared\":0,\"rewardClaimed\":false,\"damageTaken\":5,\"elapsedMs\":63648,\"playerHp\":0,\"resonance\":30,\"dawnrush\":{\"state\":\"base\",\"energy\":0,\"phaseMs\":0,\"move\":\"hurt-ko\",\"form\":\"Base\",\"loadedFrames\":124,\"missingFrames\":[],\"activeMove\":\"none\",\"finisherCooldownMs\":0,\"finisherReady\":false,\"finisherStatus\":\"FORM REQUIRED\"},\"enemies\":[{\"id\":\"wave-1:shardrunner:1\",\"archetype\":\"shardrunner\",\"x\":1091.8,\"y\":214,\"hp\":3,\"maxHp\":4,\"facing\":-1,\"phase\":\"commit\",\"phaseMs\":83,\"action\":\"runner-dash\",\"actionFacing\":-1,\"actionHit\":true}],\"projectiles\":[],\"audioUnlocked\":true,\"audioEnabled\":false,\"lastAudioCue\":\"runner-slash\",\"vfxEnabled\":true,\"reducedMotion\":false,\"loadedTextures\":65,\"missingTextures\":[],\"activeTransientEffects\":1,\"eventCount\":90,\"waveClearDelayMs\":0}"
   ],
-  "totalLivePlaySeconds": 132.24,
-  "requirements": {
-    "nativeImageGeneration": "Used; four true-alpha enemy masters and one signature-effect master retained",
-    "ownerApproval": "PENDING",
-    "audioHeardByAgent": "NO",
-    "physicalController": "NOT TESTED; a synthetic standard pad is also exercised via the existing controller smoke",
-    "normalSpeedHumanReview": "PENDING; Chrome capture is real-time and still requires owner review"
-  },
-  "sourceTree": {
-    "sha256": "069ef80067fb0e4b74cd83ac8ba7fa779e42def0da5b7f2c4ef61322e32137c8",
-    "files": 86,
-    "scope": "B06 implementation and generated inputs; review evidence excluded"
-  },
-  "errors": [],
   "serverErrors": ""
 }

@@ -60,9 +60,19 @@
         <div class="eyebrow">TEMPORAL HOLD</div>
         <h2 id="pause-title">PAUSED</h2>
         <p id="pause-reason">The Spindle is still.</p>
+        <p id="b09-pause-build" class="b09-pause-build hidden" aria-live="polite"></p>
         <button id="resume-button" class="primary-action" type="button">RESUME <span aria-hidden="true">→</span></button>
         <button id="pause-settings-button" class="secondary-action" type="button">CONTROLS / CONTROLLER</button>
         <button id="quit-button" class="secondary-action" type="button">RETURN TO TITLE</button>
+      </div>
+    </section>
+    <section id="b09-choice-screen" class="screen b09-choice-screen hidden" role="dialog" aria-modal="true" aria-labelledby="b09-choice-heading" aria-describedby="b09-choice-hint" aria-hidden="true">
+      <div class="b09-choice-panel">
+        <div class="eyebrow">THE LUMEN SPINDLE / RUN REWARD</div>
+        <h2 id="b09-choice-heading">CHOOSE YOUR ATTUNEMENT</h2>
+        <p id="b09-choice-source" class="b09-choice-source"></p>
+        <div id="b09-choice-cards" class="b09-choice-cards" role="group" aria-label="Three upgrade reward choices"></div>
+        <div class="b09-choice-footer"><p id="b09-choice-hint" aria-live="polite">ARROWS / D-PAD SELECT · ENTER / E / SOUTH CONFIRM · ESC ABANDON RUN</p><button id="b09-abandon-button" class="secondary-action" type="button">ABANDON RUN</button></div>
       </div>
     </section>
     <section id="b04-results" class="screen b04-results hidden" role="dialog" aria-modal="true" aria-labelledby="b04-result-heading" aria-hidden="true">

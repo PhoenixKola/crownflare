@@ -1,0 +1,216 @@
+{
+  "milestone": "B09",
+  "source": "art-source/upgrades/b09/upgrades-atlas.png",
+  "sourceDimensions": [
+    1448,
+    1086
+  ],
+  "sourceSha256": "2bde4dacc6ecd64197e87087d07c777a60645b9d0b3206818b052ebed2fb407c",
+  "cropMethod": "four columns by three rows; Pillow nearest-neighbor to 64x64; preserve RGBA",
+  "icons": [
+    {
+      "id": "echo-palm",
+      "cell": {
+        "column": 0,
+        "row": 0,
+        "x": 0,
+        "y": 0,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/echo-palm.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "f6cd3fb5caea613986590f16fb3a45ab87999b1b19461256643fd56d61d9831a"
+    },
+    {
+      "id": "momentum-relay",
+      "cell": {
+        "column": 1,
+        "row": 0,
+        "x": 362,
+        "y": 0,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/momentum-relay.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "8c17d125232a06dc784d249a7ee92464241c87dd44728dc0f74df35762e53481"
+    },
+    {
+      "id": "countercurrent",
+      "cell": {
+        "column": 2,
+        "row": 0,
+        "x": 724,
+        "y": 0,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/countercurrent.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "00194cec55f72e49ed9eb00a4807130342e7ea3e70665f6a48f70be826e724bd"
+    },
+    {
+      "id": "solar-relay",
+      "cell": {
+        "column": 3,
+        "row": 0,
+        "x": 1086,
+        "y": 0,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/solar-relay.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "50595fe2cebabd957891543ec4f77ca229f7f54a40d6a0ff9aa51b353563d9fd"
+    },
+    {
+      "id": "resonant-reclamation",
+      "cell": {
+        "column": 0,
+        "row": 1,
+        "x": 0,
+        "y": 362,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/resonant-reclamation.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "4a384fabb63bdeddead8859b729e4d284136370ecf18e41c73b13240881bb84d"
+    },
+    {
+      "id": "grounding-coil",
+      "cell": {
+        "column": 1,
+        "row": 1,
+        "x": 362,
+        "y": 362,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/grounding-coil.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "92bd7aef95f6878ef63e05975903c4a97331e56f5d42a400752edf03d90826e1"
+    },
+    {
+      "id": "skyline-return",
+      "cell": {
+        "column": 2,
+        "row": 1,
+        "x": 724,
+        "y": 362,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/skyline-return.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "9a19139ca96c33cb25bd2e3965c9b87babdae9dc5d9378057677e64168db9150"
+    },
+    {
+      "id": "last-orbit",
+      "cell": {
+        "column": 3,
+        "row": 1,
+        "x": 1086,
+        "y": 362,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/last-orbit.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "7423780aaae5dba85d20429bf1a0175fa5ef6cce0857e7f4da9680e935060c28"
+    },
+    {
+      "id": "aerial-imprint",
+      "cell": {
+        "column": 0,
+        "row": 2,
+        "x": 0,
+        "y": 724,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/aerial-imprint.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "16e40a0f723dafd90ef7296487a5c0fd008cb9d397d502e21a8b321fc960a7b2"
+    },
+    {
+      "id": "field-recycler",
+      "cell": {
+        "column": 1,
+        "row": 2,
+        "x": 362,
+        "y": 724,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/field-recycler.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "9c64fcb2c7d7eeaefc4db26156a9f4930ad2c1f53d53e799082eb8b1fb47bf0d"
+    },
+    {
+      "id": "close-orbit",
+      "cell": {
+        "column": 2,
+        "row": 2,
+        "x": 724,
+        "y": 724,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/close-orbit.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "c2e584fc120590849897b80c9f523087b0855df9afa4de4d00616b8452edefee"
+    },
+    {
+      "id": "radiant-discipline",
+      "cell": {
+        "column": 3,
+        "row": 2,
+        "x": 1086,
+        "y": 724,
+        "width": 362,
+        "height": 362
+      },
+      "runtime": "public/assets/upgrades/b09/radiant-discipline.png",
+      "runtimeSize": [
+        64,
+        64
+      ],
+      "runtimeSha256": "ed8bfe72428e46acb397541f0945e984deff00a2ac3bf6002e2ef9e075c2f30b"
+    }
+  ]
+}

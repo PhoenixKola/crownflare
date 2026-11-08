@@ -1,6 +1,6 @@
 /** Headed Chrome review of the B06 roster board and playable encounter gauntlet. */
 import { spawn, execFileSync } from 'node:child_process';
-import { mkdir, readFile, writeFile, copyFile, readdir, stat } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, copyFile, readdir, stat, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -10,6 +10,7 @@ const port = 4196;
 const base = `http://127.0.0.1:${port}`;
 const evidence = 'review-evidence/b06';
 const recordingDir = 'review-evidence/.b06-recording-tmp';
+const noRecord = process.argv.includes('--no-record');
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', '--host', '127.0.0.1', '--port', String(port), '--strictPort'], { stdio: 'pipe' });
 let serverErrors = '';
 server.stderr.on('data', (buffer) => { serverErrors += buffer.toString(); });
@@ -24,6 +25,9 @@ const compactEvents = [];
 const sceneLogs = [];
 const videos = [];
 const encounters = [];
+const failureDiagnoses = [];
+let browserVersion = null;
+let sourceTree = null;
 let activeCapturePrefix = 'b06';
 const now = () => Number((Date.now() / 1000).toFixed(2));
 const record = (label, detail = {}) => actions.push({ time: now(), label, ...detail });
@@ -175,7 +179,7 @@ async function reducedMotionReview() {
 async function activeGauntletReview(form = 'dawnrush') {
   const runPrefix = form === 'base' ? 'b06-base' : 'b06-dawnrush';
   activeCapturePrefix = runPrefix;
-  recordingContext = await browser.newContext({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1, recordVideo: { dir: recordingDir, size: { width: 1280, height: 720 } } });
+  recordingContext = await browser.newContext({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1, ...(noRecord ? {} : { recordVideo: { dir: recordingDir, size: { width: 1280, height: 720 } } }) });
   await initCapture(recordingContext);
   videoPage = await recordingContext.newPage();
   monitor(videoPage, 'gauntlet');
@@ -215,6 +219,7 @@ async function activeGauntletReview(form = 'dawnrush') {
   }
 
   const phaseCaptures = new Set();
+  const evadedProjectiles = new Set();
   const phaseNames = ['familiarization', 'mixed', 'escalation', 'elite', 'reward', 'exit'];
   const phaseDeadline = Date.now() + 300000;
   let lastVisiblePhase = 'familiarization';
@@ -253,13 +258,32 @@ async function activeGauntletReview(form = 'dawnrush') {
     }
     if (phase === 'victory' || phase === 'defeat') break;
     if (state.b06.playerHp <= 0) break;
+    const incomingProjectile = state.b06.projectiles
+      .filter((projectile) => !evadedProjectiles.has(projectile.id)
+        && Math.abs(projectile.x - state.combat.playerX) < 220
+        && Math.abs(projectile.y - state.combat.playerY) < 64)
+      .sort((a, b) => Math.abs(a.x - state.combat.playerX) - Math.abs(b.x - state.combat.playerX))[0];
+    if (incomingProjectile) {
+      evadedProjectiles.add(incomingProjectile.id);
+      const hpBefore = state.b06.playerHp;
+      await dodgeThreat(videoPage, incomingProjectile.x, state.combat.playerX);
+      const afterDodge = await snapshot(videoPage);
+      record('dash out of a live Orbit Wisp projectile lane', {
+        projectileId: incomingProjectile.id, startX: state.combat.playerX, endX: afterDodge.combat.playerX,
+        hpBefore, hpAfter: afterDodge.b06.playerHp,
+      });
+      await videoPage.waitForTimeout(140);
+      continue;
+    }
     const imminent = state.b06.enemies
       .filter((enemy) => enemy.hp > 0 && ['telegraph', 'commit'].includes(enemy.phase) && Math.abs(enemy.x - state.combat.playerX) < 160)
       .sort((a, b) => Math.abs(a.x - state.combat.playerX) - Math.abs(b.x - state.combat.playerX))[0];
     if (imminent) {
       if (imminent.phase === 'telegraph') {
         const tellMs = ({ 'shardrunner': 560, 'spindle-sentry': 440, 'orbit-wisp': 860, 'pressure-bastion': 820, 'cantor': 840 })[imminent.archetype] ?? 600;
-        const lead = 80;
+        // Start the dash when the tell commits so its live 125ms window covers
+        // the authored contact frame (instead of expiring just before contact).
+        const lead = 0;
         const timelyTell = `state => { const enemy = state.b06?.enemies?.find((entry) => entry.id === ${JSON.stringify(imminent.id)}); return !enemy || enemy.phase !== 'telegraph' || enemy.phaseMs >= ${tellMs - lead}; }`;
         await waitFor(videoPage, timelyTell, `${imminent.archetype} reaches its readable dodge window`, 1500);
       }
@@ -274,7 +298,7 @@ async function activeGauntletReview(form = 'dawnrush') {
         startX: atDodge.combat.playerX, endX: afterDodge.combat.playerX,
         hpBefore: atDodge.b06.playerHp, hpAfter: afterDodge.b06.playerHp,
       });
-      await waitFor(videoPage, `state => { const enemy = state.b06?.enemies?.find((entry) => entry.id === ${JSON.stringify(imminent.id)}); return !enemy || !['telegraph', 'commit'].includes(enemy.phase); }`, `${imminent.archetype} finishes its active pattern`, 1500);
+      await waitFor(videoPage, `state => { const enemy = state.b06?.enemies?.find((entry) => entry.id === ${JSON.stringify(imminent.id)}); return state.b06?.phase === 'defeat' || state.b06?.phase === 'victory' || state.screen === 'b04Results' || !enemy || !['telegraph', 'commit'].includes(enemy.phase); }`, `${imminent.archetype} finishes its active pattern or the encounter ends`, 1500);
       continue;
     }
     const alive = state.b06.enemies.filter((enemy) => enemy.hp > 0).sort((a, b) => Math.abs(a.x - state.combat.playerX) - Math.abs(b.x - state.combat.playerX));
@@ -338,13 +362,17 @@ async function activeGauntletReview(form = 'dawnrush') {
     await capture(videoPage, 'b06-gauntlet-victory');
   } else if (state?.b06?.phase === 'defeat') {
     const diagnosis = {
-      form, seed: new URL(videoPage.url()).searchParams.get('seed'), phase: state.b06.phase,
-      player: { x: state.combat?.playerX, y: state.combat?.playerY, velocity: state.combat?.playerVelocity, hp: state.b06.playerHp, damageTaken: state.b06.damageTaken },
+      route: '/?b06=1', form, seed: null, seedMode: 'fixed authored wave sequence; no random seed parameter', browser: browserVersion,
+      controls: ['A/D move', 'Space jump', 'Shift dash during tell', 'J light', 'K heavy', 'Q Resonance special', 'R Dawnrush', 'F finisher', 'Escape pause'],
+      phase: state.b06.phase, elapsedMs: state.b06.elapsedMs, wavesCleared: state.b06.wavesCleared, rewardClaimed: state.b06.rewardClaimed,
+      player: { x: state.combat?.playerX, y: state.combat?.playerY, velocity: state.combat?.playerVelocity, hp: state.b06.playerHp, form: state.b06.dawnrush?.form, dawnrushState: state.b06.dawnrush?.state, resonance: state.combat?.resonance, damageTaken: state.b06.damageTaken },
       enemies: state.b06.enemies,
       playerDamage: events.filter((event) => event.name === 'crownflare:player-damage'),
       enemyStrikes: sceneEvents.filter((event) => event.type === 'enemy-strike'),
       recentInputs: checks.filter((entry) => /dash|attack|advance|finisher|Resonance/i.test(entry.label)).slice(-24),
+      sourceTree,
     };
+    failureDiagnoses.push(diagnosis);
     console.error(`B06 failure diagnosis: ${JSON.stringify(diagnosis)}`);
     check(`${form} gauntlet reaches its live four-wave victory`, 'FAIL', { phase: state.b06.phase, playerHp: state.b06.playerHp, damageTaken: state.b06.damageTaken, wavesCleared: state.b06.wavesCleared });
     await capture(videoPage, 'b06-gauntlet-defeat');
@@ -362,6 +390,9 @@ async function activeGauntletReview(form = 'dawnrush') {
   encounters.push({ form, phase: state.b06.phase, wavesCleared: state.b06.wavesCleared, rewardClaimed: state.b06.rewardClaimed, playerHp: state.b06.playerHp, damageTaken: state.b06.damageTaken, eventCount: sceneEvents.length });
   const video = videoPage.video();
   await recordingContext.close(); recordingContext = null;
+  const browserIssues = errors.filter((entry) => !entry.includes('AudioContext was not allowed to start'));
+  assert(browserIssues.length === 0, `Browser errors: ${browserIssues.join('\n')}`);
+  if (noRecord) { check(`${form} baseline completed without a video capture`, 'SKIPPED', { recordVideo: false }); return; }
   const tempVideo = await video.path();
   const videoPath = path.join(evidence, `${runPrefix}-playable-chrome.webm`);
   await copyFile(tempVideo, videoPath);
@@ -371,8 +402,6 @@ async function activeGauntletReview(form = 'dawnrush') {
   const videoBytes = Number(probe.format.size);
   const videoHash = createHash('sha256').update(await readFile(videoPath)).digest('hex');
   record('Chrome video complete', { durationSeconds: seconds, bytes: videoBytes });
-  const browserIssues = errors.filter((entry) => !entry.includes('AudioContext was not allowed to start'));
-  assert(browserIssues.length === 0, `Browser errors: ${browserIssues.join('\n')}`);
   assert(seconds >= 30 && seconds <= 360, `${form} gameplay recording outside 30–360 seconds: ${seconds}s`);
   const videoRecord = { form, path: `review-evidence/b06/${runPrefix}-playable-chrome.webm`, sha256: videoHash, bytes: videoBytes, durationSeconds: seconds, width: stream?.width ?? null, height: stream?.height ?? null, frameRate: stream?.avg_frame_rate ?? null, codec: stream?.codec_name ?? null, audioTrack: probe.streams.some((candidate) => candidate.codec_type === 'audio') };
   videos.push(videoRecord);
@@ -384,12 +413,13 @@ async function main() {
   await mkdir(evidence, { recursive: true });
   await mkdir(recordingDir, { recursive: true });
   assert(await ready(`${base}/?b06=1`), `Vite did not start: ${serverErrors}`);
+  sourceTree = await sourceDigest();
   browser = await chromium.launch({ channel: 'chrome', headless: false, args: ['--use-gl=angle', '--use-angle=swiftshader'] });
+  browserVersion = browser.version();
   await rosterBoardReview();
   await reducedMotionReview();
   await activeGauntletReview('dawnrush');
   await activeGauntletReview('base');
-  const sourceTree = await sourceDigest();
   const totalVideoSeconds = videos.reduce((total, video) => total + video.durationSeconds, 0);
   assert(totalVideoSeconds >= 120, `Combined live-play evidence should reach the two-minute target; captured ${totalVideoSeconds}s`);
   const report = {
@@ -408,11 +438,12 @@ async function main() {
 try { await main(); }
 catch (error) {
   console.error(error?.stack ?? error);
-  const failure = { result: 'FAIL', capturedAt: new Date().toISOString(), checks, actions, errors: [...errors, String(error?.message ?? error)], serverErrors };
+  const failure = { result: 'FAIL', capturedAt: new Date().toISOString(), route: '/?b06=1 (Vite development server)', browser: browserVersion, viewport: { width: 1280, height: 720 }, sourceTree, checks, actions, failureDiagnoses, errors: [...errors, String(error?.message ?? error)], serverErrors };
   await writeFile(path.join(evidence, 'qa-report.json'), `${JSON.stringify(failure, null, 2)}\n`).catch(() => {});
 } finally {
   if (recordingContext) await recordingContext.close().catch(() => {});
   if (browser) await browser.close().catch(() => {});
   server.kill();
+  await rm(recordingDir, { recursive: true, force: true }).catch(() => {});
 }
 if (!passed) process.exitCode = 1;

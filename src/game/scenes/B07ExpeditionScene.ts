@@ -17,6 +17,7 @@ import { B08_BOSS_PROFILES, createB08Boss } from '../bosses/b08BossProfiles.ts';
 import { b08BossAttackRects, b08BossContactKey, b08BossIsVulnerable, damageB08Boss, stepB08Boss } from '../bosses/b08BossDirector.ts';
 import type { B08BossEvent, B08BossId, B08BossPatternId, B08BossRuntime, B08BossRect } from '../bosses/b08BossTypes.ts';
 import { bossForB08Room } from '../bosses/b08BossRoutes.ts';
+import { createB09CombatRuntime, createRunBuild, effectiveModifiers, fieldRecyclerRepair, generateUpgradeOffer, resolveB09Contact, resolveB09Dodge, resolveB09Threat, selectUpgradeChoice, type B09CombatRuntime, type RunBuildState, type UpgradeChoiceId, type UpgradeOffer, type UpgradeChoiceSource } from '../roguelite/b09RunBuild.ts';
 
 const AUDIO_CUES = ['runner-tell', 'runner-slash', 'wisp-charge', 'wisp-shot', 'wisp-impact', 'bastion-tell', 'bastion-block', 'bastion-break', 'cantor-sweep', 'cantor-pulse', 'enemy-ko', 'shard-reward', 'wave-clear'] as const;
 const ENEMY_STATES: Readonly<Record<B06Archetype, readonly string[]>> = {
@@ -39,6 +40,7 @@ export class B07ExpeditionScene extends ChamberScene {
   private variation = 0;
   private world?: ReturnType<typeof enemyWorldForRoom>;
   private director: B06DirectorState = createB06Director();
+  private b09Launches = new Map<string, { readonly startY: number; readonly launchVelocity: number; elapsedMs: number }>();
   private combat: B03CombatSnapshot | null = null;
   private menu: B07Menu | null = null;
   private menuIndex = 0;
@@ -68,6 +70,7 @@ export class B07ExpeditionScene extends ChamberScene {
   private roomLabel?: Phaser.GameObjects.Text;
   private routeLabel?: Phaser.GameObjects.Text;
   private objectiveLabel?: Phaser.GameObjects.Text;
+  private buildLabel?: Phaser.GameObjects.Text;
   private vitalsLabel?: Phaser.GameObjects.Text;
   private promptLabel?: Phaser.GameObjects.Text;
   private bannerLabel?: Phaser.GameObjects.Text;
@@ -79,6 +82,10 @@ export class B07ExpeditionScene extends ChamberScene {
   private lastB07AudioCue = 'none';
   private readonly worldSeed: number;
   private readonly b08Mode: boolean;
+  private readonly b09Mode: boolean;
+  private runBuild: RunBuildState;
+  private b09Runtime: B09CombatRuntime = createB09CombatRuntime();
+  private pendingB09Offer: UpgradeOffer | null = null;
   private readonly practiceBoss: B08BossId | null;
   private activeBoss: B08BossRuntime | null = null;
   private bossSourceRoom = '';
@@ -98,14 +105,16 @@ export class B07ExpeditionScene extends ChamberScene {
   private bossActiveRects: readonly B08BossRect[] = [];
   private bossVfxEnabled = true;
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, seed?: number, b08 = false) {
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, seed?: number, b08 = false, b09 = false) {
     super(onPauseRequested, onControllerState, { ionaPreview: true, b03Combat: true, b04: true, b05: true, b06: true, b07: true });
     const querySeed = Number(new URLSearchParams(window.location.search).get('seed'));
     this.worldSeed = seed ?? (Number.isFinite(querySeed) && querySeed !== 0 ? Math.trunc(querySeed) >>> 0 : 20261108);
-    this.b08Mode = b08;
+    this.b08Mode = b08 || b09;
+    this.b09Mode = b09;
     const practice = new URLSearchParams(window.location.search).get('boss');
     this.practiceBoss = b08 && (practice === 'sundial-custodian' || practice === 'spoolheart-regent' || practice === 'broken-meridian') ? practice : null;
     this.route = initialB07Route(this.worldSeed);
+    this.runBuild = createRunBuild(this.worldSeed);
     this.reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     this.bossVfxEnabled = !this.reducedMotion;
   }
@@ -151,6 +160,24 @@ export class B07ExpeditionScene extends ChamberScene {
       this.emitState();
     });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.shutdownRoom());
+    const chooseB09 = (event: Event) => {
+      const selectedDetail = (event as CustomEvent<{ sourceId: string; choiceId: UpgradeChoiceId }>).detail;
+      const choiceId = selectedDetail?.choiceId;
+      if (!this.pendingB09Offer || !choiceId || selectedDetail.sourceId !== this.pendingB09Offer.sourceId) return;
+      const offer = this.pendingB09Offer;
+      const selected = selectUpgradeChoice(this.runBuild, offer, choiceId);
+      if (!selected.ok) return;
+      this.runBuild = selected.build;
+      this.pendingB09Offer = null;
+      if (selected.choice.id === 'field-repair') this.route = { ...this.route, repairCharges: this.route.repairCharges + 1 };
+      else if (selected.choice.id === 'resonance-cache') this.grantB09CombatResonance(12);
+      else if (selected.choice.id === 'solar-cell') this.grantB09DawnrushEnergy(12);
+      this.logEvent({ type: 'upgrade-selected', sourceId: offer.sourceId, choiceId: selected.choice.id, rank: selected.choice.nextRank ?? 0, ranks: this.runBuild.ranks });
+      this.emitState();
+      window.dispatchEvent(new CustomEvent('crownflare:b09-choice-completed', { detail: { sourceId: offer.sourceId, choiceId: selected.choice.id } }));
+    };
+    window.addEventListener('crownflare:b09-choice-selected', chooseB09);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => window.removeEventListener('crownflare:b09-choice-selected', chooseB09));
     if (this.practiceBoss) this.startBoss(this.practiceBoss, true);
     else this.loadCurrentRoom();
     this.emitState();
@@ -176,12 +203,27 @@ export class B07ExpeditionScene extends ChamberScene {
     }
     this.stepHazards(dt);
     this.stepEnemies(dt);
+    this.stepB09Launches(dt);
     this.syncEnemyPresentation();
     this.syncProjectiles();
     this.updateRoomPrompts();
     this.drawHud();
     if (this.combat.playerHp <= 0) this.finish('defeat');
     this.emitState();
+  }
+
+  protected override additionalDashInvulnerabilityMs(): number { return this.b09Mode ? effectiveModifiers(this.runBuild).dashInvulnerabilityMs : 0; }
+
+  protected override adjustB06ThreatDamage(sourceId: string, damage: number, playerHp: number): { readonly damage: number; readonly blocked: boolean } {
+    if (!this.b09Mode) return { damage, blocked: false };
+    const outcome = resolveB09Threat(this.runBuild, this.b09Runtime, { nowMs: this.runElapsedMs, hp: playerHp, damage, resonance: this.combatSnapshot()?.resonance ?? 0 });
+    this.b09Runtime = outcome.runtime;
+    if (outcome.blockedBy) {
+      if (outcome.resonanceCost) this.spendB09CombatResonance(outcome.resonanceCost);
+      this.logEvent({ type: 'upgrade-threat-block', upgrade: outcome.blockedBy, sourceId, hp: playerHp, resonanceCost: outcome.resonanceCost });
+      this.showBanner(outcome.blockedBy === 'last-orbit' ? 'LAST ORBIT  /  1 HP SAVED' : 'GROUNDING COIL  /  STRIKE GROUNDED');
+    }
+    return { damage: outcome.damage, blocked: outcome.blockedBy === 'grounding-coil' || outcome.blockedBy === 'last-orbit' && outcome.damage === 0 };
   }
 
   protected override handleExclusiveInput(input: ReturnType<InputController['read']>): boolean {
@@ -256,6 +298,24 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   protected override onB06ContactResult(target: B06CombatTarget, result: MoveContactResult, move: B03MoveDefinition, event: CombatEvent, guardBreak: boolean): void {
+    if (target.id.startsWith('b08-boss:') && this.activeBoss) {
+      const duplicateKey = b08BossContactKey(this.activeAudioSequence, event.actionId, event.eventId, this.activeBoss.id);
+      if (this.bossDamageIds.has(duplicateKey)) return;
+    }
+    const enemyForEffects = target.id.startsWith('b08-boss:') ? null : this.director.enemies.find((candidate) => candidate.id === target.id);
+    const contactEffect = this.b09Mode ? resolveB09Contact(this.runBuild, this.b09Runtime, {
+      nowMs: this.runElapsedMs, actionId: event.actionId, targetId: target.id, moveId: move.id, moveDamage: move.damage,
+      knockbackY: move.knockbackY, result, guardBreak, interrupted: enemyForEffects?.phase === 'telegraph' || enemyForEffects?.phase === 'commit',
+      closeRange: Math.abs((this.combat?.playerX ?? 0) - target.x) <= 56,
+      targetAirborne: enemyForEffects ? enemyForEffects.y < (this.world?.groundTop ?? 241) - 28 : target.id.startsWith('b08-boss:'),
+      dawnrush: this.getB06PlayerFrame().dawnrush !== 'base',
+    }) : null;
+    if (contactEffect) {
+      this.b09Runtime = contactEffect.runtime;
+      if (contactEffect.resonanceGain) this.grantB09CombatResonance(contactEffect.resonanceGain);
+      if (contactEffect.dawnrushEnergy) this.grantB09DawnrushEnergy(contactEffect.dawnrushEnergy);
+      if (contactEffect.shieldPrimed) this.showBanner('GROUNDING COIL  /  PUNISH SHIELD READY');
+    }
     if (target.id.startsWith('b08-boss:')) {
       if (!this.activeBoss) return;
       const contactKey = b08BossContactKey(this.activeAudioSequence, event.actionId, event.eventId, this.activeBoss.id);
@@ -266,9 +326,10 @@ export class B07ExpeditionScene extends ChamberScene {
       }
       this.bossDamageIds.add(contactKey);
       const priorPhase = this.activeBoss.phase;
-      this.activeBoss = damageB08Boss(this.activeBoss, move.damage);
+      const actualDamage = move.damage + (contactEffect?.bonusDamage ?? 0);
+      this.activeBoss = damageB08Boss(this.activeBoss, actualDamage);
       this.playBossCue('strike');
-      this.logEvent({ type: this.activeBoss.phase === 'ko' ? 'boss-ko' : this.activeBoss.phase === 'phase-change' ? 'boss-phase-change' : 'boss-hit', bossId: this.activeBoss.id, move: move.id, damage: move.damage, hp: this.activeBoss.hp, phase: this.activeBoss.phase, priorPhase, atMs: event.atMs });
+      this.logEvent({ type: this.activeBoss.phase === 'ko' ? 'boss-ko' : this.activeBoss.phase === 'phase-change' ? 'boss-phase-change' : 'boss-hit', bossId: this.activeBoss.id, move: move.id, damage: actualDamage, upgradeBonus: contactEffect?.bonusDamage ?? 0, resonanceGain: contactEffect?.resonanceGain ?? 0, dawnrushEnergyEffect: contactEffect?.dawnrushEnergy ?? 0, hp: this.activeBoss.hp, phase: this.activeBoss.phase, priorPhase, atMs: event.atMs });
       if (this.activeBoss.phase === 'phase-change') this.playBossCue('phase');
       if (this.activeBoss.phase === 'ko' && !this.bossCleared.includes(this.activeBoss.id)) {
         this.bossCleared.push(this.activeBoss.id);
@@ -276,6 +337,7 @@ export class B07ExpeditionScene extends ChamberScene {
         this.route = { ...this.route, repairCharges: this.route.repairCharges + 1, resonance: this.route.resonance + 16 };
         this.grantB06Reward(1, 16, 18);
         this.playBossCue('ko');
+        if (this.b09Mode && !this.practiceBoss && (this.activeBoss.id === 'sundial-custodian' || this.activeBoss.id === 'spoolheart-regent')) this.openB09Offer(`boss:${this.activeBoss.id}`);
       }
       return;
     }
@@ -288,14 +350,18 @@ export class B07ExpeditionScene extends ChamberScene {
     }
     const wasThreatening = enemy.phase === 'telegraph' || enemy.phase === 'commit';
     const contactKind = guardBreak ? 'guard-break' : wasThreatening ? 'interrupt' : move.knockbackY < -55 ? 'stagger' : 'hit';
-    const updated = applyB06EnemyContact(enemy, contactKind, move.damage + (guardBreak ? 1 : 0), this.getB06PlayerFrame().facing * move.knockbackX);
+    const actualDamage = move.damage + (guardBreak ? 1 : 0) + (contactEffect?.bonusDamage ?? 0);
+    const knockback = Math.round(this.getB06PlayerFrame().facing * move.knockbackX * (contactEffect?.knockbackMultiplier ?? 1));
+    const updated = applyB06EnemyContact(enemy, contactKind, actualDamage, knockback);
     this.director = { ...this.director, enemies: this.director.enemies.map((candidate) => candidate.id === enemy.id ? updated : candidate) };
+    if (this.b09Mode && move.knockbackY < -55 && updated.hp > 0 && enemy.y >= (this.world?.groundTop ?? 241) - 30) this.b09Launches.set(enemy.id, { startY: enemy.y, launchVelocity: move.knockbackY, elapsedMs: 0 });
     this.spawnFx(guardBreak ? 'bastion-guard-break' : enemy.archetype === 'orbit-wisp' ? 'wisp-impact' : 'runner-impact', enemy.x, enemy.y, 64, 50, 220);
     if (updated.phase === 'ko') this.playCue('enemy-ko');
-    this.logEvent({ type: updated.phase === 'ko' ? 'enemy-ko' : contactKind, targetId: enemy.id, archetype: enemy.archetype, move: move.id, damage: move.damage + (guardBreak ? 1 : 0), hp: updated.hp, atMs: event.atMs });
+    this.logEvent({ type: updated.phase === 'ko' ? 'enemy-ko' : contactKind, targetId: enemy.id, archetype: enemy.archetype, move: move.id, damage: actualDamage, upgradeBonus: contactEffect?.bonusDamage ?? 0, resonanceGain: contactEffect?.resonanceGain ?? 0, dawnrushEnergyEffect: contactEffect?.dawnrushEnergy ?? 0, hp: updated.hp, atMs: event.atMs });
   }
 
-  protected override onB06ThreatEvent(event: { readonly sourceId: string; readonly result: 'hit' | 'dodged' | 'invulnerable'; readonly damage: number }): void {
+  protected override onB06ThreatEvent(event: { readonly sourceId: string; readonly result: 'hit' | 'dodged' | 'invulnerable' | 'blocked'; readonly damage: number }): void {
+    if (this.b09Mode && event.result === 'dodged') this.b09Runtime = resolveB09Dodge(this.runBuild, this.b09Runtime, this.runElapsedMs);
     this.logEvent({ type: `player-${event.result}`, sourceId: event.sourceId, damage: event.damage, hp: this.combatSnapshot()?.playerHp ?? 0 });
   }
 
@@ -306,11 +372,12 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   b07Snapshot(): {
-    seed: number; roomId: string | null; region: string | null; roomIndex: number; routeLength: number; choices: B07RouteState['choices'];
+    seed: number; roomId: string | null; region: string | null; roomIndex: number; routeLength: number; runElapsedMs: number; roomElapsedMs: number; choices: B07RouteState['choices'];
     visited: readonly string[]; repairCharges: number; resonance: number; playerHp: number; enemies: readonly { id: string; archetype: string; x: number; y: number; hp: number; phase: string }[];
     hazards: readonly { id: string; phase: string; progress: number }[]; menu: B07ChoiceId | null; rewardClaimed: boolean; reducedMotion: boolean;
     loadedTextures: number; missingTextures: string[]; result: 'victory' | 'defeat' | null; lastAudioCue: string; events: readonly Record<string, unknown>[];
-    b08: { enabled: boolean; practice: boolean; practiceBoss: B08BossId | null; activeBoss: B08BossId | null; hp: number; maxHp: number; phase: string | null; phaseMs: number; phaseNumber: number; pattern: B08BossPatternId | null; attackId: string | null; targetX: number | null; safeX: number | null; bossX: number | null; bossY: number | null; bossFrame: string; vulnerable: boolean; bossesCleared: readonly B08BossId[]; outcome: 'victory' | 'defeat' | null; lastAudioCue: string; vfxEnabled: boolean; loadedAssets: number; missingAssets: string[]; audioAssetsLoaded: number };
+    b08: { enabled: boolean; practice: boolean; practiceBoss: B08BossId | null; activeBoss: B08BossId | null; hp: number; maxHp: number; phase: string | null; phaseMs: number; postKoMs: number; phaseNumber: number; pattern: B08BossPatternId | null; attackId: string | null; targetX: number | null; safeX: number | null; bossX: number | null; bossY: number | null; bossFrame: string; vulnerable: boolean; bossesCleared: readonly B08BossId[]; outcome: 'victory' | 'defeat' | null; lastAudioCue: string; vfxEnabled: boolean; loadedAssets: number; missingAssets: string[]; audioAssetsLoaded: number };
+    b09: { enabled: boolean; version: number; build: RunBuildState; pendingSource: UpgradeChoiceSource | null };
   } {
     const expected = ['b07-sg-horizon', 'b07-sg-architecture', 'b07-vesper-horizon', 'b07-vesper-platform-long', 'b07-shardrunner-idle', 'b07-orbit-wisp-idle', 'b07-pressure-bastion-idle', 'b07-cantor-idle'];
     const missingTextures = expected.filter((key) => !this.textures.exists(key));
@@ -324,7 +391,7 @@ export class B07ExpeditionScene extends ChamberScene {
     const bossAudioKeys = this.b08Mode ? (Object.keys(bossAssets) as B08BossId[]).flatMap((id) => ['loop', 'tell', 'strike', 'phase', 'ko'].map((cue) => `b08-${id}-${cue}`)) : [];
     const missingBossAudio = bossAudioKeys.filter((key) => !this.cache.audio.exists(key));
     return {
-      seed: this.route.seed, roomId: this.room?.id ?? null, region: this.room?.region ?? null, roomIndex: this.route.roomIndex + (this.route.complete ? 0 : 1), routeLength: this.route.rooms.length,
+      seed: this.route.seed, roomId: this.room?.id ?? null, region: this.room?.region ?? null, roomIndex: this.route.roomIndex + (this.route.complete ? 0 : 1), routeLength: this.route.rooms.length, runElapsedMs: this.runElapsedMs, roomElapsedMs: this.roomElapsedMs,
       choices: this.route.choices, visited: [...this.route.visited], repairCharges: this.route.repairCharges, resonance: this.route.resonance,
       playerHp: this.combat?.playerHp ?? 0, enemies: this.director.enemies.map(({ id, archetype, x, y, hp, phase }) => ({ id, archetype, x: Math.round(x), y: Math.round(y), hp, phase })),
       hazards: [...this.roomHazardFrame].map(([id, frame]) => ({
@@ -336,7 +403,8 @@ export class B07ExpeditionScene extends ChamberScene {
       })),
       menu: this.menu?.choice ?? null, rewardClaimed: this.room ? this.route.rewarded.includes(this.room.id) : false, reducedMotion: this.reducedMotion,
       loadedTextures: expected.length - missingTextures.length, missingTextures, result: this.resultSent ? (this.b08Mode ? this.bossOutcome ?? 'defeat' : this.route.complete ? 'victory' : 'defeat') : null, lastAudioCue: this.lastB07AudioCue, events: [...this.eventLog],
-      b08: { enabled: this.b08Mode, practice: this.practiceBoss !== null, practiceBoss: this.practiceBoss, activeBoss: this.activeBoss?.id ?? null, hp: this.activeBoss?.hp ?? 0, maxHp: this.activeBoss?.maxHp ?? 0, phase: this.activeBoss?.phase ?? null, phaseMs: this.activeBoss?.phaseMs ?? 0, phaseNumber: this.activeBoss?.phaseNumber ?? 0, pattern: this.activeBoss?.pattern ?? null, attackId: this.activeBoss?.attackId ?? null, targetX: this.activeBoss?.targetX ?? null, safeX: this.activeBoss?.safeX ?? null, bossX: this.activeBoss?.x ?? null, bossY: this.activeBoss?.y ?? null, bossFrame: this.bossLastFrame, vulnerable: this.activeBoss ? b08BossIsVulnerable(this.activeBoss) : false, bossesCleared: [...this.bossCleared], outcome: this.bossOutcome, lastAudioCue: this.bossLastCue, vfxEnabled: this.bossVfxEnabled, loadedAssets: bossKeys.length - missingBossAssets.length, missingAssets: missingBossAssets, audioAssetsLoaded: bossAudioKeys.length - missingBossAudio.length },
+      b08: { enabled: this.b08Mode, practice: this.practiceBoss !== null, practiceBoss: this.practiceBoss, activeBoss: this.activeBoss?.id ?? null, hp: this.activeBoss?.hp ?? 0, maxHp: this.activeBoss?.maxHp ?? 0, phase: this.activeBoss?.phase ?? null, phaseMs: this.activeBoss?.phaseMs ?? 0, postKoMs: this.bossPostKoMs, phaseNumber: this.activeBoss?.phaseNumber ?? 0, pattern: this.activeBoss?.pattern ?? null, attackId: this.activeBoss?.attackId ?? null, targetX: this.activeBoss?.targetX ?? null, safeX: this.activeBoss?.safeX ?? null, bossX: this.activeBoss?.x ?? null, bossY: this.activeBoss?.y ?? null, bossFrame: this.bossLastFrame, vulnerable: this.activeBoss ? b08BossIsVulnerable(this.activeBoss) : false, bossesCleared: [...this.bossCleared], outcome: this.bossOutcome, lastAudioCue: this.bossLastCue, vfxEnabled: this.bossVfxEnabled, loadedAssets: bossKeys.length - missingBossAssets.length, missingAssets: missingBossAssets, audioAssetsLoaded: bossAudioKeys.length - missingBossAudio.length },
+      b09: { enabled: this.b09Mode, version: this.runBuild.version, build: this.runBuild, pendingSource: this.pendingB09Offer?.sourceId ?? null },
     };
   }
 
@@ -347,6 +415,9 @@ export class B07ExpeditionScene extends ChamberScene {
     this.damageTaken = 0;
     this.runElapsedMs = 0;
     this.eventLog = [];
+    this.runBuild = createRunBuild(seed);
+    this.b09Runtime = createB09CombatRuntime();
+    this.pendingB09Offer = null;
     this.activeBoss = null; this.bossCleared = []; this.bossOutcome = null; this.bossPostKoMs = 0; this.bossDamageIds.clear();
     this.route = initialB07Route(seed);
     this.resetB03Encounter();
@@ -516,6 +587,7 @@ export class B07ExpeditionScene extends ChamberScene {
     this.routeLabel = this.add.text(472, 8, '', { ...style, align: 'right', fontSize: '5px' }).setOrigin(1, 0).setScrollFactor(0).setDepth(46);
     this.vitalsLabel = this.add.text(8, 23, '', style).setScrollFactor(0).setDepth(46);
     this.objectiveLabel = this.add.text(472, 23, '', { ...style, align: 'right' }).setOrigin(1, 0).setScrollFactor(0).setDepth(46);
+    this.buildLabel = this.add.text(8, 39, '', { ...style, fontSize: '5px', color: '#a9d7c9' }).setScrollFactor(0).setDepth(46).setVisible(this.b09Mode);
     this.promptLabel = this.add.text(240, 236, '', { ...style, fontSize: '6px', backgroundColor: '#07131de8', padding: { x: 4, y: 3 }, align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(48);
     this.bannerLabel = this.add.text(240, 46, '', { ...style, color: '#fff1c8', backgroundColor: '#07131de8', padding: { x: 4, y: 3 }, align: 'center' }).setOrigin(.5, 0).setScrollFactor(0).setDepth(49).setAlpha(0);
   }
@@ -571,9 +643,19 @@ export class B07ExpeditionScene extends ChamberScene {
     this.route = collectB07Reward(this.route);
     this.roomReward?.setVisible(false);
     this.grantB06Reward(health, resonance, Math.min(28, resonance));
+    if (this.b09Mode) this.route = { ...this.route, repairCharges: this.route.repairCharges + fieldRecyclerRepair(this.runBuild, this.room.id) };
     this.playCue('shard-reward');
     this.showBanner(health > 0 && resonance > 0 ? `REPAIR +${health}  /  RESONANCE +${resonance}` : health > 0 ? `FIELD REPAIR +${health}` : `RESONANCE +${resonance}`);
     this.logEvent({ type: 'reward-claimed', roomId: this.room.id, repair: health, resonance, repairCharges: this.route.repairCharges, totalResonance: this.route.resonance });
+    if (this.b09Mode && (this.room.id === 'sg-copper-causeway' || this.room.id === 'sg-conduit-annex')) this.openB09Offer(`room:${this.room.id}`);
+  }
+
+  private openB09Offer(sourceId: UpgradeChoiceSource): void {
+    if (!this.b09Mode || this.practiceBoss || this.pendingB09Offer || this.runBuild.ledger.claimedSourceIds.includes(sourceId)) return;
+    this.pendingB09Offer = generateUpgradeOffer(this.runBuild, sourceId);
+    this.logEvent({ type: 'upgrade-offer-open', sourceId, drawIndex: this.pendingB09Offer.drawIndex, choices: this.pendingB09Offer.choices.map(({ id }) => id) });
+    window.dispatchEvent(new CustomEvent('crownflare:b09-choice-open', { detail: { offer: this.pendingB09Offer, build: this.runBuild } }));
+    this.emitState();
   }
 
   private roomCanExit(): boolean {
@@ -883,7 +965,7 @@ export class B07ExpeditionScene extends ChamberScene {
       const playerRect = combatantRect({ x: player.x, footY: player.y + player.height / 2, width: player.width, height: player.height, hp: player.hp });
       let result: ContactResult = isBlockedByRect(enemy.x, player.x, attack, this.getB06Blockers()) ? 'obstructed' : overlaps(attack, playerRect) ? 'hit' : 'miss';
       this.showEnemyStrike(enemy, event.action, event.facing);
-      let outcome: ContactResult | 'dodged' | 'invulnerable' = result;
+      let outcome: ContactResult | 'dodged' | 'invulnerable' | 'blocked' = result;
       if (outcome === 'hit') outcome = this.applyB06PlayerThreat(enemy.id, enemy.archetype === 'cantor' || enemy.archetype === 'pressure-bastion' ? 2 : 1, event.facing === 1 ? -1 : 1);
       const cue = enemy.archetype === 'cantor' ? 'cantor-sweep' : enemy.archetype === 'pressure-bastion' ? 'bastion-block' : 'runner-slash';
       if (outcome !== 'hit') this.playCue(cue);
@@ -948,6 +1030,22 @@ export class B07ExpeditionScene extends ChamberScene {
     }
   }
 
+  private stepB09Launches(deltaMs: number): void {
+    if (!this.b09Mode || this.b09Launches.size === 0) return;
+    const gravity = 820;
+    const launched = new Map(this.b09Launches);
+    this.director = { ...this.director, enemies: this.director.enemies.map((enemy) => {
+      const flight = launched.get(enemy.id);
+      if (!flight || enemy.hp <= 0) { launched.delete(enemy.id); return enemy; }
+      flight.elapsedMs += deltaMs;
+      const seconds = flight.elapsedMs / 1000;
+      const y = flight.startY + flight.launchVelocity * seconds + .5 * gravity * seconds * seconds;
+      if (seconds > .05 && y >= flight.startY) { launched.delete(enemy.id); return { ...enemy, y: flight.startY }; }
+      return { ...enemy, y };
+    }) };
+    this.b09Launches = launched;
+  }
+
   private enemyTexture(enemy: B06EnemyRuntime): string {
     const arch = enemy.archetype;
     if (arch === 'spindle-sentry') {
@@ -983,6 +1081,7 @@ export class B07ExpeditionScene extends ChamberScene {
     if (!this.room || !this.combat) return;
     const region = this.room.region === 'sunderglass-reach' ? 'SUNDERGLASS REACH' : 'VESPER LOOMWORKS';
     const routeNumber = Math.min(this.route.roomIndex + 1, this.route.rooms.length);
+    this.drawBuildSummary();
     this.roomLabel?.setText(`${region}  /  ${this.room.id.toUpperCase()}`);
     this.routeLabel?.setText(`ROOM ${routeNumber}/${this.route.rooms.length}  ·  SEED ${this.route.seed.toString(16).toUpperCase()}  ·  ${this.dawnrushSnapshot()?.form.toUpperCase() ?? 'BASE'}`);
     this.vitalsLabel?.setText(`IONA ${this.combat.playerHp}/5  ·  RESONANCE ${Math.floor(this.combat.resonance)}  ·  FIELD REPAIRS ${this.route.repairCharges}`);
@@ -1045,6 +1144,13 @@ export class B07ExpeditionScene extends ChamberScene {
     }
   }
 
+  private drawBuildSummary(): void {
+    if (!this.b09Mode || !this.buildLabel) return;
+    const active = Object.entries(this.runBuild.ranks).filter((entry): entry is [string, number] => typeof entry[1] === 'number' && entry[1] > 0);
+    const text = active.map(([id, rank]) => `${id.toUpperCase().replaceAll('-', ' ')} ${rank}`).join(' / ');
+    this.buildLabel.setText(text ? `RUN BUILD  /  ${text}` : 'RUN BUILD  /  NO ATTUNEMENTS YET').setVisible(true);
+  }
+
   private finish(result: 'victory' | 'defeat'): void {
     if (this.resultSent) return;
     this.resultSent = true;
@@ -1054,12 +1160,13 @@ export class B07ExpeditionScene extends ChamberScene {
       result, elapsedMs: this.runElapsedMs, damageTaken: this.damageTaken, repairCharges: this.route.repairCharges,
       resonance: this.route.resonance, visited: this.route.visited, choices: this.route.choices, seed: this.route.seed,
       b08BossBuilt: this.b08Mode, b08BossesCleared: [...this.bossCleared], b08Practice: this.practiceBoss !== null,
+      b09Enabled: this.b09Mode, b09Build: this.runBuild,
     } }));
     this.logEvent({ type: 'result', result, runElapsedMs: this.runElapsedMs, damageTaken: this.damageTaken, choices: this.route.choices });
     this.emitState();
   }
 
-  private emitState(): void { window.dispatchEvent(new CustomEvent('crownflare:b07-state', { detail: this.b07Snapshot() })); }
+  private emitState(): void { this.drawBuildSummary(); window.dispatchEvent(new CustomEvent('crownflare:b07-state', { detail: this.b07Snapshot() })); }
   private logEvent(event: Record<string, unknown>): void { this.eventLog.push({ ...event, elapsedMs: Math.round(this.runElapsedMs) }); if (this.eventLog.length > 180) this.eventLog.splice(0, this.eventLog.length - 180); }
 
   private trackRoom<T extends Phaser.GameObjects.GameObject>(object: T): T { this.roomObjects.push(object); return object; }
@@ -1077,6 +1184,7 @@ export class B07ExpeditionScene extends ChamberScene {
     this.bossSprite = undefined; this.bossEffectSprite = undefined; this.bossHud = undefined; this.bossBar = undefined; this.bossTell = undefined; this.bossOverlay = undefined;
     this.bossLastFrame = ''; this.bossActiveRects = [];
     this.director = createB06Director();
+    this.b09Launches.clear();
     this.setCombatBlockers([]);
   }
 

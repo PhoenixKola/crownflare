@@ -58,3 +58,10 @@
 - Added native ImageGen Vesper environment and platform/loom source masters, source/runtime hashes and a reproducible nearest-neighbour export/audit.
 - Fixed B06 move-target deduplication so a whiff does not consume the target's one contact, and scoped enemy support, movement bounds, hover lanes, guard height, projectile bounds and room blockers to typed room context.
 - Technical implementation does not clear the pending B05 art-motion/audio/controller gates, the B06 owner gate, or the separate B07 visual/audio/controller owner review.
+
+## 2026-11-08 / B09 run-build candidate
+
+- Added a development-only `/?b09=1` expedition with a deterministic versioned run-build model, 12 capped upgrades, exactly three seeded reward cards, one-claim source ledger, and a full route through Sundial Custodian, Spoolheart Regent, and Broken Meridian. B09 does not alter permanent save data or enable Stormhalo/Eclipse Warden.
+- The 12 original ImageGen upgrade icons are cropped from one retained source atlas, with provenance, SHA-256 manifest, and nearest-neighbor runtime exports. Full Chrome evidence is in `review-evidence/b09/`; the 133.2-second selected-gameplay WebM is ignored locally under `review-evidence/raw/` and is not committed.
+- Technical verification passed typecheck, 104 unit tests, asset audit, dependency audit, `qa:b09`, `qa:b08`, and `qa:b07`. B06's unchanged fixed Dawnrush gauntlet was rerun in headed Chrome 156 with an instrumented live-input driver; the latest attempt reached defeat after 63.648 seconds with 0/4 waves cleared and 5 hits from the Shardrunner. Across 36 Shardrunner strikes, the trace records 5 hits, 5 dodges, and 26 misses. The driver now captures losses and incoming Wisp projectiles, but the B06 result remains FAIL and the distinction between encounter fairness and remaining driver-strategy limits is unresolved.
+- B09 owner art-motion review, human audio listening, and physical-controller playtest remain pending. The regular production route remains unchanged; B09 requires the explicit development query.

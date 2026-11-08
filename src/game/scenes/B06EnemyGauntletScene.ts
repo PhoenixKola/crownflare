@@ -209,7 +209,7 @@ export class B06EnemyGauntletScene extends ChamberScene {
     this.emitEvent({ type: updated.phase === 'ko' ? 'enemy-ko' : contactKind, targetId: enemy.id, archetype: enemy.archetype, move: move.id, damage, hp: updated.hp, atMs: event.atMs, moveSequence: event.actionId });
   }
 
-  protected override onB06ThreatEvent(event: { readonly sourceId: string; readonly result: 'hit' | 'dodged' | 'invulnerable'; readonly damage: number }): void {
+  protected override onB06ThreatEvent(event: { readonly sourceId: string; readonly result: 'hit' | 'dodged' | 'invulnerable' | 'blocked'; readonly damage: number }): void {
     this.emitEvent({ type: `player-${event.result}`, sourceId: event.sourceId, damage: event.damage, hp: this.combatSnapshot()?.playerHp ?? 0 });
   }
 
