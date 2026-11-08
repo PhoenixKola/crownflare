@@ -1,0 +1,153 @@
+{
+  "milestone": "B08",
+  "generatedAt": "2026-11-08",
+  "nativeGenerator": "Codex ImageGen",
+  "toolOutputId": "Not exposed by the image generation tool",
+  "modelVersion": "Not exposed by the image generation tool",
+  "notes": [
+    "The first canonical candidate for each boss was retained as a source-guidance reference; it contained a rendered checker pattern. A second native generation with transparent_background=true is the selected canonical master source.",
+    "Action sheets were generated from the first canonical candidate and reviewed against the selected master. Nine cells per sheet were cropped into runtime frames, nearest-neighbor scaled and alpha-cleaned.",
+    "The runtime masters and action sheets are candidates. Owner approval and expert pixel-art review remain pending. Runtime left-facing poses use a horizontal flip of the generated right-facing poses; separately generated left-facing sheets were not requested.",
+    "Three boss-specific transparent ImageGen effect atlases were added for attacks, lane tells and recovery weak points. First attempts had opaque white backgrounds and were rejected; the corrected transparent outputs below are the selected sources. Runtime VFX remain supplemental to the persistent geometry telegraphs, and reduced motion/VFX-off hide them without removing gameplay tells."
+  ],
+  "assets": [
+    {
+      "boss": "sundial-custodian",
+      "role": "initial canonical identity candidate",
+      "file": "art-source/bosses/b08/sundial-custodian/canonical-master.png",
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Create a single original videogame boss canonical sprite asset, transparent alpha background. Sundial Custodian: a floating asymmetrical radial observatory machine, broad split sundial ring behind shoulders, one wedge missing, uneven copper and brass struts, bone ceramic body, amber glass vanes, small bright cyan-white aperture eye at the center. Not humanoid armor or a franchise design. Full body isolated and centered, front three-quarter view facing right, folded vanes in neutral ready pose, distinctive pure silhouette, premium 16-bit pixel-art, crisp chunky pixel clusters, no gradients/no text/no scenery/no cast shadow, sprite at readable actual game scale with breathing transparent margins."
+    },
+    {
+      "boss": "spoolheart-regent",
+      "role": "initial canonical identity candidate",
+      "file": "art-source/bosses/b08/spoolheart-regent/canonical-master.png",
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "A single original premium pixel-art videogame boss character on clean transparent alpha background. Spoolheart Regent: tall floating offset spool-core automaton, angular jade-green/petrol-blue mechanism, two asymmetric articulated shuttle arms, long hanging pearl-white luminous threads, small brass fittings, low center of gravity, unmistakably vertical spindle silhouette, not a radial clock. Full body centered, front three-quarter view facing right, ready stance with shuttles lowered, 16-bit pixel-art clusters and crisp pixel edges, 80-pixel gameplay readability, no text, no scenery, no shadow, no border, isolated sprite with transparent margins."
+    },
+    {
+      "boss": "broken-meridian",
+      "role": "initial canonical identity candidate",
+      "file": "art-source/bosses/b08/broken-meridian/canonical-master.png",
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "A single original final boss sprite source for a premium pixel-art action game, clean transparent alpha background. The Broken Meridian: non-human suspended world-machine, one bright unstable central vertical axis with exactly three misaligned orbiting angular plates (not a ring or sun), wide visible unstable gap across the core, interlocking day/night mechanisms with distinct cool navy and warm ivory/brass surfaces, small cyan and gold light splits, floating vertical appendage segments, dramatic asymmetrical silhouette that can evolve as plates separate. Full body centered in a readable 80-pixel game-scale sprite, frontal three-quarter view facing right, idle phase one configuration, crisp 16-bit pixel clusters and hard pixel edges, no humanoid figure, no dragon, no text, no scenery, no ground/shadow, generous transparent margin."
+    },
+    {
+      "boss": "sundial-custodian",
+      "role": "canonical master selected; alpha source",
+      "file": "art-source/bosses/b08/sundial-custodian/canonical-master-v2.png",
+      "transparentBackground": true,
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Make a clean isolated transparent-alpha canonical master sprite of this exact Sundial Custodian design. Preserve the same broken radial observatory silhouette, single missing split-sundial wedge, bone ceramic core, copper struts, amber vanes and cyan aperture eye. One centered full-body sprite, front three-quarter facing right, neutral idle pose, true crisp 16-bit pixel-art clusters, no checkerboard, no cast shadow, no scenery, no text. Keep generous transparent margins."
+    },
+    {
+      "boss": "spoolheart-regent",
+      "role": "canonical master selected; alpha source",
+      "file": "art-source/bosses/b08/spoolheart-regent/canonical-master-v2.png",
+      "transparentBackground": true,
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Create a canonical transparent-alpha master sprite of exactly this Spoolheart Regent design. Preserve the tall offset jade/petrol spool-core, two asymmetrical articulated shuttle arms, visible pearl-white hanging thread, brass joints and low ready posture. One centered full-body boss sprite facing right in a front three-quarter angle, same proportions, premium crisp 16-bit pixel-art clusters. No checkerboard, no backdrop, no floor, no text, no cast shadow, generous transparent margin."
+    },
+    {
+      "boss": "broken-meridian",
+      "role": "canonical master selected; alpha source",
+      "file": "art-source/bosses/b08/broken-meridian/canonical-master-v2.png",
+      "transparentBackground": true,
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Create a canonical transparent-alpha master sprite of exactly this Broken Meridian design. Preserve the non-human suspended central vertical axis, exactly three misaligned day/night plates and unstable luminous gap; use interlocked amber/brass and navy/petrol halves. One centered full-body pixel-art boss, same silhouette and proportions, front three-quarter facing right, phase-one idle configuration, crisp 16-bit game sprite clusters. Do not create a dragon or person. No checkerboard, backdrop, ground, shadow or text; generous transparent margin."
+    },
+    {
+      "boss": "sundial-custodian",
+      "role": "nine-pose action sheet",
+      "file": "art-source/bosses/b08/sundial-custodian/action-sheet.png",
+      "referencedImage": "art-source/bosses/b08/sundial-custodian/canonical-master.png",
+      "transparentBackground": true,
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Using the provided canonical Sundial Custodian as the exact identity reference, generate a true videogame sprite sheet on transparent background: exactly 3 columns by 3 rows of equal square cells with consistent centered scale, no labels, no borders, no gaps. Preserve the same radial broken sundial silhouette, copper/bone/amber palette, core placement, limb count and proportions in every cell. Row 1: calm hover idle, ready with vanes opening, Glassline Sweep wind-up with reflective vanes pulled sideways. Row 2: Glassline Sweep extreme committed pose, Zenith Stamp lifted high, Zenith Stamp impact/recovery. Row 3: phase 2 silhouette with ring tilted, hurt/stagger aperture dimmed, compact defeated collapse with broken vanes. Keep all nine poses clear and non-overlapping inside their own cells, crisp 16-bit pixel art at coherent pixel scale, same view/facing right. Real distinct redrawn pose changes, not simple rotations/translations. Use no checkerboard or scenery; preserve alpha."
+    },
+    {
+      "boss": "spoolheart-regent",
+      "role": "nine-pose action sheet",
+      "file": "art-source/bosses/b08/spoolheart-regent/action-sheet.png",
+      "referencedImage": "art-source/bosses/b08/spoolheart-regent/canonical-master.png",
+      "transparentBackground": true,
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Create an actual videogame action sprite sheet using the provided Spoolheart Regent art as the fixed identity reference. Exactly 3 by 3 evenly sized square cells, transparent alpha, no words or borders. Keep identical tall offset spool core, jade/petrol plates, two asymmetrical shuttle arms, brass pivots, pearl luminous threads in every cell; do not redesign into an animal or person. Each row-major cell is a distinct readable full-body pixel-art pose at the same scale: idle, low ready stance, Loom Lash wind-up, horizontal shuttle lash at contact, Thread Drop overhead pose, anchored thread-drop recovery, Spindle Rewind pulled inward, phase 2 extended silhouette with brighter core, hurt/defeat folded collapse. Same front 3/4 view facing right, consistent proportions, crisp dark pixel contour, clear separation between every cell, no checkerboard, no scenery."
+    },
+    {
+      "boss": "broken-meridian",
+      "role": "nine-pose action sheet",
+      "file": "art-source/bosses/b08/broken-meridian/action-sheet.png",
+      "referencedImage": "art-source/bosses/b08/broken-meridian/canonical-master.png",
+      "transparentBackground": true,
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Use the supplied Broken Meridian art as the exact visual identity and create a clean 3 by 3 videogame sprite sheet, nine equal square cells, transparent alpha, no words or cell borders. Keep the non-human suspended central vertical axis, three misaligned orbiting plates and the visible unstable day/night gap consistent in every cell; no dragon, humanoid, sun disk, or extra plates. Nine distinct full-body pixel-art key poses: (1) calm phase-one alignment, (2) Meridian Cleave warning with plates tilting, (3) cross-room sweep at contact leaving a visible open gap, (4) afterglow lane attack with plates rotating, (5) core exposed and vulnerable, (6) phase transition plates separating, (7) phase-two alignment with cool and warm halves split, (8) hurt/stagger plates recoiling, (9) defeat set-piece collapsing inward. Maintain same scale and view across cells, crisp 16-bit pixel clusters, high contrast silhouette, clearly separated cells, no scenery."
+    },
+    {
+      "boss": "sundial-custodian",
+      "role": "arena background",
+      "file": "art-source/bosses/b08/sundial-custodian/arena-background.png",
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Create an original 16-bit pixel-art side-scrolling boss arena background asset, panoramic 16:9, no characters, no text, full bleed. Sunderglass Reach / Sundial Custodian stage: abandoned observatory chamber at noon, warm copper and ochre palette, broken radial architecture and monumental split sundial behind a clear floor-level combat lane, luminous amber glass windows, a narrow readable sunbeam path, deep navy distance sky, strong silhouette separation for foreground boss and Iona. Premium hand-crafted pixel clusters, crisp pixel edge treatment, layered atmospheric depth, carefully composed for 480x270 gameplay crop with center clear for combat."
+    },
+    {
+      "boss": "spoolheart-regent",
+      "role": "arena background",
+      "file": "art-source/bosses/b08/spoolheart-regent/arena-background.png",
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Original panoramic premium 16-bit pixel-art side-scrolling boss arena background, 16:9, no characters and no text. Spoolheart Regent's Night-Side Vesper Loomworks chamber: oxidized jade and petrol blue-black machinery, suspended loom beams and vertical thread rails, pearl-white cable light, brass shuttle stations, one large spool-like landmark in background, a broad open lower combat floor with distinct readable empty left/right dodge lanes, calm but dangerous atmosphere. Pixel-art only, crisp chunky pixels, depth layers, 480x270 game composition, avoid excessive glow that would hide silhouettes."
+    },
+    {
+      "boss": "broken-meridian",
+      "role": "arena background",
+      "file": "art-source/bosses/b08/broken-meridian/arena-background.png",
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Create an original dramatic panoramic 16-bit pixel-art side-scrolling final boss arena background, 16:9, no character, no text. The Broken Meridian's suspended end-chamber where Sunderglass copper/amber light meets Vesper navy/petrol night through a cracked central vertical spindle, three vast misaligned distant plates hanging at different heights, an unstable bright gap down the middle, shattered bridges framing a broad safe horizontal combat floor. High contrast day/night split, carefully restrained glow and crisp pixel clusters, strong silhouette space for foreground sprites, 480x270 gameplay composition, not a generic castle or space void."
+    },
+    {
+      "boss": "sundial-custodian",
+      "role": "three-effect transparent combat VFX atlas",
+      "file": "art-source/bosses/b08/sundial-custodian/vfx-sheet.png",
+      "referencedImage": "art-source/bosses/b08/sundial-custodian/canonical-master-v2.png",
+      "generatorOutputPath": "exec-cd27056a-8387-456b-bc17-d09553bdaf4c.png",
+      "transparentBackground": true,
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Transparent-background 3-cell horizontal pixel-art atlas of three separate combat VFX for the referenced Sundial Custodian design. Effects only, no boss body, no scenery, no text. Three equal square panels with wide transparent gutters and no cell borders. Panel 1: narrow bright amber reflective glass sweep arc with sparse copper sparks. Panel 2: a vertical noon sunbeam impact ending in a compact ochre ground shock ring. Panel 3: a cyan-white aperture weak-point pulse with a small bone-gold star. Crisp sharp pixel clusters with restrained glow, readable at 96 pixels. Outside each effect artwork must be fully transparent, including all whitespace."
+    },
+    {
+      "boss": "spoolheart-regent",
+      "role": "three-effect transparent combat VFX atlas",
+      "file": "art-source/bosses/b08/spoolheart-regent/vfx-sheet.png",
+      "referencedImage": "art-source/bosses/b08/spoolheart-regent/canonical-master-v2.png",
+      "generatorOutputPath": "exec-8c90e618-210e-4e8c-b8f7-184071be4d95.png",
+      "transparentBackground": true,
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Transparent-background horizontal 3-cell pixel-art atlas of Spoolheart Regent combat VFX only, matching the referenced jade/petrol, pearl-thread and brass design. Three equal square panels, no body, no scenery, no text, no checkerboard or panel lines. Panel 1: fast horizontal jade shuttle lash with one bright pearl-white thread arc. Panel 2: hanging pearl filament and compact brass-ring floor anchor for a warned Thread Drop. Panel 3: inward petrol-blue spindle rewind vortex with a clear open center. Sparse pixels, crisp hard edges, controlled glow, readable at 96 pixels; every empty area fully transparent."
+    },
+    {
+      "boss": "broken-meridian",
+      "role": "three-effect transparent combat VFX atlas",
+      "file": "art-source/bosses/b08/broken-meridian/vfx-sheet.png",
+      "referencedImage": "art-source/bosses/b08/broken-meridian/canonical-master-v2.png",
+      "generatorOutputPath": "exec-d651db62-3b40-4a55-b7ff-6380430383c7.png",
+      "transparentBackground": true,
+      "toolOutputId": "Not exposed",
+      "modelVersion": "Not exposed",
+      "prompt": "Transparent-background horizontal 3-cell pixel-art atlas of Broken Meridian combat VFX only. Three equal square effect panels with transparent gutters; no boss body, scenery, text, checkerboard, or border. Panel 1: readable horizontal Meridian Cleave sweep split into warm ivory-gold and cool navy-cyan blades with a visible safe gap. Panel 2: two separated horizontal Afterglow bands, one gold and one blue, with clear spacing. Panel 3: restrained unstable central-core exposure pulse, day/night rays around a bright vertical seam. Crisp clusters, tightly controlled glow, transparent outside each effect, readable at 96 pixels, palette consistent with the referenced final boss."
+    }
+  ]
+}

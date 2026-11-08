@@ -240,7 +240,7 @@ export class B06EnemyGauntletScene extends ChamberScene {
   b06Snapshot(): {
     phase: B06EncounterPhase; wavesCleared: number; rewardClaimed: boolean; damageTaken: number; elapsedMs: number;
     playerHp: number; resonance: number; dawnrush: ReturnType<ChamberScene['dawnrushSnapshot']>;
-    enemies: Array<{ id: string; archetype: B06Archetype; x: number; y: number; hp: number; maxHp: number; facing: -1 | 1; phase: string; action: string | null }>;
+    enemies: Array<{ id: string; archetype: B06Archetype; x: number; y: number; hp: number; maxHp: number; facing: -1 | 1; phase: string; phaseMs: number; action: string | null; actionFacing: -1 | 1; actionHit: boolean }>;
     projectiles: Array<{ id: string; ownerId: string; x: number; y: number; lifeMs: number; ageMs: number }>;
     audioUnlocked: boolean; audioEnabled: boolean; lastAudioCue: string; vfxEnabled: boolean; reducedMotion: boolean;
     loadedTextures: number; missingTextures: string[]; activeTransientEffects: number; eventCount: number; waveClearDelayMs: number;
@@ -253,7 +253,7 @@ export class B06EnemyGauntletScene extends ChamberScene {
       phase: this.flow.phase, wavesCleared: this.flow.wavesCleared, rewardClaimed: this.flow.rewardClaimed,
       damageTaken: this.flow.damageTaken, elapsedMs: Math.round(this.flow.elapsedMs), playerHp: combat.playerHp,
       resonance: combat.resonance, dawnrush: this.dawnrushSnapshot(),
-      enemies: this.director.enemies.map(({ id, archetype, x, y, hp, maxHp, facing, phase, action }) => ({ id, archetype, x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, hp, maxHp, facing, phase, action })),
+      enemies: this.director.enemies.map(({ id, archetype, x, y, hp, maxHp, facing, phase, phaseMs, action, actionFacing, actionHit }) => ({ id, archetype, x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, hp, maxHp, facing, phase, phaseMs: Math.round(phaseMs), action, actionFacing, actionHit })),
       projectiles: this.director.projectiles.map(({ id, ownerId, x, y, lifeMs, ageMs }) => ({ id, ownerId, x, y, lifeMs, ageMs })),
       audioUnlocked: this.audioUnlocked, audioEnabled: this.b06AudioPermitted, lastAudioCue: this.b06LastAudioCue,
       vfxEnabled: combat.vfxEnabled, reducedMotion: combat.reducedMotion,

@@ -1,0 +1,474 @@
+{
+  "milestone": "B08",
+  "sourceRule": "Native ImageGen masters and reference-guided action sheets; runtime frames are derived from retained PNG sources.",
+  "bosses": {
+    "sundial-custodian": {
+      "canonicalSource": "art-source/bosses/b08/sundial-custodian/canonical-master-v2.png",
+      "canonicalSourceSha256": "6fd0f5e8e31478527d219158fe5fa5ad4d4c53c47fe2f6c4d7a65a20af220ef7",
+      "retainedFirstMasterCandidate": "art-source/bosses/b08/sundial-custodian/canonical-master.png",
+      "retainedFirstMasterSha256": "956f25df727b2cbf4bc3d36024dc43ed028b42f9eca587bf20b1995c3db38f63",
+      "actionSheetSource": "art-source/bosses/b08/sundial-custodian/action-sheet.png",
+      "actionSheetSha256": "c4c4f2fd60e3a18afd8d6bef98c1f09dcfcd06280d3614e5f6ea63139aaa85bc",
+      "vfxSheetSource": "art-source/bosses/b08/sundial-custodian/vfx-sheet.png",
+      "vfxSheetSha256": "35da59530eeb10dd8e410173386e417d5f245f019ccea86133f65cd1fe072dc4",
+      "effects": [
+        "vfx-glassline-sweep",
+        "vfx-zenith-stamp",
+        "vfx-aperture-pulse"
+      ],
+      "arenaSource": "art-source/bosses/b08/sundial-custodian/arena-background.png",
+      "arenaSourceSha256": "f872f76827efc1acd808f3e5277a10dc827f58aef973e6f75d8d2c4b578cf1d4",
+      "poses": [
+        "idle",
+        "ready",
+        "sweep-telegraph",
+        "sweep",
+        "stamp-telegraph",
+        "stamp",
+        "phase-2",
+        "hurt",
+        "ko"
+      ],
+      "runtimeFiles": {
+        "public/assets/bosses/b08/sundial-custodian/canonical-master.png": {
+          "sha256": "96959333b6f93fa4107dc83eafde493a56e3f9a7c0267b3967740285e7226d8a",
+          "bytes": 27067,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/arena.png": {
+          "sha256": "2c178c0e522c2faba71d31126bc97b7fca84754a15d4ae11d6146519fe3298c9",
+          "bytes": 183595,
+          "size": [
+            480,
+            270
+          ],
+          "mode": "RGB"
+        },
+        "public/assets/bosses/b08/sundial-custodian/idle.png": {
+          "sha256": "171849ec6a40d9cea4f1e6d621ade6862c8e6d946ac931bfbd541498218e7a97",
+          "bytes": 27090,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/ready.png": {
+          "sha256": "0b2c15c6081acafdac4df8781aa3e3084d06e7b80d05c20aa9e4866d306ca4fc",
+          "bytes": 27139,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/sweep-telegraph.png": {
+          "sha256": "7cf52d8d70675efc1f4c3e2e951cf4d013af7b587828fd172866d7ca99ac5adb",
+          "bytes": 25139,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/sweep.png": {
+          "sha256": "b584eb9698c96214d9f39e33390f7deb96e4ad7701217c02037115574afac0b4",
+          "bytes": 31347,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/stamp-telegraph.png": {
+          "sha256": "5b0a03f0dd7710c0cffe4cfbece720a46d3788c6c701ca2b3f2c088409d8150d",
+          "bytes": 20600,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/stamp.png": {
+          "sha256": "4caa4434f71cd56ec56b1673bf95053029b16c27884ca29d3099c41d43609c16",
+          "bytes": 31066,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/phase-2.png": {
+          "sha256": "50e59d78df0c63881b5d8417d221df25f2a5aa0510f6f8a0c62d9fbb00b81518",
+          "bytes": 30053,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/hurt.png": {
+          "sha256": "1e61da7f646a4df38d21c056c6bdf52f426e0c756e31bf807e3eec62806c5746",
+          "bytes": 26094,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/ko.png": {
+          "sha256": "70b769f7e0883658d8e56cdbb0b412abd132af26bf40c7df8cc5e2dc913666aa",
+          "bytes": 27847,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/vfx-glassline-sweep.png": {
+          "sha256": "9123c4c426c2f0bebb7452c0df8a03db71a506433e5ace430e2ab4f132adf98e",
+          "bytes": 7026,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/vfx-zenith-stamp.png": {
+          "sha256": "cd65f740472363a6ec75bbde8a16584e49358271f736e422b1a77928ee11c39a",
+          "bytes": 11965,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/sundial-custodian/vfx-aperture-pulse.png": {
+          "sha256": "eaf44ddaa89dd1365fefa78c505e00172086f3116fc9622a735a8f5d1a226715",
+          "bytes": 11421,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        }
+      }
+    },
+    "spoolheart-regent": {
+      "canonicalSource": "art-source/bosses/b08/spoolheart-regent/canonical-master-v2.png",
+      "canonicalSourceSha256": "85590e6d7723a3d2756805c788829aed81cf96f1fe32a578b06e3e161b09c843",
+      "retainedFirstMasterCandidate": "art-source/bosses/b08/spoolheart-regent/canonical-master.png",
+      "retainedFirstMasterSha256": "a9939016f5d826f5988b851623afe02797c91c4f8bc846da5b23de0c91d6850d",
+      "actionSheetSource": "art-source/bosses/b08/spoolheart-regent/action-sheet.png",
+      "actionSheetSha256": "ea3bd978dac8d182966ecace9f396a779f827c0d3627eec4a69b1a8879f17b43",
+      "vfxSheetSource": "art-source/bosses/b08/spoolheart-regent/vfx-sheet.png",
+      "vfxSheetSha256": "15efcb80d8003e8169dbcfd0a6178c630f9bf1f0c2b0fd2d8c418757398a57d0",
+      "effects": [
+        "vfx-loom-lash",
+        "vfx-thread-drop",
+        "vfx-spindle-rewind"
+      ],
+      "arenaSource": "art-source/bosses/b08/spoolheart-regent/arena-background.png",
+      "arenaSourceSha256": "dad783c70683aed6c033d993e182dab21e4fe8cc9782f581b9e8dfbc9b4216d5",
+      "poses": [
+        "idle",
+        "ready",
+        "lash-telegraph",
+        "lash",
+        "thread-telegraph",
+        "thread-drop",
+        "rewind",
+        "phase-2",
+        "ko"
+      ],
+      "runtimeFiles": {
+        "public/assets/bosses/b08/spoolheart-regent/canonical-master.png": {
+          "sha256": "af8b735129beac503a585ccf83a735e96b323e8d956503b50ad4b6a021708cc0",
+          "bytes": 25293,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/arena.png": {
+          "sha256": "f66e16b96df8112e35fb39fe1d3de8c6b3e1fec1f66b647207fbfd3aa4753930",
+          "bytes": 199083,
+          "size": [
+            480,
+            270
+          ],
+          "mode": "RGB"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/idle.png": {
+          "sha256": "0413e88e9c52b6ec4a5fcf77a352b953e70eb151beaa3098d3448bee08acd888",
+          "bytes": 23346,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/ready.png": {
+          "sha256": "03f695c179280c73c8674d0cf663a93580bf83430d8a159e136ceacae55e8990",
+          "bytes": 22460,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/lash-telegraph.png": {
+          "sha256": "6965e03b722dc1722c8f849395bbc7f15a97bc6820a6e3f76b7930eb4ddce347",
+          "bytes": 24139,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/lash.png": {
+          "sha256": "370a6d9fc81e0ba7a0d2c8228b73590a70e7148037fac0d36cb568aed1235a96",
+          "bytes": 23484,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/thread-telegraph.png": {
+          "sha256": "b17f728d5beacaaa6adf1e13ee4f085b0958f7b481260af9b55f031e7cde6489",
+          "bytes": 25591,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/thread-drop.png": {
+          "sha256": "446d616e5e90c9aa6478476f6e75d8f0f2172d35084b7da351485c81caabfcaa",
+          "bytes": 27579,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/rewind.png": {
+          "sha256": "e47b5e914b4e85095c259f31bcb167f2bdffde1100b9a8211352880ae9d2a011",
+          "bytes": 19266,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/phase-2.png": {
+          "sha256": "328b89d4932f15e7b2e26827aca2b5b9a51582da8844982928fbfd0972f8919d",
+          "bytes": 34009,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/ko.png": {
+          "sha256": "1c602ad5cc2c1683bb5448586946c6abf5745366b738d8d2b4dc4a4a9c86e8ba",
+          "bytes": 21829,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/vfx-loom-lash.png": {
+          "sha256": "b24f3bbd51b365e45c1de04bbd2e43ba4dc7bc733beef2579bf0c81a3d7b50ce",
+          "bytes": 15029,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/vfx-thread-drop.png": {
+          "sha256": "b35a16a5b6bbdf78495c4ff0ad8b3298cde337326645773d89605f2699c5224b",
+          "bytes": 22005,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/spoolheart-regent/vfx-spindle-rewind.png": {
+          "sha256": "71c6ca31099e4dbf211c80a05cbf421af8876763b713133d455ab15950f2e10b",
+          "bytes": 36191,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        }
+      }
+    },
+    "broken-meridian": {
+      "canonicalSource": "art-source/bosses/b08/broken-meridian/canonical-master-v2.png",
+      "canonicalSourceSha256": "bdae6213ab1d5ab557b8df4450bd21586dbf36ce799338acce1131ba8ad2de0c",
+      "retainedFirstMasterCandidate": "art-source/bosses/b08/broken-meridian/canonical-master.png",
+      "retainedFirstMasterSha256": "c927cf63c39452b10709536bb3587d769fbc5d63aca1b8402837d3fc912dcf51",
+      "actionSheetSource": "art-source/bosses/b08/broken-meridian/action-sheet.png",
+      "actionSheetSha256": "ebc9444a805f04180c7330921ab954cbc87ba0e002280d7bb30500acd74603b6",
+      "vfxSheetSource": "art-source/bosses/b08/broken-meridian/vfx-sheet.png",
+      "vfxSheetSha256": "e6620647494a626961ae3e07a1afadfeca6e0d4aa2a2a2ec46c9dd07c18ed47a",
+      "effects": [
+        "vfx-meridian-cleave",
+        "vfx-daybreak-afterglow",
+        "vfx-core-exposure"
+      ],
+      "arenaSource": "art-source/bosses/b08/broken-meridian/arena-background.png",
+      "arenaSourceSha256": "5ef456fd455ed29d49c86f1e2d9ab95b204ec6a16721a13a2e5e82fe6a3581b8",
+      "poses": [
+        "idle",
+        "cleave-telegraph",
+        "cleave",
+        "afterglow",
+        "core-exposed",
+        "phase-change",
+        "phase-2",
+        "hurt",
+        "ko"
+      ],
+      "runtimeFiles": {
+        "public/assets/bosses/b08/broken-meridian/canonical-master.png": {
+          "sha256": "90e01c47fbda3f918cb49a2f1f8421098b3d49ad952a7d457eed835ad108e771",
+          "bytes": 19772,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/arena.png": {
+          "sha256": "245b39dd11f238b1035eea32d6ffa082a659fffb38d803f3ec7a2839fcc1cf60",
+          "bytes": 180975,
+          "size": [
+            480,
+            270
+          ],
+          "mode": "RGB"
+        },
+        "public/assets/bosses/b08/broken-meridian/idle.png": {
+          "sha256": "a21ae562d79c1d0dcea9f2e1fc9175bba824defc18efed1769cb13fc083b37bc",
+          "bytes": 22370,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/cleave-telegraph.png": {
+          "sha256": "6110fdd828e1eb04cfbdad75f82c102e01c4ae161aa025004716f30d318268b3",
+          "bytes": 22717,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/cleave.png": {
+          "sha256": "4933c92bca5ff9b2f7c803d9ad0443db977291cf7a7d033ce1b8a33652af60db",
+          "bytes": 25602,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/afterglow.png": {
+          "sha256": "d143a7fa3791516d4c76c49b68d8eb09d5760be2b948c08410a05794e4a8785a",
+          "bytes": 25920,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/core-exposed.png": {
+          "sha256": "217329857f551ea28b4979d3a516ab688b086a8a7e091b768cebd71e5b5a8cc6",
+          "bytes": 24428,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/phase-change.png": {
+          "sha256": "8fd3507d0bda6646352502f8d074535f48342004441837487a342ba49951e297",
+          "bytes": 25480,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/phase-2.png": {
+          "sha256": "dcceec059d6b5eedef539d34b7f92c5fe5f2f4ee4d04e8cb7f705b08415dbe60",
+          "bytes": 23194,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/hurt.png": {
+          "sha256": "0895314ef5fc1651c039262ef3e409168cbd7e73de8b8e1cd2b9193dd82b6e6e",
+          "bytes": 21062,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/ko.png": {
+          "sha256": "ef2e188a9152dc2331ea5291fe182c1323a0e22ae72912881effcea24bdea05d",
+          "bytes": 19484,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/vfx-meridian-cleave.png": {
+          "sha256": "5f380b163adb4e9da297a475d0b28a00b17cfcd29274ab7019b71e27eb91c28b",
+          "bytes": 26411,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/vfx-daybreak-afterglow.png": {
+          "sha256": "24fca2b85dcf19009ac5dde86d413d2b499d34538dc443dc6b0cb522a44b248e",
+          "bytes": 20697,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        },
+        "public/assets/bosses/b08/broken-meridian/vfx-core-exposure.png": {
+          "sha256": "57405a5d3c7c22d314d2a517d2cd254036e8e2cc782362c8a55651a33e5aeaab",
+          "bytes": 23941,
+          "size": [
+            144,
+            144
+          ],
+          "mode": "RGBA"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "result": "PASS",
+  "boss": "spoolheart-regent",
+  "check": "real practice fight displays generated phase-two recovery sprite",
+  "phase": "recovery",
+  "phaseNumber": 2,
+  "bossFrame": "b08-spoolheart-regent-phase-2",
+  "screenshot": "review-evidence/b08/spoolheart-regent-phase-two.png"
+}

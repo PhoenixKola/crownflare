@@ -13,6 +13,10 @@ import { ChamberScene, type B03CombatSnapshot, type B06CombatTarget } from './Ch
 import type { ContactResult as MoveContactResult } from '../combat/b03Moves';
 import type { CombatEvent } from '../combat/sim';
 import type { InputController } from '../input/InputController';
+import { B08_BOSS_PROFILES, createB08Boss } from '../bosses/b08BossProfiles.ts';
+import { b08BossAttackRects, b08BossContactKey, b08BossIsVulnerable, damageB08Boss, stepB08Boss } from '../bosses/b08BossDirector.ts';
+import type { B08BossEvent, B08BossId, B08BossPatternId, B08BossRuntime, B08BossRect } from '../bosses/b08BossTypes.ts';
+import { bossForB08Room } from '../bosses/b08BossRoutes.ts';
 
 const AUDIO_CUES = ['runner-tell', 'runner-slash', 'wisp-charge', 'wisp-shot', 'wisp-impact', 'bastion-tell', 'bastion-block', 'bastion-break', 'cantor-sweep', 'cantor-pulse', 'enemy-ko', 'shard-reward', 'wave-clear'] as const;
 const ENEMY_STATES: Readonly<Record<B06Archetype, readonly string[]>> = {
@@ -74,13 +78,36 @@ export class B07ExpeditionScene extends ChamberScene {
   private eventLog: Array<Record<string, unknown>> = [];
   private lastB07AudioCue = 'none';
   private readonly worldSeed: number;
+  private readonly b08Mode: boolean;
+  private readonly practiceBoss: B08BossId | null;
+  private activeBoss: B08BossRuntime | null = null;
+  private bossSourceRoom = '';
+  private bossCleared: B08BossId[] = [];
+  private bossOutcome: 'victory' | 'defeat' | null = null;
+  private bossPostKoMs = 0;
+  private bossSprite?: Phaser.GameObjects.Image;
+  private bossEffectSprite?: Phaser.GameObjects.Image;
+  private bossHud?: Phaser.GameObjects.Text;
+  private bossBar?: Phaser.GameObjects.Graphics;
+  private bossTell?: Phaser.GameObjects.Graphics;
+  private bossOverlay?: Phaser.GameObjects.Graphics;
+  private bossAudio?: Phaser.Sound.BaseSound;
+  private bossLastFrame = '';
+  private bossLastCue = 'none';
+  private bossDamageIds = new Set<string>();
+  private bossActiveRects: readonly B08BossRect[] = [];
+  private bossVfxEnabled = true;
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, seed?: number) {
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, seed?: number, b08 = false) {
     super(onPauseRequested, onControllerState, { ionaPreview: true, b03Combat: true, b04: true, b05: true, b06: true, b07: true });
     const querySeed = Number(new URLSearchParams(window.location.search).get('seed'));
     this.worldSeed = seed ?? (Number.isFinite(querySeed) && querySeed !== 0 ? Math.trunc(querySeed) >>> 0 : 20261108);
+    this.b08Mode = b08;
+    const practice = new URLSearchParams(window.location.search).get('boss');
+    this.practiceBoss = b08 && (practice === 'sundial-custodian' || practice === 'spoolheart-regent' || practice === 'broken-meridian') ? practice : null;
     this.route = initialB07Route(this.worldSeed);
     this.reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    this.bossVfxEnabled = !this.reducedMotion;
   }
 
   override preload(): void {
@@ -99,6 +126,18 @@ export class B07ExpeditionScene extends ChamberScene {
     }
     for (const cue of AUDIO_CUES) this.load.audio(`b07-audio-${cue}`, `./assets/audio/b06/${cue}.wav`);
     this.load.audio('b07-audio-sunderglass', './assets/audio/b04/sunderglass-ambience.wav');
+    if (this.b08Mode) {
+      const bossFiles: Readonly<Record<B08BossId, readonly string[]>> = {
+        'sundial-custodian': ['canonical-master', 'idle', 'ready', 'sweep-telegraph', 'sweep', 'stamp-telegraph', 'stamp', 'phase-2', 'hurt', 'ko', 'vfx-glassline-sweep', 'vfx-zenith-stamp', 'vfx-aperture-pulse'],
+        'spoolheart-regent': ['canonical-master', 'idle', 'ready', 'lash-telegraph', 'lash', 'thread-telegraph', 'thread-drop', 'rewind', 'phase-2', 'ko', 'vfx-loom-lash', 'vfx-thread-drop', 'vfx-spindle-rewind'],
+        'broken-meridian': ['canonical-master', 'idle', 'cleave-telegraph', 'cleave', 'afterglow', 'core-exposed', 'phase-change', 'phase-2', 'hurt', 'ko', 'vfx-meridian-cleave', 'vfx-daybreak-afterglow', 'vfx-core-exposure'],
+      };
+      for (const [boss, files] of Object.entries(bossFiles) as [B08BossId, readonly string[]][]) {
+        for (const file of files) this.load.image(`b08-${boss}-${file}`, `./assets/bosses/b08/${boss}/${file}.png`);
+        this.load.image(`b08-${boss}-arena`, `./assets/bosses/b08/${boss}/arena.png`);
+        for (const cue of ['loop', 'tell', 'strike', 'phase', 'ko']) this.load.audio(`b08-${boss}-${cue}`, `./assets/audio/bosses/b08/${boss}/${cue}.wav`);
+      }
+    }
   }
 
   override create(): void {
@@ -106,14 +145,20 @@ export class B07ExpeditionScene extends ChamberScene {
     this.createHud();
     this.input.keyboard?.on('keydown', () => this.unlockAudio());
     this.input.on(Phaser.Input.Events.POINTER_DOWN, () => this.unlockAudio());
+    this.input.keyboard?.on('keydown-V', (event: KeyboardEvent) => {
+      if (!this.b08Mode || event.repeat) return;
+      this.bossVfxEnabled = !this.bossVfxEnabled && !this.reducedMotion;
+      this.emitState();
+    });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.shutdownRoom());
-    this.loadCurrentRoom();
+    if (this.practiceBoss) this.startBoss(this.practiceBoss, true);
+    else this.loadCurrentRoom();
     this.emitState();
   }
 
   override update(time: number, delta: number): void {
     super.update(time, delta);
-    if (this.menu || this.resultSent || !this.room || this.combat === null) return;
+    if (this.menu || this.resultSent || (!this.room && !this.activeBoss) || this.combat === null) return;
     const dt = Math.min(50, Math.max(0, delta));
     this.combat = this.combatSnapshot();
     if (!this.combat) return;
@@ -121,6 +166,14 @@ export class B07ExpeditionScene extends ChamberScene {
     this.roomElapsedMs += dt;
     if (this.combat.playerHp < this.lastPlayerHp) this.damageTaken += this.lastPlayerHp - this.combat.playerHp;
     this.lastPlayerHp = this.combat.playerHp;
+    if (this.activeBoss) {
+      this.stepBoss(dt);
+      this.syncBossPresentation();
+      this.drawBossHud();
+      if (this.combat.playerHp <= 0) this.finish('defeat');
+      this.emitState();
+      return;
+    }
     this.stepHazards(dt);
     this.stepEnemies(dt);
     this.syncEnemyPresentation();
@@ -132,7 +185,24 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   protected override handleExclusiveInput(input: ReturnType<InputController['read']>): boolean {
-    if (!this.menu) return false;
+    if (!this.menu) {
+      if (this.b08Mode && this.activeBoss && input.actions.interact) {
+        const hpBefore = this.combat?.playerHp ?? 0;
+        if (this.route.repairCharges > 0 && hpBefore > 0 && hpBefore < 5) {
+          const restored = this.restorePlayerHealth(1);
+          if (restored > 0) {
+            this.route = { ...this.route, repairCharges: this.route.repairCharges - 1 };
+            this.combat = this.combatSnapshot();
+            this.playCue('shard-reward');
+            this.showBanner('FIELD REPAIR  +1 HP');
+            this.logEvent({ type: 'boss-repair-used', bossId: this.activeBoss.id, hpBefore, hpAfter: hpBefore + restored, repairCharges: this.route.repairCharges });
+            this.drawBossHud(); this.emitState();
+          }
+        } else this.showBanner(this.route.repairCharges <= 0 ? 'NO FIELD REPAIRS' : 'IONA ALREADY AT FULL HEALTH');
+        return true;
+      }
+      return false;
+    }
     const axis = input.move.axis;
     if (Math.abs(axis) > .35 && this.priorMenuAxis === 0) this.menuIndex = (this.menuIndex + (axis < 0 ? -1 : 1) + this.menu.options.length) % this.menu.options.length;
     this.priorMenuAxis = Math.abs(axis) <= .2 ? 0 : Math.sign(axis);
@@ -154,6 +224,14 @@ export class B07ExpeditionScene extends ChamberScene {
       this.showBanner(!this.roomCanExit() ? 'CLEAR THE ROOM AND CLAIM ITS SHARD' : 'MOVE CLOSER TO THE THREAD GATE');
       return true;
     }
+    const insertedBoss = this.b08Mode ? bossForB08Room(this.room.id) : null;
+    if (insertedBoss) {
+      const clearedRoomId = this.room.id;
+      this.route = advanceB07Room(this.route);
+      this.logEvent({ type: 'room-cleared', roomId: clearedRoomId, routeIndex: this.route.roomIndex, choices: this.route.choices });
+      this.startBoss(insertedBoss);
+      return true;
+    }
     this.route = advanceB07Room(this.route);
     this.logEvent({ type: 'room-cleared', roomId: this.room.id, routeIndex: this.route.roomIndex, choices: this.route.choices });
     if (this.route.complete) { this.finish('victory'); return true; }
@@ -163,14 +241,44 @@ export class B07ExpeditionScene extends ChamberScene {
 
   protected override b06CombatTargets(): readonly B06CombatTarget[] {
     const player = this.getB06PlayerFrame();
-    return this.director.enemies.map((enemy) => {
+    const enemies = this.director.enemies.map((enemy) => {
       const profile = B06_ENEMY_PROFILES[enemy.archetype];
       const guarding = b06EnemyIsGuarding(enemy, player.x, 'light-1', player.y + player.height / 2);
       return { id: enemy.id, archetype: enemy.archetype, x: enemy.x, y: enemy.y, width: profile.width, height: profile.height, hp: enemy.hp, alive: enemy.hp > 0, guarding, guardBreakable: enemy.archetype === 'pressure-bastion' && guarding };
     });
+    if (!this.activeBoss) return enemies;
+    const profile = B08_BOSS_PROFILES[this.activeBoss.id];
+    return [...enemies, {
+      id: `b08-boss:${this.activeBoss.id}`, archetype: 'b08-boss', x: this.activeBoss.x, y: this.activeBoss.y,
+      width: profile.width, height: profile.height, hp: this.activeBoss.hp, alive: this.activeBoss.hp > 0,
+      guarding: !b08BossIsVulnerable(this.activeBoss),
+    }];
   }
 
   protected override onB06ContactResult(target: B06CombatTarget, result: MoveContactResult, move: B03MoveDefinition, event: CombatEvent, guardBreak: boolean): void {
+    if (target.id.startsWith('b08-boss:')) {
+      if (!this.activeBoss) return;
+      const contactKey = b08BossContactKey(this.activeAudioSequence, event.actionId, event.eventId, this.activeBoss.id);
+      if (this.bossDamageIds.has(contactKey)) return;
+      if (result !== 'hit') {
+        this.logEvent({ type: result === 'blocked' ? 'boss-armored' : result, bossId: this.activeBoss.id, move: move.id, atMs: event.atMs });
+        return;
+      }
+      this.bossDamageIds.add(contactKey);
+      const priorPhase = this.activeBoss.phase;
+      this.activeBoss = damageB08Boss(this.activeBoss, move.damage);
+      this.playBossCue('strike');
+      this.logEvent({ type: this.activeBoss.phase === 'ko' ? 'boss-ko' : this.activeBoss.phase === 'phase-change' ? 'boss-phase-change' : 'boss-hit', bossId: this.activeBoss.id, move: move.id, damage: move.damage, hp: this.activeBoss.hp, phase: this.activeBoss.phase, priorPhase, atMs: event.atMs });
+      if (this.activeBoss.phase === 'phase-change') this.playBossCue('phase');
+      if (this.activeBoss.phase === 'ko' && !this.bossCleared.includes(this.activeBoss.id)) {
+        this.bossCleared.push(this.activeBoss.id);
+        this.bossPostKoMs = 0;
+        this.route = { ...this.route, repairCharges: this.route.repairCharges + 1, resonance: this.route.resonance + 16 };
+        this.grantB06Reward(1, 16, 18);
+        this.playBossCue('ko');
+      }
+      return;
+    }
     const enemy = this.director.enemies.find((candidate) => candidate.id === target.id);
     if (!enemy) return;
     if (result !== 'hit') {
@@ -193,18 +301,28 @@ export class B07ExpeditionScene extends ChamberScene {
 
   override setLabAudioPaused(paused: boolean): void {
     super.setLabAudioPaused(paused);
-    if (paused) { this.ambience?.stop(); if (this.vesperGain && this.vesperContext) void this.vesperGain.gain.setTargetAtTime(0, this.vesperContext.currentTime, .04); }
-    else { this.startRegionAmbience(); if (this.vesperGain && this.vesperContext) void this.vesperGain.gain.setTargetAtTime(.018, this.vesperContext.currentTime, .18); }
+    if (paused) { this.ambience?.stop(); this.bossAudio?.pause(); if (this.vesperGain && this.vesperContext) void this.vesperGain.gain.setTargetAtTime(0, this.vesperContext.currentTime, .04); }
+    else { this.startRegionAmbience(); if (this.activeBoss && this.bossAudio && !this.bossAudio.isPlaying && !this.sound.locked) this.bossAudio.play(); else this.bossAudio?.resume(); if (this.vesperGain && this.vesperContext) void this.vesperGain.gain.setTargetAtTime(.018, this.vesperContext.currentTime, .18); }
   }
 
   b07Snapshot(): {
     seed: number; roomId: string | null; region: string | null; roomIndex: number; routeLength: number; choices: B07RouteState['choices'];
     visited: readonly string[]; repairCharges: number; resonance: number; playerHp: number; enemies: readonly { id: string; archetype: string; x: number; y: number; hp: number; phase: string }[];
     hazards: readonly { id: string; phase: string; progress: number }[]; menu: B07ChoiceId | null; rewardClaimed: boolean; reducedMotion: boolean;
-      loadedTextures: number; missingTextures: string[]; result: 'victory' | 'defeat' | null; lastAudioCue: string; events: readonly Record<string, unknown>[];
+    loadedTextures: number; missingTextures: string[]; result: 'victory' | 'defeat' | null; lastAudioCue: string; events: readonly Record<string, unknown>[];
+    b08: { enabled: boolean; practice: boolean; practiceBoss: B08BossId | null; activeBoss: B08BossId | null; hp: number; maxHp: number; phase: string | null; phaseMs: number; phaseNumber: number; pattern: B08BossPatternId | null; attackId: string | null; targetX: number | null; safeX: number | null; bossX: number | null; bossY: number | null; bossFrame: string; vulnerable: boolean; bossesCleared: readonly B08BossId[]; outcome: 'victory' | 'defeat' | null; lastAudioCue: string; vfxEnabled: boolean; loadedAssets: number; missingAssets: string[]; audioAssetsLoaded: number };
   } {
     const expected = ['b07-sg-horizon', 'b07-sg-architecture', 'b07-vesper-horizon', 'b07-vesper-platform-long', 'b07-shardrunner-idle', 'b07-orbit-wisp-idle', 'b07-pressure-bastion-idle', 'b07-cantor-idle'];
     const missingTextures = expected.filter((key) => !this.textures.exists(key));
+    const bossAssets: Readonly<Record<B08BossId, readonly string[]>> = {
+      'sundial-custodian': ['canonical-master', 'idle', 'ready', 'sweep-telegraph', 'sweep', 'stamp-telegraph', 'stamp', 'phase-2', 'hurt', 'ko', 'vfx-glassline-sweep', 'vfx-zenith-stamp', 'vfx-aperture-pulse', 'arena'],
+      'spoolheart-regent': ['canonical-master', 'idle', 'ready', 'lash-telegraph', 'lash', 'thread-telegraph', 'thread-drop', 'rewind', 'phase-2', 'ko', 'vfx-loom-lash', 'vfx-thread-drop', 'vfx-spindle-rewind', 'arena'],
+      'broken-meridian': ['canonical-master', 'idle', 'cleave-telegraph', 'cleave', 'afterglow', 'core-exposed', 'phase-change', 'phase-2', 'hurt', 'ko', 'vfx-meridian-cleave', 'vfx-daybreak-afterglow', 'vfx-core-exposure', 'arena'],
+    };
+    const bossKeys = this.b08Mode ? (Object.keys(bossAssets) as B08BossId[]).flatMap((id) => bossAssets[id].map((pose) => `b08-${id}-${pose}`)) : [];
+    const missingBossAssets = bossKeys.filter((key) => !this.textures.exists(key));
+    const bossAudioKeys = this.b08Mode ? (Object.keys(bossAssets) as B08BossId[]).flatMap((id) => ['loop', 'tell', 'strike', 'phase', 'ko'].map((cue) => `b08-${id}-${cue}`)) : [];
+    const missingBossAudio = bossAudioKeys.filter((key) => !this.cache.audio.exists(key));
     return {
       seed: this.route.seed, roomId: this.room?.id ?? null, region: this.room?.region ?? null, roomIndex: this.route.roomIndex + (this.route.complete ? 0 : 1), routeLength: this.route.rooms.length,
       choices: this.route.choices, visited: [...this.route.visited], repairCharges: this.route.repairCharges, resonance: this.route.resonance,
@@ -217,7 +335,8 @@ export class B07ExpeditionScene extends ChamberScene {
         ...(frame.y === undefined ? {} : { y: Number(frame.y.toFixed(1)) }),
       })),
       menu: this.menu?.choice ?? null, rewardClaimed: this.room ? this.route.rewarded.includes(this.room.id) : false, reducedMotion: this.reducedMotion,
-      loadedTextures: expected.length - missingTextures.length, missingTextures, result: this.resultSent ? (this.route.complete ? 'victory' : 'defeat') : null, lastAudioCue: this.lastB07AudioCue, events: [...this.eventLog],
+      loadedTextures: expected.length - missingTextures.length, missingTextures, result: this.resultSent ? (this.b08Mode ? this.bossOutcome ?? 'defeat' : this.route.complete ? 'victory' : 'defeat') : null, lastAudioCue: this.lastB07AudioCue, events: [...this.eventLog],
+      b08: { enabled: this.b08Mode, practice: this.practiceBoss !== null, practiceBoss: this.practiceBoss, activeBoss: this.activeBoss?.id ?? null, hp: this.activeBoss?.hp ?? 0, maxHp: this.activeBoss?.maxHp ?? 0, phase: this.activeBoss?.phase ?? null, phaseMs: this.activeBoss?.phaseMs ?? 0, phaseNumber: this.activeBoss?.phaseNumber ?? 0, pattern: this.activeBoss?.pattern ?? null, attackId: this.activeBoss?.attackId ?? null, targetX: this.activeBoss?.targetX ?? null, safeX: this.activeBoss?.safeX ?? null, bossX: this.activeBoss?.x ?? null, bossY: this.activeBoss?.y ?? null, bossFrame: this.bossLastFrame, vulnerable: this.activeBoss ? b08BossIsVulnerable(this.activeBoss) : false, bossesCleared: [...this.bossCleared], outcome: this.bossOutcome, lastAudioCue: this.bossLastCue, vfxEnabled: this.bossVfxEnabled, loadedAssets: bossKeys.length - missingBossAssets.length, missingAssets: missingBossAssets, audioAssetsLoaded: bossAudioKeys.length - missingBossAudio.length },
     };
   }
 
@@ -228,15 +347,18 @@ export class B07ExpeditionScene extends ChamberScene {
     this.damageTaken = 0;
     this.runElapsedMs = 0;
     this.eventLog = [];
+    this.activeBoss = null; this.bossCleared = []; this.bossOutcome = null; this.bossPostKoMs = 0; this.bossDamageIds.clear();
     this.route = initialB07Route(seed);
     this.resetB03Encounter();
     this.setLabAudioPaused(false);
-    this.loadCurrentRoom();
+    if (this.practiceBoss) this.startBoss(this.practiceBoss, true);
+    else this.loadCurrentRoom();
     this.emitState();
   }
 
   private loadCurrentRoom(): void {
     this.destroyRoom();
+    this.roomLabel?.setVisible(true); this.routeLabel?.setVisible(true); this.vitalsLabel?.setVisible(true); this.objectiveLabel?.setVisible(true);
     this.menu = null;
     this.room = undefined;
     this.combat = null;
@@ -472,6 +594,218 @@ export class B07ExpeditionScene extends ChamberScene {
     } else this.promptLabel.setVisible(false);
   }
 
+  private startBoss(id: B08BossId, practice = false): void {
+    if (!this.b08Mode) return;
+    this.bossSourceRoom = this.room?.id ?? (practice ? 'practice-shortcut' : 'unknown');
+    this.bossAudio?.stop(); this.bossAudio = undefined;
+    this.destroyRoom();
+    this.room = undefined; this.menu = null; this.activeBoss = createB08Boss(id);
+    this.bossPostKoMs = 0; this.bossOutcome = null;
+    this.bossActiveRects = []; this.bossDamageIds.clear(); this.bossLastFrame = '';
+    this.setRoomWorldBounds(960, 270);
+    this.cameras.main.setBounds(0, 0, 960, 270);
+    this.cameras.main.setScroll(0, 0);
+    this.setCombatBlockers([]);
+    const arena = this.add.tileSprite(480, 135, 960, 270, `b08-${id}-arena`).setOrigin(.5).setDepth(-34);
+    this.trackRoom(arena);
+    const floor = this.add.rectangle(480, 255, 960, 30, 0x000000, 0).setVisible(false);
+    this.trackRoom(floor); this.physics.add.existing(floor, true); this.roomColliders.push(this.addPlayerCollider(floor));
+    const floorKey = id === 'sundial-custodian' ? 'b07-sg-conduit-tile' : 'b07-vesper-conduit';
+    const floorArt = this.add.tileSprite(480, 255, 960, 36, floorKey).setDepth(6).setAlpha(.94);
+    this.trackRoom(floorArt);
+    this.placePlayerOnSurface(650, 240);
+    this.combat = this.combatSnapshot();
+    if (this.combat) this.lastPlayerHp = this.combat.playerHp;
+    this.roomLabel?.setVisible(false); this.routeLabel?.setVisible(false); this.vitalsLabel?.setVisible(false); this.objectiveLabel?.setVisible(false);
+    this.trackRoom(this.add.rectangle(240, 15, 480, 30, 0x07131d, .9).setScrollFactor(0).setDepth(50));
+    this.bossSprite = this.add.image(this.activeBoss.x, this.activeBoss.y, `b08-${id}-idle`).setDisplaySize(144, 144).setDepth(10);
+    this.trackRoom(this.bossSprite);
+    this.bossEffectSprite = this.add.image(this.activeBoss.x, this.activeBoss.y, `b08-${id}-${id === 'sundial-custodian' ? 'vfx-aperture-pulse' : id === 'spoolheart-regent' ? 'vfx-spindle-rewind' : 'vfx-core-exposure'}`).setDisplaySize(128, 128).setDepth(15).setVisible(false);
+    this.trackRoom(this.bossEffectSprite);
+    this.bossTell = this.add.graphics().setDepth(16); this.trackRoom(this.bossTell);
+    this.bossOverlay = this.add.graphics().setDepth(9); this.trackRoom(this.bossOverlay);
+    this.bossBar = this.trackRoom(this.add.graphics().setScrollFactor(0).setDepth(57));
+    this.bossHud = this.trackRoom(this.add.text(240, 3, '', { fontFamily: 'monospace', fontSize: '5px', color: '#f8ead0', align: 'center', lineSpacing: 2 }).setOrigin(.5, 0).setScrollFactor(0).setDepth(56));
+    this.bossBar.setScrollFactor(0); this.bossHud.setScrollFactor(0);
+    this.roomLabel?.setText(`${id === 'sundial-custodian' ? 'SUNDERGLASS REACH' : id === 'spoolheart-regent' ? 'VESPER LOOMWORKS' : 'SPINDLE CORE'}  /  ${B08_BOSS_PROFILES[id].name}`);
+    this.routeLabel?.setText(`${practice ? 'PRACTICE' : `B08 ROOM ${Math.min(this.route.roomIndex + 1, this.route.rooms.length)}/${this.route.rooms.length}`}  ·  SEED ${this.route.seed.toString(16).toUpperCase()}  ·  ${this.dawnrushSnapshot()?.form.toUpperCase() ?? 'BASE'}`);
+    this.promptLabel?.setVisible(false);
+    this.logEvent({ type: 'boss-intro', bossId: id, practice, sourceRoom: this.bossSourceRoom, seed: this.route.seed, hp: this.activeBoss.hp });
+    this.playBossCue('loop');
+    this.drawBossHud(); this.emitState();
+  }
+
+  private stepBoss(dt: number): void {
+    if (!this.activeBoss || !this.combat) return;
+    if (this.activeBoss.phase === 'ko') {
+      this.bossPostKoMs += dt;
+      if (this.bossPostKoMs >= 1750) {
+        const defeated = this.activeBoss.id;
+        this.bossAudio?.stop(); this.bossAudio = undefined;
+        if (this.practiceBoss || defeated === 'broken-meridian') {
+          this.bossOutcome = 'victory'; this.finish('victory'); return;
+        }
+        this.activeBoss = null;
+        this.loadCurrentRoom();
+      }
+      return;
+    }
+    const player = this.getB06PlayerFrame();
+    const previousPhase = this.activeBoss.phase;
+    const stepped = stepB08Boss(this.activeBoss, {
+      x: player.x, y: player.y, width: player.width, height: player.height, hp: player.hp,
+      invulnerableMs: player.invulnerableMs, dashInvulnerableMs: player.dashInvulnerableMs,
+    }, dt);
+    this.activeBoss = stepped.boss;
+    if (this.activeBoss.phase !== previousPhase) {
+      if (this.activeBoss.phase === 'phase-change') {
+        this.playBossCue('phase'); this.logEvent({ type: 'boss-phase-change', bossId: this.activeBoss.id, phaseNumber: this.activeBoss.phaseNumber });
+      }
+    }
+    for (const event of stepped.events) this.handleBossEvent(event);
+  }
+
+  private handleBossEvent(event: B08BossEvent): void {
+    if (event.type === 'telegraph') {
+      this.bossActiveRects = [];
+      this.playBossCue('tell');
+      this.logEvent({ type: 'boss-telegraph', bossId: event.bossId, attackId: event.attackId, pattern: event.pattern, phaseNumber: event.phaseNumber, safeX: event.safeX });
+    } else if (event.type === 'strike') {
+      this.bossActiveRects = event.rects;
+      this.playBossCue('strike');
+      this.logEvent({ type: 'boss-strike', bossId: event.bossId, attackId: event.attackId, pattern: event.pattern, rects: event.rects, safeX: event.safeX });
+    } else if (event.type === 'recovery') {
+      this.bossActiveRects = [];
+      this.logEvent({ type: 'boss-recovery', bossId: event.bossId, attackId: event.attackId, pattern: event.pattern });
+    } else if (event.type === 'player-hit') {
+      const player = this.getB06PlayerFrame();
+      const result = this.applyB06PlayerThreat(event.attackId, event.damage, player.x < (this.activeBoss?.x ?? 0) ? -1 : 1);
+      this.logEvent({ type: 'boss-player-contact', bossId: event.bossId, attackId: event.attackId, pattern: event.pattern, result, damage: result === 'hit' ? event.damage : 0, hp: this.combat?.playerHp ?? 0, playerX: event.playerX, playerY: event.playerY, rects: event.rects });
+      if (result === 'hit' && this.bossVfxEnabled) this.spawnFx('wisp-impact', player.x, player.y, 46, 38, this.reducedMotion ? 80 : 160);
+    }
+  }
+
+  private bossPose(boss: B08BossRuntime): string {
+    if (boss.phase === 'ko') return 'ko';
+    if (boss.phase === 'phase-change') return boss.id === 'broken-meridian' ? 'phase-change' : 'phase-2';
+    if (boss.phaseNumber === 2 && boss.phase === 'recovery') return 'phase-2';
+    if (boss.hurtMs > 0) return boss.id === 'spoolheart-regent' ? 'rewind' : 'hurt';
+    if (boss.phase === 'intro') return boss.phaseMs > 300 ? 'ready' : 'idle';
+    if (boss.phase === 'telegraph') {
+      if (boss.id === 'sundial-custodian') return boss.pattern === 'zenith-stamp' ? 'stamp-telegraph' : 'sweep-telegraph';
+      if (boss.id === 'spoolheart-regent') return boss.pattern === 'thread-drop' ? 'thread-telegraph' : 'lash-telegraph';
+      return 'cleave-telegraph';
+    }
+    if (boss.phase === 'commit') {
+      if (boss.id === 'sundial-custodian') return boss.pattern === 'zenith-stamp' ? 'stamp' : 'sweep';
+      if (boss.id === 'spoolheart-regent') return boss.pattern === 'thread-drop' ? 'thread-drop' : boss.pattern === 'spindle-rewind' ? 'rewind' : 'lash';
+      return boss.pattern === 'daybreak-afterglow' ? 'afterglow' : 'cleave';
+    }
+    if (boss.id === 'broken-meridian') return 'core-exposed';
+    if (boss.id === 'spoolheart-regent' && boss.pattern === 'spindle-rewind') return 'rewind';
+    if (boss.id === 'sundial-custodian' && boss.pattern === 'zenith-stamp') return 'stamp';
+    return 'ready';
+  }
+
+  private syncBossPresentation(): void {
+    const boss = this.activeBoss;
+    if (!boss || !this.bossSprite || !this.bossTell || !this.bossOverlay || !this.bossEffectSprite) return;
+    const pose = this.bossPose(boss);
+    const key = `b08-${boss.id}-${pose}`;
+    if (this.textures.exists(key) && this.bossLastFrame !== key) { this.bossSprite.setTexture(key); this.bossLastFrame = key; }
+    this.bossSprite.setPosition(boss.x, boss.y).setFlipX(boss.facing < 0).setAlpha(boss.phase === 'phase-change' && !this.reducedMotion ? .82 : 1);
+    this.syncBossEffect(boss);
+    this.bossTell.clear(); this.bossOverlay.clear();
+    if (boss.phase === 'telegraph' && boss.pattern) {
+      const rects = b08BossAttackRects(boss, boss.pattern);
+      const fill = boss.id === 'sundial-custodian' ? 0xf04e58 : boss.id === 'spoolheart-regent' ? 0x22e6cf : 0xffd45e;
+      this.bossTell.fillStyle(fill, .5);
+      for (const rect of rects) {
+        this.bossTell.fillRect(rect.left, rect.top, Math.max(0, rect.right - rect.left), rect.bottom - rect.top);
+        this.bossTell.lineStyle(2, fill, .98);
+        this.bossTell.strokeRect(rect.left, rect.top, Math.max(0, rect.right - rect.left), rect.bottom - rect.top);
+      }
+      this.bossTell.fillStyle(0x81ffe0, .15).fillRect(boss.safeX - 30, 170, 60, 71);
+      this.bossTell.lineStyle(2, 0x81ffe0, .98);
+      this.bossTell.lineBetween(boss.safeX, 166, boss.safeX, 241);
+      this.bossTell.lineBetween(boss.safeX - 30, 166, boss.safeX - 30, 241);
+      this.bossTell.lineBetween(boss.safeX + 30, 166, boss.safeX + 30, 241);
+      if (this.bossVfxEnabled) {
+        this.bossOverlay.lineStyle(1, fill, .7);
+        this.bossOverlay.strokeCircle(boss.x, boss.y, 52 + (this.reducedMotion ? 0 : Math.sin(boss.phaseMs / 80) * 4));
+      }
+    } else if (boss.phase === 'commit') {
+      this.bossTell.fillStyle(0xff705e, .32);
+      for (const rect of this.bossActiveRects) this.bossTell.fillRect(rect.left, rect.top, Math.max(0, rect.right - rect.left), rect.bottom - rect.top);
+      if (this.bossVfxEnabled && !this.reducedMotion) {
+        this.bossOverlay.fillStyle(0xffca72, .2); this.bossOverlay.fillCircle(boss.x, boss.y, 44);
+      }
+    } else if (b08BossIsVulnerable(boss)) {
+      this.bossTell.lineStyle(2, boss.id === 'sundial-custodian' ? 0xffd17d : boss.id === 'spoolheart-regent' ? 0x83ffeb : 0xffeba0, .9);
+      this.bossTell.strokeCircle(boss.x, boss.y, 44);
+    }
+  }
+
+  private syncBossEffect(boss: B08BossRuntime): void {
+    const effect = this.bossEffectSprite;
+    if (!effect) return;
+    let pose: string | null = null;
+    if (boss.phase === 'recovery') {
+      pose = boss.id === 'sundial-custodian' ? 'vfx-aperture-pulse'
+        : boss.id === 'broken-meridian' ? 'vfx-core-exposure'
+          : boss.pattern === 'thread-drop' ? 'vfx-thread-drop' : boss.pattern === 'spindle-rewind' ? 'vfx-spindle-rewind' : 'vfx-loom-lash';
+    } else if (boss.pattern === 'zenith-stamp') pose = 'vfx-zenith-stamp';
+    else if (boss.pattern === 'thread-drop') pose = 'vfx-thread-drop';
+    else if (boss.pattern === 'loom-lash') pose = 'vfx-loom-lash';
+    else if (boss.pattern === 'spindle-rewind') pose = 'vfx-spindle-rewind';
+    else if (boss.pattern === 'daybreak-afterglow') pose = 'vfx-daybreak-afterglow';
+    else if (boss.id === 'sundial-custodian' && boss.pattern === 'glassline-sweep') pose = 'vfx-glassline-sweep';
+    else if (boss.id === 'broken-meridian' && boss.pattern === 'meridian-cleave') pose = 'vfx-meridian-cleave';
+    const visiblePhase = boss.phase === 'telegraph' || boss.phase === 'commit' || boss.phase === 'recovery';
+    const key = pose ? `b08-${boss.id}-${pose}` : '';
+    const visible = !!pose && visiblePhase && this.bossVfxEnabled && !this.reducedMotion && this.textures.exists(key);
+    if (!visible) { effect.setVisible(false); return; }
+    if (effect.texture.key !== key) effect.setTexture(key);
+    const horizontal = pose === 'vfx-glassline-sweep' || pose === 'vfx-loom-lash' || pose === 'vfx-meridian-cleave' || pose === 'vfx-daybreak-afterglow';
+    const width = horizontal ? (pose === 'vfx-daybreak-afterglow' ? 350 : pose === 'vfx-meridian-cleave' ? 300 : 250) : pose === 'vfx-zenith-stamp' || pose === 'vfx-thread-drop' ? 112 : 128;
+    const height = horizontal ? 84 : pose === 'vfx-zenith-stamp' || pose === 'vfx-thread-drop' ? 150 : 128;
+    const x = horizontal ? 480 : pose === 'vfx-zenith-stamp' || pose === 'vfx-thread-drop' ? boss.targetX : boss.x;
+    const y = horizontal ? 211 : pose === 'vfx-zenith-stamp' || pose === 'vfx-thread-drop' ? 207 : boss.y;
+    const alpha = boss.phase === 'telegraph' ? .36 : boss.phase === 'recovery' ? .56 : .78;
+    effect.setPosition(x, y).setDisplaySize(width, height).setAlpha(alpha).setVisible(true);
+  }
+
+  private drawBossHud(): void {
+    const boss = this.activeBoss;
+    if (!boss || !this.bossBar || !this.bossHud) return;
+    const profile = B08_BOSS_PROFILES[boss.id];
+    this.bossBar.clear();
+    this.bossBar.fillStyle(0x09101b, .9); this.bossBar.fillRect(106, 22, 268, 6);
+    this.bossBar.fillStyle(boss.id === 'sundial-custodian' ? 0xf0a257 : boss.id === 'spoolheart-regent' ? 0x56d8c7 : 0xf0d18a, .95);
+    this.bossBar.fillRect(107, 23, Math.max(0, 266 * boss.hp / boss.maxHp), 4);
+    this.bossBar.lineStyle(1, 0xf1e7d0, .72); this.bossBar.strokeRect(106, 22, 268, 6);
+    const playerHp = this.combat?.playerHp ?? 0;
+    const phaseName = boss.phase === 'telegraph' ? `TELEGRAPH / ${boss.pattern?.replaceAll('-', ' ').toUpperCase()} / READ THE TELL`
+      : boss.phase === 'commit' ? 'ATTACK COMMITTED / EVADE'
+        : boss.phase === 'recovery' ? 'CORE EXPOSED / COUNTERATTACK'
+          : boss.phase === 'phase-change' ? 'REGULATOR FAILURE / PHASE TWO'
+            : boss.phase === 'ko' ? 'MECHANISM FALLING SILENT' : 'OBSERVATORY ARMING';
+    const repairs = this.route.repairCharges > 0 && playerHp > 0 && playerHp < 5 ? ` / INTERACT: REPAIR +1 HP ×${this.route.repairCharges}` : ` / FIELD REPAIRS ×${this.route.repairCharges}`;
+    this.bossHud.setText(`${profile.name} / ${profile.epithet}\n${phaseName} / BOSS ${boss.hp}/${boss.maxHp} / IONA ${playerHp}/5 / VFX ${this.bossVfxEnabled ? 'ON' : 'OFF'}${repairs}${this.practiceBoss ? ' / PRACTICE' : ''}`);
+  }
+  private playBossCue(cue: 'loop' | 'tell' | 'strike' | 'phase' | 'ko'): void {
+    const id = this.activeBoss?.id;
+    if (!id) return;
+    this.bossLastCue = `${id}:${cue}`;
+    if (cue === 'loop') {
+      this.bossAudio?.stop();
+      this.bossAudio = this.sound.add(`b08-${id}-loop`, { loop: true, volume: .12 });
+      if (this.audioUnlocked && !this.sound.locked) this.bossAudio.play();
+      return;
+    }
+    if (this.audioUnlocked && !this.sound.locked && this.cache.audio.exists(`b08-${id}-${cue}`)) this.sound.play(`b08-${id}-${cue}`, { volume: cue === 'strike' ? .62 : .5 });
+  }
+
   private stepHazards(dt: number): void {
     if (!this.room) return;
     const player = this.getB06PlayerFrame();
@@ -653,7 +987,7 @@ export class B07ExpeditionScene extends ChamberScene {
     this.routeLabel?.setText(`ROOM ${routeNumber}/${this.route.rooms.length}  ·  SEED ${this.route.seed.toString(16).toUpperCase()}  ·  ${this.dawnrushSnapshot()?.form.toUpperCase() ?? 'BASE'}`);
     this.vitalsLabel?.setText(`IONA ${this.combat.playerHp}/5  ·  RESONANCE ${Math.floor(this.combat.resonance)}  ·  FIELD REPAIRS ${this.route.repairCharges}`);
     const enemiesRemaining = this.director.enemies.filter((enemy) => enemy.hp > 0).length;
-    this.objectiveLabel?.setText(this.room.id === 'vl-night-side-threshold' ? 'B08 THRESHOLD  /  NO BOSS IN THIS BUILD' : enemiesRemaining ? `${enemiesRemaining} ENEMY SIGNAL${enemiesRemaining === 1 ? '' : 'S'}` : this.room.reward.kind !== 'none' && !this.route.rewarded.includes(this.room.id) ? 'FIELD REWARD AVAILABLE' : 'EXIT THREAD OPEN');
+    this.objectiveLabel?.setText(this.room.id === 'vl-night-side-threshold' ? this.b08Mode ? 'FINAL CONFRONTATION  /  BROKEN MERIDIAN' : 'B08 THRESHOLD  /  NO BOSS IN THIS BUILD' : enemiesRemaining ? `${enemiesRemaining} ENEMY SIGNAL${enemiesRemaining === 1 ? '' : 'S'}` : this.room.reward.kind !== 'none' && !this.route.rewarded.includes(this.room.id) ? 'FIELD REWARD AVAILABLE' : 'EXIT THREAD OPEN');
   }
 
   private platformTexture(room: B07RoomTemplate, art: B07RoomTemplate['platforms'][number]['art']): string {
@@ -691,6 +1025,7 @@ export class B07ExpeditionScene extends ChamberScene {
     void this.vesperContext?.resume();
     if (this.vesperGain && this.vesperContext) void this.vesperGain.gain.setTargetAtTime(.018, this.vesperContext.currentTime, .18);
     this.startRegionAmbience();
+    if (this.activeBoss && this.bossAudio && !this.bossAudio.isPlaying && !this.sound.locked) this.bossAudio.play();
   }
 
   private playCue(name: string): void {
@@ -700,18 +1035,25 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   private showBanner(text: string): void {
-    this.bannerLabel?.setText(text).setAlpha(1);
-    if (!this.reducedMotion && this.bannerLabel) this.tweens.add({ targets: this.bannerLabel, alpha: .78, duration: 600, yoyo: true, repeat: 1 });
+    if (!this.bannerLabel) return;
+    this.tweens.killTweensOf(this.bannerLabel);
+    this.bannerLabel.setText(text).setVisible(true).setAlpha(1);
+    if (this.reducedMotion) {
+      this.time.delayedCall(1400, () => this.bannerLabel?.setVisible(false));
+    } else {
+      this.tweens.add({ targets: this.bannerLabel, alpha: 0, duration: 1200, onComplete: () => this.bannerLabel?.setVisible(false) });
+    }
   }
 
   private finish(result: 'victory' | 'defeat'): void {
     if (this.resultSent) return;
     this.resultSent = true;
+    if (this.b08Mode) this.bossOutcome = result;
     this.ambience?.stop();
     window.dispatchEvent(new CustomEvent('crownflare:b07-result', { detail: {
       result, elapsedMs: this.runElapsedMs, damageTaken: this.damageTaken, repairCharges: this.route.repairCharges,
       resonance: this.route.resonance, visited: this.route.visited, choices: this.route.choices, seed: this.route.seed,
-      b08BossBuilt: false,
+      b08BossBuilt: this.b08Mode, b08BossesCleared: [...this.bossCleared], b08Practice: this.practiceBoss !== null,
     } }));
     this.logEvent({ type: 'result', result, runElapsedMs: this.runElapsedMs, damageTaken: this.damageTaken, choices: this.route.choices });
     this.emitState();
@@ -727,10 +1069,13 @@ export class B07ExpeditionScene extends ChamberScene {
     for (const collider of this.roomColliders) collider.destroy();
     this.roomColliders = [];
     this.sound.stopAll();
+    this.bossAudio?.stop(); this.bossAudio = undefined;
     for (const object of this.roomObjects) { this.tweens.killTweensOf(object); object.destroy(); }
     this.roomObjects = [];
     this.platforms.clear(); this.enemyVisuals.clear(); this.projectileVisuals.clear(); this.tellVisuals.clear(); this.hazardVisuals.clear(); this.roomHazardFrame.clear();
     this.roomReward = undefined; this.roomExit = undefined;
+    this.bossSprite = undefined; this.bossEffectSprite = undefined; this.bossHud = undefined; this.bossBar = undefined; this.bossTell = undefined; this.bossOverlay = undefined;
+    this.bossLastFrame = ''; this.bossActiveRects = [];
     this.director = createB06Director();
     this.setCombatBlockers([]);
   }

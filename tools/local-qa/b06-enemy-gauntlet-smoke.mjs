@@ -58,7 +58,8 @@ async function initCapture(context) {
           if (last === key) return;
           window.__B06_LAST_STATE__ = key;
         }
-        window.__B06_REVIEW_EVENTS__.push({ name, detail: event.detail, atMs: Math.round(performance.now()) });
+        const sample = name === 'crownflare:player-damage' ? window.__CROWNFLARE_QA__?.snapshot?.() : undefined;
+        window.__B06_REVIEW_EVENTS__.push({ name, detail: event.detail, atMs: Math.round(performance.now()), ...(sample ? { sample: { playerX: sample.combat?.playerX, playerY: sample.combat?.playerY, playerHp: sample.b06?.playerHp, enemies: sample.b06?.enemies?.map((enemy) => ({ id: enemy.id, archetype: enemy.archetype, x: enemy.x, phase: enemy.phase, phaseMs: enemy.phaseMs })) } } : {}) });
       });
     }
   });
@@ -82,11 +83,16 @@ async function keyTap(page, key, duration = 70) {
 }
 
 async function dodgeThreat(page, enemyX, playerX) {
-  // Dash through the locked attack lane instead of retreating into the left map boundary.
-  const direction = enemyX > playerX ? 'd' : 'a';
+  // Clear the locked melee lane; the old driver dashed toward the attack and then
+  // repeatedly re-entered range before a recovery punish.
+  let direction = enemyX > playerX ? 'a' : 'd';
+  // The arena collision edge is x=72/1488. Leave enough room for one full
+  // 125ms dash (45px) plus half the 15px player body before flipping inward.
+  if (playerX < 125 && direction === 'a') direction = 'd';
+  if (playerX > 1435 && direction === 'd') direction = 'a';
   await page.keyboard.down(direction);
   await page.keyboard.down('Shift');
-  await page.waitForTimeout(70);
+  await page.waitForTimeout(125);
   await page.keyboard.up('Shift');
   await page.keyboard.up(direction);
 }
@@ -252,14 +258,23 @@ async function activeGauntletReview(form = 'dawnrush') {
       .sort((a, b) => Math.abs(a.x - state.combat.playerX) - Math.abs(b.x - state.combat.playerX))[0];
     if (imminent) {
       if (imminent.phase === 'telegraph') {
-        await waitFor(videoPage, `state => !state.b06?.enemies?.some((enemy) => enemy.id === ${JSON.stringify(imminent.id)} && enemy.phase === 'telegraph')`, `${imminent.archetype} resolves or is interrupted after its tell`, 1500);
+        const tellMs = ({ 'shardrunner': 560, 'spindle-sentry': 440, 'orbit-wisp': 860, 'pressure-bastion': 820, 'cantor': 840 })[imminent.archetype] ?? 600;
+        const lead = 80;
+        const timelyTell = `state => { const enemy = state.b06?.enemies?.find((entry) => entry.id === ${JSON.stringify(imminent.id)}); return !enemy || enemy.phase !== 'telegraph' || enemy.phaseMs >= ${tellMs - lead}; }`;
+        await waitFor(videoPage, timelyTell, `${imminent.archetype} reaches its readable dodge window`, 1500);
       }
-      const atStrike = await snapshot(videoPage);
-      const committed = atStrike.b06?.enemies?.find((enemy) => enemy.id === imminent.id && enemy.phase === 'commit');
-      if (!committed) continue;
-      await dodgeThreat(videoPage, committed.x, atStrike.combat.playerX);
-      record('dash through the authored enemy commit frame', { target: imminent.id, phase: committed.phase, playerX: atStrike.combat.playerX });
-      await videoPage.waitForTimeout(100);
+      const atDodge = await snapshot(videoPage);
+      const liveEnemy = atDodge.b06?.enemies?.find((enemy) => enemy.id === imminent.id);
+      if (!liveEnemy || !['telegraph', 'commit'].includes(liveEnemy.phase)) continue;
+      await dodgeThreat(videoPage, liveEnemy.x, atDodge.combat.playerX);
+      const afterDodge = await snapshot(videoPage);
+      record('dash out of the committed attack lane', {
+        target: imminent.id, action: liveEnemy.action, phase: liveEnemy.phase,
+        tellElapsedMs: liveEnemy.phaseMs,
+        startX: atDodge.combat.playerX, endX: afterDodge.combat.playerX,
+        hpBefore: atDodge.b06.playerHp, hpAfter: afterDodge.b06.playerHp,
+      });
+      await waitFor(videoPage, `state => { const enemy = state.b06?.enemies?.find((entry) => entry.id === ${JSON.stringify(imminent.id)}); return !enemy || !['telegraph', 'commit'].includes(enemy.phase); }`, `${imminent.archetype} finishes its active pattern`, 1500);
       continue;
     }
     const alive = state.b06.enemies.filter((enemy) => enemy.hp > 0).sort((a, b) => Math.abs(a.x - state.combat.playerX) - Math.abs(b.x - state.combat.playerX));
@@ -318,11 +333,20 @@ async function activeGauntletReview(form = 'dawnrush') {
   state = await snapshot(videoPage);
   const events = await videoPage.evaluate(() => window.__B06_REVIEW_EVENTS__ ?? []);
   const sceneEvents = state?.b06Events ?? [];
-  if (state?.b06?.phase === 'victory' || state?.screen === 'b04Results') {
+  if (state?.b06?.phase === 'victory') {
     check(`${form} gauntlet reaches its live victory/results state`, 'PASS', { phase: state.b06.phase, rewardClaimed: state.b06.rewardClaimed, wavesCleared: state.b06.wavesCleared });
     await capture(videoPage, 'b06-gauntlet-victory');
   } else if (state?.b06?.phase === 'defeat') {
-    check(`${form} gauntlet reaches its live defeat/retry state`, 'PASS', { phase: state.b06.phase, playerHp: state.b06.playerHp, damageTaken: state.b06.damageTaken });
+    const diagnosis = {
+      form, seed: new URL(videoPage.url()).searchParams.get('seed'), phase: state.b06.phase,
+      player: { x: state.combat?.playerX, y: state.combat?.playerY, velocity: state.combat?.playerVelocity, hp: state.b06.playerHp, damageTaken: state.b06.damageTaken },
+      enemies: state.b06.enemies,
+      playerDamage: events.filter((event) => event.name === 'crownflare:player-damage'),
+      enemyStrikes: sceneEvents.filter((event) => event.type === 'enemy-strike'),
+      recentInputs: checks.filter((entry) => /dash|attack|advance|finisher|Resonance/i.test(entry.label)).slice(-24),
+    };
+    console.error(`B06 failure diagnosis: ${JSON.stringify(diagnosis)}`);
+    check(`${form} gauntlet reaches its live four-wave victory`, 'FAIL', { phase: state.b06.phase, playerHp: state.b06.playerHp, damageTaken: state.b06.damageTaken, wavesCleared: state.b06.wavesCleared });
     await capture(videoPage, 'b06-gauntlet-defeat');
   }
   assert(state?.b06?.phase === 'victory' && state.b06.wavesCleared === 4 && state.b06.rewardClaimed, `${form} did not complete every wave, claim the reward and reach the exit: ${JSON.stringify(state?.b06)}`);

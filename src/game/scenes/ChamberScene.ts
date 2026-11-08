@@ -177,7 +177,7 @@ export class ChamberScene extends Phaser.Scene {
   private labContrastRequested = false;
   private readonly audioGate = new IonaB01eAudioEventGate();
   private audioSequence = 0;
-  private activeAudioSequence = 0;
+  protected activeAudioSequence = 0;
   private lastFootfallFrame = '';
   private footfallSide: 0 | 1 = 0;
   private labAudioEnabled = true;
@@ -706,6 +706,13 @@ export class ChamberScene extends Phaser.Scene {
     this.playerHurtMs = 0;
     this.playerInvulnerableMs = 0;
     this.dashInvulnerabilityMs = 0;
+  }
+
+  protected restorePlayerHealth(amount: number): number {
+    if (this.playerHp <= 0) return 0;
+    const before = this.playerHp;
+    this.playerHp = Phaser.Math.Clamp(this.playerHp + Math.max(0, Math.round(amount)), 0, this.playerMaxHp);
+    return this.playerHp - before;
   }
 
   /** B04 consumes contextual interaction before the B03 practice retry behavior. */

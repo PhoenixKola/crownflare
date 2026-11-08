@@ -1,0 +1,132 @@
+{
+  "milestone": "B08",
+  "audioHeardByAgent": "NO",
+  "cues": {
+    "sundial-custodian": {
+      "loop": {
+        "path": "public/assets/audio/bosses/b08/sundial-custodian/loop.wav",
+        "bytes": 705644,
+        "sha256": "24148657e13ebe55e01f1e47b28c2b3d8ab924223b7ab45d95a94b6d705f104a",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "tell": {
+        "path": "public/assets/audio/bosses/b08/sundial-custodian/tell.wav",
+        "bytes": 57374,
+        "sha256": "d548c5ee7e7724dc8ec8328088d6ce357d45b43a83b1f194aeecf230253a2802",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "strike": {
+        "path": "public/assets/audio/bosses/b08/sundial-custodian/strike.wav",
+        "bytes": 37088,
+        "sha256": "e939c1aeb847a27a2d07c415b34c220f99197fc3414b951cac8fcb09ee2d7988",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "phase": {
+        "path": "public/assets/audio/bosses/b08/sundial-custodian/phase.wav",
+        "bytes": 119114,
+        "sha256": "d091cad3523681e90aa8d89e476cd1d968ca2f1551818b85d9f75d04b9303c43",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "ko": {
+        "path": "public/assets/audio/bosses/b08/sundial-custodian/ko.wav",
+        "bytes": 141164,
+        "sha256": "bcc1ac1fe2e0929bebf7b6272b24c52cef0373dcbfe2e2adf20d254ea0da67f4",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      }
+    },
+    "spoolheart-regent": {
+      "loop": {
+        "path": "public/assets/audio/bosses/b08/spoolheart-regent/loop.wav",
+        "bytes": 705644,
+        "sha256": "f30fba6b5407bec8aae7d82ec1d1b8d8f4552ef466bafb6fa54e1ee54faa16d7",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "tell": {
+        "path": "public/assets/audio/bosses/b08/spoolheart-regent/tell.wav",
+        "bytes": 57374,
+        "sha256": "f6be2f3193085e2355f46b3952bd2c2c67fd2947c977599d5ec6ad8ee6709a7e",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "strike": {
+        "path": "public/assets/audio/bosses/b08/spoolheart-regent/strike.wav",
+        "bytes": 37088,
+        "sha256": "6cc8b1f1897af2bc2ea3938f4838e5962b40c68937aa63e0e0ff5b047df2f23b",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "phase": {
+        "path": "public/assets/audio/bosses/b08/spoolheart-regent/phase.wav",
+        "bytes": 119114,
+        "sha256": "7c2dcca20c9f6d3c9b0e6e731a9574565ca127bf7f0c36ee08dc55e0d8ce01a5",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "ko": {
+        "path": "public/assets/audio/bosses/b08/spoolheart-regent/ko.wav",
+        "bytes": 141164,
+        "sha256": "10f8fe6c6937f2eeb49ec78ebb6e71edc88aeeb0c1204b8c52c21155bef433bf",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      }
+    },
+    "broken-meridian": {
+      "loop": {
+        "path": "public/assets/audio/bosses/b08/broken-meridian/loop.wav",
+        "bytes": 705644,
+        "sha256": "448cb25225c47e404ef412807bbf2fba6d4a9296e463488dcb87a29be43de4bd",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "tell": {
+        "path": "public/assets/audio/bosses/b08/broken-meridian/tell.wav",
+        "bytes": 57374,
+        "sha256": "7154885b576cab99420116c5a2f08d417e49db97093dd99ef5f60eef9ef0771b",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "strike": {
+        "path": "public/assets/audio/bosses/b08/broken-meridian/strike.wav",
+        "bytes": 37088,
+        "sha256": "5a24d222241fedf223678c7a90d65fd4c63a0ab6fa51863ecf53df38e2c0d0af",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "phase": {
+        "path": "public/assets/audio/bosses/b08/broken-meridian/phase.wav",
+        "bytes": 119114,
+        "sha256": "a53d3c33f42df7fca5907bc0fc793c3d5e600857dd5112ad55d8b9153dd383b8",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      },
+      "ko": {
+        "path": "public/assets/audio/bosses/b08/broken-meridian/ko.wav",
+        "bytes": 141164,
+        "sha256": "0a37d7074f59504f41510f750427fe06d87eb09ddba131b495692a077996e810",
+        "sampleRate": 44100,
+        "channels": 1,
+        "format": "PCM16"
+      }
+    }
+  }
+}
