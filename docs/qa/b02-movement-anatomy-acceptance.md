@@ -22,7 +22,7 @@ The source bounds prove that pose height differs. They do not measure head diame
 
 ## Owner visual review
 
-Use the real Chrome preview linked from [`review-evidence/b02/README.md`](../../review-evidence/b02/README.md). Select 60px first, with VFX off and calm background. Review both directions at normal playback speed through:
+Use the real Chrome preview linked from [archived locally: `review-evidence/b02/README.md`](review-evidence-archive.md#b02). Select 60px first, with VFX off and calm background. Review both directions at normal playback speed through:
 
 1. neutral idle, run start/contact/stop, and facing turn;
 2. dash compression, extension, brake, and recovery;
@@ -37,7 +37,7 @@ The capture in `review-evidence/b02/iona-b02-shrink-before-after.png` compares a
 
 - `npm test` checks all 70 B01E directional poses at 48/60/72, their bounds within the common canvas, fixed scale, origin, and ground anchor.
 - `npm run qa:b02` samples the real Phaser preview during a headed Chrome play capture and checks scale, pivot, body dimensions, movement, jump arcs, dash barrier, three-hit combat events, focus pause, and production-route gating.
-- Inspect [`review-evidence/b02/b02-qa-report.json`](../../review-evidence/b02/b02-qa-report.json) for Chrome version, source/video hashes, active-play duration, sample counts, scale/anchor tolerances, and limitations.
+- Inspect [archived locally: `review-evidence/b02/b02-qa-report.json`](review-evidence-archive.md#b02) for Chrome version, source/video hashes, active-play duration, sample counts, scale/anchor tolerances, and limitations.
 - Synthetic Gamepad API and synthetic blur checks do not count as physical controller or operating-system focus testing.
 
 ## Audio listening and capture
@@ -54,7 +54,7 @@ See [`docs/qa/b01f-owner-audio-capture.md`](b01f-owner-audio-capture.md) for the
 
 ## Gate status at B02 capture
 
-- **Technical:** PASS. Headed Chrome 156 completed 100.16 seconds of capture with 98.01 estimated active-play seconds; the presentation sampler found zero scale, pivot, or body violations across 518 scene ticks. See [`review-evidence/b02/b02-qa-report.json`](../../review-evidence/b02/b02-qa-report.json).
+- **Technical:** PASS. Headed Chrome 156 completed 100.16 seconds of capture with 98.01 estimated active-play seconds; the presentation sampler found zero scale, pivot, or body violations across 518 scene ticks. See [archived locally: `review-evidence/b02/b02-qa-report.json`](review-evidence-archive.md#b02).
 - **Art-motion:** owner review pending; the Codex native playback bridge was unavailable, so this run does not claim normal-speed inspection.
 - **Owner approval:** pending. `readyToPromote` remains false and `ownerApproval` remains `PENDING_OWNER_REVIEW`.
 - **Audio:** implemented and event-routed; not heard or captured in the automated run.

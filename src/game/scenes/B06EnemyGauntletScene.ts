@@ -355,7 +355,15 @@ export class B06EnemyGauntletScene extends ChamberScene {
         result = this.applyB06PlayerThreat(enemy.id, damage, event.facing === 1 ? -1 : 1);
       } else if (result === 'blocked') this.playCue('bastion-block');
       else this.playCue(enemy.archetype === 'pressure-bastion' ? 'bastion-impact' : enemy.archetype === 'cantor' ? 'cantor-sweep' : 'runner-slash');
-      this.emitEvent({ type: 'enemy-strike', enemyId: enemy.id, archetype: enemy.archetype, action: event.action, sequence: event.sequence, result, damage: result === 'hit' ? enemy.archetype === 'cantor' || enemy.archetype === 'pressure-bastion' ? 2 : 1 : 0, rect });
+      this.emitEvent({
+        type: 'enemy-strike', enemyId: enemy.id, archetype: enemy.archetype, action: event.action, sequence: event.sequence,
+        result, damage: result === 'hit' ? enemy.archetype === 'cantor' || enemy.archetype === 'pressure-bastion' ? 2 : 1 : 0,
+        enemy: { x: enemy.x, y: enemy.y, facing: enemy.facing, phase: enemy.phase, phaseMs: enemy.phaseMs, actionFacing: event.facing },
+        player: { x: player.x, y: player.y, width: player.width, height: player.height, hp: player.hp, facing: player.facing,
+          invulnerableMs: player.invulnerableMs, dashInvulnerableMs: player.dashInvulnerableMs,
+          velocityX: player.velocityX, velocityY: player.velocityY },
+        playerRect, rect,
+      });
     }
   }
 

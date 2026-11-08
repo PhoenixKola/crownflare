@@ -11,6 +11,7 @@ const previewPort = 4220;
 const devUrl = `http://127.0.0.1:${devPort}`;
 const previewUrl = `http://127.0.0.1:${previewPort}`;
 const headed = process.argv.includes('--headed');
+const b10FullRun = process.argv.includes('--b10-full-run');
 const noRecord = !process.argv.includes('--record') || process.argv.includes('--no-record');
 const evidence = 'review-evidence/b09';
 const rawEvidence = 'review-evidence/raw';
@@ -132,7 +133,8 @@ async function chooseRunOffer(page, sourceId, preferredId, acquisitionCount) {
   const choiceId = event.choices.includes(preferredId) ? preferredId : event.choices[0];
   const index = event.choices.indexOf(choiceId);
   await page.locator('.b09-choice-card').nth(index).click();
-  const selected = await waitFor(page, `value => value.screen === 'b09Expedition' && value.b07?.b09?.pendingSource === null && value.b07?.b09?.build.acquisitions.length === ${acquisitionCount}`, `${sourceId} applies one run choice and resumes`);
+  const runScreen = b10FullRun ? 'b10Expedition' : 'b09Expedition';
+  const selected = await waitFor(page, `value => value.screen === ${JSON.stringify(runScreen)} && value.b07?.b09?.pendingSource === null && value.b07?.b09?.build.acquisitions.length === ${acquisitionCount}`, `${sourceId} applies one run choice and resumes`);
   const acquisition = selected.b07.b09.build.acquisitions.at(-1);
   assert(acquisition?.sourceId === sourceId && acquisition.choiceId === choiceId, `${sourceId} selected a stale or mismatched card: ${JSON.stringify(acquisition)}`);
   assert(selected.b07.b09.build.ledger.claimedSourceIds.filter((source) => source === sourceId).length === 1, `${sourceId} reward ledger must contain one claim`);
@@ -223,14 +225,44 @@ async function completeB09Run(page) {
     page = await runContext.newPage();
     monitor(page, 'B09 full seeded route');
   }
-  await page.goto(`${devUrl}/?b09=1&seed=13031988`, { waitUntil: 'domcontentloaded' });
-  await page.locator('#start-button').click();
-  let state = await waitFor(page, (value) => value.screen === 'b09Expedition' && value.b07?.roomId === 'sg-breach-steps', 'full B09 route starts from fresh route state');
+  let state;
+  if (b10FullRun) {
+    // Keep the normal title -> hub flow, but make the seeded reward offer
+    // deterministic so boss:sundial-custodian contains Radiant Discipline.
+    // Seeds 1 and 2 both offer Close Orbit in Copper Causeway and Radiant
+    // Discipline after the first boss; seed 3 verifies a fresh replay seed.
+    await page.addInitScript(() => {
+      const seeds = [1, 2, 3, 4];
+      let nextSeed = 0;
+      Object.defineProperty(window.crypto, 'getRandomValues', {
+        configurable: true,
+        value(values) { values[0] = seeds[Math.min(nextSeed++, seeds.length - 1)]; return values; },
+      });
+    });
+    await page.goto(`${devUrl}/`, { waitUntil: 'domcontentloaded' });
+    assert((await page.locator('#title-metadata').innerText()).includes('PRE-RELEASE PLAYABLE'), 'B10 full-run route lost the pre-release disclosure');
+    await page.locator('#start-button').click();
+    await page.locator('#hub-new-run').click();
+    await page.locator('#hub-story').waitFor({ state: 'visible' });
+    const storyTitle = await page.locator('#hub-story-title').innerText();
+    await page.locator('#hub-begin-run').click();
+    state = await waitFor(page, (value) => value.screen === 'b10Expedition' && value.b07?.roomId === 'sg-breach-steps', 'B10 new run starts through the title, refuge and departure story');
+    record('B10 normal player route reaches the authored first region', { storyTitle, seed: state.b07.seed, roomId: state.b07.roomId });
+  } else {
+    await page.goto(`${devUrl}/?b09=1&seed=13031988`, { waitUntil: 'domcontentloaded' });
+    await page.locator('#start-button').click();
+    state = await waitFor(page, (value) => value.screen === 'b09Expedition' && value.b07?.roomId === 'sg-breach-steps', 'full B09 route starts from fresh route state');
+  }
   const routeBosses = ['sundial-custodian', 'spoolheart-regent', 'broken-meridian'];
   let selections = 0; let dawnrushContact = null;
   for (let step = 0; step < 24; step += 1) {
     state = await snapshot(page);
     record('full B09 route driver state', { step, screen: state.screen, roomId: state.b07?.roomId, menu: state.b07?.menu, boss: state.b07?.b08?.activeBoss, bossPhase: state.b07?.b08?.phase, postKoMs: state.b07?.b08?.postKoMs, runElapsedMs: state.b07?.runElapsedMs, scenePaused: state.scenePaused, playerX: state.player?.x });
+    if (b10FullRun && await page.locator('#b10-story-beat').isVisible().catch(() => false)) {
+      await page.locator('#b10-story-continue').click();
+      record('continue the mid-run Vesper story beat', { beat: 'A sky is not a price' });
+      continue;
+    }
     if (state.screen === 'b07Results') break;
     if (state.screen === 'b09Choice') {
       const sourceId = state.b07.b09.pendingSource;
@@ -289,7 +321,7 @@ async function completeB09Run(page) {
     await tap(page, 'e', 75);
     await waitFor(page, `value => value.b07?.roomId !== ${JSON.stringify(roomId)} || !!value.b07?.menu || !!value.b07?.b08?.activeBoss`, `${roomId} advances along the full B09 route`);
   }
-  state = await waitFor(page, (value) => value.screen === 'b07Results' && value.b07?.b08?.outcome === 'victory', 'B09 finishes at the Broken Meridian route result', 15000);
+  state = await waitFor(page, (value) => value.screen === 'b07Results' && value.b07?.b08?.outcome === 'victory', `${b10FullRun ? 'B10' : 'B09'} finishes at the Broken Meridian route result`, 15000);
   assert(state.b07.b08.bossesCleared.length === 3 && JSON.stringify(state.b07.b08.bossesCleared) === JSON.stringify(routeBosses), `B09 did not complete all three route bosses: ${JSON.stringify(state.b07.b08.bossesCleared)}`);
   assert(selections === 3 && state.b07.b09.build.acquisitions.length === 3, `B09 run must make exactly three upgrade decisions; got ${selections}`);
   assert(state.b07.b09.build.ledger.claimedSourceIds.join('|') === 'room:sg-copper-causeway|boss:sundial-custodian|boss:spoolheart-regent', `B09 milestone sources are wrong: ${JSON.stringify(state.b07.b09.build.ledger)}`);
@@ -298,10 +330,59 @@ async function completeB09Run(page) {
   await page.screenshot({ path: path.join(evidence, 'b09-full-run-victory.png'), animations: 'allow' });
   const run = { result: state.b07.b08.outcome, seed: state.b07.seed, route: state.b07.visited, branchChoices: state.b07.choices, bossesCleared: state.b07.b08.bossesCleared, acquisitions: state.b07.b09.build.acquisitions, ranks: state.b07.b09.build.ranks, dawnrushContact, resultText, playerHp: state.b07.playerHp };
   record('capture a full B09 three-boss run and build result', run);
-  check('full B09 development run completes with three milestone upgrades, route branches and Broken Meridian victory', run);
-  await page.locator('#b07-replay-button').click();
-  state = await waitFor(page, (value) => value.screen === 'b09Expedition' && value.b07?.roomId === 'sg-breach-steps' && value.b07?.b09.build.acquisitions.length === 0 && value.b07?.b09.build.ledger.claimedSourceIds.length === 0, 'Replay resets the B09 build and one-claim ledger');
-  check('B09 replay starts a fresh run build and source ledger', { seed: state.b07.seed, acquisitions: state.b07.b09.build.acquisitions, ledger: state.b07.b09.build.ledger });
+  check(`${b10FullRun ? 'full normal-route B10' : 'full B09 development'} run completes with three milestone upgrades, route branches and Broken Meridian victory`, run);
+  if (b10FullRun) {
+    assert(state.save?.completedRuns === 1 && state.save?.lastRun?.result === 'victory' && state.save?.beaconAwakened && state.save?.activeRun === null, `B10 victory did not persist its first-clear unlock exactly once: ${JSON.stringify(state.save)}`);
+    await page.locator('#b07-title-button').click();
+    state = await waitFor(page, (value) => value.screen === 'hub', 'victory result returns to Spindle Refuge');
+    assert(state.save.lastRun?.result === 'victory' && state.save.activeRun === null && await page.locator('#hub-continue').isDisabled(), 'victory hub should retain its summary without a stale active run');
+    await page.locator('#hub-new-run').click();
+    assert(await page.locator('#hub-story-title').innerText() === 'The hinge remembers.', 'repeat run should show the concise continuing story beat');
+    await page.locator('#hub-begin-run').click();
+    state = await waitFor(page, (value) => value.screen === 'b10Expedition' && value.b07?.roomId === 'sg-breach-steps' && value.b07?.b09?.build?.acquisitions?.length === 0, 'hub replay creates a new B10 run and clears its run-local build');
+    const replaySeed = state.b07.seed;
+    assert(replaySeed !== run.seed && state.save.beaconAwakened && state.save.completedRuns === 1, 'hub replay should change the seed while preserving only the permanent first-clear progress');
+    check('B10 victory returns to refuge and replay starts a new seed with a fresh build', { previousSeed: run.seed, replaySeed, completedRuns: state.save.completedRuns, beaconAwakened: state.save.beaconAwakened, acquisitions: state.b07.b09.build.acquisitions });
+
+    await walkTo(page, 'sg-breach-steps', 918); await tap(page, 'e', 75);
+    state = await waitFor(page, (value) => !!value.b07?.menu, 'B10 replay reaches its first route branch');
+    await tap(page, 'e', 75);
+    state = await waitFor(page, (value) => value.b07?.choices?.reach === 'safe-recovery' && value.b07?.roomId === 'sg-copper-causeway', 'B10 defeat scenario selects the authored safe branch');
+    await walkTo(page, 'sg-copper-causeway', 760); await tap(page, 'e', 75);
+    await waitFor(page, (value) => value.screen === 'b09Choice' && value.b07?.b09?.pendingSource === 'room:sg-copper-causeway', 'B10 defeat scenario claims and opens its real upgrade reward');
+    await page.locator('.b09-choice-card').first().click();
+    state = await waitFor(page, (value) => value.screen === 'b10Expedition' && value.b07?.b09?.build?.acquisitions?.length === 1, 'B10 defeat scenario commits its run upgrade');
+    await walkTo(page, 'sg-copper-causeway', 918); await tap(page, 'e', 75);
+    await waitFor(page, (value) => value.b07?.roomId !== 'sg-copper-causeway' || !!value.b07?.menu, 'B10 defeat scenario advances from its reward room');
+    for (let step = 0; step < 8; step += 1) {
+      state = await snapshot(page);
+      if (state.screen === 'b07Results') break;
+      if (state.b07?.menu) {
+        const menu = state.b07.menu; await tap(page, 'e', 75);
+        const choice = menu === 'reach' ? 'safe-recovery' : 'spindle-lift';
+        await waitFor(page, `value => value.b07?.choices?.[${JSON.stringify(menu)}] === ${JSON.stringify(choice)} && value.b07?.menu === null`, `B10 defeat scenario selects ${choice}`);
+        continue;
+      }
+      if (state.b07?.b08?.activeBoss === 'sundial-custodian') break;
+      const roomId = state.b07?.roomId; assert(roomId, `B10 defeat route lost room/menu state: ${JSON.stringify(state.b07)}`);
+      const rewards = { 'sg-resonance-gallery': 524, 'vl-spindle-lift': 818, 'vl-condensation-vault': 840 };
+      if (rewards[roomId] !== undefined && !state.b07.rewardClaimed) { await walkTo(page, roomId, rewards[roomId]); await tap(page, 'e', 75); await page.waitForTimeout(100); }
+      await walkTo(page, roomId, 918); await tap(page, 'e', 75);
+      await waitFor(page, `value => value.b07?.roomId !== ${JSON.stringify(roomId)} || !!value.b07?.menu || !!value.b07?.b08?.activeBoss`, `B10 defeat scenario traverses ${roomId}`);
+    }
+    state = await waitFor(page, (value) => value.b07?.b08?.activeBoss === 'sundial-custodian', 'B10 defeat scenario reaches the first integrated route boss');
+    await waitFor(page, (value) => value.screen === 'b07Results' && value.b07?.result === 'defeat', 'idle player reaches the real B10 boss defeat result', 90000);
+    state = await snapshot(page);
+    assert(state.save?.lastRun?.result === 'defeat' && state.save.activeRun === null && state.save.beaconAwakened, `B10 defeat should close the active run and preserve prior permanent progress: ${JSON.stringify(state.save)}`);
+    check('B10 defeat writes one terminal defeat summary while preserving the prior first-clear unlock', { result: state.save.lastRun.result, completedRuns: state.save.completedRuns, beaconAwakened: state.save.beaconAwakened, bossesCleared: state.save.lastRun.bossesCleared });
+    await page.locator('#b07-replay-button').click();
+    state = await waitFor(page, (value) => value.screen === 'b10Expedition' && value.b07?.roomId === 'sg-breach-steps' && value.b07?.b09?.build?.acquisitions?.length === 0, 'B10 defeat result retries with a fresh run-local build');
+    check('B10 defeat retry starts a fresh route without clearing persistent beacon progress', { seed: state.b07.seed, completedRuns: state.save.completedRuns, beaconAwakened: state.save.beaconAwakened, acquisitions: state.b07.b09.build.acquisitions });
+  } else {
+    await page.locator('#b07-replay-button').click();
+    state = await waitFor(page, (value) => value.screen === 'b09Expedition' && value.b07?.roomId === 'sg-breach-steps' && value.b07?.b09.build.acquisitions.length === 0 && value.b07?.b09.build.ledger.claimedSourceIds.length === 0, 'Replay resets the B09 build and one-claim ledger');
+    check('B09 replay starts a fresh run build and source ledger', { seed: state.b07.seed, acquisitions: state.b07.b09.build.acquisitions, ledger: state.b07.b09.build.ledger });
+  }
   if (runContext) {
     const tempVideo = await page.video()?.path().catch(() => null);
     await runContext.close(); runContext = null;
@@ -382,7 +463,7 @@ async function main() {
   assert(await ready(`${previewUrl}/?b09=1`), `Production preview failed to start: ${previewErrors}`);
   const prod = await context.newPage(); monitor(prod, 'B09 production gate');
   await prod.goto(`${previewUrl}/?b09=1`, { waitUntil: 'domcontentloaded' });
-  assert(await prod.locator('#start-button').textContent().then((text) => text?.includes('ENTER THE SPINDLE')), 'production ?b09=1 query must keep the ordinary production title route');
+  assert(await prod.locator('#start-button').textContent().then((text) => text?.includes('ENTER THE REFUGE')), 'production ?b09=1 query must keep the ordinary B10 production title route');
   assert(!await prod.locator('#b09-choice-screen').isVisible(), 'production must not expose the B09 development upgrade route');
   check('production ignores the ?b09=1 development route', { path: '/?b09=1', titleAction: await prod.locator('#start-button').textContent() });
   await prod.close();
@@ -390,9 +471,9 @@ async function main() {
   const b09Events = await page.evaluate(() => window.__B09_EVENTS__ ?? []);
   await page.close();
   await context.close(); context = null;
-  const fileList = ['package.json','prompts/b09-crownflare-roguelite-upgrades-rewards-and-run-build-variety.md','src/game/roguelite/b09RunBuild.ts','src/game/scenes/B07ExpeditionScene.ts','src/game/scenes/ChamberScene.ts','src/game/createGame.ts','src/main.ts','tests/unit/b09-run-build.test.ts','tools/local-qa/b09-run-build-smoke.mjs','art-source/manifests/b09-upgrade-icons.json'];
+  const fileList = ['package.json','prompts/b09-crownflare-roguelite-upgrades-rewards-and-run-build-variety.md','prompts/b10-crownflare-hub-story-complete-run-and-repository-cleanup.md','src/game/roguelite/b09RunBuild.ts','src/game/persistence/save.ts','src/game/scenes/B07ExpeditionScene.ts','src/game/scenes/ChamberScene.ts','src/game/createGame.ts','src/main.ts','index.html','src/style.css','tests/unit/b09-run-build.test.ts','tools/local-qa/b09-run-build-smoke.mjs','art-source/manifests/b09-upgrade-icons.json'];
   const hash = createHash('sha256'); for (const file of fileList) hash.update(file).update('\0').update(await readFile(file));
-  const report = { result: errors.length ? 'FAIL' : 'PASS', capturedAt: new Date().toISOString(), browser: `Google Chrome ${headed ? 'headed' : 'headless'} via Playwright`, checks, actions, fullRun, errors, b09Events, sourceDigest: { files: fileList.length, sha256: hash.digest('hex') }, video: fullRun.video, gates: { tech: errors.length ? 'FAIL' : 'PASS', artMotion: 'OWNER REVIEW PENDING', audioHeard: 'NO', physicalController: 'NOT TESTED' } };
+  const report = { result: errors.length ? 'FAIL' : 'PASS', capturedAt: new Date().toISOString(), browser: `Google Chrome ${headed ? 'headed' : 'headless'} via Playwright`, checks, actions, fullRun, errors, b09Events, sourceDigest: { files: fileList.length, sha256: hash.digest('hex') }, video: fullRun.video, gates: { tech: errors.length ? 'FAIL' : 'PASS', b10Journey: b10FullRun ? 'PASS: normal title/hub/story/full-run/results/refuge/replay/defeat/retry' : 'NOT RUN', artMotion: 'OWNER REVIEW PENDING', audioCaptured: 'NO', audioHeard: 'NO', physicalController: 'NOT TESTED' } };
   await writeFile(path.join(evidence, 'qa-report.json'), `${JSON.stringify(report, null, 2)}\n`);
   assert(errors.length === 0, errors.join('\n'));
   console.log(JSON.stringify({ result: report.result, checks: checks.length, actions: actions.length, errors, video: report.video, report: `${evidence}/qa-report.json` }, null, 2));

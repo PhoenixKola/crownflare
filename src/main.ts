@@ -1,7 +1,7 @@
 import './style.css';
 import type * as Phaser from 'phaser';
 import { createGame } from './game/createGame';
-import { loadSave } from './game/persistence/save';
+import { loadSave, persistSave, recordRunResult, type B10RunCheckpoint, type B10RunSummary, type SaveV2 } from './game/persistence/save';
 import { GamepadStartEdge } from './game/input/gamepadStartEdge';
 import type { AnimationLabSnapshot, ArtReviewSnapshot, ChamberScene, ChamberSnapshot, IonaPreviewSnapshot } from './game/scenes/ChamberScene';
 import { B04VerticalSliceScene } from './game/scenes/B04VerticalSliceScene';
@@ -15,6 +15,18 @@ import { controllerFamily, DEFAULT_CONTROL_SETTINGS, loadControlSettings, readPa
 import { B09_UPGRADES, type RunBuildState, type UpgradeOffer } from './game/roguelite/b09RunBuild';
 const byId = <T extends HTMLElement>(id: string): T => { const el = document.getElementById(id); if (!el) throw new Error(`Missing UI: ${id}`); return el as T; };
 const title = byId<HTMLElement>('title-screen');
+const hubScreen = byId<HTMLElement>('hub-screen');
+const hubStory = byId<HTMLElement>('hub-story');
+const b10StoryBeat = byId<HTMLElement>('b10-story-beat');
+const b10StoryContinue = byId<HTMLButtonElement>('b10-story-continue');
+const hubNewRunButton = byId<HTMLButtonElement>('hub-new-run');
+const hubContinueButton = byId<HTMLButtonElement>('hub-continue');
+const hubSaveStatus = byId<HTMLElement>('hub-save-status');
+const hubProgress = byId<HTMLElement>('hub-progress');
+const hubReducedMotion = byId<HTMLInputElement>('hub-reduced-motion');
+const hubVolume = byId<HTMLInputElement>('hub-volume');
+const hubSoundToggle = byId<HTMLButtonElement>('hub-sound-toggle');
+const hubAmbience = byId<HTMLAudioElement>('hub-ambience');
 const hud = byId<HTMLElement>('hud');
 const pauseScreen = byId<HTMLElement>('pause-screen');
 const startButton = byId<HTMLButtonElement>('start-button');
@@ -40,6 +52,7 @@ const b04TitleButton = byId<HTMLButtonElement>('b04-title-button');
 const b07Results = byId<HTMLElement>('b07-results');
 const b07ResultHeading = byId<HTMLElement>('b07-result-heading');
 const b07ResultStats = byId<HTMLElement>('b07-result-stats');
+const b07ResultStory = byId<HTMLElement>('b07-result-story');
 const b07ReplayButton = byId<HTMLButtonElement>('b07-replay-button');
 const b07TitleButton = byId<HTMLButtonElement>('b07-title-button');
 const b09ChoiceScreen = byId<HTMLElement>('b09-choice-screen');
@@ -66,6 +79,8 @@ let b06Mode = false;
 let b07Mode = false;
 let b08Mode = false;
 let b09Mode = false;
+let b10Mode = false;
+let b10StoryVisible = false;
 let b09ChoiceVisible = false;
 let b09CurrentOffer: UpgradeOffer | null = null;
 let b09SelectedIndex = 0;
@@ -90,10 +105,126 @@ const b08Requested = import.meta.env.DEV && query.get('b08') === '1';
 const b09Requested = import.meta.env.DEV && query.get('b09') === '1';
 const ionaPreviewRequested = shouldEnableIonaPreview(import.meta.env.DEV, query.get('ionaPreview') === '1' || b03CombatRequested ? '1' : null);
 let pausedGamepadFrame = 0;
+let hubGamepadFrame = 0;
+let hubPadPreviousDown = false;
+let hubPadPreviousUp = false;
+let hubPadPreviousAccept = false;
 const pausedGamepadStart = new GamepadStartEdge();
-loadSave({ getItem: (key) => window.localStorage.getItem(key) }); // access stays inside loadSave's permission-error fallback
+const browserStorage = { getItem: (key: string) => window.localStorage.getItem(key), setItem: (key: string, value: string) => window.localStorage.setItem(key, value) };
+let saveState: SaveV2 = loadSave(browserStorage);
+let hubSoundEnabled = true;
+let b10RunId: string | null = null;
 const controllerSettings = new ControllerSettingsScreen();
 function setVisible(element: HTMLElement, shown: boolean): void { element.classList.toggle('hidden', !shown); element.setAttribute('aria-hidden', String(!shown)); }
+function commitSave(next: SaveV2): boolean {
+  saveState = next;
+  const saved = persistSave(browserStorage, next);
+  if (saved) saveState = loadSave(browserStorage);
+  hubSaveStatus.textContent = saved ? `LOCAL CHECKPOINT SAVED · REVISION ${saveState.revision}` : 'SAVE UNAVAILABLE · THIS SESSION CAN CONTINUE, BUT PROGRESS MAY NOT PERSIST';
+  renderHub();
+  return saved;
+}
+function renderHub(): void {
+  const checkpoint = saveState.activeRun;
+  hubContinueButton.disabled = !checkpoint;
+  hubContinueButton.textContent = checkpoint ? `CONTINUE · ROOM ${checkpoint.route.roomIndex + 1} · ${checkpoint.seed.toString(16).toUpperCase()}` : 'CONTINUE LAST RUN · NO CHECKPOINT';
+  const last = saveState.meta.lastRun;
+  hubProgress.textContent = `${saveState.meta.completedRuns} COMPLETED RUN${saveState.meta.completedRuns === 1 ? '' : 'S'} · ${saveState.meta.beaconAwakened ? 'REFUGE BEACON LIT' : 'FIRST CLEAR WILL LIGHT THE BEACON'}${last ? ` · LAST ${last.result.toUpperCase()}` : ''}`;
+  byId<HTMLElement>('hub-beacon-state').textContent = saveState.meta.beaconAwakened ? 'AWAKE / FIRST-CLEAR MARK' : 'UNLIT';
+  hubReducedMotion.checked = saveState.options.reduceMotion;
+  hubVolume.value = String(saveState.options.masterVolume);
+  hubAmbience.volume = saveState.options.masterVolume;
+  hubAmbience.muted = !hubSoundEnabled;
+}
+function openHub(): void {
+  b10StoryVisible = false; setVisible(b10StoryBeat, false); setVisible(title, false); setVisible(hubScreen, true); setVisible(hubStory, false); renderHub();
+  if (hubSoundEnabled) void hubAmbience.play().catch(() => { hubSaveStatus.textContent = 'SELECT SOUND ON TO ENABLE THE REFUGE AMBIENCE'; });
+  hubNewRunButton.focus();
+  pollHubGamepad();
+}
+function showHubStory(): void {
+  const first = !saveState.story.prologueSeen;
+  byId<HTMLElement>('hub-story-title').textContent = first ? 'The day broke twice.' : 'The hinge remembers.';
+  byId<HTMLElement>('hub-story-copy').innerHTML = first
+    ? 'IONA: The Spindle is holding two broken skies apart.<br /><br />SIGNAL: Repair the hinge. The cost will be yours to carry.<br /><br />IONA: I will mend the turning. The hour it chooses is not mine alone.'
+    : 'IONA: The two regions are still pulling against each other.<br /><br />SIGNAL: You know what the Spindle asks of you now.<br /><br />IONA: Then I will choose the turning again.';
+  setVisible(hubStory, true); byId<HTMLButtonElement>('hub-begin-run').focus();
+}
+function makeRunSeed(): number {
+  try { const value = new Uint32Array(1); crypto.getRandomValues(value); return value[0] || 1; }
+  catch { return (Date.now() ^ Math.floor(Math.random() * 0xffffffff)) >>> 0 || 1; }
+}
+function launchB10Run(seed: number, checkpoint: B10RunCheckpoint | null, runId: string): void {
+  b10RunId = runId;
+  stopHubGamepad(); hubAmbience.pause(); setVisible(hubScreen, false); setVisible(hubStory, false);
+  start(false, false, false, false, false, false, false, false, false, false, true, seed, checkpoint, runId);
+}
+function beginB10NewRun(): void {
+  const seed = makeRunSeed();
+  const runId = `run-${Date.now().toString(36)}-${seed.toString(16)}`;
+  const next = { ...saveState, story: { ...saveState.story, prologueSeen: true }, activeRun: null };
+  commitSave(next);
+  launchB10Run(seed, null, runId);
+}
+function continueB10Run(): void {
+  const checkpoint = saveState.activeRun;
+  if (!checkpoint) return;
+  launchB10Run(checkpoint.seed, checkpoint, checkpoint.runId);
+}
+function stopHubGamepad(): void {
+  if (hubGamepadFrame) window.cancelAnimationFrame(hubGamepadFrame);
+  hubGamepadFrame = 0; hubPadPreviousDown = false; hubPadPreviousUp = false; hubPadPreviousAccept = false;
+}
+function hubFocus(direction: -1 | 1): void {
+  const controls: HTMLButtonElement[] = hubStory.classList.contains('hidden')
+    ? [hubNewRunButton, hubContinueButton, byId<HTMLButtonElement>('hub-controls'), hubSoundToggle]
+    : [byId<HTMLButtonElement>('hub-begin-run'), byId<HTMLButtonElement>('hub-story-back')];
+  const enabled = controls.filter((button) => !button.disabled);
+  const index = enabled.indexOf(document.activeElement as HTMLButtonElement);
+  enabled[(index + direction + enabled.length) % enabled.length]?.focus();
+}
+function pollHubGamepad(): void {
+  if (hubScreen.classList.contains('hidden')) { stopHubGamepad(); return; }
+  let pad: Gamepad | null = null;
+  try { pad = Array.from(navigator.getGamepads?.() ?? []).find((candidate) => candidate?.connected) ?? null; } catch { pad = null; }
+  if (pad) {
+    const down = !!pad.buttons[13]?.pressed || (pad.axes[1] ?? 0) > .65;
+    const up = !!pad.buttons[12]?.pressed || (pad.axes[1] ?? 0) < -.65;
+    const accept = !!pad.buttons[0]?.pressed;
+    if (down && !hubPadPreviousDown) hubFocus(1);
+    if (up && !hubPadPreviousUp) hubFocus(-1);
+    if (accept && !hubPadPreviousAccept && document.activeElement instanceof HTMLButtonElement) document.activeElement.click();
+    hubPadPreviousDown = down; hubPadPreviousUp = up; hubPadPreviousAccept = accept;
+  } else { hubPadPreviousDown = false; hubPadPreviousUp = false; hubPadPreviousAccept = false; }
+  hubGamepadFrame = window.requestAnimationFrame(pollHubGamepad);
+}
+function saveB10Checkpoint(event: Event): void {
+  if (!b10Mode) return;
+  const checkpoint = (event as CustomEvent<B10RunCheckpoint>).detail;
+  if (!checkpoint || checkpoint.runId !== b10RunId) return;
+  commitSave({ ...saveState, activeRun: checkpoint });
+}
+function completeB10Run(detail: { result: 'victory' | 'defeat'; elapsedMs: number; damageTaken: number; visited: readonly string[]; choices: B10RunCheckpoint['route']['choices']; seed: number; b08BossesCleared?: readonly string[]; b09Build?: RunBuildState; runId?: string }): void {
+  if (!b10Mode) return;
+  const runId = detail.runId ?? b10RunId;
+  if (!runId) return;
+  const runBuild = detail.b09Build ?? (chamber instanceof B07ExpeditionScene ? chamber.b07Snapshot().b09.build : undefined);
+  if (!runBuild) return;
+  const summary: B10RunSummary = { runId, result: detail.result, seed: detail.seed, elapsedMs: Math.round(detail.elapsedMs), damageTaken: detail.damageTaken, visited: [...detail.visited], choices: detail.choices, bossesCleared: [...(detail.b08BossesCleared ?? [])], build: runBuild };
+  commitSave(recordRunResult(saveState, summary));
+}
+function openB10StoryBeat(event: Event): void {
+  if (!b10Mode || saveState.story.loomBeatSeen || (event as CustomEvent<{ id?: string }>).detail?.id !== 'vesper-arrival') return;
+  b10StoryVisible = true;
+  commitSave({ ...saveState, story: { ...saveState.story, loomBeatSeen: true } });
+  chamber?.resetTransientInput(); chamber?.setLabAudioPaused(true); game?.scene.pause('Chamber');
+  setVisible(b10StoryBeat, true); b10StoryContinue.focus();
+}
+function closeB10StoryBeat(): void {
+  if (!b10StoryVisible) return;
+  b10StoryVisible = false; setVisible(b10StoryBeat, false);
+  chamber?.resetTransientInput(); chamber?.setLabAudioPaused(false); game?.scene.resume('Chamber'); focusGameCanvas();
+}
 function focusGameCanvas(): void { game?.canvas?.focus({ preventScroll: true }); }
 function gamepadStartDown(): boolean {
   try { return Array.from(navigator.getGamepads?.() ?? []).some((pad) => !!pad?.connected && !!pad.buttons[9]?.pressed); }
@@ -108,19 +239,19 @@ function pollPausedGamepad(): void {
   if (pausedGamepadStart.poll(gamepadStartDown())) { pausedGamepadFrame = 0; togglePause('Resumed with controller Start.'); return; }
   pausedGamepadFrame = window.requestAnimationFrame(pollPausedGamepad);
 }
-function start(artReview = false, animationLab = false, ionaPreview = false, b03Combat = false, b04 = false, b05 = false, b06 = false, b07 = false, b08 = false, b09 = false): void {
+function start(artReview = false, animationLab = false, ionaPreview = false, b03Combat = false, b04 = false, b05 = false, b06 = false, b07 = false, b08 = false, b09 = false, b10 = false, seed?: number, checkpoint: B10RunCheckpoint | null = null, runId?: string): void {
   if (active) return;
-  const b07On = b07 || b08 || b09;
-  active = true; paused = false; artReviewMode = artReview; animationLabMode = animationLab; ionaPreviewMode = ionaPreview || b04 || b05 || b06 || b07On; b03CombatMode = b03Combat || b04 || b05 || b06 || b07On; b04Mode = b04 || b05 || b06 || b07On; b05Mode = b05 || b06 || b07On; b06Mode = b06; b07Mode = b07On; b08Mode = b08 || b09; b09Mode = b09; b09ChoiceVisible = false; b09CurrentOffer = null; b04ResultVisible = false; b07ResultVisible = false;
-  setVisible(title, false); setVisible(hud, !artReview && !animationLab && !b04 && !b05 && !b06 && !b07On); setVisible(pauseScreen, false); setVisible(b04Results, false); setVisible(b07Results, false);
+  const b07On = b07 || b08 || b09 || b10;
+  active = true; paused = false; artReviewMode = artReview; animationLabMode = animationLab; ionaPreviewMode = ionaPreview || b04 || b05 || b06 || b07On; b03CombatMode = b03Combat || b04 || b05 || b06 || b07On; b04Mode = b04 || b05 || b06 || b07On; b05Mode = b05 || b06 || b07On; b06Mode = b06; b07Mode = b07On; b08Mode = b08 || b09 || b10; b09Mode = b09 || b10; b10Mode = b10; b10RunId = runId ?? checkpoint?.runId ?? null; b09ChoiceVisible = false; b09CurrentOffer = null; b04ResultVisible = false; b07ResultVisible = false;
+  b10StoryVisible = false; setVisible(b10StoryBeat, false); setVisible(title, false); setVisible(hubScreen, false); setVisible(hubStory, false); hubAmbience.pause(); setVisible(hud, !artReview && !animationLab && !b04 && !b05 && !b06 && !b07On); setVisible(pauseScreen, false); setVisible(b04Results, false); setVisible(b07Results, false);
   setVisible(byId<HTMLElement>('target-health'), b03Combat && !b06);
   setVisible(byId<HTMLElement>('b03-status'), b03Combat && !b06);
   hud.classList.toggle('preview-hud', ionaPreview);
   hud.classList.toggle('b03-hud', b03Combat);
   setVisible(previewTools, ionaPreview && !b03Combat);
   setVisible(previewReadout, ionaPreview && !b03Combat);
-  if (b09) {
-    hudMode.textContent = '/ B09 RUN BUILD EXPEDITION';
+  if (b09 || b10) {
+    hudMode.textContent = b10 ? '/ SPINDLE REFUGE EXPEDITION' : '/ B09 RUN BUILD EXPEDITION';
     byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE · SPACE JUMP · SHIFT DODGE · J LIGHT · K HEAVY · Q RESONANCE · R DAWNRUSH · E / SOUTH INTERACT · ESC PAUSE';
   } else if (b08) {
     hudMode.textContent = '/ B08 THREE-BOSS EXPEDITION';
@@ -144,8 +275,10 @@ function start(artReview = false, animationLab = false, ionaPreview = false, b03
     hudMode.textContent = '/ CHAMBER 00';
     byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE · SPACE JUMP · SHIFT DASH · ESC PAUSE';
   }
-  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab, ionaPreview, b03Combat, b04, b05, b06, b07, b08, b09 });
+  quitButton.textContent = b10 ? 'RETURN TO REFUGE' : 'RETURN TO TITLE';
+  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab, ionaPreview, b03Combat, b04, b05, b06, b07, b08, b09, b10, seed, checkpoint, runId, reduceMotion: saveState.options.reduceMotion });
   game = instance.game; chamber = instance.scene;
+  game.sound.setVolume(saveState.options.masterVolume);
   focusGameCanvas();
 }
 function togglePause(reason = 'The Spindle is still.'): void {
@@ -288,13 +421,15 @@ function openControllerSettings(fromPause: boolean): void {
 function toggleDebug(): void { if (!import.meta.env.DEV) return; debug = !debug; setVisible(debugOverlay, debug); }
 function quit(): void {
   if (!active) return;
+  const returnToHub = b10Mode;
   stopPausedGamepadMonitor();
   stopB04ResultsMonitor();
   stopB09ChoiceMonitor();
   game?.destroy(true);
-  game = null; chamber = null; active = false; paused = false; debug = false; artReviewMode = false; animationLabMode = false; ionaPreviewMode = false; b03CombatMode = false; b04Mode = false; b05Mode = false; b06Mode = false; b07Mode = false; b08Mode = false; b09Mode = false; b09ChoiceVisible = false; b09CurrentOffer = null; b04ResultVisible = false; b07ResultVisible = false;
-  setVisible(debugOverlay, false); setVisible(pauseScreen, false); setVisible(hud, false); setVisible(previewTools, false); setVisible(previewReadout, false); setVisible(b04Results, false); setVisible(b07Results, false); setVisible(b09ChoiceScreen, false); hud.classList.remove('preview-hud'); hud.classList.remove('b03-hud'); setVisible(title, true);
-  startButton.focus();
+  game = null; chamber = null; active = false; paused = false; debug = false; artReviewMode = false; animationLabMode = false; ionaPreviewMode = false; b03CombatMode = false; b04Mode = false; b05Mode = false; b06Mode = false; b07Mode = false; b08Mode = false; b09Mode = false; b10Mode = false; b09ChoiceVisible = false; b09CurrentOffer = null; b04ResultVisible = false; b07ResultVisible = false;
+  setVisible(debugOverlay, false); setVisible(pauseScreen, false); setVisible(hud, false); setVisible(previewTools, false); setVisible(previewReadout, false); setVisible(b04Results, false); setVisible(b07Results, false); setVisible(b09ChoiceScreen, false); hud.classList.remove('preview-hud'); hud.classList.remove('b03-hud'); setVisible(title, !returnToHub);
+  if (returnToHub) { openHub(); return; }
+  setVisible(hubScreen, false); startButton.focus();
 }
 function stopB04ResultsMonitor(): void {
   if (b04ResultsFrame) window.cancelAnimationFrame(b04ResultsFrame);
@@ -339,8 +474,9 @@ function finishB04Result(event: Event): void {
 window.addEventListener('crownflare:b04-result', finishB04Result);
 window.addEventListener('crownflare:b07-result', (event) => {
   if (!active || !b07Mode || b07ResultVisible) return;
-  const detail = (event as CustomEvent<{ result: 'victory' | 'defeat'; elapsedMs: number; damageTaken: number; repairCharges: number; resonance: number; visited: readonly string[]; choices: { reach?: string; loom?: string }; seed: number; b08BossBuilt: boolean; b08BossesCleared?: readonly string[]; b08Practice?: boolean; b09Enabled?: boolean; b09Build?: RunBuildState }>).detail;
+  const detail = (event as CustomEvent<{ result: 'victory' | 'defeat'; elapsedMs: number; damageTaken: number; repairCharges: number; resonance: number; visited: readonly string[]; choices: B10RunCheckpoint['route']['choices']; seed: number; b08BossBuilt: boolean; b08BossesCleared?: readonly string[]; b08Practice?: boolean; b09Enabled?: boolean; b09Build?: RunBuildState; b10Enabled?: boolean; runId?: string }>).detail;
   if (!detail) return;
+  completeB10Run(detail);
   game?.scene.pause('Chamber'); chamber?.setLabAudioPaused(true); paused = true; b07ResultVisible = true;
   b07ResultHeading.textContent = detail.b09Enabled ? detail.result === 'victory' ? 'RUN BUILD / SPINDLE RESTORED' : 'RUN BUILD / EXPEDITION ENDED' : detail.b08BossBuilt ? detail.result === 'victory' ? detail.b08Practice ? 'BOSS PRACTICE CLEARED' : 'B08 FINAL CONFRONTATION CLEARED' : 'B08 EXPEDITION ENDED' : detail.result === 'victory' ? 'B07 ROUTE CLEARED' : 'EXPEDITION ENDED';
   const minutes = Math.floor(detail.elapsedMs / 60000);
@@ -348,6 +484,12 @@ window.addEventListener('crownflare:b07-result', (event) => {
   const reach = detail.choices.reach ?? 'not chosen'; const loom = detail.choices.loom ?? 'not chosen';
   const buildSummary = detail.b09Build ? Object.entries(detail.b09Build.ranks).filter(([, rank]) => !!rank).map(([id, rank]) => `${B09_UPGRADES[id as keyof typeof B09_UPGRADES].name} ${rank}`).join(' / ') || 'NO ATTUNEMENTS' : '';
   b07ResultStats.textContent = `${detail.result.toUpperCase()}  ·  ${minutes}:${seconds}  ·  ${detail.visited.length} ROOMS  ·  SEED ${detail.seed.toString(16).toUpperCase()}  ·  REACH ${reach}  ·  LOOM ${loom}  ·  REPAIRS ${detail.repairCharges}  ·  ROUTE RESONANCE ${detail.resonance}  ·  BOSSES ${detail.b08BossesCleared?.length ?? 0}/3  ·  ${detail.damageTaken} DAMAGE${detail.b09Enabled ? `  ·  RUN BUILD ${buildSummary}` : detail.b08BossBuilt ? '' : '. The B08 boss remains unbuilt.'}`;
+  b07ResultStory.textContent = b10Mode ? detail.result === 'victory'
+    ? 'At Broken Meridian, Iona refuses to pin the sky to a single hour. The Lumen Spindle turns again: dawn and night return in their own time. The refuge keeps the light of the first clear; each new run begins with a fresh build.'
+    : 'The Spindle lets go before the hinge can be mended. Iona returns to the refuge with the route remembered, but this expedition has ended. Start a new run when you are ready.'
+    : '';
+  b07ReplayButton.textContent = b10Mode ? 'BEGIN ANOTHER RUN  →' : 'REPLAY EXPEDITION  →';
+  b07TitleButton.textContent = b10Mode ? 'RETURN TO REFUGE' : 'RETURN TO TITLE';
   setVisible(b07Results, true); setVisible(pauseScreen, false); b07ReplayButton.focus(); pollB04Results();
 });
 b04ReplayButton.addEventListener('click', () => {
@@ -363,11 +505,47 @@ b04ReplayButton.addEventListener('click', () => {
 b04TitleButton.addEventListener('click', quit);
 b07ReplayButton.addEventListener('click', () => {
   if (!b07Mode || !(chamber instanceof B07ExpeditionScene) || !game) return;
+  if (b10Mode) {
+    stopB04ResultsMonitor(); game.destroy(true); game = null; chamber = null; active = false; paused = false; b07ResultVisible = false; b10Mode = false;
+    setVisible(b07Results, false);
+    const seed = makeRunSeed(); const runId = `run-${Date.now().toString(36)}-${seed.toString(16)}`;
+    launchB10Run(seed, null, runId);
+    return;
+  }
   b07ResultVisible = false; paused = false; setVisible(b07Results, false);
   chamber.resetB07Run(); chamber.setLabAudioPaused(false); game.scene.resume('Chamber'); focusGameCanvas(); stopB04ResultsMonitor();
 });
 b07TitleButton.addEventListener('click', quit);
-startButton.addEventListener('click', () => start(false, false, ionaPreviewRequested, b03CombatRequested, b04Requested, b05Requested, b06Requested, b07Requested, b08Requested, b09Requested));
+startButton.addEventListener('click', () => {
+  if (b03CombatRequested || b04Requested || b05Requested || b06Requested || b07Requested || b08Requested || b09Requested || ionaPreviewRequested) {
+    start(false, false, ionaPreviewRequested, b03CombatRequested, b04Requested, b05Requested, b06Requested, b07Requested, b08Requested, b09Requested);
+  } else openHub();
+});
+hubNewRunButton.addEventListener('click', showHubStory);
+hubContinueButton.addEventListener('click', continueB10Run);
+byId<HTMLButtonElement>('hub-controls').addEventListener('click', () => openControllerSettings(false));
+byId<HTMLButtonElement>('hub-story-back').addEventListener('click', () => { setVisible(hubStory, false); hubNewRunButton.focus(); });
+byId<HTMLButtonElement>('hub-begin-run').addEventListener('click', beginB10NewRun);
+hubSoundToggle.addEventListener('click', () => {
+  hubSoundEnabled = !hubSoundEnabled; hubAmbience.muted = !hubSoundEnabled;
+  hubSoundToggle.textContent = hubSoundEnabled ? 'SOUND ON' : 'SOUND OFF'; hubSoundToggle.setAttribute('aria-pressed', String(hubSoundEnabled));
+  if (hubSoundEnabled && hubScreen.classList.contains('hidden') === false) void hubAmbience.play().catch(() => undefined);
+  else hubAmbience.pause();
+});
+hubReducedMotion.addEventListener('change', () => commitSave({ ...saveState, options: { ...saveState.options, reduceMotion: hubReducedMotion.checked } }));
+hubVolume.addEventListener('input', () => {
+  hubAmbience.volume = Number(hubVolume.value);
+  commitSave({ ...saveState, options: { ...saveState.options, masterVolume: Number(hubVolume.value) } });
+});
+hubStory.addEventListener('keydown', (event) => { if (event.code === 'Escape') { event.preventDefault(); setVisible(hubStory, false); hubNewRunButton.focus(); } });
+b10StoryContinue.addEventListener('click', closeB10StoryBeat);
+b10StoryBeat.addEventListener('keydown', (event) => { if (event.code === 'Escape' || event.code === 'Enter' || event.code === 'Space') { event.preventDefault(); closeB10StoryBeat(); } });
+hubScreen.addEventListener('keydown', (event) => {
+  if (event.code !== 'ArrowDown' && event.code !== 'ArrowUp') return;
+  hubFocus(event.code === 'ArrowDown' ? 1 : -1); event.preventDefault();
+});
+window.addEventListener('crownflare:b10-checkpoint', saveB10Checkpoint);
+window.addEventListener('crownflare:b10-story-beat', openB10StoryBeat);
 titleSettingsButton.addEventListener('click', () => openControllerSettings(false));
 pauseSettingsButton.addEventListener('click', () => openControllerSettings(true));
 resumeButton.addEventListener('click', () => { if (paused) togglePause(); });
@@ -375,6 +553,7 @@ quitButton.addEventListener('click', quit);
 window.addEventListener('blur', () => { if (active && !paused) togglePause('Focus lost — simulation held for safety.'); });
 document.addEventListener('visibilitychange', () => { if (document.hidden && active && !paused) togglePause('Tab hidden — simulation held for safety.'); });
 window.addEventListener('keydown', (event) => {
+  if (event.code === 'Escape' && b10StoryVisible) { event.preventDefault(); closeB10StoryBeat(); return; }
   if (event.code === 'Escape' && active) { event.preventDefault(); if (b09ChoiceVisible || artReviewMode || b04ResultVisible || b07ResultVisible) quit(); else if (settingsOpen) return; else togglePause(); }
   if (event.code === 'Backquote' && active && !artReviewMode && import.meta.env.DEV) { event.preventDefault(); toggleDebug(); }
   // One window listener owns Escape in both play and pause, preventing double toggles.
@@ -436,8 +615,8 @@ previewAudioVolume.addEventListener('change', focusGameCanvas);
 if (import.meta.env.DEV) {
   // QA hook is read-only and never changes game rules or bypasses play input.
   Object.defineProperty(window, '__CROWNFLARE_QA__', { configurable: true, value: {
-    snapshot: (): { screen: 'title' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b05Combat' | 'b06Combat' | 'b07Expedition' | 'b08Expedition' | 'b09Expedition' | 'b09Choice' | 'b04Results' | 'b07Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; b05: ReturnType<ChamberScene['dawnrushSnapshot']>; b06: ReturnType<B06EnemyGauntletScene['b06Snapshot']>; b06Events: readonly Record<string, unknown>[]; b07: ReturnType<B07ExpeditionScene['b07Snapshot']> | null; sceneType: string | null; sceneActive: boolean; scenePaused: boolean } => ({
-      screen: !active ? 'title' : b09ChoiceVisible ? 'b09Choice' : b04ResultVisible ? 'b04Results' : b07ResultVisible ? 'b07Results' : artReviewMode ? 'review' : paused ? 'paused' : animationLabMode ? 'animationLab' : b09Mode ? 'b09Expedition' : b08Mode ? 'b08Expedition' : b07Mode ? 'b07Expedition' : b06Mode ? 'b06Combat' : b05Mode ? 'b05Combat' : b04Mode ? 'b04Combat' : b03CombatMode ? 'b03Combat' : ionaPreviewMode ? 'ionaPreview' : 'playing',
+    snapshot: (): { screen: 'title' | 'hub' | 'hubStory' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b05Combat' | 'b06Combat' | 'b07Expedition' | 'b08Expedition' | 'b09Expedition' | 'b10Expedition' | 'b09Choice' | 'b04Results' | 'b07Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; b05: ReturnType<ChamberScene['dawnrushSnapshot']>; b06: ReturnType<B06EnemyGauntletScene['b06Snapshot']>; b06Events: readonly Record<string, unknown>[]; b07: ReturnType<B07ExpeditionScene['b07Snapshot']> | null; save: { version: number; revision: number; completedRuns: number; beaconAwakened: boolean; activeRun: B10RunCheckpoint | null; lastRun: SaveV2['meta']['lastRun'] }; sceneType: string | null; sceneActive: boolean; scenePaused: boolean } => ({
+      screen: !active ? hubStory.classList.contains('hidden') ? hubScreen.classList.contains('hidden') ? 'title' : 'hub' : 'hubStory' : b09ChoiceVisible ? 'b09Choice' : b04ResultVisible ? 'b04Results' : b07ResultVisible ? 'b07Results' : artReviewMode ? 'review' : paused ? 'paused' : animationLabMode ? 'animationLab' : b10Mode ? 'b10Expedition' : b09Mode ? 'b09Expedition' : b08Mode ? 'b08Expedition' : b07Mode ? 'b07Expedition' : b06Mode ? 'b06Combat' : b05Mode ? 'b05Combat' : b04Mode ? 'b04Combat' : b03CombatMode ? 'b03Combat' : ionaPreviewMode ? 'ionaPreview' : 'playing',
       player: active && !artReviewMode ? chamber?.snapshot() ?? null : null,
       review: active && artReviewMode ? chamber?.reviewSnapshot() ?? null : null,
       lab: active && animationLabMode ? chamber?.animationSnapshot() ?? null : null,
@@ -448,6 +627,7 @@ if (import.meta.env.DEV) {
       b06: active && b06Mode && chamber instanceof B06EnemyGauntletScene ? chamber.b06Snapshot() : null,
       b06Events: active && b06Mode && chamber instanceof B06EnemyGauntletScene ? chamber.b06EventLog() : [],
       b07: active && b07Mode && chamber instanceof B07ExpeditionScene ? chamber.b07Snapshot() : null,
+      save: { version: saveState.version, revision: saveState.revision, completedRuns: saveState.meta.completedRuns, beaconAwakened: saveState.meta.beaconAwakened, activeRun: saveState.activeRun, lastRun: saveState.meta.lastRun },
       sceneType: chamber?.constructor.name ?? null,
       sceneActive: chamber?.sys.isActive() ?? false,
       scenePaused: game?.scene.isPaused('Chamber') ?? false,

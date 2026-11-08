@@ -34,7 +34,7 @@ The first art direction and true-scale Phaser package is documented in [`b01a-vi
 
 ## B01 recovery package — current owner review
 
-- Owner-facing bundle: [`review-evidence/recovery/README.md`](../../review-evidence/recovery/README.md).
+- Owner-facing bundle: [archived locally: `review-evidence/recovery/README.md`](review-evidence-archive.md#recovery).
 - Source-generation prompts and invocation IDs: `art-source/characters/iona/b01-recovery/generation-prompts.md` and `generation-provenance.json`.
 - Source-to-runtime hash lineage, alpha checks, anchors and clip events: `art-source/manifests/iona-b01-recovery-v2.json`.
 - New development default: `/?animationLab=1`. The old actor can only be selected for explicit A/B or regression with `&oldRejectedArt=1`; it is marked `REJECTED_OWNER_ART`.
@@ -42,8 +42,8 @@ The first art direction and true-scale Phaser package is documented in [`b01a-vi
 
 ## B01C extended animation and combat pilot
 
-- Owner-facing report: [`review-evidence/b01c/README.md`](../../review-evidence/b01c/README.md).
+- Owner-facing report: [archived locally: `review-evidence/b01c/README.md`](review-evidence-archive.md#b01c).
 - Source lineage, runtime hashes, clip timing, and gate state: [`iona-b01c-production-v1.json`](../../art-source/manifests/iona-b01c-production-v1.json).
-- Installed Chrome proof: [`67.44-second normal-speed video`](../../review-evidence/b01c/iona-b01c-60s.webm) and [`QA report`](../../review-evidence/b01c/qa-report.json).
+- Installed Chrome proof: [archived locally: `67.44-second normal-speed video`](review-evidence-archive.md#b01c) and [archived locally: `QA report`](review-evidence-archive.md#b01c).
 - Result: B01C technical checks pass; six-pose locomotion and three-hit art-motion pilot pass provisionally; canonical Iona and 60px scale owner approval remains **PENDING**. Playwright captured no audio track, and playback is unconfirmed.
 - The original B01 Recovery sources, manifest, and 15×30 body remain unchanged. B01C assets stay in their opt-in runtime namespace.

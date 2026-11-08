@@ -54,10 +54,10 @@ The headed command runs the actual Vite + Phaser application in installed Chrome
 
 ## Curated headed evidence
 
-- [`b00-title.png`](../../review-evidence/b00-title.png) — 428,356 bytes; SHA-256 `80f70bd70924e2d9a6b209db63d21bb06b63c33055f027bd2e78c904fa3ad632`.
-- [`b00-chamber.png`](../../review-evidence/b00-chamber.png) — 46,288 bytes; SHA-256 `b5cc2f811e837cb932183a84f581ea28429678f6f908be60b348193e846f2850`.
-- [`b00-gameplay.webm`](../../review-evidence/b00-gameplay.webm) — normal-speed headed browser capture, 1,256,848 bytes; SHA-256 `50f3f798899e55e6d83dc7e9a784c23e180f5cce17fb5ce941831fc171c51be6`.
-- [`b00-qa.md`](../../review-evidence/b00-qa.md) — installed Chrome version, scenario summary, clip hash and aggregate source SHA-256 `9c515668627edf1ead459be29be9ca03619a33f66c48aa2f38f8a2cdb0ce0810`.
+- [archived locally: `b00-title.png`](review-evidence-archive.md#root-files) — 428,356 bytes; SHA-256 `80f70bd70924e2d9a6b209db63d21bb06b63c33055f027bd2e78c904fa3ad632`.
+- [archived locally: `b00-chamber.png`](review-evidence-archive.md#root-files) — 46,288 bytes; SHA-256 `b5cc2f811e837cb932183a84f581ea28429678f6f908be60b348193e846f2850`.
+- [archived locally: `b00-gameplay.webm`](review-evidence-archive.md#root-files) — normal-speed headed browser capture, 1,256,848 bytes; SHA-256 `50f3f798899e55e6d83dc7e9a784c23e180f5cce17fb5ce941831fc171c51be6`.
+- [archived locally: `b00-qa.md`](review-evidence-archive.md#root-files) — installed Chrome version, scenario summary, clip hash and aggregate source SHA-256 `9c515668627edf1ead459be29be9ca03619a33f66c48aa2f38f8a2cdb0ce0810`.
 
 ## B00 status
 

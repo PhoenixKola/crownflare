@@ -1,0 +1,41 @@
+{
+  "tool": "tools/art-export/build-b10-spindle-refuge.py",
+  "layers": [
+    {
+      "source": "art-source/environments/b10/spindle-refuge/source/far-sky-and-fractured-spindle.png",
+      "sourceSha256": "35d75d8df91c6803d5879e5e5c4c141ddc29b9b7e4a37dc46c53a95d6faecfb4",
+      "sourceSize": [
+        1672,
+        941
+      ],
+      "sourceMode": "RGB",
+      "runtime": "public/assets/environments/b10/spindle-refuge/far-sky.png",
+      "runtimeSha256": "4d71980ddb0179d0dc58c23edf1913e9a878dd7b2493e1d70927571df8898402",
+      "runtimeBytes": 291569
+    },
+    {
+      "source": "art-source/environments/b10/spindle-refuge/source/engine-hall-transparent.png",
+      "sourceSha256": "e4ca5bb0e1a55b3f55cd2076422c55719058f7846df96c731e548f42b18f3269",
+      "sourceSize": [
+        2172,
+        724
+      ],
+      "sourceMode": "RGBA",
+      "runtime": "public/assets/environments/b10/spindle-refuge/engine-hall.png",
+      "runtimeSha256": "eb5972647076122cf7fb2099f48c2f7a1104c1785d0da87f0422404632e72ff7",
+      "runtimeBytes": 84785
+    },
+    {
+      "source": "art-source/environments/b10/spindle-refuge/source/foreground-frame-transparent.png",
+      "sourceSha256": "b1f593f413ba082b1de5af38b5fdfc43fba7f9a80a1eb025659527ee8a79aef5",
+      "sourceSize": [
+        1672,
+        941
+      ],
+      "sourceMode": "RGBA",
+      "runtime": "public/assets/environments/b10/spindle-refuge/foreground-frame.png",
+      "runtimeSha256": "f30de7cf02364dcd4bf8503cfe315df47f2eb35351dded9a659e3f51fc6929c1",
+      "runtimeBytes": 55522
+    }
+  ]
+}

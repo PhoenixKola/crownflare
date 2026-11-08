@@ -1,6 +1,13 @@
 node_modules/
 **/__pycache__/
 dist/
+/review-evidence/
+**/*.webm
+**/*.mov
+**/*.mkv
+**/*.har
+**/browser-profiles/
+**/chrome-profiles/
 .vite/
 coverage/
 playwright-report/

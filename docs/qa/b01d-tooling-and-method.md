@@ -26,7 +26,7 @@ This is reproducible image cleanup, not hand pixel animation. There were **zero 
 
 The build now generates and hashes `src/game/animation/ionaCandidateFrameMetrics.ts`, with painted bounds for every B01C and B01D frame. The lab sizes the live candidate by those bounds, and the diagnostics draw the painted rectangle beside the 128×80 source canvas, the 15×30 physics body and the feet pivot. The production smoke measured the live sprite at exactly 48, 60 and 72 logical visible pixels.
 
-Rebuild with `npm run art:iona:b01d:build`; it exports and audits candidate frames plus the metrics module. `npm run audit:assets` remains a separate repository-wide check. The final Installed Chrome capture and complete results are in [`review-evidence/b01d/README.md`](../../review-evidence/b01d/README.md). The capture is normal-speed, but the agent could not watch it; actual tab-hidden visibility was unverified, and the WebM contains no audio track.
+Rebuild with `npm run art:iona:b01d:build`; it exports and audits candidate frames plus the metrics module. `npm run audit:assets` remains a separate repository-wide check. The final Installed Chrome capture and complete results are in [archived locally: `review-evidence/b01d/README.md`](review-evidence-archive.md#b01d). The capture is normal-speed, but the agent could not watch it; actual tab-hidden visibility was unverified, and the WebM contains no audio track.
 
 ## Phaser and combat timing
 

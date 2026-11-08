@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#070f1c" />
   <link rel="icon" href="data:," />
-  <title>PROJECT CROWNFLARE — B00</title>
+  <title>PROJECT CROWNFLARE — Spindle Refuge</title>
 </head>
 <body>
   <div id="app">
@@ -21,11 +21,56 @@
         <p class="subtitle">BEYOND THE BROKEN DAY</p>
         <div class="thin-rule" aria-hidden="true"></div>
         <p class="lore">The day broke. The Spindle remembers.</p>
-        <button id="start-button" class="primary-action" type="button">ENTER THE SPINDLE <span aria-hidden="true">→</span></button>
+        <button id="start-button" class="primary-action" type="button">ENTER THE REFUGE <span aria-hidden="true">→</span></button>
         <button id="title-settings-button" class="secondary-action title-settings-action" type="button">CONTROLS / CONTROLLER</button>
-        <p id="title-metadata" class="metadata">B00 / FOUNDATION PROTOTYPE / TEMPORARY GAMEPLAY ART</p>
+        <p id="title-metadata" class="metadata">PRE-RELEASE PLAYABLE / BASE + DAWNRUSH / OWNER REVIEW PENDING</p>
       </div>
       <div class="corner-note">A NEW ORIGINAL WORLD<br />UNAPPROVED HERO ART</div>
+    </section>
+    <section id="hub-screen" class="hub-screen hidden" aria-labelledby="hub-title" aria-hidden="true">
+      <div class="hub-art hub-sky" aria-hidden="true"></div>
+      <div class="hub-art hub-hall" aria-hidden="true"></div>
+      <div class="hub-light" aria-hidden="true"></div>
+      <div class="hub-iona" aria-hidden="true"><img src="/assets/characters/iona/b01e/idle-0-right.png" alt="" /></div>
+      <div class="hub-art hub-frame" aria-hidden="true"></div>
+      <div class="hub-topline"><span>CROWNFLARE</span><span>SPINDLE REFUGE <i>·</i> PRE-RELEASE</span></div>
+      <div class="hub-content">
+        <p class="eyebrow">THE LUMEN SPINDLE / SAFE HARBOR</p>
+        <h2 id="hub-title">Where the<br /><em>turning waits.</em></h2>
+        <p class="hub-lore">The engine still remembers both skies. Iona can mend the hinge, but the hour it keeps belongs to everyone.</p>
+        <div class="hub-actions">
+          <button id="hub-new-run" class="primary-action" type="button">PREPARE EXPEDITION <span aria-hidden="true">→</span></button>
+          <button id="hub-continue" class="secondary-action" type="button" disabled>CONTINUE LAST RUN</button>
+          <button id="hub-controls" class="secondary-action" type="button">CONTROLS / ACCESSIBILITY</button>
+        </div>
+        <p id="hub-progress" class="hub-progress" aria-live="polite">FIRST EXPEDITION / BASE + DAWNRUSH</p>
+        <p id="hub-save-status" class="hub-save-status" role="status" aria-live="polite"></p>
+      </div>
+      <div class="hub-station" aria-hidden="true"><span>THE BEACON</span><b>✦</b><small id="hub-beacon-state">UNLIT</small></div>
+      <div class="hub-preferences">
+        <label><input id="hub-reduced-motion" type="checkbox" /> Reduce motion</label>
+        <label>MASTER <input id="hub-volume" type="range" min="0" max="1" step="0.05" value="0.8" /></label>
+        <button id="hub-sound-toggle" type="button" aria-pressed="true">SOUND ON</button>
+      </div>
+      <audio id="hub-ambience" src="/assets/audio/b10/spindle-refuge-ambience.wav" loop preload="auto"></audio>
+      <section id="hub-story" class="hub-story hidden" role="dialog" aria-modal="true" aria-labelledby="hub-story-title" aria-hidden="true">
+        <div class="hub-story-card">
+          <p class="eyebrow">DEPARTURE / SUNDERGLASS REACH</p>
+          <h3 id="hub-story-title">The day broke twice.</h3>
+          <p id="hub-story-copy">IONA: The Spindle is holding two broken skies apart.<br /><br />SIGNAL: Repair the hinge. The cost will be yours to carry.<br /><br />IONA: I will mend the turning. The hour it chooses is not mine alone.</p>
+          <p id="hub-story-build">RUN PREPARATION / IONA BASE · DAWNRUSH AVAILABLE · ROUTE REPAIRS RESET EACH RUN</p>
+          <button id="hub-begin-run" class="primary-action" type="button">ENTER SUNDERGLASS REACH <span aria-hidden="true">→</span></button>
+          <button id="hub-story-back" class="secondary-action" type="button">BACK TO REFUGE</button>
+        </div>
+      </section>
+    </section>
+    <section id="b10-story-beat" class="b10-story-beat hidden" role="dialog" aria-modal="true" aria-labelledby="b10-story-title" aria-hidden="true">
+      <div class="hub-story-card">
+        <p class="eyebrow">VESPER LOOMWORKS / THE NIGHT SIDE</p>
+        <h2 id="b10-story-title">A sky is not a price.</h2>
+        <p id="b10-story-copy">IONA: Every step east falls into the night side.<br /><br />SIGNAL: The Spindle can keep one sky by spending the other.<br /><br />IONA: Then no sky will be spent. We restore the turning, not a throne for dawn.</p>
+        <button id="b10-story-continue" class="primary-action" type="button">CONTINUE INTO VESPER <span aria-hidden="true">→</span></button>
+      </div>
     </section>
     <div id="hud" class="hud hidden" aria-hidden="true">
       <div class="hud-brand">CROWNFLARE <small id="hud-mode">/ CHAMBER 00</small></div>
@@ -87,12 +132,13 @@
     </section>
     <section id="b07-results" class="screen b04-results b07-results hidden" role="dialog" aria-modal="true" aria-labelledby="b07-result-heading" aria-hidden="true">
       <div class="b04-results-panel">
-        <p class="eyebrow">CROWNFLARE / B07 EXPEDITION / DEVELOPMENT REVIEW</p>
+        <p class="eyebrow">CROWNFLARE / BROKEN MERIDIAN</p>
         <h2 id="b07-result-heading">B07 ROUTE CLEARED</h2>
         <p id="b07-result-stats" class="b04-result-stats" aria-live="polite"></p>
-        <button id="b07-replay-button" class="primary-action" type="button">REPLAY EXPEDITION <span aria-hidden="true">&gt;</span></button>
-        <button id="b07-title-button" class="secondary-action" type="button">RETURN TO TITLE</button>
-        <p class="b04-menu-hint">B08 BOSS THRESHOLD ONLY / NO BOSS OR ENDING CLAIMED</p>
+        <p id="b07-result-story" class="b07-result-story" aria-live="polite"></p>
+        <button id="b07-replay-button" class="primary-action" type="button">BEGIN ANOTHER RUN <span aria-hidden="true">&gt;</span></button>
+        <button id="b07-title-button" class="secondary-action" type="button">RETURN TO REFUGE</button>
+        <p class="b04-menu-hint">RUN BUILD RESETS / REFUGE PROGRESS PERSISTS</p>
       </div>
     </section>
     <section id="settings-screen" class="screen settings-screen hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title" aria-hidden="true">

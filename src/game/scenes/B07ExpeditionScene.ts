@@ -18,6 +18,7 @@ import { b08BossAttackRects, b08BossContactKey, b08BossIsVulnerable, damageB08Bo
 import type { B08BossEvent, B08BossId, B08BossPatternId, B08BossRuntime, B08BossRect } from '../bosses/b08BossTypes.ts';
 import { bossForB08Room } from '../bosses/b08BossRoutes.ts';
 import { createB09CombatRuntime, createRunBuild, effectiveModifiers, fieldRecyclerRepair, generateUpgradeOffer, resolveB09Contact, resolveB09Dodge, resolveB09Threat, selectUpgradeChoice, type B09CombatRuntime, type RunBuildState, type UpgradeChoiceId, type UpgradeOffer, type UpgradeChoiceSource } from '../roguelite/b09RunBuild.ts';
+import type { B10RunCheckpoint } from '../persistence/save.ts';
 
 const AUDIO_CUES = ['runner-tell', 'runner-slash', 'wisp-charge', 'wisp-shot', 'wisp-impact', 'bastion-tell', 'bastion-block', 'bastion-break', 'cantor-sweep', 'cantor-pulse', 'enemy-ko', 'shard-reward', 'wave-clear'] as const;
 const ENEMY_STATES: Readonly<Record<B06Archetype, readonly string[]>> = {
@@ -83,6 +84,11 @@ export class B07ExpeditionScene extends ChamberScene {
   private readonly worldSeed: number;
   private readonly b08Mode: boolean;
   private readonly b09Mode: boolean;
+  private readonly b10Mode: boolean;
+  private readonly runId: string;
+  private readonly resumeCheckpoint: B10RunCheckpoint | null;
+  private restoringCheckpoint = false;
+  private b10VesperBeatSent = false;
   private runBuild: RunBuildState;
   private b09Runtime: B09CombatRuntime = createB09CombatRuntime();
   private pendingB09Offer: UpgradeOffer | null = null;
@@ -105,17 +111,23 @@ export class B07ExpeditionScene extends ChamberScene {
   private bossActiveRects: readonly B08BossRect[] = [];
   private bossVfxEnabled = true;
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, seed?: number, b08 = false, b09 = false) {
-    super(onPauseRequested, onControllerState, { ionaPreview: true, b03Combat: true, b04: true, b05: true, b06: true, b07: true });
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, seed?: number, b08 = false, b09 = false, b10 = false, checkpoint: B10RunCheckpoint | null = null, runId?: string, reduceMotion?: boolean) {
+    super(onPauseRequested, onControllerState, { ionaPreview: true, b03Combat: true, b04: true, b05: true, b06: true, b07: true, reduceMotion });
     const querySeed = Number(new URLSearchParams(window.location.search).get('seed'));
-    this.worldSeed = seed ?? (Number.isFinite(querySeed) && querySeed !== 0 ? Math.trunc(querySeed) >>> 0 : 20261108);
+    this.worldSeed = checkpoint?.seed ?? seed ?? (Number.isFinite(querySeed) && querySeed !== 0 ? Math.trunc(querySeed) >>> 0 : 20261108);
     this.b08Mode = b08 || b09;
     this.b09Mode = b09;
+    this.b10Mode = b10;
+    this.resumeCheckpoint = checkpoint;
+    this.runId = checkpoint?.runId ?? runId ?? `run-${this.worldSeed.toString(16)}`;
     const practice = new URLSearchParams(window.location.search).get('boss');
     this.practiceBoss = b08 && (practice === 'sundial-custodian' || practice === 'spoolheart-regent' || practice === 'broken-meridian') ? practice : null;
-    this.route = initialB07Route(this.worldSeed);
-    this.runBuild = createRunBuild(this.worldSeed);
-    this.reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    this.route = checkpoint?.route ?? initialB07Route(this.worldSeed);
+    this.runBuild = checkpoint?.build ?? createRunBuild(this.worldSeed);
+    this.bossCleared = checkpoint?.bossesCleared as B08BossId[] ?? [];
+    this.runElapsedMs = checkpoint?.elapsedMs ?? 0;
+    this.damageTaken = checkpoint?.damageTaken ?? 0;
+    this.reducedMotion = reduceMotion ?? (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false);
     this.bossVfxEnabled = !this.reducedMotion;
   }
 
@@ -173,13 +185,20 @@ export class B07ExpeditionScene extends ChamberScene {
       else if (selected.choice.id === 'resonance-cache') this.grantB09CombatResonance(12);
       else if (selected.choice.id === 'solar-cell') this.grantB09DawnrushEnergy(12);
       this.logEvent({ type: 'upgrade-selected', sourceId: offer.sourceId, choiceId: selected.choice.id, rank: selected.choice.nextRank ?? 0, ranks: this.runBuild.ranks });
+      this.emitB10Checkpoint();
       this.emitState();
       window.dispatchEvent(new CustomEvent('crownflare:b09-choice-completed', { detail: { sourceId: offer.sourceId, choiceId: selected.choice.id } }));
     };
     window.addEventListener('crownflare:b09-choice-selected', chooseB09);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => window.removeEventListener('crownflare:b09-choice-selected', chooseB09));
+    if (this.resumeCheckpoint) this.restoringCheckpoint = true;
     if (this.practiceBoss) this.startBoss(this.practiceBoss, true);
     else this.loadCurrentRoom();
+    if (this.resumeCheckpoint) {
+      this.restoreB10CheckpointState({ hp: this.resumeCheckpoint.playerHp, resonance: this.resumeCheckpoint.resonance, dawnrushEnergy: this.resumeCheckpoint.dawnrushEnergy, dawnrushActive: this.resumeCheckpoint.dawnrushActive });
+      this.combat = this.combatSnapshot(); this.lastPlayerHp = this.combat?.playerHp ?? this.lastPlayerHp;
+      this.restoringCheckpoint = false; this.drawHud(); this.emitB10Checkpoint();
+    }
     this.emitState();
   }
 
@@ -464,6 +483,11 @@ export class B07ExpeditionScene extends ChamberScene {
     this.logEvent({ type: 'room-entered', roomId: room.id, region: room.region, seed: this.route.seed, variant: instance.variant });
     this.drawHud();
     this.emitState();
+    if (this.b10Mode && room.region === 'vesper-loomworks' && !this.b10VesperBeatSent) {
+      this.b10VesperBeatSent = true;
+      window.dispatchEvent(new CustomEvent('crownflare:b10-story-beat', { detail: { id: 'vesper-arrival', region: room.region } }));
+    }
+    this.emitB10Checkpoint();
   }
 
   private createEnvironment(room: B07RoomTemplate): void {
@@ -648,6 +672,7 @@ export class B07ExpeditionScene extends ChamberScene {
     this.showBanner(health > 0 && resonance > 0 ? `REPAIR +${health}  /  RESONANCE +${resonance}` : health > 0 ? `FIELD REPAIR +${health}` : `RESONANCE +${resonance}`);
     this.logEvent({ type: 'reward-claimed', roomId: this.room.id, repair: health, resonance, repairCharges: this.route.repairCharges, totalResonance: this.route.resonance });
     if (this.b09Mode && (this.room.id === 'sg-copper-causeway' || this.room.id === 'sg-conduit-annex')) this.openB09Offer(`room:${this.room.id}`);
+    if (!this.pendingB09Offer) this.emitB10Checkpoint();
   }
 
   private openB09Offer(sourceId: UpgradeChoiceSource): void {
@@ -1160,13 +1185,27 @@ export class B07ExpeditionScene extends ChamberScene {
       result, elapsedMs: this.runElapsedMs, damageTaken: this.damageTaken, repairCharges: this.route.repairCharges,
       resonance: this.route.resonance, visited: this.route.visited, choices: this.route.choices, seed: this.route.seed,
       b08BossBuilt: this.b08Mode, b08BossesCleared: [...this.bossCleared], b08Practice: this.practiceBoss !== null,
-      b09Enabled: this.b09Mode, b09Build: this.runBuild,
+      b09Enabled: this.b09Mode, b09Build: this.runBuild, b10Enabled: this.b10Mode, runId: this.runId,
     } }));
     this.logEvent({ type: 'result', result, runElapsedMs: this.runElapsedMs, damageTaken: this.damageTaken, choices: this.route.choices });
     this.emitState();
   }
 
   private emitState(): void { this.drawBuildSummary(); window.dispatchEvent(new CustomEvent('crownflare:b07-state', { detail: this.b07Snapshot() })); }
+  private emitB10Checkpoint(): void {
+    if (!this.b10Mode || this.restoringCheckpoint || this.resultSent) return;
+    const durable = this.combatSnapshot();
+    if (!durable) return;
+    const form = this.dawnrushSnapshot();
+    const checkpoint: B10RunCheckpoint = {
+      runId: this.runId, seed: this.route.seed, route: this.route, build: this.runBuild,
+      playerHp: Math.max(1, durable.playerHp), resonance: durable.resonance,
+      dawnrushEnergy: form?.energy ?? 70, dawnrushActive: form?.form === 'Dawnrush',
+      bossesCleared: [...this.bossCleared], elapsedMs: Math.round(this.runElapsedMs), damageTaken: this.damageTaken,
+      checkpointId: `${this.route.seed}:${this.route.roomIndex}:${this.route.rooms[this.route.roomIndex] ?? 'route-choice'}:${this.bossCleared.join(',')}`,
+    };
+    window.dispatchEvent(new CustomEvent('crownflare:b10-checkpoint', { detail: checkpoint }));
+  }
   private logEvent(event: Record<string, unknown>): void { this.eventLog.push({ ...event, elapsedMs: Math.round(this.runElapsedMs) }); if (this.eventLog.length > 180) this.eventLog.splice(0, this.eventLog.length - 180); }
 
   private trackRoom<T extends Phaser.GameObjects.GameObject>(object: T): T { this.roomObjects.push(object); return object; }

@@ -6,10 +6,10 @@
 
 ## Review package
 
-- Play the compact normal-speed Chrome recording: [`b05-completion-playable-chrome.webm`](../../review-evidence/b05-completion/b05-completion-playable-chrome.webm).
-- Read machine-readable events and test details: [`qa-report.json`](../../review-evidence/b05-completion/qa-report.json).
-- Review same-scale Base/Dawnrush color and silhouette studies: [`48/60/72 comparison board`](../../review-evidence/b05/dawnrush-completion-base-dawnrush-48-60-72.png).
-- Review retained generated sheets and runtime mappings: [`generated-source board`](../../review-evidence/b05/dawnrush-completion-generated-source-sheets.png), [`runtime contact sheet`](../../review-evidence/b05/dawnrush-completion-runtime-contact.png), and [`source/hash manifest`](../../art-source/manifests/dawnrush-b05-v1.json).
+- Play the compact normal-speed Chrome recording: [archived locally: `b05-completion-playable-chrome.webm`](review-evidence-archive.md#b05-completion).
+- Read machine-readable events and test details: [archived locally: `qa-report.json`](review-evidence-archive.md#b05-completion).
+- Review same-scale Base/Dawnrush color and silhouette studies: [archived locally: `48/60/72 comparison board`](review-evidence-archive.md#b05).
+- Review retained generated sheets and runtime mappings: [archived locally: `generated-source board`](review-evidence-archive.md#b05), [archived locally: `runtime contact sheet`](review-evidence-archive.md#b05), and [`source/hash manifest`](../../art-source/manifests/dawnrush-b05-v1.json).
 - Inspect true-scale VFX OFF/ON, transformed hurt, manual/empty-gauge return, combo, finisher, KO, encounter and viewport screenshots in `review-evidence/b05-completion/`.
 - Complete the independent audio pass in [`b05-owner-audio-capture.md`](b05-owner-audio-capture.md).
 - Physical controller status is not tested; connect an actual controller before marking that gate complete.

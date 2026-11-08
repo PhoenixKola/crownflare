@@ -26,7 +26,7 @@ Candidate: `IONA_B05_DAWNRUSH_GENERATED_FORM_V1` (`?b05=1`, development route on
 - Character canvases are 128×80 with a foot pivot at (64,80); standing visible height audits at 60 px on both facings. The gameplay collision body remains the B00 15×30 Arcade body.
 - The manifest contains 124 runtime textures from nine retained source sheets: four earlier B05 masters and five native ImageGen completion masters. Twenty-four runtime poses use source-generated left-facing art; other left entries are marked mechanical mirrors.
 - `audit-dawnrush.py` verifies source/runtime hashes, non-empty alpha, foot bounds, 128×80 canvas, texture uniqueness, direct-left provenance, visible difference from mirror, standing height and required runtime keys. It does not claim perceptual owner approval.
-- See [`dawnrush-completion-base-dawnrush-48-60-72.png`](../../review-evidence/b05/dawnrush-completion-base-dawnrush-48-60-72.png), [`dawnrush-completion-generated-source-sheets.png`](../../review-evidence/b05/dawnrush-completion-generated-source-sheets.png), [`dawnrush-completion-runtime-contact.png`](../../review-evidence/b05/dawnrush-completion-runtime-contact.png), and the newer live Chrome captures under [`review-evidence/b05-completion/`](../../review-evidence/b05-completion/).
+- See [archived locally: `dawnrush-completion-base-dawnrush-48-60-72.png`](review-evidence-archive.md#b05), [archived locally: `dawnrush-completion-generated-source-sheets.png`](review-evidence-archive.md#b05), [archived locally: `dawnrush-completion-runtime-contact.png`](review-evidence-archive.md#b05), and the newer live Chrome captures under [archived locally: `review-evidence/b05-completion/`](review-evidence-archive.md#b05-completion).
 
 ## Gate decisions
 

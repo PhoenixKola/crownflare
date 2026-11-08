@@ -192,7 +192,7 @@ export class ChamberScene extends Phaser.Scene {
   private dawnrushActivationMode: DawnrushActivationMode = 'showcase';
   private dawnrushShowcaseUsed = false;
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean; b07?: boolean } = {}) {
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean; b07?: boolean; reduceMotion?: boolean } = {}) {
     super({ key: 'Chamber' });
     this.onPauseRequested = onPauseRequested;
     this.onControllerState = onControllerState;
@@ -208,7 +208,7 @@ export class ChamberScene extends Phaser.Scene {
     this.b02Diagnostics = this.previewMode && params.get('b02diag') === '1';
     this.b03DebugVisible = this.b03Mode && params.get('b03diag') === '1';
     this.b03VfxEnabled = this.b03Mode && params.get('b03vfx') !== '0';
-    this.b03ReducedMotion = this.b03Mode && (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false);
+    this.b03ReducedMotion = this.b03Mode && (options.reduceMotion ?? (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false));
     if (this.b03ReducedMotion) this.b03VfxEnabled = false;
     this.oldRejectedArt = this.animationLab && params.get('oldRejectedArt') === '1';
     this.b01eMode = this.animationLab && params.get('b01e') === '1' && !this.oldRejectedArt;
@@ -720,6 +720,18 @@ export class ChamberScene extends Phaser.Scene {
   protected grantB09CombatResonance(amount: number): void { this.resonance = Phaser.Math.Clamp(this.resonance + Math.max(0, Math.round(amount)), 0, 100); }
   protected spendB09CombatResonance(amount: number): void { this.resonance = Math.max(0, this.resonance - Math.max(0, Math.round(amount))); }
   protected grantB09DawnrushEnergy(amount: number): void { if (this.b05Mode) this.dawnrushEnergy = Phaser.Math.Clamp(this.dawnrushEnergy + Math.max(0, Math.round(amount)), 0, 100); }
+
+  /** Restore only durable B10 resources at an authored room boundary; combat timers and input are reset. */
+  protected restoreB10CheckpointState(state: { hp: number; resonance: number; dawnrushEnergy: number; dawnrushActive: boolean }): void {
+    this.playerHp = Phaser.Math.Clamp(Math.round(state.hp), 1, this.playerMaxHp);
+    this.resonance = Phaser.Math.Clamp(Math.round(state.resonance), 0, 100);
+    this.dawnrushEnergy = Phaser.Math.Clamp(Math.round(state.dawnrushEnergy), 0, 100);
+    this.dawnrushState = state.dawnrushActive && this.dawnrushEnergy > 0 ? 'dawnrush' : 'base';
+    this.dawnrushPhaseMs = 0;
+    this.playerHurtMs = 0; this.playerInvulnerableMs = 0; this.dashInvulnerabilityMs = 0;
+    this.finisherCooldownMs = 0; this.dawnrushRecoveryMs = 0;
+    this.resetTransientInput();
+  }
 
   protected restorePlayerHealth(amount: number): number {
     if (this.playerHp <= 0) return 0;

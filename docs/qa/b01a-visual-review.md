@@ -51,7 +51,7 @@ Proposed edge vocabulary for a later cleanup pass: deep navy contour, mostly one
 
 ## Review evidence
 
-Captured in installed headed Chrome in the actual in-engine review route. The screenshot set and source/evidence digest are recorded in [`run-report.md`](../../review-evidence/b01a/run-report.md).
+Captured in installed headed Chrome in the actual in-engine review route. The screenshot set and source/evidence digest are recorded in [archived locally: `run-report.md`](review-evidence-archive.md#b01a).
 
 - Base scale comparison: 48/60/72px at 100% and 75% display.
 - Four VFX-off silhouettes: 48/60/72px, plus 60px on calm, light, and busy backgrounds.
@@ -80,7 +80,7 @@ Actual local runs after `npm ci`:
 - `npm run build` — passed. Vite reports the existing single JavaScript bundle is 1,405.56 kB minified (378.45 kB gzip), above its 500 kB advisory threshold.
 - `npm run audit:assets` — passed; 37 audited files, 6,106,157 bytes, no individual budget violations.
 - `npm audit` — passed; 0 vulnerabilities.
-- `npm run qa:b01a` — passed in installed headed Chrome 156; 26/26 preview textures loaded, 11 live Phaser captures, no missing texture/request/page/console errors. 4:3 viewport remained unclipped with a 16:9 canvas. The evidence digest is in [`run-report.md`](../../review-evidence/b01a/run-report.md).
+- `npm run qa:b01a` — passed in installed headed Chrome 156; 26/26 preview textures loaded, 11 live Phaser captures, no missing texture/request/page/console errors. 4:3 viewport remained unclipped with a 16:9 canvas. The evidence digest is in [archived locally: `run-report.md`](review-evidence-archive.md#b01a).
 - `npm run qa:chrome:local` — passed in installed headed Chrome 156 against B00 title, movement, jump, coyote, buffer, resize, dash barrier, camera, pause, blur, and re-entry scenarios. The pre-existing B00 evidence files were restored after the run so their retained originals are unchanged.
 - `npm run qa:controller:local` — passed in installed headed Chrome 156. A synthetic Gamepad API checks held Start across the pause edge, fresh Start resume, no double toggle, and keyboard/UI resume. This does not exercise a physical controller.
 

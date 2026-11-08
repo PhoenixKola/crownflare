@@ -17,9 +17,9 @@ This candidate carries the B01C Base identity and all existing B01C actions forw
 
 The manifest records every frame crop, source and runtime SHA-256, transparent bounds, 128×80 canvas, 67px run height, waist/feet anchor, frame timing, contact event metadata and owner-review status. The model/version was not exposed by the image tool and remains `unknown` in the provenance record. No pixels were hand-redrawn. Idle, jump, dash and all six combo poses remain the historical B01C art pending their own motion review.
 
-The unchanged B01C source is the only meaningful alternate direction in this batch; no second creative master was produced. For before/after, compare the same four run phases at the same 128×80 pixel canvas in [`iona-b01d-before-after-run-cycle.png`](../../review-evidence/b01d/iona-b01d-before-after-run-cycle.png). This is a raw-pixel contact sheet, not a retouched illustration.
+The unchanged B01C source is the only meaningful alternate direction in this batch; no second creative master was produced. For before/after, compare the same four run phases at the same 128×80 pixel canvas in [archived locally: `iona-b01d-before-after-run-cycle.png`](review-evidence-archive.md#b01d). This is a raw-pixel contact sheet, not a retouched illustration.
 
-The final Installed Chrome clip is [`iona-b01d-75s.webm`](../../review-evidence/b01d/iona-b01d-75s.webm), measured at 67.68 seconds and 4,593,218 bytes (SHA-256 `b8588efbce7307fffb37ca718a45bd81d2aff489f0aca0194f8ef70b399aee82`). It was recorded at normal speed but could not be played back by the agent in this session; see the report for the video-only audio status and unverified real-tab visibility check.
+The final Installed Chrome clip is [archived locally: `iona-b01d-75s.webm`](review-evidence-archive.md#b01d), measured at 67.68 seconds and 4,593,218 bytes (SHA-256 `b8588efbce7307fffb37ca718a45bd81d2aff489f0aca0194f8ef70b399aee82`). It was recorded at normal speed but could not be played back by the agent in this session; see the report for the video-only audio status and unverified real-tab visibility check.
 
 ## Working scale recommendation
 
