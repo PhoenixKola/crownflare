@@ -1,0 +1,194 @@
+{
+  "milestone": "B11",
+  "source": "art-source/ui/b11/action-icon-atlas.png",
+  "source_sha256": "710539547049779cf72e569955893f1d8bf07b90893a5470ef77ff839b7e52ca",
+  "source_size": [
+    1774,
+    887
+  ],
+  "tool": "Codex native ImageGen",
+  "tool_output_id": "01a1b353-b750-72f3-9594-c017f1f1a806",
+  "tool_output_file_id": "exec-ccc60d48-be53-4c6b-b5a9-58a563acf4bc.png",
+  "prompt": "Create one original pixel-art UI sprite atlas for the indie action roguelite Crownflare. Transparent PNG alpha; a precisely aligned four-column by two-row sprite sheet with eight isolated centered square icons, equal grid cells, generous transparent gutters. Crisp pixel clusters and 1-pixel dark navy outline, luminous pale pearl and teal with restrained copper accents, no text, no labels, no cell frames, no background, no shadows beyond silhouettes. Row one: light sword slash, heavy downward blade strike, upward aerial strike, contained resonance energy orb. Row two: quick dash wing/boot, transformation sun crest, falling solar finisher blade, Iona identity crest silhouette. Bold, clean and recognizable at 32x32 pixels. Strict pixel art with hard edges, suitable for deterministic grid cropping.",
+  "transparent_background": true,
+  "crop_method": "2x4 row-major equal fractional grid; per-cell alpha bounds; center-pad square; nearest-neighbor export to 96x96 RGBA",
+  "runtime_mapping": {
+    "light": {
+      "cell": [
+        0,
+        0,
+        444,
+        444
+      ],
+      "alpha_bounds_in_cell": [
+        0,
+        0,
+        444,
+        444
+      ],
+      "runtime": "public/assets/ui/b11/actions/light.png",
+      "runtime_sha256": "f637651823cb5d372fdd6c665ecfe66c26a898f76037c787ff54ac74e00cbc3a",
+      "runtime_size": [
+        96,
+        96
+      ],
+      "resampling": "nearest-neighbor; transparent 4px inset"
+    },
+    "heavy": {
+      "cell": [
+        444,
+        0,
+        887,
+        444
+      ],
+      "alpha_bounds_in_cell": [
+        0,
+        0,
+        443,
+        444
+      ],
+      "runtime": "public/assets/ui/b11/actions/heavy.png",
+      "runtime_sha256": "cf68280b00376a8ca680912f1d12b5aaa7f78f7fa3052c1cc534eb6d1b71d767",
+      "runtime_size": [
+        96,
+        96
+      ],
+      "resampling": "nearest-neighbor; transparent 4px inset"
+    },
+    "aerial": {
+      "cell": [
+        887,
+        0,
+        1330,
+        444
+      ],
+      "alpha_bounds_in_cell": [
+        0,
+        9,
+        443,
+        444
+      ],
+      "runtime": "public/assets/ui/b11/actions/aerial.png",
+      "runtime_sha256": "5cb5d2ae1d086fd72a371dd3a00e5de7ccaf9facb13f68fd5f937d4bc45ed917",
+      "runtime_size": [
+        96,
+        96
+      ],
+      "resampling": "nearest-neighbor; transparent 4px inset"
+    },
+    "resonance": {
+      "cell": [
+        1330,
+        0,
+        1774,
+        444
+      ],
+      "alpha_bounds_in_cell": [
+        0,
+        39,
+        428,
+        444
+      ],
+      "runtime": "public/assets/ui/b11/actions/resonance.png",
+      "runtime_sha256": "fce652b1b93361a1babab4351e0276810bb146a9d651ccff982f266fed37dcfa",
+      "runtime_size": [
+        96,
+        96
+      ],
+      "resampling": "nearest-neighbor; transparent 4px inset"
+    },
+    "dash": {
+      "cell": [
+        0,
+        444,
+        444,
+        887
+      ],
+      "alpha_bounds_in_cell": [
+        0,
+        0,
+        444,
+        443
+      ],
+      "runtime": "public/assets/ui/b11/actions/dash.png",
+      "runtime_sha256": "c78b7606e3b6939018324bf406ef1e351ca4636945251d43ff3ded4f1056ef91",
+      "runtime_size": [
+        96,
+        96
+      ],
+      "resampling": "nearest-neighbor; transparent 4px inset"
+    },
+    "transform": {
+      "cell": [
+        444,
+        444,
+        887,
+        887
+      ],
+      "alpha_bounds_in_cell": [
+        0,
+        0,
+        443,
+        443
+      ],
+      "runtime": "public/assets/ui/b11/actions/transform.png",
+      "runtime_sha256": "1ecfc34d7a48f7a399742277850e7508775027ba41f0145a63c1d49ad0ff01c3",
+      "runtime_size": [
+        96,
+        96
+      ],
+      "resampling": "nearest-neighbor; transparent 4px inset"
+    },
+    "finisher": {
+      "cell": [
+        887,
+        444,
+        1330,
+        887
+      ],
+      "alpha_bounds_in_cell": [
+        0,
+        0,
+        443,
+        443
+      ],
+      "runtime": "public/assets/ui/b11/actions/finisher.png",
+      "runtime_sha256": "038e717eae9113b85fc2e48c365afc33a38cfe46f1a3d70a9c33f626000b7bb9",
+      "runtime_size": [
+        96,
+        96
+      ],
+      "resampling": "nearest-neighbor; transparent 4px inset"
+    },
+    "iona-crest": {
+      "cell": [
+        1330,
+        444,
+        1774,
+        887
+      ],
+      "alpha_bounds_in_cell": [
+        0,
+        0,
+        440,
+        443
+      ],
+      "runtime": "public/assets/ui/b11/actions/iona-crest.png",
+      "runtime_sha256": "9e3af35eb8d2324f7967a0af8ceb25a1aeb5c88bfd620d8b6b0fd0c4a3bf6053",
+      "runtime_size": [
+        96,
+        96
+      ],
+      "resampling": "nearest-neighbor; transparent 4px inset"
+    }
+  },
+  "additional_calls": [
+    {
+      "tool_output_id": null,
+      "tool_output_file_id": null,
+      "status": "discarded; saved output path and output ID were not exposed by the tool wrapper",
+      "prompt": "Create one original pixel-art UI sprite atlas for the indie action roguelite Crownflare. It must be a transparent PNG, 4 columns by 2 rows, exactly eight isolated square icons with consistent centered optical size and ample transparent gutter. Each icon has a clean 1-pixel dark navy outline, crisp pixel clusters, restrained luminous pearl/teal/copper palette, small warm Dawnrush accents, no text, no letters, no numbers, no border around cells, no shadows outside silhouettes, no background. Row 1 left to right: fast light sword slash; heavy downward hammering blade; upward aerial strike with rising arc; stored resonance energy orb. Row 2 left to right: quick dash wing/boot; transformation sun crest; finisher falling solar blade; Iona identity crest/portrait silhouette. Make the artwork bold and immediately readable when each cell is displayed at 32 by 32 pixels. Keep exact 4x2 aligned grid and equal cell sizes, suitable for deterministic cell crops. Pixel art only, nearest-neighbor crisp edges."
+    }
+  ],
+  "notes": "The retained, reproducible source output is the second native generation call. The first call's metadata was not surfaced by the wrapper; its prompt and the unavailable identifiers are recorded above."
+}

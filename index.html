@@ -73,32 +73,82 @@
       </div>
     </section>
     <div id="hud" class="hud hidden" aria-hidden="true">
-      <div class="hud-brand">CROWNFLARE <small id="hud-mode">/ CHAMBER 00</small></div>
-      <div id="player-health" class="hud-health"><span>INTEGRITY</span><div class="bar"><i></i></div></div>
-      <div id="target-health" class="hud-health hidden"><span>SENTRY</span><div class="bar"><i></i></div></div>
-      <div id="resonance-meter" class="hud-resonance"><span>RESONANCE / LOCKED</span><div class="bar"><i></i></div></div>
-      <div id="b03-status" class="b03-status hidden" aria-live="polite"></div>
-      <div id="preview-readout" class="preview-readout hidden" aria-live="polite"></div>
-      <p id="controls-tip" class="controls-tip">A/D MOVE &nbsp; SPACE JUMP &nbsp; SHIFT DASH &nbsp; ESC PAUSE</p>
-      <div id="preview-tools" class="preview-tools hidden" aria-label="Provisional Iona review controls">
-        <div class="preview-scale-controls" aria-label="Working sprite scale">
-          <span>SIZE</span>
-          <button type="button" data-preview-scale="48" aria-pressed="false">48</button>
-          <button type="button" data-preview-scale="60" aria-pressed="true">60</button>
-          <button type="button" data-preview-scale="72" aria-pressed="false">72</button>
+      <div class="b11-hud-overlay" aria-label="Iona's expedition status">
+        <header class="b11-hud-topline">
+          <section class="b11-player-panel" aria-label="Iona health">
+            <div class="b11-portrait"><img src="/assets/ui/b11/actions/iona-crest.png" alt="" /></div>
+            <div class="b11-player-data">
+              <div class="b11-player-name"><strong>IONA</strong><span id="b11-form-name" class="b11-form-tag">BASE</span></div>
+              <div id="b11-health" class="b11-health-cells" role="img" aria-label="Health 5 of 5">
+                <i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <div class="b11-health-readout"><b id="b11-hp-number">5 / 5</b><span id="b11-repairs">REPAIR ×0</span></div>
+            </div>
+          </section>
+          <section class="b11-run-context" aria-label="Current expedition room">
+            <div class="b11-run-brand"><span class="b11-seal">✦</span><div><strong>CROWNFLARE</strong><small id="hud-mode">SPINDLE REFUGE EXPEDITION</small></div></div>
+            <p><b id="b11-region">SUNDERGLASS REACH</b><span id="b11-room">ROOM 01</span></p>
+            <small id="b11-objective">FIELD SIGNAL / ACTIVE</small>
+          </section>
+          <section class="b11-gauges" aria-label="Combat gauges">
+            <div class="b11-gauge b11-gauge-resonance">
+              <div><span>RESONANCE</span><b id="b11-resonance-number">0 / 100</b></div>
+              <div class="b11-gauge-track"><i id="b11-resonance-fill"></i></div>
+              <small id="b11-resonance-ready">35 TO SOLAR DRIVE</small>
+            </div>
+            <div class="b11-gauge b11-gauge-form">
+              <div><span>DAWNRUSH</span><b id="b11-form-number">0 / 100</b></div>
+              <div class="b11-gauge-track"><i id="b11-form-fill"></i></div>
+              <small id="b11-form-detail">FORM CHARGE / R TO TRANSFORM</small>
+            </div>
+          </section>
+        </header>
+        <section id="b11-boss" class="b11-boss-panel" aria-label="Boss health" hidden>
+          <div class="b11-boss-heading"><div><span>CONFRONTATION</span><strong id="b11-boss-name">BOSS</strong></div><b id="b11-boss-phase">PHASE I</b></div>
+          <div class="b11-boss-track"><i id="b11-boss-fill"></i></div>
+          <div class="b11-boss-foot"><span id="b11-boss-epithet">SPINDLE THREAT</span><b id="b11-boss-hp">0 / 0</b></div>
+        </section>
+        <div class="b11-lower-hud">
+          <div class="b11-status-cluster"><p id="b11-action-status" aria-live="polite">FIELD SIGNAL / ACTIVE</p><span id="b11-controller" aria-live="polite">KEYBOARD</span><small id="b11-context-prompt"></small><small id="b11-navigation-control">ESC / PAUSE · A / D MOVE</small><small id="b11-build">BUILD / NO ATTUNEMENTS</small></div>
+          <div id="b11-ability-dock" class="b11-ability-dock" role="group" aria-label="Combat abilities and controls">
+            <div class="b11-ability" role="group" data-action="light"><img src="/assets/ui/b11/actions/light.png" alt="" /><span>LIGHT</span><kbd>J</kbd></div>
+            <div class="b11-ability" role="group" data-action="heavy"><img src="/assets/ui/b11/actions/heavy.png" alt="" /><span>HEAVY</span><kbd>K</kbd></div>
+            <div class="b11-ability" role="group" data-action="aerial"><img src="/assets/ui/b11/actions/aerial.png" alt="" /><span>AERIAL</span><kbd>SPACE</kbd></div>
+            <div class="b11-ability" role="group" data-action="resonance"><img src="/assets/ui/b11/actions/resonance.png" alt="" /><span>SOLAR DRIVE</span><kbd>Q</kbd></div>
+            <div class="b11-ability" role="group" data-action="dash"><img src="/assets/ui/b11/actions/dash.png" alt="" /><span>DASH</span><kbd>SHIFT</kbd></div>
+            <div class="b11-ability" role="group" data-action="transform"><img src="/assets/ui/b11/actions/transform.png" alt="" /><span>TRANSFORM</span><kbd>R</kbd></div>
+            <div class="b11-ability" role="group" data-action="finisher"><img src="/assets/ui/b11/actions/finisher.png" alt="" /><span>DAWNFALL</span><kbd>F</kbd></div>
+          </div>
         </div>
-        <label class="preview-cue-control">AUDIO CUE
-          <select id="preview-audio-cue">
-            <option>step-a</option><option>step-b</option><option>jump</option><option>land</option>
-            <option>dash-start</option><option>dash-brake</option><option>palm-whoosh</option><option>palm-hit</option>
-            <option>kick-whoosh</option><option>kick-hit</option><option>forearm-whoosh</option><option>forearm-hit</option><option>miss</option>
-          </select>
-        </label>
-        <button id="preview-audio-play" type="button">PLAY CUE</button>
-        <button id="preview-audio-toggle" type="button" aria-pressed="true">MUTE</button>
-        <label class="preview-volume-control">VOLUME <input id="preview-audio-volume" type="range" min="0" max="1" step="0.05" value="0.68" /></label>
       </div>
-      <div id="controller-indicator" class="controller-indicator" aria-live="polite"></div>
+      <div class="legacy-hud">
+        <div class="hud-brand">CROWNFLARE <small>/ CHAMBER 00</small></div>
+        <div id="player-health" class="hud-health"><span>INTEGRITY</span><div class="bar"><i></i></div></div>
+        <div id="target-health" class="hud-health hidden"><span>SENTRY</span><div class="bar"><i></i></div></div>
+        <div id="resonance-meter" class="hud-resonance"><span>RESONANCE / LOCKED</span><div class="bar"><i></i></div></div>
+        <div id="b03-status" class="b03-status hidden" aria-live="polite"></div>
+        <div id="preview-readout" class="preview-readout hidden" aria-live="polite"></div>
+        <p id="controls-tip" class="controls-tip">A/D MOVE &nbsp; SPACE JUMP &nbsp; SHIFT DASH &nbsp; ESC PAUSE</p>
+        <div id="preview-tools" class="preview-tools hidden" aria-label="Provisional Iona review controls">
+          <div class="preview-scale-controls" aria-label="Working sprite scale">
+            <span>SIZE</span>
+            <button type="button" data-preview-scale="48" aria-pressed="false">48</button>
+            <button type="button" data-preview-scale="60" aria-pressed="true">60</button>
+            <button type="button" data-preview-scale="72" aria-pressed="false">72</button>
+          </div>
+          <label class="preview-cue-control">AUDIO CUE
+            <select id="preview-audio-cue">
+              <option>step-a</option><option>step-b</option><option>jump</option><option>land</option>
+              <option>dash-start</option><option>dash-brake</option><option>palm-whoosh</option><option>palm-hit</option>
+              <option>kick-whoosh</option><option>kick-hit</option><option>forearm-whoosh</option><option>forearm-hit</option><option>miss</option>
+            </select>
+          </label>
+          <button id="preview-audio-play" type="button">PLAY CUE</button>
+          <button id="preview-audio-toggle" type="button" aria-pressed="true">MUTE</button>
+          <label class="preview-volume-control">VOLUME <input id="preview-audio-volume" type="range" min="0" max="1" step="0.05" value="0.68" /></label>
+        </div>
+        <div id="controller-indicator" class="controller-indicator" aria-live="polite"></div>
+      </div>
     </div>
     <section id="pause-screen" class="screen pause-screen hidden" aria-labelledby="pause-title" aria-hidden="true">
       <div class="pause-panel">
@@ -169,6 +219,10 @@
           <p class="reserved-controls">LB / L1: DAWNRUSH TRANSFORM | RT / R2: FINISHER | MENU / START: PAUSE</p>
           <label class="rumble-control"><input id="rumble-enabled" type="checkbox" /> Vibration <span id="rumble-support">Checking support…</span></label>
           <button id="rumble-test" class="secondary-action" type="button" disabled>TEST RUMBLE</button>
+        </div>
+        <div class="settings-accessibility">
+          <label>MASTER VOLUME <output id="settings-volume-value">80%</output><input id="settings-master-volume" type="range" min="0" max="1" step="0.05" value="0.8" /></label>
+          <label class="settings-motion-toggle"><input id="settings-reduced-motion" type="checkbox" /> REDUCED MOTION <small>Use fewer animated effects</small></label>
         </div>
         <p id="settings-message" class="settings-message" role="status" aria-live="polite">Keyboard and mouse remain available. Controller navigation uses D-pad, South to confirm, East or Start to go back.</p>
         <footer class="settings-footer">

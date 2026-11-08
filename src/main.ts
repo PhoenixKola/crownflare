@@ -1,4 +1,5 @@
 import './style.css';
+import './ui/b11.css';
 import type * as Phaser from 'phaser';
 import { createGame } from './game/createGame';
 import { loadSave, persistSave, recordRunResult, type B10RunCheckpoint, type B10RunSummary, type SaveV2 } from './game/persistence/save';
@@ -11,8 +12,9 @@ import { SAVE_NAMESPACE } from './game/persistence/save';
 import { shouldEnableIonaPreview } from './game/preview/ionaPreviewGate';
 import { ControllerSettingsScreen } from './game/input/controllerSettingsScreen';
 import type { ControlSettings } from './game/input/controlSettings';
-import { controllerFamily, DEFAULT_CONTROL_SETTINGS, loadControlSettings, readPadActions, selectStandardPad, type StandardPadLike } from './game/input/controlSettings';
+import { buttonLabel, controllerFamily, DEFAULT_CONTROL_SETTINGS, KEYBOARD_CODES, loadControlSettings, readPadActions, selectStandardPad, type RebindableAction, type StandardPadLike } from './game/input/controlSettings';
 import { B09_UPGRADES, type RunBuildState, type UpgradeOffer } from './game/roguelite/b09RunBuild';
+import { B08_BOSS_PROFILES } from './game/bosses/b08BossProfiles';
 const byId = <T extends HTMLElement>(id: string): T => { const el = document.getElementById(id); if (!el) throw new Error(`Missing UI: ${id}`); return el as T; };
 const title = byId<HTMLElement>('title-screen');
 const hubScreen = byId<HTMLElement>('hub-screen');
@@ -34,6 +36,36 @@ const resumeButton = byId<HTMLButtonElement>('resume-button');
 const quitButton = byId<HTMLButtonElement>('quit-button');
 const debugOverlay = byId<HTMLElement>('debug-overlay');
 const controllerIndicator = byId<HTMLElement>('controller-indicator');
+const b11HudOverlay = byId<HTMLElement>('hud').querySelector<HTMLElement>('.b11-hud-overlay')!;
+const b11Health = byId<HTMLElement>('b11-health');
+const b11HealthCells = [...b11Health.querySelectorAll<HTMLElement>('i')];
+const b11HpNumber = byId<HTMLElement>('b11-hp-number');
+const b11Repairs = byId<HTMLElement>('b11-repairs');
+const b11FormName = byId<HTMLElement>('b11-form-name');
+const b11Region = byId<HTMLElement>('b11-region');
+const b11Room = byId<HTMLElement>('b11-room');
+const b11Objective = byId<HTMLElement>('b11-objective');
+const b11ResonanceNumber = byId<HTMLElement>('b11-resonance-number');
+const b11ResonanceFill = byId<HTMLElement>('b11-resonance-fill');
+const b11ResonanceGauge = hud.querySelector<HTMLElement>('.b11-gauge-resonance')!;
+const b11ResonanceReady = byId<HTMLElement>('b11-resonance-ready');
+const b11FormNumber = byId<HTMLElement>('b11-form-number');
+const b11FormFill = byId<HTMLElement>('b11-form-fill');
+const b11FormDetail = byId<HTMLElement>('b11-form-detail');
+const b11Boss = byId<HTMLElement>('b11-boss');
+const b11BossName = byId<HTMLElement>('b11-boss-name');
+const b11BossPhase = byId<HTMLElement>('b11-boss-phase');
+const b11BossEpithet = byId<HTMLElement>('b11-boss-epithet');
+const b11BossHp = byId<HTMLElement>('b11-boss-hp');
+const b11BossFill = byId<HTMLElement>('b11-boss-fill');
+const b11ActionStatus = byId<HTMLElement>('b11-action-status');
+const b11Controller = byId<HTMLElement>('b11-controller');
+const b11ContextPrompt = byId<HTMLElement>('b11-context-prompt');
+const b11NavigationControl = byId<HTMLElement>('b11-navigation-control');
+const b11Build = byId<HTMLElement>('b11-build');
+const settingsMasterVolume = byId<HTMLInputElement>('settings-master-volume');
+const settingsVolumeValue = byId<HTMLOutputElement>('settings-volume-value');
+const settingsReducedMotion = byId<HTMLInputElement>('settings-reduced-motion');
 const pauseReason = byId<HTMLElement>('pause-reason');
 const titleMetadata = byId<HTMLElement>('title-metadata');
 const previewNotice = byId<HTMLElement>('preview-notice');
@@ -112,10 +144,170 @@ let hubPadPreviousAccept = false;
 const pausedGamepadStart = new GamepadStartEdge();
 const browserStorage = { getItem: (key: string) => window.localStorage.getItem(key), setItem: (key: string, value: string) => window.localStorage.setItem(key, value) };
 let saveState: SaveV2 = loadSave(browserStorage);
+function readB11ControlSettings(): ControlSettings { try { return loadControlSettings(window.localStorage); } catch { return DEFAULT_CONTROL_SETTINGS; } }
+let b11ControlSettings: ControlSettings = readB11ControlSettings();
 let hubSoundEnabled = true;
 let b10RunId: string | null = null;
+let b10FirstClearResult = false;
 const controllerSettings = new ControllerSettingsScreen();
 function setVisible(element: HTMLElement, shown: boolean): void { element.classList.toggle('hidden', !shown); element.setAttribute('aria-hidden', String(!shown)); }
+type B11ExpeditionSnapshot = ReturnType<B07ExpeditionScene['b07Snapshot']>;
+let b11LastPaintAt = 0;
+let b11LastHp: number | null = null;
+let b11LastResonance: number | null = null;
+let b11LastFormEnergy: number | null = null;
+let b11LastAcquisitionCount = 0;
+let b11LastCooldownReady = false;
+let b11StatusUntil = 0;
+let b11StatusOverride = '';
+const b11ActionBindings: Readonly<Record<string, RebindableAction>> = {
+  light: 'light', heavy: 'heavy', aerial: 'jump', resonance: 'special', dash: 'dash', transform: 'transform', finisher: 'finisher',
+};
+function keyboardActionLabel(action: RebindableAction, compact = false): string {
+  const code = KEYBOARD_CODES[action][0] ?? action;
+  if (code === 'Space') return compact ? 'SPC' : 'SPACE';
+  if (code.startsWith('Arrow')) return code.replace('Arrow', '').toUpperCase();
+  if (code.startsWith('Shift')) return compact ? 'SHFT' : 'SHIFT';
+  return code.replace(/^Key/, '').replace(/^Digit/, '');
+}
+function compactPadLabel(index: number, family: ReturnType<typeof controllerFamily>): string {
+  const label = buttonLabel(index, family);
+  const compact: Readonly<Record<string, string>> = { 'D-pad Up': '↑', 'D-pad Down': '↓', 'D-pad Left': '←', 'D-pad Right': '→', Cross: 'X', Circle: 'O', Square: '□', Triangle: '△' };
+  return compact[label] ?? (label.startsWith('Button ') ? `B${label.slice(7)}` : label);
+}
+function b11Pad(): StandardPadLike | null {
+  try { return selectStandardPad(Array.from(navigator.getGamepads?.() ?? []) as (StandardPadLike | null)[]); }
+  catch { return null; }
+}
+function announceB11(text: string): void { b11StatusOverride = text; b11StatusUntil = performance.now() + 1350; }
+function updateB11Hud(state: B11ExpeditionSnapshot): void {
+  if (!b10Mode || !hud.classList.contains('b11-hud')) return;
+  const combat = state.hud.combat;
+  const form = state.hud.dawnrush;
+  const hp = Math.max(0, Math.min(5, state.playerHp));
+  const resonance = Math.max(0, Math.min(100, combat?.resonance ?? state.resonance));
+  const energy = Math.max(0, Math.min(100, form?.energy ?? 0));
+  const now = performance.now();
+  if (b11LastHp !== null && hp < b11LastHp) announceB11(`HIT / ${hp} HP REMAIN`);
+  else if (b11LastHp !== null && hp > b11LastHp) announceB11(`RESTORED / ${hp} HP`);
+  if (b11LastResonance !== null && resonance >= b11LastResonance + 5) announceB11(`RESONANCE +${Math.floor(resonance - b11LastResonance)}`);
+  if (b11LastFormEnergy !== null && energy >= b11LastFormEnergy + 3) announceB11(`DAWNRUSH +${Math.floor(energy - b11LastFormEnergy)} ENERGY`);
+  const acquisitionCount = state.b09.build.acquisitions.length;
+  if (acquisitionCount > b11LastAcquisitionCount) announceB11('ATTUNEMENT ACQUIRED / RUN BUILD UPDATED');
+  const resonanceReady = !!combat && resonance >= combat.resonanceCost && combat.specialCooldownMs <= 0;
+  if (resonanceReady && !b11LastCooldownReady && b11LastResonance !== null) announceB11('SOLAR DRIVE READY');
+  b11LastHp = hp; b11LastResonance = resonance; b11LastFormEnergy = energy;
+  b11LastAcquisitionCount = acquisitionCount; b11LastCooldownReady = resonanceReady;
+
+  b11Health.setAttribute('aria-label', `Health ${hp} of 5`);
+  b11Health.dataset.critical = String(hp > 0 && hp <= 2);
+  b11HealthCells.forEach((cell, index) => { cell.dataset.filled = String(index < hp); });
+  b11HpNumber.textContent = `${hp} / 5`;
+  b11Repairs.textContent = `REPAIR ×${state.repairCharges}`;
+  const formName = form?.form ?? 'Base';
+  b11FormName.textContent = formName.toUpperCase();
+  b11FormName.dataset.form = formName.toLowerCase();
+  b11HudOverlay.dataset.form = formName.toLowerCase();
+  b11HudOverlay.dataset.lowHealth = String(hp > 0 && hp <= 2);
+  b11HudOverlay.dataset.hurt = String((combat?.hurtMs ?? 0) > 0);
+  b11HudOverlay.dataset.menu = String(!!state.menu);
+  b11ResonanceNumber.textContent = `${Math.floor(resonance)} / 100`;
+  b11ResonanceFill.style.width = `${resonance}%`;
+  b11ResonanceReady.textContent = !combat ? 'COMBAT DATA UNAVAILABLE' : combat.specialCooldownMs > 0
+    ? `COOLDOWN ${(combat.specialCooldownMs / 1000).toFixed(1)}s`
+    : resonance >= combat.resonanceCost ? 'SOLAR DRIVE READY' : `NEED ${combat.resonanceCost} TO DRIVE`;
+  b11ResonanceGauge.dataset.ready = String(resonanceReady);
+  b11FormNumber.textContent = `${Math.floor(energy)} / 100`;
+  b11FormFill.style.width = `${energy}%`;
+  b11FormDetail.textContent = !form ? 'FORM DATA UNAVAILABLE'
+    : form.phaseMs > 0 ? `FORM SHIFT / ${Math.ceil(form.phaseMs)}ms`
+      : form.form === 'Base' ? energy < 20 ? `NEED 20 DAWNRUSH / ${Math.floor(energy)} STORED` : form.transformReady ? 'TRANSFORM READY / R TO SHIFT' : 'WAIT FOR RECOVERY'
+        : form.transformReady ? 'REVERSION READY / R TO SHIFT' : 'ACTIVE FORM / ENERGY DRAINS';
+
+  b11Region.textContent = state.region === 'vesper-loomworks' ? 'VESPER LOOMWORKS' : state.region === 'sunderglass-reach' ? 'SUNDERGLASS REACH' : 'SPINDLE CORE';
+  b11Room.textContent = state.b08.activeBoss ? `BOSS ${Math.max(1, state.b08.phaseNumber)} / 3` : `ROOM ${String(state.roomIndex).padStart(2, '0')} / ${state.routeLength}`;
+  const roomTitle = state.hud.roomTitle.split('/').at(-1)?.trim() || state.roomId?.replaceAll('-', ' ') || 'EXPEDITION';
+  b11Room.title = roomTitle.toUpperCase();
+  b11Objective.textContent = state.hud.objective || 'FIELD SIGNAL / ACTIVE';
+
+  const upgrades = Object.entries(state.b09.build.ranks).filter(([, rank]) => !!rank).map(([id, rank]) => `${B09_UPGRADES[id as keyof typeof B09_UPGRADES].name} ${rank}`);
+  const attunementText = upgrades.length ? upgrades.slice(0, 2).join(' · ') + (upgrades.length > 2 ? ` +${upgrades.length - 2}` : '') : 'NO ATTUNEMENTS';
+  b11Build.textContent = `BUILD / ${attunementText}`;
+  b11Build.title = upgrades.join(' · ') || 'No run upgrades acquired';
+
+  const bossId = state.b08.activeBoss;
+  b11Boss.hidden = !bossId;
+  if (bossId) {
+    const profile = B08_BOSS_PROFILES[bossId];
+    const phase = state.b08.phase;
+    b11BossName.textContent = profile.name.toUpperCase();
+    b11BossEpithet.textContent = profile.epithet.toUpperCase();
+    b11BossHp.textContent = `${Math.max(0, state.b08.hp)} / ${state.b08.maxHp}`;
+    b11BossFill.style.width = `${state.b08.maxHp > 0 ? Math.max(0, Math.min(100, 100 * state.b08.hp / state.b08.maxHp)) : 0}%`;
+    b11BossPhase.textContent = phase === 'telegraph' ? `READ THE TELL${state.b08.pattern ? ` / ${state.b08.pattern.replaceAll('-', ' ').toUpperCase()}` : ''}`
+      : phase === 'commit' ? 'STRIKE / EVADE' : phase === 'recovery' ? 'CORE EXPOSED / COUNTER' : phase === 'phase-change' ? `PHASE ${state.b08.phaseNumber} SHIFT`
+        : phase === 'ko' ? 'MECHANISM FALLING SILENT' : `PHASE ${state.b08.phaseNumber || 1}`;
+  }
+
+  const pad = b11Pad();
+  const family = pad ? controllerFamily(pad.id) : null;
+  const compactPrompts = window.innerWidth <= 480;
+  b11Controller.textContent = pad ? `${family === 'playstation' ? 'PLAYSTATION' : family === 'xbox' ? 'XBOX' : 'STANDARD'} PAD` : 'KEYBOARD';
+  b11NavigationControl.textContent = pad ? 'START / PAUSE · STICK MOVE' : 'ESC / PAUSE · A / D MOVE';
+  const abilities = hud.querySelectorAll<HTMLElement>('.b11-ability[data-action]');
+  abilities.forEach((element) => {
+    const ability = element.dataset.action ?? '';
+    const action = b11ActionBindings[ability];
+    if (!action) return;
+    const keyboard = keyboardActionLabel(action, compactPrompts);
+    const prompt = pad && family ? compactPrompts ? `${keyboard}/${compactPadLabel(b11ControlSettings.buttons[action], family)}` : `${keyboard} / ${compactPadLabel(b11ControlSettings.buttons[action], family)}` : keyboard;
+    const promptElement = element.querySelector('kbd');
+    if (promptElement && promptElement.textContent !== prompt) promptElement.textContent = prompt;
+    let stateName = hp <= 0 ? 'unavailable' : 'ready';
+    let status = 'READY';
+    if (ability === 'aerial' && combat?.grounded) { stateName = 'air-only'; status = 'AIR ONLY'; }
+    else if (ability === 'resonance' && combat && combat.specialCooldownMs > 0) { stateName = 'cooldown'; status = `${(combat.specialCooldownMs / 1000).toFixed(1)}s`; }
+    else if (ability === 'resonance' && combat && resonance < combat.resonanceCost) { stateName = 'locked'; status = `NEED ${combat.resonanceCost}`; }
+    else if (ability === 'dash' && (combat?.dashCooldownMs ?? 0) > 0) { stateName = 'cooldown'; status = `${((combat?.dashCooldownMs ?? 0) / 1000).toFixed(1)}s`; }
+    else if (ability === 'transform' && form) {
+      if (form.phaseMs > 0) { stateName = 'active'; status = 'SHIFTING'; }
+      else if (form.form === 'Base' && energy < 20) { stateName = 'locked'; status = `NEED 20 / ${Math.floor(energy)}`; }
+      else if (!form.transformReady) { stateName = form.form === 'Dawnrush' ? 'active' : 'locked'; status = form.form === 'Dawnrush' ? 'FORM ACTIVE' : 'RECOVER'; }
+    } else if (ability === 'finisher' && form) {
+      if (form.finisherReady) { stateName = 'ready'; status = 'READY'; }
+      else if (form.form === 'Dawnrush' && form.finisherCooldownMs > 0) { stateName = 'cooldown'; status = `${(form.finisherCooldownMs / 1000).toFixed(1)}s`; }
+      else { stateName = 'locked'; status = form.finisherStatus.replace(/^NEED /, 'NEED '); }
+    }
+    if (combat?.move.startsWith('light-') && ability === 'light' || combat?.move === 'heavy' && ability === 'heavy' || combat?.move === 'resonance' && ability === 'resonance') { stateName = 'active'; status = combat.phase.toUpperCase(); }
+    element.dataset.state = stateName;
+    element.setAttribute('aria-label', `${element.querySelector('span')?.textContent ?? ability}. ${status}. ${prompt}.`);
+    element.title = `${status} / ${prompt}`;
+  });
+
+  const interactLabel = pad && family ? compactPadLabel(b11ControlSettings.buttons.interact, family) : 'E';
+  const promptText = state.hud.prompt.replace(/^(?:SOUTH|E)\s*\/\s*/i, '').trim();
+  const repairAvailable = !!bossId && hp > 0 && hp < 5 && state.repairCharges > 0;
+  const contextual = repairAvailable ? `REPAIR +1 HP ×${state.repairCharges}`
+    : promptText && !promptText.startsWith('CLEAR ENEMIES') ? promptText : '';
+  b11ContextPrompt.hidden = !contextual;
+  b11ContextPrompt.textContent = contextual ? `${interactLabel} / ${contextual}` : '';
+
+  let status = state.result ? state.result === 'victory' ? 'SPINDLE RESTORED / RUN COMPLETE' : 'EXPEDITION ENDED'
+    : combat?.move.startsWith('light-') ? `LIGHT COMBO ${combat.move.slice(-1)} / ${combat.phase.toUpperCase()}`
+      : combat?.move === 'heavy' ? `HEAVY LAUNCHER / ${combat.phase.toUpperCase()}`
+        : combat?.move === 'air-light' ? `AERIAL STRIKE / ${combat.phase.toUpperCase()}`
+          : state.hud.objective || 'FIELD SIGNAL / ACTIVE';
+  if (now < b11StatusUntil && b11StatusOverride) status = b11StatusOverride;
+  if (b11ActionStatus.textContent !== status) b11ActionStatus.textContent = status;
+}
+function onB11ExpeditionState(event: Event): void {
+  if (!b10Mode) return;
+  const now = performance.now();
+  if (now - b11LastPaintAt < 80) return;
+  b11LastPaintAt = now;
+  updateB11Hud((event as CustomEvent<B11ExpeditionSnapshot>).detail);
+}
+window.addEventListener('crownflare:b07-state', onB11ExpeditionState);
 function commitSave(next: SaveV2): boolean {
   saveState = next;
   const saved = persistSave(browserStorage, next);
@@ -126,16 +318,22 @@ function commitSave(next: SaveV2): boolean {
 }
 function renderHub(): void {
   const checkpoint = saveState.activeRun;
+  byId<HTMLElement>('app').classList.toggle('reduce-motion', saveState.options.reduceMotion);
   hubContinueButton.disabled = !checkpoint;
   hubContinueButton.textContent = checkpoint ? `CONTINUE · ROOM ${checkpoint.route.roomIndex + 1} · ${checkpoint.seed.toString(16).toUpperCase()}` : 'CONTINUE LAST RUN · NO CHECKPOINT';
   const last = saveState.meta.lastRun;
+  titleMetadata.textContent = saveState.activeRun ? 'EXPEDITION CHECKPOINT READY / CONTINUE FROM THE LAST SAFE THREAD' : saveState.meta.completedRuns ? `${saveState.meta.completedRuns} RUN${saveState.meta.completedRuns === 1 ? '' : 'S'} RECORDED / ${saveState.meta.beaconAwakened ? 'BEACON AWAKE' : 'BEACON UNLIT'}` : 'FIRST EXPEDITION / SPINDLE REFUGE AWAITS';
   hubProgress.textContent = `${saveState.meta.completedRuns} COMPLETED RUN${saveState.meta.completedRuns === 1 ? '' : 'S'} · ${saveState.meta.beaconAwakened ? 'REFUGE BEACON LIT' : 'FIRST CLEAR WILL LIGHT THE BEACON'}${last ? ` · LAST ${last.result.toUpperCase()}` : ''}`;
   byId<HTMLElement>('hub-beacon-state').textContent = saveState.meta.beaconAwakened ? 'AWAKE / FIRST-CLEAR MARK' : 'UNLIT';
   hubReducedMotion.checked = saveState.options.reduceMotion;
   hubVolume.value = String(saveState.options.masterVolume);
+  settingsReducedMotion.checked = saveState.options.reduceMotion;
+  settingsMasterVolume.value = String(saveState.options.masterVolume);
+  settingsVolumeValue.value = `${Math.round(saveState.options.masterVolume * 100)}%`;
   hubAmbience.volume = saveState.options.masterVolume;
   hubAmbience.muted = !hubSoundEnabled;
 }
+renderHub();
 function openHub(): void {
   b10StoryVisible = false; setVisible(b10StoryBeat, false); setVisible(title, false); setVisible(hubScreen, true); setVisible(hubStory, false); renderHub();
   if (hubSoundEnabled) void hubAmbience.play().catch(() => { hubSaveStatus.textContent = 'SELECT SOUND ON TO ENABLE THE REFUGE AMBIENCE'; });
@@ -211,6 +409,7 @@ function completeB10Run(detail: { result: 'victory' | 'defeat'; elapsedMs: numbe
   const runBuild = detail.b09Build ?? (chamber instanceof B07ExpeditionScene ? chamber.b07Snapshot().b09.build : undefined);
   if (!runBuild) return;
   const summary: B10RunSummary = { runId, result: detail.result, seed: detail.seed, elapsedMs: Math.round(detail.elapsedMs), damageTaken: detail.damageTaken, visited: [...detail.visited], choices: detail.choices, bossesCleared: [...(detail.b08BossesCleared ?? [])], build: runBuild };
+  b10FirstClearResult = detail.result === 'victory' && !saveState.meta.beaconAwakened;
   commitSave(recordRunResult(saveState, summary));
 }
 function openB10StoryBeat(event: Event): void {
@@ -239,11 +438,25 @@ function pollPausedGamepad(): void {
   if (pausedGamepadStart.poll(gamepadStartDown())) { pausedGamepadFrame = 0; togglePause('Resumed with controller Start.'); return; }
   pausedGamepadFrame = window.requestAnimationFrame(pollPausedGamepad);
 }
+function syncB11HudToCanvas(): void {
+  if (!hud.classList.contains('b11-hud') || !game?.canvas) return;
+  const viewport = byId<HTMLElement>('app').getBoundingClientRect();
+  const canvas = game.canvas.getBoundingClientRect();
+  hud.style.left = `${canvas.left - viewport.left}px`;
+  hud.style.top = `${canvas.top - viewport.top}px`;
+  hud.style.width = `${canvas.width}px`;
+  hud.style.height = `${canvas.height}px`;
+  hud.style.right = 'auto';
+  hud.style.bottom = 'auto';
+}
+window.addEventListener('resize', () => window.requestAnimationFrame(syncB11HudToCanvas));
 function start(artReview = false, animationLab = false, ionaPreview = false, b03Combat = false, b04 = false, b05 = false, b06 = false, b07 = false, b08 = false, b09 = false, b10 = false, seed?: number, checkpoint: B10RunCheckpoint | null = null, runId?: string): void {
   if (active) return;
   const b07On = b07 || b08 || b09 || b10;
+  b11ControlSettings = readB11ControlSettings();
+  b11LastPaintAt = 0; b11LastHp = null; b11LastResonance = null; b11LastFormEnergy = null; b11LastAcquisitionCount = 0; b11LastCooldownReady = false; b11StatusUntil = 0; b11StatusOverride = '';
   active = true; paused = false; artReviewMode = artReview; animationLabMode = animationLab; ionaPreviewMode = ionaPreview || b04 || b05 || b06 || b07On; b03CombatMode = b03Combat || b04 || b05 || b06 || b07On; b04Mode = b04 || b05 || b06 || b07On; b05Mode = b05 || b06 || b07On; b06Mode = b06; b07Mode = b07On; b08Mode = b08 || b09 || b10; b09Mode = b09 || b10; b10Mode = b10; b10RunId = runId ?? checkpoint?.runId ?? null; b09ChoiceVisible = false; b09CurrentOffer = null; b04ResultVisible = false; b07ResultVisible = false;
-  b10StoryVisible = false; setVisible(b10StoryBeat, false); setVisible(title, false); setVisible(hubScreen, false); setVisible(hubStory, false); hubAmbience.pause(); setVisible(hud, !artReview && !animationLab && !b04 && !b05 && !b06 && !b07On); setVisible(pauseScreen, false); setVisible(b04Results, false); setVisible(b07Results, false);
+  b10StoryVisible = false; setVisible(b10StoryBeat, false); setVisible(title, false); setVisible(hubScreen, false); setVisible(hubStory, false); hubAmbience.pause(); setVisible(hud, !artReview && !animationLab && !b04 && !b05 && !b06 && (!b07On || b10)); hud.classList.toggle('b11-hud', b10); setVisible(pauseScreen, false); setVisible(b04Results, false); setVisible(b07Results, false);
   setVisible(byId<HTMLElement>('target-health'), b03Combat && !b06);
   setVisible(byId<HTMLElement>('b03-status'), b03Combat && !b06);
   hud.classList.toggle('preview-hud', ionaPreview);
@@ -251,7 +464,7 @@ function start(artReview = false, animationLab = false, ionaPreview = false, b03
   setVisible(previewTools, ionaPreview && !b03Combat);
   setVisible(previewReadout, ionaPreview && !b03Combat);
   if (b09 || b10) {
-    hudMode.textContent = b10 ? '/ SPINDLE REFUGE EXPEDITION' : '/ B09 RUN BUILD EXPEDITION';
+    hudMode.textContent = b10 ? 'SPINDLE REFUGE EXPEDITION' : '/ B09 RUN BUILD EXPEDITION';
     byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE · SPACE JUMP · SHIFT DODGE · J LIGHT · K HEAVY · Q RESONANCE · R DAWNRUSH · E / SOUTH INTERACT · ESC PAUSE';
   } else if (b08) {
     hudMode.textContent = '/ B08 THREE-BOSS EXPEDITION';
@@ -279,6 +492,7 @@ function start(artReview = false, animationLab = false, ionaPreview = false, b03
   const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab, ionaPreview, b03Combat, b04, b05, b06, b07, b08, b09, b10, seed, checkpoint, runId, reduceMotion: saveState.options.reduceMotion });
   game = instance.game; chamber = instance.scene;
   game.sound.setVolume(saveState.options.masterVolume);
+  window.requestAnimationFrame(() => window.requestAnimationFrame(syncB11HudToCanvas));
   focusGameCanvas();
 }
 function togglePause(reason = 'The Spindle is still.'): void {
@@ -402,8 +616,13 @@ function openControllerSettings(fromPause: boolean): void {
   settingsOpen = true;
   settingsReturnToPause = fromPause && paused;
   if (settingsReturnToPause) { stopPausedGamepadMonitor(); setVisible(pauseScreen, false); }
+  b11ControlSettings = readB11ControlSettings();
+  settingsReducedMotion.checked = saveState.options.reduceMotion;
+  settingsMasterVolume.value = String(saveState.options.masterVolume);
+  settingsVolumeValue.value = `${Math.round(saveState.options.masterVolume * 100)}%`;
   chamber?.resetTransientInput();
   game?.canvas?.blur();
+  byId<HTMLElement>('settings-screen').querySelector<HTMLElement>('.settings-panel')!.scrollTop = 0;
   controllerSettings.open({
     onClose: () => {
       settingsOpen = false;
@@ -415,7 +634,7 @@ function openControllerSettings(fromPause: boolean): void {
       settingsReturnToPause = false;
       chamber?.resetTransientInput();
     },
-    onApply: (settings: ControlSettings) => chamber?.setControlSettings(settings),
+    onApply: (settings: ControlSettings) => { b11ControlSettings = settings; chamber?.setControlSettings(settings); },
   });
 }
 function toggleDebug(): void { if (!import.meta.env.DEV) return; debug = !debug; setVisible(debugOverlay, debug); }
@@ -427,7 +646,7 @@ function quit(): void {
   stopB09ChoiceMonitor();
   game?.destroy(true);
   game = null; chamber = null; active = false; paused = false; debug = false; artReviewMode = false; animationLabMode = false; ionaPreviewMode = false; b03CombatMode = false; b04Mode = false; b05Mode = false; b06Mode = false; b07Mode = false; b08Mode = false; b09Mode = false; b10Mode = false; b09ChoiceVisible = false; b09CurrentOffer = null; b04ResultVisible = false; b07ResultVisible = false;
-  setVisible(debugOverlay, false); setVisible(pauseScreen, false); setVisible(hud, false); setVisible(previewTools, false); setVisible(previewReadout, false); setVisible(b04Results, false); setVisible(b07Results, false); setVisible(b09ChoiceScreen, false); hud.classList.remove('preview-hud'); hud.classList.remove('b03-hud'); setVisible(title, !returnToHub);
+  setVisible(debugOverlay, false); setVisible(pauseScreen, false); setVisible(hud, false); setVisible(previewTools, false); setVisible(previewReadout, false); setVisible(b04Results, false); setVisible(b07Results, false); setVisible(b09ChoiceScreen, false); hud.classList.remove('preview-hud'); hud.classList.remove('b03-hud'); hud.classList.remove('b11-hud'); hud.style.left = ''; hud.style.top = ''; hud.style.width = ''; hud.style.height = ''; hud.style.right = ''; hud.style.bottom = ''; setVisible(title, !returnToHub);
   if (returnToHub) { openHub(); return; }
   setVisible(hubScreen, false); startButton.focus();
 }
@@ -479,6 +698,7 @@ window.addEventListener('crownflare:b07-result', (event) => {
   completeB10Run(detail);
   game?.scene.pause('Chamber'); chamber?.setLabAudioPaused(true); paused = true; b07ResultVisible = true;
   b07ResultHeading.textContent = detail.b09Enabled ? detail.result === 'victory' ? 'RUN BUILD / SPINDLE RESTORED' : 'RUN BUILD / EXPEDITION ENDED' : detail.b08BossBuilt ? detail.result === 'victory' ? detail.b08Practice ? 'BOSS PRACTICE CLEARED' : 'B08 FINAL CONFRONTATION CLEARED' : 'B08 EXPEDITION ENDED' : detail.result === 'victory' ? 'B07 ROUTE CLEARED' : 'EXPEDITION ENDED';
+  if (detail.b10Enabled) b07ResultHeading.textContent = detail.result === 'victory' ? b10FirstClearResult ? 'FIRST CLEAR / SPINDLE RESTORED' : 'THE SPINDLE TURNS AGAIN' : 'EXPEDITION ENDED / RETURN TO REFUGE';
   const minutes = Math.floor(detail.elapsedMs / 60000);
   const seconds = Math.floor((detail.elapsedMs % 60000) / 1000).toString().padStart(2, '0');
   const reach = detail.choices.reach ?? 'not chosen'; const loom = detail.choices.loom ?? 'not chosen';
@@ -532,10 +752,23 @@ hubSoundToggle.addEventListener('click', () => {
   if (hubSoundEnabled && hubScreen.classList.contains('hidden') === false) void hubAmbience.play().catch(() => undefined);
   else hubAmbience.pause();
 });
-hubReducedMotion.addEventListener('change', () => commitSave({ ...saveState, options: { ...saveState.options, reduceMotion: hubReducedMotion.checked } }));
+hubReducedMotion.addEventListener('change', () => { chamber?.setReducedMotion(hubReducedMotion.checked); commitSave({ ...saveState, options: { ...saveState.options, reduceMotion: hubReducedMotion.checked } }); });
 hubVolume.addEventListener('input', () => {
   hubAmbience.volume = Number(hubVolume.value);
+  game?.sound.setVolume(Number(hubVolume.value));
   commitSave({ ...saveState, options: { ...saveState.options, masterVolume: Number(hubVolume.value) } });
+});
+settingsMasterVolume.addEventListener('input', () => {
+  const volume = Number(settingsMasterVolume.value);
+  settingsVolumeValue.value = `${Math.round(volume * 100)}%`;
+  settingsVolumeValue.textContent = settingsVolumeValue.value;
+  hubAmbience.volume = volume;
+  game?.sound.setVolume(volume);
+  commitSave({ ...saveState, options: { ...saveState.options, masterVolume: volume } });
+});
+settingsReducedMotion.addEventListener('change', () => {
+  chamber?.setReducedMotion(settingsReducedMotion.checked);
+  commitSave({ ...saveState, options: { ...saveState.options, reduceMotion: settingsReducedMotion.checked } });
 });
 hubStory.addEventListener('keydown', (event) => { if (event.code === 'Escape') { event.preventDefault(); setVisible(hubStory, false); hubNewRunButton.focus(); } });
 b10StoryContinue.addEventListener('click', closeB10StoryBeat);

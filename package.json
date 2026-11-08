@@ -41,6 +41,8 @@
     "art:b08:build": "python tools/art-export/build-b08-bosses.py && python tools/art-export/audit-b08-bosses.py",
     "art:b09:build": "python tools/art-export/build-b09-upgrades.py",
     "art:b10:build": "python tools/art-export/build-b10-spindle-refuge.py",
+    "art:ui:b11:build": "python tools/art-export/build-b11-ui-icons.py",
+    "qa:b11:smoke": "node tools/local-qa/b11-ui-smoke.mjs --headed",
     "audio:b10:build": "python tools/audio/generate-b10-refuge-ambience.py",
     "audio:b08:build": "python tools/audio/generate-b08-boss-audio.py && python tools/audio/audit-b08-boss-audio.py",
     "qa:b04": "npm run build && npm run art:b04:build && npm run audio:b04:build && node tools/local-qa/b04-combat-smoke.mjs && node tools/local-qa/b04-production-route-smoke.mjs",

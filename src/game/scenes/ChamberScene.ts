@@ -25,7 +25,7 @@ export type ArtReviewView = 'base' | 'forms' | 'silhouette' | 'direction' | 'mat
 export type ArtReviewContrast = 'calm' | 'light' | 'busy';
 export type ArtReviewSnapshot = { view: ArtReviewView; contrast: ArtReviewContrast; silhouetteHeight: 48 | 60 | 72; pixelGrid: boolean; loadedAssets: number; totalAssets: number; missingAssets: string[] };
 export type IonaPreviewSnapshot = { playerX:number; playerY:number; physicsAnchor:{x:number;y:number}; grounded:boolean; facing:IonaFacing; bodySize:{width:number;height:number}; action:string; frame:string; attackPhase:string; comboStep:number; targetX:number; targetHealth:number; lastCombatEvent:string; reviewScale:48|60|72; spriteScale:number; spriteOrigin:{x:number;y:number}; spritePosition:{x:number;y:number}; vfxEnabled:boolean; background:'calm'; audioEnabled:boolean; audioUnlocked:boolean; audioAssetsLoaded:number; audioVolume:number; audioStatus:string; controller:boolean; loadedTextures:number; missingTextures:string[] };
-export type B03CombatSnapshot = { playerX:number; playerY:number; playerHp:number; playerVelocity:{x:number;y:number}; playerInvulnerableMs:number; enemyX:number; enemyY:number; enemyHp:number; resonance:number; specialCooldownMs:number; move:string; phase:string; elapsedMs:number; bufferedMove:string|null; facing:IonaFacing; enemyState:string; frame:string; controllerIndex:number; lastResult:string; bodySize:{width:number;height:number}; spriteScale:number; vfxEnabled:boolean; vfxActive:boolean; background:ArtReviewContrast; reducedMotion:boolean; errors:string[] };
+export type B03CombatSnapshot = { playerX:number; playerY:number; playerHp:number; playerVelocity:{x:number;y:number}; playerInvulnerableMs:number; enemyX:number; enemyY:number; enemyHp:number; resonance:number; specialCooldownMs:number; move:string; phase:string; elapsedMs:number; bufferedMove:string|null; facing:IonaFacing; enemyState:string; frame:string; controllerIndex:number; lastResult:string; bodySize:{width:number;height:number}; spriteScale:number; vfxEnabled:boolean; vfxActive:boolean; background:ArtReviewContrast; reducedMotion:boolean; errors:string[]; grounded:boolean; dashActive:boolean; dashCooldownMs:number; hurtMs:number; resonanceCost:number };
 export type B06CombatTarget = { readonly id: string; readonly archetype?: string; readonly x: number; readonly y: number; readonly width: number; readonly height: number; readonly hp: number; readonly alive: boolean; readonly invulnerableMs?: number; readonly guarding?: boolean; readonly guardBreakable?: boolean };
 export type B06PlayerCombatFrame = B06PlayerThreatFrame & { readonly resonance: number; readonly facing: IonaFacing; readonly velocityX: number; readonly velocityY: number; readonly dawnrush: string; readonly grounded: boolean };
 const WORLD_WIDTH = 1560;
@@ -389,7 +389,9 @@ export class ChamberScene extends Phaser.Scene {
     this.body.setSize(15, 30).setCollideWorldBounds(true).setMaxVelocity(370, 620);
     this.body.setGravityY(790);
     for (const platform of platforms) this.physics.add.collider(this.actor, platform);
-    this.cameras.main.startFollow(this.actor, false, .12, .12, 0, 15);
+    // startFollow defaults roundPixels back to false. Keep the 480x270 art on
+    // integer camera coordinates so pixel textures don't shimmer between frames.
+    this.cameras.main.startFollow(this.actor, true, .12, .12, 0, 15);
     this.cameras.main.setDeadzone(90, 46);
     this.controller = new InputController(this);
     if (this.animationLab || this.previewMode) {
@@ -627,6 +629,7 @@ export class ChamberScene extends Phaser.Scene {
       enemyX:Number(this.targetX.toFixed(2)), enemyY:Number((GROUND_TOP + this.enemyAirOffset).toFixed(2)), enemyHp:this.targetHealth,
       resonance:Number(this.resonance.toFixed(1)), specialCooldownMs:Number(this.specialCooldownMs.toFixed(1)),
       move:this.b03Move ?? 'none', phase:this.attackClock.phase, elapsedMs:this.attackClock.elapsedMs, bufferedMove:this.b03BufferedMove, facing:this.motion.facing, enemyState:this.enemyVisualState,
+      grounded:!!(this.body.blocked.down || this.body.touching.down), dashActive:this.motion.dashMs > 0, dashCooldownMs:Math.round(this.motion.dashCooldownMs), hurtMs:Math.round(this.playerHurtMs), resonanceCost:this.moveDefinition('resonance').resonanceCost,
       frame:this.labSprite.texture.key, controllerIndex:this.b03LastControllerIndex, lastResult:this.b03LastResult,
       bodySize:{ width:this.body.width, height:this.body.height }, spriteScale:Number(this.labSprite.scaleX.toFixed(4)),
       vfxEnabled:this.b03VfxEnabled, vfxActive:!!this.specialVfx, background:this.reviewContrast, reducedMotion:this.b03ReducedMotion,
@@ -1137,15 +1140,18 @@ export class ChamberScene extends Phaser.Scene {
     if (state) window.dispatchEvent(new CustomEvent('crownflare:b05-state', { detail: { ...state, debugFill } }));
   }
 
-  dawnrushSnapshot(): { state: string; energy: number; phaseMs: number; move: string; form: 'Base' | 'Dawnrush'; loadedFrames: number; missingFrames: string[]; activeMove: string; finisherCooldownMs: number; finisherReady: boolean; finisherStatus: string } | null {
+  dawnrushSnapshot(): { state: string; energy: number; phaseMs: number; move: string; form: 'Base' | 'Dawnrush'; loadedFrames: number; missingFrames: string[]; activeMove: string; finisherCooldownMs: number; finisherReady: boolean; finisherStatus: string; transformReady: boolean } | null {
     if (!this.b05Mode || !this.labSprite) return null;
     const bodyFrames = [...new Set([...DAWNRUSH_LOCOMOTION_FRAMES, ...DAWNRUSH_COMBAT_FRAMES])].flatMap((frame) => ['left', 'right'].map((facing) => `iona-b05-${frame}-${facing}`));
     const expected = [...bodyFrames, ...DAWNRUSH_TRANSFORM_FRAMES.map((frame) => `iona-b05-${frame}`), ...DAWNRUSH_REVERSION_FRAMES.flatMap((frame) => ['left', 'right'].map((facing) => `iona-b05-${frame}-${facing}`)), ...DAWNRUSH_VFX_FRAMES.map((frame) => `iona-b05-${frame}`), ...DAWNRUSH_AURA_FRAMES.map((frame) => `iona-b05-${frame}`)];
     const missingFrames = expected.filter((key) => !this.textures.exists(key));
+    const transformReady = canSwitchDawnrushForm({ state: this.dawnrushState, phaseMs: this.dawnrushPhaseMs, playerHp: this.playerHp, hurtMs: this.playerHurtMs, dashMs: this.motion.dashMs, moveActive: !!this.b03Move });
     return { state: this.dawnrushState, energy: Number(this.dawnrushEnergy.toFixed(1)), phaseMs: Number(this.dawnrushPhaseMs.toFixed(1)), move: this.labFrame,
       form: this.dawnrushState === 'base' ? 'Base' : 'Dawnrush', loadedFrames: expected.length - missingFrames.length, missingFrames,
-      activeMove: this.activeMoveDefinition?.action.id ?? 'none', finisherCooldownMs: Math.round(this.finisherCooldownMs), finisherReady: this.canStartDawnrushFinisher(), finisherStatus: this.dawnrushFinisherStatus() };
+      activeMove: this.activeMoveDefinition?.action.id ?? 'none', finisherCooldownMs: Math.round(this.finisherCooldownMs), finisherReady: this.canStartDawnrushFinisher(), finisherStatus: this.dawnrushFinisherStatus(), transformReady };
   }
+
+  setReducedMotion(enabled: boolean): void { this.b03ReducedMotion = enabled; }
 
   private dawnrushFinisherStatus(): string {
     if (this.dawnrushState !== 'dawnrush' || this.dawnrushPhaseMs > 0) return 'FORM REQUIRED';
