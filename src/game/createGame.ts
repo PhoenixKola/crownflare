@@ -2,16 +2,20 @@ import * as Phaser from 'phaser';
 import { ChamberScene } from './scenes/ChamberScene';
 import { B04VerticalSliceScene } from './scenes/B04VerticalSliceScene';
 import { B06EnemyGauntletScene } from './scenes/B06EnemyGauntletScene';
-export function createGame(onPause: () => void, onController: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean } = {}): { game: Phaser.Game; scene: ChamberScene } {
+import { B07ExpeditionScene } from './scenes/B07ExpeditionScene';
+export function createGame(onPause: () => void, onController: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean; b07?: boolean } = {}): { game: Phaser.Game; scene: ChamberScene } {
   const artReview = import.meta.env.DEV && options.artReview === true;
   const animationLab = import.meta.env.DEV && options.animationLab === true;
   const ionaPreview = import.meta.env.DEV && options.ionaPreview === true;
   const b06 = import.meta.env.DEV && options.b06 === true;
-  const b05 = import.meta.env.DEV && (options.b05 === true || b06);
-  const b04 = import.meta.env.DEV && (options.b04 === true || b05 || b06);
-  const b03Combat = import.meta.env.DEV && (ionaPreview && options.b03Combat === true || b04 || b05 || b06);
+  const b07 = import.meta.env.DEV && options.b07 === true;
+  const b05 = import.meta.env.DEV && (options.b05 === true || b06 || b07);
+  const b04 = import.meta.env.DEV && (options.b04 === true || b05 || b06 || b07);
+  const b03Combat = import.meta.env.DEV && (ionaPreview && options.b03Combat === true || b04 || b05 || b06 || b07);
   const previewEnabled = ionaPreview || b03Combat;
-  const scene = b06
+  const scene = b07
+    ? new B07ExpeditionScene(onPause, onController)
+    : b06
     ? new B06EnemyGauntletScene(onPause, onController)
     : b04
     ? new B04VerticalSliceScene(onPause, onController, { b05 })
@@ -32,7 +36,7 @@ export function createGame(onPause: () => void, onController: (active: boolean) 
     const canvas = game.canvas;
     if (!canvas) return;
     canvas.tabIndex = 0;
-    canvas.setAttribute('aria-label', artReview ? 'Crownflare B01A true-scale character review' : animationLab ? 'Crownflare provisional Iona animation and combat laboratory' : b06 ? 'Crownflare B06 enemy roster and combat gauntlet playtest' : b05 ? 'Crownflare B05 Dawnrush transformation combat review' : b04 ? 'Crownflare B04 Sunderglass Atrium combat vertical slice' : b03Combat ? 'Crownflare B03 provisional base combat encounter' : previewEnabled ? 'Crownflare provisional Iona playable preview' : 'Crownflare playable test chamber');
+    canvas.setAttribute('aria-label', artReview ? 'Crownflare B01A true-scale character review' : animationLab ? 'Crownflare provisional Iona animation and combat laboratory' : b07 ? 'Crownflare B07 two-region branching expedition playtest' : b06 ? 'Crownflare B06 enemy roster and combat gauntlet playtest' : b05 ? 'Crownflare B05 Dawnrush transformation combat review' : b04 ? 'Crownflare B04 Sunderglass Atrium combat vertical slice' : b03Combat ? 'Crownflare B03 provisional base combat encounter' : previewEnabled ? 'Crownflare provisional Iona playable preview' : 'Crownflare playable test chamber');
     canvas.focus();
   });
   return { game, scene };

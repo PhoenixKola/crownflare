@@ -9,6 +9,9 @@ tests/evidence/
 review-evidence/raw/
 review-evidence/b01e/.recordings/
 review-evidence/b01f/.recordings/
+review-evidence/.b07-recording-tmp/
+review-evidence/.b06-recording-tmp/
+review-evidence/b07/b07-move-failure-*.png
 .art-tmp/
 art-source/rejected/
 art-source/scratch/

@@ -1,0 +1,226 @@
+{
+  "milestone": "B07",
+  "status": "PASS",
+  "date": "2026-11-08T03:39:25.284Z",
+  "browser": "Chromium via Playwright; standard controller input synthesized using existing mapping",
+  "sourceHash": {
+    "algorithm": "SHA-256",
+    "digest": "ae1d54758b331cc12c4ecd1671d397c8e04b2232f94484b4a0210c5066afa399",
+    "files": [
+      "src/game/scenes/B07ExpeditionScene.ts",
+      "src/game/scenes/ChamberScene.ts",
+      "src/game/rooms/b07RoomLibrary.ts",
+      "src/game/rooms/b07RouteAssembly.ts",
+      "src/game/rooms/b07Hazards.ts",
+      "src/game/enemies/b06EnemyModel.ts",
+      "tools/art-export/build-b07-world.py",
+      "art-source/environments/b07/asset-manifest.json"
+    ]
+  },
+  "buildHash": {
+    "algorithm": "SHA-256",
+    "digest": "fefacd6f61ba7e527144c86c615b5f8fe0a6e0a9b490dc75a68d7539539c3f6c",
+    "file": "dist/assets/index-lbFRT0vp.js"
+  },
+  "checks": [
+    {
+      "name": "pause and resize preserve the running expedition",
+      "status": "PASS"
+    },
+    {
+      "name": "charged conduit crossing succeeds without damage using the authored jump lane",
+      "status": "PASS",
+      "hp": 5
+    },
+    {
+      "name": "Vesper spindle lift moves through its authored travel range",
+      "status": "PASS",
+      "startY": 171.5,
+      "laterY": 197.8
+    },
+    {
+      "name": "moving lift travels during safe-route traversal",
+      "status": "PASS",
+      "startY": 171.5,
+      "laterY": 197.8
+    },
+    {
+      "name": "thread press warning, active collision, damage event and recovery state",
+      "status": "PASS",
+      "hit": {
+        "type": "hazard-contact",
+        "hazardId": "vault-thread-press",
+        "phase": "active",
+        "result": "hit",
+        "damage": 1,
+        "elapsedMs": 39715
+      }
+    },
+    {
+      "name": "Base safe-recovery route crosses the Vesper region and stops before B08 boss",
+      "status": "PASS",
+      "visited": [
+        "sg-breach-steps",
+        "sg-copper-causeway",
+        "sg-resonance-gallery",
+        "sg-to-vesper-gate",
+        "vl-spindle-lift",
+        "vl-condensation-vault",
+        "vl-night-side-threshold"
+      ],
+      "seed": 13031988,
+      "repairCharges": 3,
+      "resonance": 14
+    },
+    {
+      "name": "standard controller selects challenge; Dawnrush and room-context B06 telegraph are active",
+      "status": "PASS",
+      "seed": 556677,
+      "enemies": [
+        {
+          "id": "sg-conduit-annex:annex-sentry",
+          "archetype": "spindle-sentry",
+          "x": 582,
+          "y": 217,
+          "hp": 6,
+          "phase": "idle"
+        },
+        {
+          "id": "sg-conduit-annex:annex-runner",
+          "archetype": "shardrunner",
+          "x": 756,
+          "y": 214,
+          "hp": 4,
+          "phase": "idle"
+        }
+      ],
+      "telegraph": {
+        "type": "enemy-telegraph",
+        "enemyId": "sg-conduit-annex:annex-sentry",
+        "archetype": "spindle-sentry",
+        "action": "sentry-lunge",
+        "elapsedMs": 9248
+      },
+      "dawnrush": "Dawnrush"
+    },
+    {
+      "name": "challenge defeat produces a terminal results state",
+      "status": "PASS",
+      "result": "defeat",
+      "damageEvents": [
+        {
+          "type": "player-hit",
+          "sourceId": "annex-conduit-arc",
+          "damage": 1,
+          "hp": 4,
+          "elapsedMs": 10114
+        },
+        {
+          "type": "player-hit",
+          "sourceId": "sg-conduit-annex:annex-sentry",
+          "damage": 1,
+          "hp": 3,
+          "elapsedMs": 11031
+        },
+        {
+          "type": "player-hit",
+          "sourceId": "annex-conduit-arc",
+          "damage": 1,
+          "hp": 2,
+          "elapsedMs": 13315
+        },
+        {
+          "type": "player-hit",
+          "sourceId": "sg-conduit-annex:annex-sentry",
+          "damage": 1,
+          "hp": 1,
+          "elapsedMs": 15965
+        },
+        {
+          "type": "player-hit",
+          "sourceId": "sg-conduit-annex:annex-sentry",
+          "damage": 1,
+          "hp": 0,
+          "elapsedMs": 18432
+        }
+      ]
+    },
+    {
+      "name": "replay restores full player health, Base form, route choices and first-room context",
+      "status": "PASS",
+      "hp": 5,
+      "form": "Base",
+      "visited": []
+    },
+    {
+      "name": "alternate seed selects the elite branch and assembles Wisp plus Bastion in Vesper",
+      "status": "PASS",
+      "seed": 556677,
+      "visited": [
+        "sg-breach-steps",
+        "sg-copper-causeway",
+        "sg-resonance-gallery",
+        "sg-to-vesper-gate"
+      ],
+      "enemies": [
+        {
+          "id": "vl-lattice-hall:lattice-wisp",
+          "archetype": "orbit-wisp",
+          "x": 558,
+          "y": 168,
+          "hp": 4,
+          "phase": "idle"
+        },
+        {
+          "id": "vl-lattice-hall:lattice-bastion",
+          "archetype": "pressure-bastion",
+          "x": 736,
+          "y": 213,
+          "hp": 7,
+          "phase": "guard"
+        }
+      ]
+    },
+    {
+      "name": "reduced-motion preference keeps static warning cues available",
+      "status": "PASS",
+      "reducedMotion": true
+    },
+    {
+      "name": "focus loss pauses safely and title menu re-entry starts a fresh route",
+      "status": "PASS",
+      "room": "sg-breach-steps",
+      "visited": []
+    }
+  ],
+  "screenshots": [
+    "review-evidence/b07/b07-sunderglass-entry-base.png",
+    "review-evidence/b07/b07-reach-route-menu.png",
+    "review-evidence/b07/b07-sg-conduit-arc-cleared.png",
+    "review-evidence/b07/b07-sg-copper-causeway-reward.png",
+    "review-evidence/b07/b07-sg-resonance-gallery-reward.png",
+    "review-evidence/b07/b07-vesper-choice-menu.png",
+    "review-evidence/b07/b07-vesper-region-entry.png",
+    "review-evidence/b07/b07-vesper-lift-moving.png",
+    "review-evidence/b07/b07-vl-spindle-lift-reward.png",
+    "review-evidence/b07/b07-vesper-thread-press-contact.png",
+    "review-evidence/b07/b07-vl-condensation-vault-reward.png",
+    "review-evidence/b07/b07-vesper-b08-threshold.png",
+    "review-evidence/b07/b07-route-complete-results.png",
+    "review-evidence/b07/b07-reach-route-menu.png",
+    "review-evidence/b07/b07-conduit-annex-controller-branch.png",
+    "review-evidence/b07/b07-conduit-annex-dawnrush-telegraph.png",
+    "review-evidence/b07/b07-defeat-results.png",
+    "review-evidence/b07/b07-retry-entry.png",
+    "review-evidence/b07/b07-reach-route-menu.png",
+    "review-evidence/b07/b07-vl-lattice-elite.png",
+    "review-evidence/b07/b07-reduced-motion-entry.png"
+  ],
+  "runtimeErrors": [],
+  "sourceArtManifest": "art-source/environments/b07/asset-manifest.json",
+  "audio": "Vesper drone is synthesized in Web Audio and the Sunderglass source ambience WAV is loaded. No human listening signoff or system-audio recording was performed.",
+  "limitations": [
+    "This evidence is a development route preview; owner art-motion, audio listening and physical-controller gates remain pending.",
+    "B08 boss and ending are not implemented."
+  ]
+}

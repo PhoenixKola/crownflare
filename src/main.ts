@@ -6,6 +6,7 @@ import { GamepadStartEdge } from './game/input/gamepadStartEdge';
 import type { AnimationLabSnapshot, ArtReviewSnapshot, ChamberScene, ChamberSnapshot, IonaPreviewSnapshot } from './game/scenes/ChamberScene';
 import { B04VerticalSliceScene } from './game/scenes/B04VerticalSliceScene';
 import { B06EnemyGauntletScene } from './game/scenes/B06EnemyGauntletScene';
+import { B07ExpeditionScene } from './game/scenes/B07ExpeditionScene';
 import { SAVE_NAMESPACE } from './game/persistence/save';
 import { shouldEnableIonaPreview } from './game/preview/ionaPreviewGate';
 import { ControllerSettingsScreen } from './game/input/controllerSettingsScreen';
@@ -35,6 +36,11 @@ const b04ResultHeading = byId<HTMLElement>('b04-result-heading');
 const b04ResultStats = byId<HTMLElement>('b04-result-stats');
 const b04ReplayButton = byId<HTMLButtonElement>('b04-replay-button');
 const b04TitleButton = byId<HTMLButtonElement>('b04-title-button');
+const b07Results = byId<HTMLElement>('b07-results');
+const b07ResultHeading = byId<HTMLElement>('b07-result-heading');
+const b07ResultStats = byId<HTMLElement>('b07-result-stats');
+const b07ReplayButton = byId<HTMLButtonElement>('b07-replay-button');
+const b07TitleButton = byId<HTMLButtonElement>('b07-title-button');
 const titleSettingsButton = byId<HTMLButtonElement>('title-settings-button');
 const pauseSettingsButton = byId<HTMLButtonElement>('pause-settings-button');
 let game: Phaser.Game | null = null;
@@ -49,7 +55,9 @@ let b03CombatMode = false;
 let b04Mode = false;
 let b05Mode = false;
 let b06Mode = false;
+let b07Mode = false;
 let b04ResultVisible = false;
+let b07ResultVisible = false;
 let b04ResultsFrame = 0;
 let b04PreviousAccept = false;
 let b04PreviousLeft = false;
@@ -61,6 +69,7 @@ const b03CombatRequested = import.meta.env.DEV && query.get('b03') === '1';
 const b04Requested = import.meta.env.DEV && query.get('b04') === '1';
 const b05Requested = import.meta.env.DEV && query.get('b05') === '1';
 const b06Requested = import.meta.env.DEV && query.get('b06') === '1';
+const b07Requested = import.meta.env.DEV && query.get('b07') === '1';
 const ionaPreviewRequested = shouldEnableIonaPreview(import.meta.env.DEV, query.get('ionaPreview') === '1' || b03CombatRequested ? '1' : null);
 let pausedGamepadFrame = 0;
 const pausedGamepadStart = new GamepadStartEdge();
@@ -81,17 +90,20 @@ function pollPausedGamepad(): void {
   if (pausedGamepadStart.poll(gamepadStartDown())) { pausedGamepadFrame = 0; togglePause('Resumed with controller Start.'); return; }
   pausedGamepadFrame = window.requestAnimationFrame(pollPausedGamepad);
 }
-function start(artReview = false, animationLab = false, ionaPreview = false, b03Combat = false, b04 = false, b05 = false, b06 = false): void {
+function start(artReview = false, animationLab = false, ionaPreview = false, b03Combat = false, b04 = false, b05 = false, b06 = false, b07 = false): void {
   if (active) return;
-  active = true; paused = false; artReviewMode = artReview; animationLabMode = animationLab; ionaPreviewMode = ionaPreview || b04 || b05 || b06; b03CombatMode = b03Combat || b04 || b05 || b06; b04Mode = b04 || b05 || b06; b05Mode = b05 || b06; b06Mode = b06; b04ResultVisible = false;
-  setVisible(title, false); setVisible(hud, !artReview && !animationLab && !b04 && !b05 && !b06); setVisible(pauseScreen, false); setVisible(b04Results, false);
+  active = true; paused = false; artReviewMode = artReview; animationLabMode = animationLab; ionaPreviewMode = ionaPreview || b04 || b05 || b06 || b07; b03CombatMode = b03Combat || b04 || b05 || b06 || b07; b04Mode = b04 || b05 || b06 || b07; b05Mode = b05 || b06 || b07; b06Mode = b06; b07Mode = b07; b04ResultVisible = false; b07ResultVisible = false;
+  setVisible(title, false); setVisible(hud, !artReview && !animationLab && !b04 && !b05 && !b06 && !b07); setVisible(pauseScreen, false); setVisible(b04Results, false); setVisible(b07Results, false);
   setVisible(byId<HTMLElement>('target-health'), b03Combat && !b06);
   setVisible(byId<HTMLElement>('b03-status'), b03Combat && !b06);
   hud.classList.toggle('preview-hud', ionaPreview);
   hud.classList.toggle('b03-hud', b03Combat);
   setVisible(previewTools, ionaPreview && !b03Combat);
   setVisible(previewReadout, ionaPreview && !b03Combat);
-  if (b06) {
+  if (b07) {
+    hudMode.textContent = '/ B07 TWO-REGION EXPEDITION';
+    byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE Â· SPACE JUMP Â· SHIFT DODGE Â· J LIGHT Â· K HEAVY Â· Q RESONANCE Â· R DAWNRUSH Â· E / SOUTH INTERACT Â· ESC PAUSE';
+  } else if (b06) {
     hudMode.textContent = '/ B06 ENEMY GAUNTLET';
     byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE · SPACE JUMP · SHIFT DODGE · J LIGHT · K HEAVY · Q RESONANCE · R DAWNRUSH · F FINISHER · E INTERACT · ESC PAUSE';
   } else if (b03Combat) {
@@ -107,12 +119,12 @@ function start(artReview = false, animationLab = false, ionaPreview = false, b03
     hudMode.textContent = '/ CHAMBER 00';
     byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE · SPACE JUMP · SHIFT DASH · ESC PAUSE';
   }
-  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab, ionaPreview, b03Combat, b04, b05, b06 });
+  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab, ionaPreview, b03Combat, b04, b05, b06, b07 });
   game = instance.game; chamber = instance.scene;
   focusGameCanvas();
 }
 function togglePause(reason = 'The Spindle is still.'): void {
-  if (!active || !game || settingsOpen || b04ResultVisible) return;
+  if (!active || !game || settingsOpen || b04ResultVisible || b07ResultVisible) return;
   paused = !paused;
   chamber?.resetTransientInput();
   chamber?.setLabAudioPaused(paused);
@@ -157,8 +169,8 @@ function quit(): void {
   stopPausedGamepadMonitor();
   stopB04ResultsMonitor();
   game?.destroy(true);
-  game = null; chamber = null; active = false; paused = false; debug = false; artReviewMode = false; animationLabMode = false; ionaPreviewMode = false; b03CombatMode = false; b04Mode = false; b05Mode = false; b06Mode = false; b04ResultVisible = false;
-  setVisible(debugOverlay, false); setVisible(pauseScreen, false); setVisible(hud, false); setVisible(previewTools, false); setVisible(previewReadout, false); setVisible(b04Results, false); hud.classList.remove('preview-hud'); hud.classList.remove('b03-hud'); setVisible(title, true);
+  game = null; chamber = null; active = false; paused = false; debug = false; artReviewMode = false; animationLabMode = false; ionaPreviewMode = false; b03CombatMode = false; b04Mode = false; b05Mode = false; b06Mode = false; b07Mode = false; b04ResultVisible = false; b07ResultVisible = false;
+  setVisible(debugOverlay, false); setVisible(pauseScreen, false); setVisible(hud, false); setVisible(previewTools, false); setVisible(previewReadout, false); setVisible(b04Results, false); setVisible(b07Results, false); hud.classList.remove('preview-hud'); hud.classList.remove('b03-hud'); setVisible(title, true);
   startButton.focus();
 }
 function stopB04ResultsMonitor(): void {
@@ -166,7 +178,7 @@ function stopB04ResultsMonitor(): void {
   b04ResultsFrame = 0; b04PreviousAccept = false; b04PreviousLeft = false; b04PreviousRight = false;
 }
 function pollB04Results(): void {
-  if (!b04ResultVisible) { b04ResultsFrame = 0; return; }
+  if (!b04ResultVisible && !b07ResultVisible) { b04ResultsFrame = 0; return; }
   let pad: Gamepad | null = null;
   try { pad = Array.from(navigator.getGamepads?.() ?? []).find((candidate) => candidate?.connected) ?? null; } catch { /* a pad may disconnect between polls */ }
   if (pad) {
@@ -175,13 +187,13 @@ function pollB04Results(): void {
     const right = !!pad.buttons[15]?.pressed;
     if (left && !b04PreviousLeft) b04FocusResultButton(-1);
     if (right && !b04PreviousRight) b04FocusResultButton(1);
-    if (accept && !b04PreviousAccept) (document.activeElement instanceof HTMLButtonElement ? document.activeElement : b04ReplayButton).click();
+    if (accept && !b04PreviousAccept) (document.activeElement instanceof HTMLButtonElement ? document.activeElement : b07ResultVisible ? b07ReplayButton : b04ReplayButton).click();
     b04PreviousAccept = accept; b04PreviousLeft = left; b04PreviousRight = right;
   } else { b04PreviousAccept = false; b04PreviousLeft = false; b04PreviousRight = false; }
   b04ResultsFrame = window.requestAnimationFrame(pollB04Results);
 }
 function b04FocusResultButton(direction: -1 | 1): void {
-  const buttons = [b04ReplayButton, b04TitleButton];
+  const buttons = b07ResultVisible ? [b07ReplayButton, b07TitleButton] : [b04ReplayButton, b04TitleButton];
   const activeIndex = buttons.indexOf(document.activeElement as HTMLButtonElement);
   buttons[(activeIndex + direction + buttons.length) % buttons.length]!.focus();
 }
@@ -202,6 +214,18 @@ function finishB04Result(event: Event): void {
   pollB04Results();
 }
 window.addEventListener('crownflare:b04-result', finishB04Result);
+window.addEventListener('crownflare:b07-result', (event) => {
+  if (!active || !b07Mode || b07ResultVisible) return;
+  const detail = (event as CustomEvent<{ result: 'victory' | 'defeat'; elapsedMs: number; damageTaken: number; repairCharges: number; resonance: number; visited: readonly string[]; choices: { reach?: string; loom?: string }; seed: number; b08BossBuilt: false }>).detail;
+  if (!detail) return;
+  game?.scene.pause('Chamber'); chamber?.setLabAudioPaused(true); paused = true; b07ResultVisible = true;
+  b07ResultHeading.textContent = detail.result === 'victory' ? 'B07 ROUTE CLEARED' : 'EXPEDITION ENDED';
+  const minutes = Math.floor(detail.elapsedMs / 60000);
+  const seconds = Math.floor((detail.elapsedMs % 60000) / 1000).toString().padStart(2, '0');
+  const reach = detail.choices.reach ?? 'not chosen'; const loom = detail.choices.loom ?? 'not chosen';
+  b07ResultStats.textContent = `${detail.result.toUpperCase()}  ·  ${minutes}:${seconds}  ·  ${detail.visited.length} ROOMS  ·  SEED ${detail.seed.toString(16).toUpperCase()}  ·  REACH ${reach}  ·  LOOM ${loom}  ·  REPAIRS ${detail.repairCharges}  ·  RESONANCE ${detail.resonance}  ·  ${detail.damageTaken} DAMAGE. The B08 boss remains unbuilt.`;
+  setVisible(b07Results, true); setVisible(pauseScreen, false); b07ReplayButton.focus(); pollB04Results();
+});
 b04ReplayButton.addEventListener('click', () => {
   if (b06Mode && chamber instanceof B06EnemyGauntletScene && game) {
     b04ResultVisible = false; paused = false; setVisible(b04Results, false);
@@ -213,7 +237,13 @@ b04ReplayButton.addEventListener('click', () => {
   chamber.resetB04Run(); chamber.setLabAudioPaused(false); game.scene.resume('Chamber'); focusGameCanvas(); stopB04ResultsMonitor();
 });
 b04TitleButton.addEventListener('click', quit);
-startButton.addEventListener('click', () => start(false, false, ionaPreviewRequested, b03CombatRequested, b04Requested, b05Requested, b06Requested));
+b07ReplayButton.addEventListener('click', () => {
+  if (!b07Mode || !(chamber instanceof B07ExpeditionScene) || !game) return;
+  b07ResultVisible = false; paused = false; setVisible(b07Results, false);
+  chamber.resetB07Run(); chamber.setLabAudioPaused(false); game.scene.resume('Chamber'); focusGameCanvas(); stopB04ResultsMonitor();
+});
+b07TitleButton.addEventListener('click', quit);
+startButton.addEventListener('click', () => start(false, false, ionaPreviewRequested, b03CombatRequested, b04Requested, b05Requested, b06Requested, b07Requested));
 titleSettingsButton.addEventListener('click', () => openControllerSettings(false));
 pauseSettingsButton.addEventListener('click', () => openControllerSettings(true));
 resumeButton.addEventListener('click', () => { if (paused) togglePause(); });
@@ -221,7 +251,7 @@ quitButton.addEventListener('click', quit);
 window.addEventListener('blur', () => { if (active && !paused) togglePause('Focus lost — simulation held for safety.'); });
 document.addEventListener('visibilitychange', () => { if (document.hidden && active && !paused) togglePause('Tab hidden — simulation held for safety.'); });
 window.addEventListener('keydown', (event) => {
-  if (event.code === 'Escape' && active) { event.preventDefault(); if (artReviewMode || b04ResultVisible) quit(); else if (settingsOpen) return; else togglePause(); }
+  if (event.code === 'Escape' && active) { event.preventDefault(); if (artReviewMode || b04ResultVisible || b07ResultVisible) quit(); else if (settingsOpen) return; else togglePause(); }
   if (event.code === 'Backquote' && active && !artReviewMode && import.meta.env.DEV) { event.preventDefault(); toggleDebug(); }
   // One window listener owns Escape in both play and pause, preventing double toggles.
 });
@@ -282,8 +312,8 @@ previewAudioVolume.addEventListener('change', focusGameCanvas);
 if (import.meta.env.DEV) {
   // QA hook is read-only and never changes game rules or bypasses play input.
   Object.defineProperty(window, '__CROWNFLARE_QA__', { configurable: true, value: {
-    snapshot: (): { screen: 'title' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b05Combat' | 'b06Combat' | 'b04Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; b05: ReturnType<ChamberScene['dawnrushSnapshot']>; b06: ReturnType<B06EnemyGauntletScene['b06Snapshot']>; b06Events: readonly Record<string, unknown>[]; sceneType: string | null; sceneActive: boolean } => ({
-      screen: !active ? 'title' : b04ResultVisible ? 'b04Results' : artReviewMode ? 'review' : paused ? 'paused' : animationLabMode ? 'animationLab' : b06Mode ? 'b06Combat' : b05Mode ? 'b05Combat' : b04Mode ? 'b04Combat' : b03CombatMode ? 'b03Combat' : ionaPreviewMode ? 'ionaPreview' : 'playing',
+    snapshot: (): { screen: 'title' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b05Combat' | 'b06Combat' | 'b07Expedition' | 'b04Results' | 'b07Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; b05: ReturnType<ChamberScene['dawnrushSnapshot']>; b06: ReturnType<B06EnemyGauntletScene['b06Snapshot']>; b06Events: readonly Record<string, unknown>[]; b07: ReturnType<B07ExpeditionScene['b07Snapshot']> | null; sceneType: string | null; sceneActive: boolean } => ({
+      screen: !active ? 'title' : b04ResultVisible ? 'b04Results' : b07ResultVisible ? 'b07Results' : artReviewMode ? 'review' : paused ? 'paused' : animationLabMode ? 'animationLab' : b07Mode ? 'b07Expedition' : b06Mode ? 'b06Combat' : b05Mode ? 'b05Combat' : b04Mode ? 'b04Combat' : b03CombatMode ? 'b03Combat' : ionaPreviewMode ? 'ionaPreview' : 'playing',
       player: active && !artReviewMode ? chamber?.snapshot() ?? null : null,
       review: active && artReviewMode ? chamber?.reviewSnapshot() ?? null : null,
       lab: active && animationLabMode ? chamber?.animationSnapshot() ?? null : null,
@@ -293,6 +323,7 @@ if (import.meta.env.DEV) {
       b05: active && b05Mode ? chamber?.dawnrushSnapshot() ?? null : null,
       b06: active && b06Mode && chamber instanceof B06EnemyGauntletScene ? chamber.b06Snapshot() : null,
       b06Events: active && b06Mode && chamber instanceof B06EnemyGauntletScene ? chamber.b06EventLog() : [],
+      b07: active && b07Mode && chamber instanceof B07ExpeditionScene ? chamber.b07Snapshot() : null,
       sceneType: chamber?.constructor.name ?? null,
       sceneActive: chamber?.sys.isActive() ?? false,
     }),
@@ -321,6 +352,12 @@ if (b06Requested) {
   previewNotice.textContent = 'B06 ENEMY ROSTER GAUNTLET / DEVELOPMENT PLAYTEST / OWNER REVIEW PENDING';
   titleMetadata.textContent = 'B06 / FIVE-ENEMY ROSTER / BASE + DAWNRUSH / NOT APPROVED';
   startButton.innerHTML = 'ENTER THE SUNDERGLASS GAUNTLET <span aria-hidden="true">&gt;</span>';
+}
+if (b07Requested) {
+  setVisible(previewNotice, true);
+  previewNotice.textContent = 'B07 TWO-REGION EXPEDITION / OWNER REVIEW PENDING';
+  titleMetadata.textContent = 'SUNDERGLASS REACH → VESPER LOOMWORKS / BASE + DAWNRUSH / B08 BOSS NOT INCLUDED';
+  startButton.innerHTML = 'ENTER THE LUMEN SPINDLE EXPEDITION <span aria-hidden="true">&gt;</span>';
 }
 if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('artReview') === '1') start(true);
 if (import.meta.env.DEV && new URLSearchParams(window.location.search).get('animationLab') === '1') start(false,true);

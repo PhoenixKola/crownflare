@@ -162,13 +162,19 @@ export class B06EnemyGauntletScene extends ChamberScene {
     const player = this.getB06PlayerFrame();
     return this.director.enemies.map((enemy) => {
       const profile = B06_ENEMY_PROFILES[enemy.archetype];
-      const guardActive = b06EnemyIsGuarding(enemy, player.x, 'light-1');
+      const guardActive = b06EnemyIsGuarding(enemy, player.x, 'light-1', player.y + player.height / 2);
       return {
         id: enemy.id, archetype: enemy.archetype, x: enemy.x, y: enemy.y, width: profile.width, height: profile.height,
         hp: enemy.hp, alive: enemy.hp > 0, guarding: guardActive,
         guardBreakable: enemy.archetype === 'pressure-bastion' && guardActive,
       };
     });
+  }
+
+  protected override getB06Blockers(): readonly CombatRect[] {
+    // Thin chamber ledges are one-way traversal surfaces, not walls for the
+    // ground enemy navigation model. Keep only the authored full-height barrier.
+    return super.getB06Blockers().filter((blocker) => blocker.bottom - blocker.top >= 20);
   }
 
   protected override onB06ContactResult(target: B06CombatTarget, result: ContactResult, move: B03MoveDefinition, event: CombatEvent, guardBreak: boolean): void {
@@ -354,21 +360,22 @@ export class B06EnemyGauntletScene extends ChamberScene {
   }
 
   private enemyAttackRect(enemy: B06EnemyRuntime, action: NonNullable<B06EnemyRuntime['action']>, facing: -1 | 1): CombatRect {
+    const height = B06_ENEMY_PROFILES[enemy.archetype].height;
     if (action === 'cantor-pulse') {
       return { left: enemy.x - 112, right: enemy.x + 112, top: enemy.y - 66, bottom: enemy.y + 66 };
     }
     if (action === 'cantor-sweep') {
       const left = facing > 0 ? enemy.x + 10 : enemy.x - 145;
-      return { left, right: left + 135, top: GROUND_TOP - 69, bottom: GROUND_TOP - 18 };
+      return { left, right: left + 135, top: enemy.y - height / 2 - 1, bottom: enemy.y + 16 };
     }
     if (action === 'bastion-overhead') {
       const left = facing > 0 ? enemy.x + 2 : enemy.x - 70;
-      return { left, right: left + 68, top: GROUND_TOP - 82, bottom: GROUND_TOP - 4 };
+      return { left, right: left + 68, top: enemy.y - height + 1, bottom: enemy.y + height / 2 - 4 };
     }
     const reach = action === 'sentry-lunge' ? 38 : 54;
     const left = facing > 0 ? enemy.x + 3 : enemy.x - reach - 3;
-    const top = action === 'sentry-lunge' ? GROUND_TOP - 34 : GROUND_TOP - 42;
-    return { left, right: left + reach, top, bottom: GROUND_TOP - 5 };
+    const top = enemy.y - (action === 'sentry-lunge' ? 10 : 13);
+    return { left, right: left + reach, top, bottom: enemy.y + (action === 'sentry-lunge' ? 19 : 24) };
   }
 
   private showAttackEffect(enemy: B06EnemyRuntime, action: NonNullable<B06EnemyRuntime['action']>, facing: -1 | 1): void {

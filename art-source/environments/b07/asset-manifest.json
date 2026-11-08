@@ -1,0 +1,104 @@
+{
+  "milestone": "B07",
+  "region": "Vesper Loomworks",
+  "nativeImageGeneration": {
+    "background": {
+      "tool": "OpenAI native ImageGen",
+      "generation": "01a1b353-b750-72f3-9594-c017f1f1a806/exec-1f641f84-f645-455f-a6ce-cf699a90db65",
+      "prompt": "True 16-bit pixel-art videogame background master; Vesper night-side mechanical spindle loom hall; petrol/ink, oxidized jade, dark brass and pearl threads; stepped pixel clusters; no text or characters."
+    },
+    "kit": {
+      "tool": "OpenAI native ImageGen",
+      "generation": "01a1b353-b750-72f3-9594-c017f1f1a806/exec-8e7ee771-2677-4df3-b47d-a34dfd31ecf0",
+      "prompt": "Transparent Vesper pixel-art modular sprite sheet with ledge, thread bridge, spindle lift, loom press, threshold gate and conduit tile."
+    }
+  },
+  "pipeline": "python tools/art-export/build-b07-world.py; nearest-neighbour crop and scale from the preserved ImageGen source masters.",
+  "sha256": {
+    "art-source/environments/b07/vesper-loomworks-source.png": "8d8c914cf0ecb2c245c27ae23b7d9bce9f2ce83b0adb0ccad2ecc238c85e6240",
+    "art-source/environments/b07/vesper-kit-source.png": "16e410ee05b18d72c00270cf5cb94fee35cce4c9a1dd1856544d5720336412fb",
+    "public/assets/environments/b07/vesper-conduit.png": "72f73b08c3cc80663ae54fa28ea8a7eb443926eca3701ed03f0a06156d3dc7e2",
+    "public/assets/environments/b07/vesper-engineering.png": "c4c3159eb4277eca2066c266cf79a453453842bbe15780949997dfbcbf6d31f0",
+    "public/assets/environments/b07/vesper-foreground.png": "151c8c099c3e7be42380a5f278fe19c63fd29eb338a2896c8ecb98e47caf4ac9",
+    "public/assets/environments/b07/vesper-horizon.png": "6af238febb063792c2be19751edd6a4dafd694954a67790ebca7d6f1631ba3b6",
+    "public/assets/environments/b07/vesper-platform-lift.png": "5f13f14c51cb9530015afbf3ad631a00d1e8cc23b1bc511cb2fecddfc24dd770",
+    "public/assets/environments/b07/vesper-platform-long.png": "6af2a1b026f470bd615c769adf5b9308df0a4f350d8d9b2bd5f83cf39b6277f8",
+    "public/assets/environments/b07/vesper-platform-thread.png": "d584777047497dbb831dad43bebec3cec3cd4733ea86e1bde24965b11da25272",
+    "public/assets/environments/b07/vesper-thread-press.png": "238014733dcf95b32256e5fe293f8a78d913ebda3d5c8687a643d94b65867dd8",
+    "public/assets/environments/b07/vesper-threshold-gate.png": "f37834bb4e61a324b05cee8501dcf36e2d46545fda0f7b43c08ef120995a1a83"
+  },
+  "runtime": {
+    "vesper-conduit.png": {
+      "sha256": "72f73b08c3cc80663ae54fa28ea8a7eb443926eca3701ed03f0a06156d3dc7e2",
+      "size": [
+        246,
+        155
+      ],
+      "bytes": 35245
+    },
+    "vesper-engineering.png": {
+      "sha256": "c4c3159eb4277eca2066c266cf79a453453842bbe15780949997dfbcbf6d31f0",
+      "size": [
+        492,
+        430
+      ],
+      "bytes": 114099
+    },
+    "vesper-foreground.png": {
+      "sha256": "151c8c099c3e7be42380a5f278fe19c63fd29eb338a2896c8ecb98e47caf4ac9",
+      "size": [
+        580,
+        420
+      ],
+      "bytes": 153170
+    },
+    "vesper-horizon.png": {
+      "sha256": "6af238febb063792c2be19751edd6a4dafd694954a67790ebca7d6f1631ba3b6",
+      "size": [
+        960,
+        270
+      ],
+      "bytes": 385870
+    },
+    "vesper-platform-lift.png": {
+      "sha256": "5f13f14c51cb9530015afbf3ad631a00d1e8cc23b1bc511cb2fecddfc24dd770",
+      "size": [
+        246,
+        215
+      ],
+      "bytes": 36507
+    },
+    "vesper-platform-long.png": {
+      "sha256": "6af2a1b026f470bd615c769adf5b9308df0a4f350d8d9b2bd5f83cf39b6277f8",
+      "size": [
+        290,
+        210
+      ],
+      "bytes": 48408
+    },
+    "vesper-platform-thread.png": {
+      "sha256": "d584777047497dbb831dad43bebec3cec3cd4733ea86e1bde24965b11da25272",
+      "size": [
+        305,
+        210
+      ],
+      "bytes": 37121
+    },
+    "vesper-thread-press.png": {
+      "sha256": "238014733dcf95b32256e5fe293f8a78d913ebda3d5c8687a643d94b65867dd8",
+      "size": [
+        235,
+        260
+      ],
+      "bytes": 61748
+    },
+    "vesper-threshold-gate.png": {
+      "sha256": "f37834bb4e61a324b05cee8501dcf36e2d46545fda0f7b43c08ef120995a1a83",
+      "size": [
+        300,
+        268
+      ],
+      "bytes": 77046
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 **Rule:** Milestones are meaningful production phases, not guaranteed release dates. No new phase starts simply because builds are green. Inside each phase, break corrections into small issue-based Codex batches. Record `TECH`, `ART-MOTION`, `OWNER APPROVAL` separately.
 
-**Release scope (owner direction, 2026-11-08):** the first release ships Iona Base and Dawnrush only. Stormhalo and Eclipse Warden are post-release concepts; do not generate or implement them during B00–B13. B05 technical status remains separate from its pending owner art-motion, audio-listening, and physical-controller gates. The owner explicitly redirected B06 to enemy roster and encounter variety, so B06 proceeds without implying B05 approval.
+**Release scope (owner direction, 2026-11-08):** the first release ships Iona Base and Dawnrush only. Stormhalo and Eclipse Warden are post-release concepts; do not generate or implement them during B00–B13. B05 technical status remains separate from its pending owner art-motion, audio-listening, and physical-controller gates. The owner explicitly redirected B06 to enemy roster and encounter variety, so B06 proceeds without implying B05 approval. B07 now has a development-only two-region playable route and remains pending owner review.
 
 | Batch | Product-visible deliverable | Gate to next phase |
 |---|---|---|
@@ -13,7 +13,7 @@
 | **B04** Combat vertical slice | ONE complete beautiful region room, 1–2 enemy types, HUD/reward and original audio/VFX | 1–3-minute normal-speed playable footage + owner visual/feel approval |
 | **B05** Dawnrush | Complete Base-to-Dawnrush transformation, combat, audio and HUD candidate | Technical completion does not approve art/audio/controller; owner gates remain explicit |
 | **B06** Enemy roster / combat gauntlet | Sentry, three distinct regular enemies, Cantor elite, deterministic mixed combat, playable Sunderglass route | Real Chrome fights, fair locked tells, authored animations, human audio and owner review recorded separately |
-| **B07** Region 2 / room assembly | New region identity, authored room chunks, branches, traversal hazards and encounter placement | Seeded assembly stays authored, readable and fair across both Base and Dawnrush |
+| **B07** Region 2 / room assembly | **Technical candidate implemented**: Sunderglass Reach and Vesper Loomworks; seven-room seeded route with two meaningful branches, rewards, hazards, B06 enemies and honest B08 threshold | Real Chrome Base/Dawnrush route, traversal/hazard/controller/accessibility evidence, source-art audit and owner review. Owner approval remains pending |
 | **B08** Bosses / events | Region and final bosses with distinct phases, arenas, effects and audio | Fair counterplay, phase transitions, controller playtest and owner review |
 | **B09** Build variety | Small upgrade set, meaningful combinations, reward/shop/event beats | Deterministic stack/synergy tests and visibly different run choices |
 | **B10** Hub / story / saves | Iona's initial-release arc, title-to-ending loop, persistence and New Run | Versioned saves, new-run recovery and story/UX walkthrough |

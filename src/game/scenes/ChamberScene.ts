@@ -71,6 +71,7 @@ export class ChamberScene extends Phaser.Scene {
   private readonly b04Mode: boolean;
   private readonly b05Mode: boolean;
   private readonly b06Mode: boolean;
+  private readonly b07Mode: boolean;
   private readonly b02Diagnostics: boolean;
   private readonly playerPresentation = new IonaPlayerPresentation();
   private labCompareB01c = false;
@@ -191,7 +192,7 @@ export class ChamberScene extends Phaser.Scene {
   private dawnrushActivationMode: DawnrushActivationMode = 'showcase';
   private dawnrushShowcaseUsed = false;
 
-  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean } = {}) {
+  constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean; b07?: boolean } = {}) {
     super({ key: 'Chamber' });
     this.onPauseRequested = onPauseRequested;
     this.onControllerState = onControllerState;
@@ -200,8 +201,9 @@ export class ChamberScene extends Phaser.Scene {
     this.previewMode = options.ionaPreview === true && !this.artReview && !this.animationLab;
     this.b03Mode = this.previewMode && options.b03Combat === true;
     this.b04Mode = this.b03Mode && options.b04 === true;
-    this.b05Mode = this.b04Mode && options.b05 === true;
+    this.b05Mode = this.b04Mode && (options.b05 === true || options.b07 === true);
     this.b06Mode = this.b05Mode && options.b06 === true;
+    this.b07Mode = options.b07 === true;
     const params = new URLSearchParams(window.location.search);
     this.b02Diagnostics = this.previewMode && params.get('b02diag') === '1';
     this.b03DebugVisible = this.b03Mode && params.get('b03diag') === '1';
@@ -353,20 +355,22 @@ export class ChamberScene extends Phaser.Scene {
       platforms.push(block);
       return block;
     };
-    tile(780, GROUND_TOP, WORLD_WIDTH, 29, this.reviewContrast === 'light' ? 0x465552 : 0x34464b);
-    tile(220, 196, 96, 11);
-    tile(390, 165, 82, 11);
-    tile(560, 195, 82, 11);
-    tile(780, 178, 94, 11);
-    tile(965, 196, 95, 11);
-    tile(1150, 167, 110, 11);
-    tile(1380, 192, 120, 11);
-    if (!this.b04Mode) tile(1120, 217, 14, 24, 0x624f50); // B00 dash collision test barrier
+    if (!this.b07Mode) {
+      tile(780, GROUND_TOP, WORLD_WIDTH, 29, this.reviewContrast === 'light' ? 0x465552 : 0x34464b);
+      tile(220, 196, 96, 11);
+      tile(390, 165, 82, 11);
+      tile(560, 195, 82, 11);
+      tile(780, 178, 94, 11);
+      tile(965, 196, 95, 11);
+      tile(1150, 167, 110, 11);
+      tile(1380, 192, 120, 11);
+      if (!this.b04Mode) tile(1120, 217, 14, 24, 0x624f50); // B00 dash collision test barrier
+    }
     this.combatBlockers = platforms.map((platform) => {
       const bounds = platform.getBounds();
       return { left: bounds.left, right: bounds.right, top: bounds.top, bottom: bounds.bottom };
     }).filter((bounds) => bounds.top < GROUND_TOP);
-    if (!this.artReview && !this.animationLab && !this.previewMode) {
+    if (!this.artReview && !this.animationLab && !this.previewMode && !this.b07Mode) {
       add.text(27, 205, 'SECTOR 00 Â· SIMULATION CHAMBER', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#263940' : '#cce5d9' });
       add.text(1057, 205, 'DASH BARRIER', { fontFamily: 'monospace', fontSize: '8px', color: '#edab91' });
       add.text(1270, 127, 'BEYOND THE BROKEN DAY', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#314852' : '#85c3bd' });
@@ -419,7 +423,7 @@ export class ChamberScene extends Phaser.Scene {
       if(this.b01dMode||this.b01eMode||this.b02Diagnostics)this.labDiagnosticsGraphic=add.graphics().setDepth(39);
       if(this.b02Diagnostics)this.labDiagnosticLabel=add.text(this.actor.x,this.body.bottom-84,'',{fontFamily:'monospace',fontSize:'5px',color:'#b9fff0',backgroundColor:'#09111c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(40);
       if(this.b01eRuntime)this.input.on(Phaser.Input.Events.POINTER_DOWN,()=>this.unlockLabAudio());
-      if (this.animationLab || this.previewMode) this.createTrainingTarget();
+      if (this.animationLab || (this.previewMode && !this.b07Mode)) this.createTrainingTarget();
       if (this.b05Mode) this.createB05AuraLayers();
       if (this.animationLab) {
         this.createAnimationReview();
@@ -436,6 +440,7 @@ export class ChamberScene extends Phaser.Scene {
     if (this.artReview) { this.updateArtReview(); return; }
     let input = this.controller.read();
     if (input.pause) { this.setLabAudioPaused(true); this.onPauseRequested(); return; }
+    if (this.handleExclusiveInput(input)) { this.body.setVelocity(0, 0); this.actor.setAngle(0); return; }
     if (this.previewMode && !this.b04Mode && this.previewResetRequested) {
       this.previewResetRequested = false;
       this.resetPreview();
@@ -541,7 +546,7 @@ export class ChamberScene extends Phaser.Scene {
       this.wasMoving = moving;
       this.wasGrounded = grounded;
       this.hitFlashMs = Math.max(0,this.hitFlashMs-dt);
-      this.drawTrainingTarget();
+      if (!this.b07Mode) this.drawTrainingTarget();
       if (this.b03Mode) {
         this.b03LastControllerIndex = input.controllerIndex;
         if (this.b03DebugVisible) this.drawB03Debug();
@@ -630,6 +635,7 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   protected handleB04Interact(): boolean { return false; }
+  protected handleExclusiveInput(_input: ReturnType<InputController['read']>): boolean { return false; }
 
   protected b06CombatTargets(): readonly B06CombatTarget[] { return []; }
   protected onB06ContactResult(_target: B06CombatTarget, _result: ContactResult, _move: B03MoveDefinition, _event: CombatEvent, _guardBreak: boolean): void {}
@@ -645,6 +651,22 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   protected getB06Blockers(): readonly CombatRect[] { return this.combatBlockers; }
+  protected setCombatBlockers(blockers: readonly CombatRect[]): void { this.combatBlockers = [...blockers]; }
+  protected setRoomWorldBounds(width: number, height = WORLD_HEIGHT): void {
+    this.cameras.main.setBounds(0, 0, width, height);
+    this.physics.world.setBounds(0, 0, width, height);
+    this.body.setCollideWorldBounds(true);
+  }
+  protected getPlayerActor(): Phaser.GameObjects.Rectangle { return this.actor; }
+  protected addPlayerCollider(object: Phaser.GameObjects.GameObject): Phaser.Physics.Arcade.Collider { return this.physics.add.collider(this.actor, object); }
+  protected placePlayerOnSurface(x: number, surfaceTop: number): void {
+    this.actor.setPosition(x, surfaceTop - this.body.height / 2).setAngle(0);
+    this.body.reset(x, surfaceTop - this.body.height / 2);
+    this.body.setVelocity(0, 0);
+    this.playerPresentation.present({ textureKey: ionaB01EAssetKey('idle-0', 'right'), x, footY: surfaceTop });
+    this.groundContact = true;
+    this.wasGrounded = true;
+  }
   protected get b06HitstopActive(): boolean { return this.combatHitstopMs > 0; }
   protected get b06AudioPermitted(): boolean { return this.labAudioEnabled && !this.labAudioPaused && !this.sound.locked; }
 
@@ -699,7 +721,7 @@ export class ChamberScene extends Phaser.Scene {
     this.enemyKnockbackX = 0;
     this.enemyAirOffset = 0;
     this.enemyAirVelocity = 0;
-    this.drawTrainingTarget();
+    if (!this.b07Mode) this.drawTrainingTarget();
   }
 
   protected setB04PlayerHealth(hp: number): void {
@@ -783,7 +805,7 @@ export class ChamberScene extends Phaser.Scene {
     this.playerPresentation.present({textureKey:ionaB01EAssetKey('idle-0','right'),x:80,footY:GROUND_TOP});
     this.sound.stopAll();
     this.cameras.main.setScroll(0,0);
-    this.drawTrainingTarget();
+    if (!this.b07Mode) this.drawTrainingTarget();
   }
 
   reviewSnapshot(): ArtReviewSnapshot | null {
@@ -803,7 +825,7 @@ export class ChamberScene extends Phaser.Scene {
     }
     this.targetVisual = this.add.graphics().setDepth(9);
     this.targetLabel = this.add.text(this.targetX,GROUND_TOP-72,this.previewMode?'MOVING PRACTICE TARGET / 3 HP':'TRAINING DUMMY / 3', {fontFamily:'monospace',fontSize:'6px',color:'#f0cda8',align:'center',backgroundColor:'#171b2c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(20);
-    this.drawTrainingTarget();
+    if (!this.b07Mode) this.drawTrainingTarget();
   }
 
   private drawTrainingTarget(): void {
@@ -1344,7 +1366,7 @@ export class ChamberScene extends Phaser.Scene {
     this.b03DebugLabel.setText(`MOVE ${move} / PHASE ${this.attackClock.phase} / POSE ${this.labFrame} / RESULT ${this.b03LastResult}`);
   }
 
-  private resetB03Encounter(): void {
+  protected resetB03Encounter(): void {
     this.attackClock = idleClock;
     this.attackComboIndex = 0;
     this.attackBufferMs = 0;
@@ -1394,7 +1416,7 @@ export class ChamberScene extends Phaser.Scene {
     this.b05FinisherFx = undefined;
     this.b03Status = 'ENCOUNTER RESET / MOVE INTO RANGE';
     this.b03LastResult = 'RESET';
-    this.drawTrainingTarget();
+    if (!this.b07Mode) this.drawTrainingTarget();
     this.controller?.resetTransientState();
   }
 

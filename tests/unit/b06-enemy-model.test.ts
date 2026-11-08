@@ -101,6 +101,22 @@ test('B06 telegraph and contact stay deterministic at 30, 60 and 120 Hz with loc
   assert.ok(Math.max(...strikeTimes) - Math.min(...strikeTimes) <= 34, `strike-time spread was ${strikeTimes.join(', ')}`);
 });
 
+test('B06 melee emits exactly one strike at its active contact frame, after the telegraph', () => {
+  const runner = createB06Enemy('single-contact:runner', 'shardrunner', 200);
+  let director = createB06Director([runner]);
+  let elapsed = 0;
+  const events: Array<{ type: string; at: number }> = [];
+  while (elapsed < 1500) {
+    const step = stepB06Director(director, playerFrame({ x: 250 }), 1000 / 60);
+    director = step.state; elapsed += 1000 / 60;
+    events.push(...step.events.map((event) => ({ type: event.type, at: Math.round(elapsed) })));
+  }
+  const tellAt = events.find((event) => event.type === 'telegraph')?.at ?? 0;
+  const strikes = events.filter((event) => event.type === 'strike');
+  assert.equal(strikes.length, 1, `one attack action emitted ${strikes.length} strike contacts`);
+  assert.ok(strikes[0]!.at > tellAt + 500, 'the hit remains behind the authored telegraph');
+});
+
 test('B06 projectile has a single owner shot, is blocked by geometry, and expires', () => {
   const wisp: B06EnemyRuntime = { ...createB06Enemy('wave-2:orbit-wisp:1', 'orbit-wisp', 200), facing: 1, phase: 'recover', cooldownMs: 5000 };
   const player = playerFrame({ x: 440, y: 151 });

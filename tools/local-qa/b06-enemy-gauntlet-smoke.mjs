@@ -81,6 +81,16 @@ async function keyTap(page, key, duration = 70) {
   await page.keyboard.up(key);
 }
 
+async function dodgeThreat(page, enemyX, playerX) {
+  // Dash through the locked attack lane instead of retreating into the left map boundary.
+  const direction = enemyX > playerX ? 'd' : 'a';
+  await page.keyboard.down(direction);
+  await page.keyboard.down('Shift');
+  await page.waitForTimeout(70);
+  await page.keyboard.up('Shift');
+  await page.keyboard.up(direction);
+}
+
 async function capture(page, name) {
   const stem = name.startsWith('b06-') ? name.slice(4) : name;
   const destination = path.join(evidence, `${activeCapturePrefix}-${stem}.png`);
@@ -172,6 +182,14 @@ async function activeGauntletReview(form = 'dawnrush') {
   await capture(videoPage, 'b06-gauntlet-entry');
   check('developer route enters the authored Shardrunner familiarization encounter', 'PASS', { phase: state.b06.phase, enemies: state.b06.enemies.map((enemy) => ({ id: enemy.id, archetype: enemy.archetype })) });
 
+  if (form === 'dawnrush') {
+    // Activate the normal form action before the approaching Shardrunner can interrupt it.
+    await keyTap(videoPage, 'r');
+    await waitFor(videoPage, (value) => value.b06?.dawnrush?.state === 'dawnrush', 'Dawnrush activates through the live player controller', 4000);
+    await capture(videoPage, 'b06-gauntlet-dawnrush');
+    check('normal R input activates Dawnrush from the route’s initial 70% charge', 'PASS', { state: (await snapshot(videoPage)).b06.dawnrush.state, chargeSource: 'authored initial player resource' });
+  }
+
   await videoPage.keyboard.press('Escape');
   await waitFor(videoPage, (value) => value.screen === 'paused', 'pause opens during B06 combat');
   assert(await videoPage.locator('#pause-screen').isVisible(), 'Pause panel did not open');
@@ -179,13 +197,13 @@ async function activeGauntletReview(form = 'dawnrush') {
   await waitFor(videoPage, (value) => value.screen === 'b06Combat', 'B06 resumes from pause');
   check('pause/resume preserves the live encounter', 'PASS');
 
-  if (form === 'dawnrush') {
+  if (form === 'dawnrush' && (await snapshot(videoPage)).b06?.dawnrush?.state !== 'dawnrush') {
     // The route begins with the normal B05 70% charge; R is the ordinary form action.
     await keyTap(videoPage, 'r');
     await waitFor(videoPage, (value) => value.b06?.dawnrush?.state === 'dawnrush', 'Dawnrush activates through the live player controller', 4000);
     await capture(videoPage, 'b06-gauntlet-dawnrush');
     check('normal R input activates Dawnrush from the route’s initial 70% charge', 'PASS', { state: (await snapshot(videoPage)).b06.dawnrush.state, chargeSource: 'authored initial player resource' });
-  } else {
+  } else if (form === 'base') {
     assert(state.b06.dawnrush.state === 'base', `Base verification started in ${state.b06.dawnrush.state}`);
     check('Base-only run starts without using the form refill shortcut', 'PASS', { state: state.b06.dawnrush.state, energy: state.b06.dawnrush.energy });
   }
@@ -229,11 +247,39 @@ async function activeGauntletReview(form = 'dawnrush') {
     }
     if (phase === 'victory' || phase === 'defeat') break;
     if (state.b06.playerHp <= 0) break;
+    const imminent = state.b06.enemies
+      .filter((enemy) => enemy.hp > 0 && ['telegraph', 'commit'].includes(enemy.phase) && Math.abs(enemy.x - state.combat.playerX) < 160)
+      .sort((a, b) => Math.abs(a.x - state.combat.playerX) - Math.abs(b.x - state.combat.playerX))[0];
+    if (imminent) {
+      if (imminent.phase === 'telegraph') {
+        await waitFor(videoPage, `state => !state.b06?.enemies?.some((enemy) => enemy.id === ${JSON.stringify(imminent.id)} && enemy.phase === 'telegraph')`, `${imminent.archetype} resolves or is interrupted after its tell`, 1500);
+      }
+      const atStrike = await snapshot(videoPage);
+      const committed = atStrike.b06?.enemies?.find((enemy) => enemy.id === imminent.id && enemy.phase === 'commit');
+      if (!committed) continue;
+      await dodgeThreat(videoPage, committed.x, atStrike.combat.playerX);
+      record('dash through the authored enemy commit frame', { target: imminent.id, phase: committed.phase, playerX: atStrike.combat.playerX });
+      await videoPage.waitForTimeout(100);
+      continue;
+    }
     const alive = state.b06.enemies.filter((enemy) => enemy.hp > 0).sort((a, b) => Math.abs(a.x - state.combat.playerX) - Math.abs(b.x - state.combat.playerX));
     if (!alive.length) { await videoPage.waitForTimeout(100); continue; }
     const target = alive[0];
     const dx = target.x - state.combat.playerX;
     const distance = Math.abs(dx);
+    if (form === 'dawnrush' && state.b06.dawnrush?.finisherReady && distance < 76) {
+      await keyTap(videoPage, 'f', 70);
+      record('use earned Dawnfall finisher against a close threat', { target: target.id, hp: target.hp, resonance: state.combat.resonance, energy: state.b06.dawnrush.energy });
+      await videoPage.waitForTimeout(170);
+      continue;
+    }
+    const specialCost = form === 'dawnrush' ? 32 : 35;
+    if (state.combat.specialCooldownMs <= 0 && state.combat.resonance >= specialCost && distance < 92) {
+      await keyTap(videoPage, 'q', 70);
+      record('spend ready Resonance on a close enemy', { target: target.id, hp: target.hp, resonance: state.combat.resonance });
+      await videoPage.waitForTimeout(170);
+      continue;
+    }
     if (distance > (target.archetype === 'orbit-wisp' ? 68 : 48)) {
       await keyTap(videoPage, dx > 0 ? 'd' : 'a', Math.min(100, Math.max(40, (distance - 40) / 1.4)));
       record('advance on selected threat', { target: target.id, x: state.combat.playerX, distance: Number(distance.toFixed(1)) });

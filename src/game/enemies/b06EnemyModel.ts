@@ -1,4 +1,5 @@
 import { combatantRect, isBlockedByRect, overlaps, resolveMoveContact, type B03MoveDefinition, type CombatRect, type ContactResult, type Facing } from '../combat/b03Moves.ts';
+import type { EnemyWorldContext } from '../rooms/roomTypes.ts';
 
 export type B06Archetype = 'spindle-sentry' | 'shardrunner' | 'orbit-wisp' | 'pressure-bastion' | 'cantor';
 export type B06EnemyPhase = 'intro' | 'idle' | 'approach' | 'guard' | 'telegraph' | 'commit' | 'recover' | 'hurt' | 'stagger' | 'vulnerable' | 'ko';
@@ -7,6 +8,7 @@ export type B06EnemyAction = 'runner-dash' | 'sentry-lunge' | 'wisp-shot' | 'bas
 export type B06EnemyRuntime = {
   readonly id: string;
   readonly archetype: B06Archetype;
+  readonly supportSurfaceId: string;
   readonly homeX: number;
   readonly x: number;
   readonly y: number;
@@ -40,6 +42,7 @@ export type B06Projectile = {
 };
 
 export type B06DirectorState = {
+  readonly world: EnemyWorldContext;
   readonly enemies: readonly B06EnemyRuntime[];
   readonly projectiles: readonly B06Projectile[];
   readonly accumulatorMs: number;
@@ -80,11 +83,14 @@ export function resolveB06MoveTargets(
   const contacts: B06MoveContact[] = [];
   for (const target of [...targets].sort((a, b) => a.id.localeCompare(b.id))) {
     if (hitTargets.has(target.id)) continue;
-    hitTargets.add(target.id);
     const raw = resolveMoveContact(move, attacker, {
       x: target.x, footY: target.y + target.height / 2, width: target.width, height: target.height,
       hp: target.hp, alive: target.alive, invulnerableMs: target.invulnerableMs, guarding: target.guarding,
     }, blockers);
+    // A whiff is not contact. Keep the target eligible if it legitimately enters
+    // this move's live hitbox before the active window closes; once any real
+    // contact outcome occurs, retain the ID for the life of this move instance.
+    if (raw !== 'miss' && raw !== 'obstructed') hitTargets.add(target.id);
     const guardBreak = raw === 'blocked' && target.guardBreakable === true && ['heavy', 'air-light', 'light-3', 'finisher'].includes(move.id);
     contacts.push({ target, result: guardBreak ? 'hit' : raw, guardBreak });
   }
@@ -105,6 +111,15 @@ const GROUND_Y = 241;
 const WISP_Y = 168;
 const WORLD_LEFT = 72;
 const WORLD_RIGHT = 1488;
+const DEFAULT_WORLD: EnemyWorldContext = {
+  id: 'b06-sunderglass-arena',
+  bounds: { left: WORLD_LEFT, right: WORLD_RIGHT, top: 0, bottom: 270 },
+  projectileBounds: { left: WORLD_LEFT, right: WORLD_RIGHT, top: 20, bottom: 270 },
+  groundTop: GROUND_Y,
+  defaultSurfaceId: 'arena-floor',
+  surfaces: [{ id: 'arena-floor', left: WORLD_LEFT, right: WORLD_RIGHT, top: GROUND_Y }],
+  hoverLane: { minY: 72, maxY: 195, homeY: WISP_Y },
+};
 
 export const B06_ENEMY_PROFILES = {
   'spindle-sentry': { displayName: 'Fractured Spindle Sentry', width: 42, height: 48, moveSpeed: 48, wakeRange: 240, attackRange: 82, tellMs: 440, commitMs: 200, recoveryMs: 510, cooldownMs: 540 },
@@ -114,18 +129,22 @@ export const B06_ENEMY_PROFILES = {
   cantor: { displayName: 'Cantor of the Split Ring', width: 54, height: 68, moveSpeed: 36, wakeRange: 270, attackRange: 178, tellMs: 840, commitMs: 220, recoveryMs: 660, cooldownMs: 720 },
 } as const;
 
-export function createB06Enemy(id: string, archetype: B06Archetype, x: number): B06EnemyRuntime {
-  const homeX = clamp(x, WORLD_LEFT, WORLD_RIGHT);
+export function createB06Enemy(id: string, archetype: B06Archetype, x: number, world: EnemyWorldContext = DEFAULT_WORLD, supportSurfaceId = world.defaultSurfaceId): B06EnemyRuntime {
+  const surface = world.surfaces.find((candidate) => candidate.id === supportSurfaceId) ?? world.surfaces.find((candidate) => candidate.id === world.defaultSurfaceId);
+  if (!surface) throw new Error(`Enemy ${id} has no authored support surface in ${world.id}`);
+  const bounds = surfaceLimits(surface, B06_ENEMY_PROFILES[archetype].width, world);
+  const homeX = clamp(x, bounds.left, bounds.right);
   return {
-    id, archetype, homeX, x: homeX, y: archetype === 'orbit-wisp' ? WISP_Y : GROUND_Y - B06_ENEMY_PROFILES[archetype].height / 2,
+    id, archetype, supportSurfaceId: surface.id, homeX, x: homeX,
+    y: archetype === 'orbit-wisp' ? clamp(world.hoverLane.homeY, world.hoverLane.minY, world.hoverLane.maxY) : surface.top - B06_ENEMY_PROFILES[archetype].height / 2,
     hp: ENEMY_HP[archetype], maxHp: ENEMY_HP[archetype], facing: -1, phase: archetype === 'cantor' ? 'intro' : archetype === 'pressure-bastion' ? 'guard' : 'idle',
     phaseMs: 0, cooldownMs: archetype === 'cantor' ? 620 : 0, action: null, actionFacing: -1, actionHit: false,
     attackSequence: 0, hitstunMs: 0, knockbackX: 0, guardBrokenMs: 0, vulnerabilityMs: 0,
   };
 }
 
-export function createB06Director(enemies: readonly B06EnemyRuntime[] = []): B06DirectorState {
-  return { enemies: [...enemies], projectiles: [], accumulatorMs: 0, eventSequence: 0 };
+export function createB06Director(enemies: readonly B06EnemyRuntime[] = [], world: EnemyWorldContext = DEFAULT_WORLD): B06DirectorState {
+  return { world, enemies: [...enemies], projectiles: [], accumulatorMs: 0, eventSequence: 0 };
 }
 
 export function applyB06EnemyContact(enemy: B06EnemyRuntime, kind: B06EnemyContact, damage: number, knockbackX: number): B06EnemyRuntime {
@@ -149,8 +168,9 @@ export function applyB06EnemyContact(enemy: B06EnemyRuntime, kind: B06EnemyConta
   };
 }
 
-export function b06EnemyIsGuarding(enemy: B06EnemyRuntime, playerX: number, moveId: string): boolean {
+export function b06EnemyIsGuarding(enemy: B06EnemyRuntime, playerX: number, moveId: string, playerFootY?: number): boolean {
   if (enemy.archetype !== 'pressure-bastion' || enemy.phase !== 'guard' || enemy.guardBrokenMs > 0) return false;
+  if (playerFootY !== undefined && Math.abs(playerFootY - (enemy.y + B06_ENEMY_PROFILES[enemy.archetype].height / 2)) > 46) return false;
   const playerSide: -1 | 1 = playerX < enemy.x ? -1 : 1;
   if (playerSide !== enemy.facing) return false;
   // Launchers and committed finishers crack the brace; ordinary front-facing strikes are visibly blocked.
@@ -172,24 +192,31 @@ export function stepB06Director(state: B06DirectorState, player: B06PlayerThreat
     let attackClaimed = threatBusy;
     enemies = enemies.map((enemy) => {
       const hasOwnedProjectile = enemy.archetype === 'orbit-wisp' && projectiles.some((projectile) => projectile.ownerId === enemy.id);
-      const result = stepEnemy(enemy, player, FIXED_STEP_MS, !attackClaimed && !hasOwnedProjectile);
+      const result = stepEnemy(enemy, player, FIXED_STEP_MS, !attackClaimed && !hasOwnedProjectile, state.world, blockers);
       if (result.startedTell) attackClaimed = true;
       if (result.event) events.push(result.event);
       if (result.recovered) events.push({ type: 'enemy-recovered', enemyId: enemy.id });
       return result.enemy;
     });
-    enemies = separateGroundEnemies(enemies);
-    const projectileResult = stepProjectiles(projectiles, enemies, player, blockers, FIXED_STEP_MS);
+    enemies = separateGroundEnemies(enemies, state.world);
+    const projectileResult = stepProjectiles(projectiles, enemies, player, blockers, FIXED_STEP_MS, state.world);
     projectiles = projectileResult.projectiles;
     events.push(...projectileResult.events);
     eventSequence += events.length;
   }
-  return { state: { enemies, projectiles, accumulatorMs: Math.max(0, accumulatorMs), eventSequence }, events };
+  return { state: { world: state.world, enemies, projectiles, accumulatorMs: Math.max(0, accumulatorMs), eventSequence }, events };
 }
 
-function stepEnemy(enemy: B06EnemyRuntime, player: B06PlayerThreatFrame, dt: number, canAttack: boolean): { enemy: B06EnemyRuntime; startedTell: boolean; recovered: boolean; event?: B06DirectorEvent } {
+function stepEnemy(enemy: B06EnemyRuntime, player: B06PlayerThreatFrame, dt: number, canAttack: boolean, world: EnemyWorldContext, blockers: readonly CombatRect[]): { enemy: B06EnemyRuntime; startedTell: boolean; recovered: boolean; event?: B06DirectorEvent } {
   if (enemy.phase === 'ko') return { enemy, startedTell: false, recovered: false };
   const profile = B06_ENEMY_PROFILES[enemy.archetype];
+  const surface = world.surfaces.find((candidate) => candidate.id === enemy.supportSurfaceId) ?? world.surfaces.find((candidate) => candidate.id === world.defaultSurfaceId)!;
+  const limits = surfaceLimits(surface, profile.width, world);
+  const moveX = (requested: number): number => {
+    const candidate = clamp(requested, limits.left, limits.right);
+    const swept = { left: Math.min(enemy.x, candidate) - profile.width / 2, right: Math.max(enemy.x, candidate) + profile.width / 2, top: enemy.y - profile.height / 2, bottom: enemy.y + profile.height / 2 };
+    return candidate !== enemy.x && blockers.some((blocker) => overlaps(swept, blocker)) ? enemy.x : candidate;
+  };
   const dx = player.x - enemy.x;
   const distance = Math.abs(dx);
   const inView = distance <= 238;
@@ -198,7 +225,7 @@ function stepEnemy(enemy: B06EnemyRuntime, player: B06PlayerThreatFrame, dt: num
   if (enemy.phase === 'intro') return { enemy: enemy.phaseMs + dt >= 1180 ? { ...next, phase: 'idle', phaseMs: 0 } : { ...next, phaseMs: enemy.phaseMs + dt }, startedTell: false, recovered: false };
   if (enemy.hitstunMs > 0) {
     const hitstunMs = Math.max(0, enemy.hitstunMs - dt);
-    next = { ...next, x: clamp(enemy.x + enemy.knockbackX * dt / 1000, WORLD_LEFT, WORLD_RIGHT), hitstunMs, phaseMs: enemy.phaseMs + dt, knockbackX: enemy.knockbackX * .78 };
+    next = { ...next, x: moveX(enemy.x + enemy.knockbackX * dt / 1000), hitstunMs, phaseMs: enemy.phaseMs + dt, knockbackX: enemy.knockbackX * .78 };
     if (hitstunMs === 0) next = { ...next, phase: enemy.vulnerabilityMs > 0 ? 'vulnerable' : enemy.archetype === 'pressure-bastion' && enemy.guardBrokenMs <= 0 ? 'guard' : 'idle', phaseMs: 0, knockbackX: 0, action: null };
     return { enemy: next, startedTell: false, recovered: false };
   }
@@ -207,17 +234,19 @@ function stepEnemy(enemy: B06EnemyRuntime, player: B06PlayerThreatFrame, dt: num
     if (phaseMs >= profile.tellMs) {
       const action = enemy.action ?? actionFor(enemy.archetype, enemy.attackSequence);
       next = { ...next, phase: 'commit', phaseMs: 0, action, actionFacing: enemy.facing, actionHit: false };
-      const event: B06DirectorEvent = enemy.archetype === 'orbit-wisp'
+      // A melee action is only a threat when its authored active/contact frame arrives
+      // below. Emitting `strike` here used to apply a second hit at commit start.
+      const event: B06DirectorEvent | undefined = enemy.archetype === 'orbit-wisp'
         ? { type: 'projectile-fired', enemyId: enemy.id, projectileId: `${enemy.id}:shot:${enemy.attackSequence + 1}` }
-        : { type: 'strike', enemyId: enemy.id, action, facing: enemy.facing, x: enemy.x, y: enemy.y, sequence: enemy.attackSequence + 1 };
-      return { enemy: next, startedTell: false, recovered: false, event };
+        : undefined;
+      return { enemy: next, startedTell: false, recovered: false, ...(event ? { event } : {}) };
     }
     return { enemy: { ...next, phaseMs }, startedTell: false, recovered: false };
   }
   if (enemy.phase === 'commit') {
     const phaseMs = enemy.phaseMs + dt;
-    if (enemy.archetype === 'shardrunner') next = { ...next, x: clamp(enemy.x + enemy.actionFacing * 118 * dt / 1000, WORLD_LEFT, WORLD_RIGHT) };
-    if (enemy.archetype === 'spindle-sentry') next = { ...next, x: clamp(enemy.x + enemy.actionFacing * 200 * dt / 1000, WORLD_LEFT, WORLD_RIGHT) };
+    if (enemy.archetype === 'shardrunner') next = { ...next, x: moveX(enemy.x + enemy.actionFacing * 118 * dt / 1000) };
+    if (enemy.archetype === 'spindle-sentry') next = { ...next, x: moveX(enemy.x + enemy.actionFacing * 200 * dt / 1000) };
     const contactAt = enemy.archetype === 'spindle-sentry' ? 88 : enemy.archetype === 'shardrunner' ? 76 : enemy.archetype === 'pressure-bastion' ? 132 : 92;
     const strike = !enemy.actionHit && enemy.phaseMs < contactAt && phaseMs >= contactAt && enemy.action
       ? { type: 'strike' as const, enemyId: enemy.id, action: enemy.action, facing: enemy.actionFacing, x: next.x, y: enemy.y, sequence: enemy.attackSequence + 1 }
@@ -237,19 +266,19 @@ function stepEnemy(enemy: B06EnemyRuntime, player: B06PlayerThreatFrame, dt: num
     const desiredDistance = 185;
     if (distance < 150 || distance > 205) {
       const direction: -1 | 1 = distance > desiredDistance ? Math.sign(dx || 1) as -1 | 1 : (Math.sign(dx || 1) * -1) as -1 | 1;
-      const laneX = clamp(enemy.x + direction * profile.moveSpeed * dt / 1000, enemy.homeX - 32, enemy.homeX + 32);
+      const laneX = clamp(enemy.x + direction * profile.moveSpeed * dt / 1000, Math.max(limits.left, enemy.homeX - 32), Math.min(limits.right, enemy.homeX + 32));
       next = { ...next, x: laneX, phase: laneX !== enemy.x ? 'approach' : 'idle', phaseMs: 0 };
     } else if (canAttack && enemy.cooldownMs <= 0) return beginTell(next, 'wisp-shot');
     return { enemy: { ...next, facing, phase: next.phase === 'approach' ? (distance > desiredDistance ? 'approach' : 'idle') : next.phase, phaseMs: 0 }, startedTell: false, recovered: false };
   }
   if (enemy.archetype === 'pressure-bastion' && enemy.guardBrokenMs <= 0) {
-    if (distance > 104) return { enemy: { ...next, x: clamp(enemy.x + Math.sign(dx) * profile.moveSpeed * dt / 1000, WORLD_LEFT, WORLD_RIGHT), phase: 'approach', phaseMs: 0, facing }, startedTell: false, recovered: false };
+    if (distance > 104) return { enemy: { ...next, x: moveX(enemy.x + Math.sign(dx) * profile.moveSpeed * dt / 1000), phase: 'approach', phaseMs: 0, facing }, startedTell: false, recovered: false };
     if (canAttack && enemy.cooldownMs <= 0) return beginTell({ ...next, phase: 'guard', facing }, 'bastion-overhead');
     return { enemy: { ...next, phase: 'guard', phaseMs: enemy.phaseMs + dt, facing }, startedTell: false, recovered: false };
   }
   if (distance > profile.attackRange) {
     const gap = enemy.archetype === 'spindle-sentry' || enemy.archetype === 'shardrunner' ? 38 : 48;
-    return { enemy: { ...next, x: clamp(enemy.x + Math.sign(dx) * Math.min(profile.moveSpeed * dt / 1000, Math.max(0, distance - gap)), WORLD_LEFT, WORLD_RIGHT), phase: 'approach', phaseMs: 0 }, startedTell: false, recovered: false };
+    return { enemy: { ...next, x: moveX(enemy.x + Math.sign(dx) * Math.min(profile.moveSpeed * dt / 1000, Math.max(0, distance - gap))), phase: 'approach', phaseMs: 0 }, startedTell: false, recovered: false };
   }
   if (enemy.phase === 'approach') next = { ...next, phase: 'idle', phaseMs: 0 };
   if (!canAttack || enemy.cooldownMs > 0) return { enemy: { ...next, phase: enemy.archetype === 'pressure-bastion' ? 'guard' : next.phase, phaseMs: next.phaseMs + dt }, startedTell: false, recovered: false };
@@ -269,14 +298,14 @@ function actionFor(archetype: B06Archetype, sequence: number): Exclude<B06EnemyA
   return sequence % 2 === 0 ? 'cantor-sweep' : 'cantor-pulse';
 }
 
-function stepProjectiles(projectiles: readonly B06Projectile[], enemies: readonly B06EnemyRuntime[], player: B06PlayerThreatFrame, blockers: readonly CombatRect[], dt: number): { projectiles: B06Projectile[]; events: B06DirectorEvent[] } {
+function stepProjectiles(projectiles: readonly B06Projectile[], enemies: readonly B06EnemyRuntime[], player: B06PlayerThreatFrame, blockers: readonly CombatRect[], dt: number, world: EnemyWorldContext): { projectiles: B06Projectile[]; events: B06DirectorEvent[] } {
   const next: B06Projectile[] = [];
   const events: B06DirectorEvent[] = [];
   const playerRect = combatantRect({ x: player.x, footY: player.y + player.height / 2, width: player.width, height: player.height, hp: player.hp });
   for (const projectile of projectiles) {
     const updated = { ...projectile, x: projectile.x + projectile.vx * dt / 1000, y: projectile.y + projectile.vy * dt / 1000, ageMs: projectile.ageMs + dt };
     const attackRect = { left: Math.min(projectile.x, updated.x) - projectile.radius, right: Math.max(projectile.x, updated.x) + projectile.radius, top: Math.min(projectile.y, updated.y) - projectile.radius, bottom: Math.max(projectile.y, updated.y) + projectile.radius };
-    if (updated.ageMs >= updated.lifeMs || updated.x < WORLD_LEFT || updated.x > WORLD_RIGHT) continue;
+    if (updated.ageMs >= updated.lifeMs || updated.x < world.projectileBounds.left || updated.x > world.projectileBounds.right || updated.y < world.projectileBounds.top || updated.y > world.projectileBounds.bottom) continue;
     if (isBlockedByRect(projectile.x, updated.x, attackRect, blockers)) { events.push({ type: 'projectile-blocked', projectileId: projectile.id }); continue; }
     if (overlaps(attackRect, playerRect)) { events.push({ type: 'projectile-hit', enemyId: projectile.ownerId, projectileId: projectile.id }); continue; }
     // A collision should not occur against its owner if a shot is emitted while the enemy is close.
@@ -309,13 +338,13 @@ export function spawnB06Projectile(state: B06DirectorState, enemy: B06EnemyRunti
 
 function clamp(value: number, min: number, max: number): number { return Math.max(min, Math.min(max, value)); }
 
-function separateGroundEnemies(enemies: readonly B06EnemyRuntime[]): B06EnemyRuntime[] {
+function separateGroundEnemies(enemies: readonly B06EnemyRuntime[], world: EnemyWorldContext): B06EnemyRuntime[] {
   const next = [...enemies];
   for (let leftIndex = 0; leftIndex < next.length; leftIndex += 1) {
     for (let rightIndex = leftIndex + 1; rightIndex < next.length; rightIndex += 1) {
       const left = next[leftIndex]!;
       const right = next[rightIndex]!;
-      if (left.hp <= 0 || right.hp <= 0 || left.archetype === 'orbit-wisp' || right.archetype === 'orbit-wisp') continue;
+      if (left.hp <= 0 || right.hp <= 0 || left.archetype === 'orbit-wisp' || right.archetype === 'orbit-wisp' || left.supportSurfaceId !== right.supportSurfaceId) continue;
       const minimumGap = (B06_ENEMY_PROFILES[left.archetype].width + B06_ENEMY_PROFILES[right.archetype].width) / 2 + 8;
       const dx = right.x - left.x;
       if (Math.abs(dx) >= minimumGap) continue;
@@ -324,13 +353,22 @@ function separateGroundEnemies(enemies: readonly B06EnemyRuntime[]): B06EnemyRun
       const leftLocked = left.phase === 'telegraph' || left.phase === 'commit';
       const rightLocked = right.phase === 'telegraph' || right.phase === 'commit';
       if (leftLocked && rightLocked) continue;
-      if (leftLocked) next[rightIndex] = { ...right, x: clamp(right.x + direction * overlap, WORLD_LEFT, WORLD_RIGHT) };
-      else if (rightLocked) next[leftIndex] = { ...left, x: clamp(left.x - direction * overlap, WORLD_LEFT, WORLD_RIGHT) };
+      const leftSurface = world.surfaces.find((surface) => surface.id === left.supportSurfaceId) ?? world.surfaces[0]!;
+      const rightSurface = world.surfaces.find((surface) => surface.id === right.supportSurfaceId) ?? world.surfaces[0]!;
+      const leftBounds = surfaceLimits(leftSurface, B06_ENEMY_PROFILES[left.archetype].width, world);
+      const rightBounds = surfaceLimits(rightSurface, B06_ENEMY_PROFILES[right.archetype].width, world);
+      if (leftLocked) next[rightIndex] = { ...right, x: clamp(right.x + direction * overlap, rightBounds.left, rightBounds.right) };
+      else if (rightLocked) next[leftIndex] = { ...left, x: clamp(left.x - direction * overlap, leftBounds.left, leftBounds.right) };
       else {
-        next[leftIndex] = { ...left, x: clamp(left.x - direction * overlap / 2, WORLD_LEFT, WORLD_RIGHT) };
-        next[rightIndex] = { ...right, x: clamp(right.x + direction * overlap / 2, WORLD_LEFT, WORLD_RIGHT) };
+        next[leftIndex] = { ...left, x: clamp(left.x - direction * overlap / 2, leftBounds.left, leftBounds.right) };
+        next[rightIndex] = { ...right, x: clamp(right.x + direction * overlap / 2, rightBounds.left, rightBounds.right) };
       }
     }
   }
   return next;
+}
+
+function surfaceLimits(surface: EnemyWorldContext['surfaces'][number], width: number, world: EnemyWorldContext): { left: number; right: number } {
+  const half = width / 2;
+  return { left: Math.max(world.bounds.left, surface.left + half), right: Math.min(world.bounds.right, surface.right - half) };
 }

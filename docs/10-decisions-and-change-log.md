@@ -52,3 +52,9 @@
 - Added a separate typed B06 enemy director and scene route. The model uses fixed 60Hz simulation steps, stable IDs, direction-locked tells, non-overlapping high-threat schedules, per-move target hit sets, facing-aware Bastion guard, one owned Wisp shot with bounded lifetime, authored recovery windows and the shared 15×30 Iona/Base/Dawnrush combat clock. B03/B04/B05 scene and movement behavior remain separate.
 - The dev-only `/?b06=1` route contains four authored encounters, reward/repair/Resonance, exit, defeat/retry and a true 480×270 `/?b06=1&roster=1` visual review board. Production builds gate out the route. B06 audio is deterministic procedural synthesis with 18 hashed WAV cues; `HEARD: NO` remains explicit pending owner playback.
 - Unit tests verify 30/60/120Hz tell/contact parity, multi-target one-hit IDs, rear/elevation misses, Bastion block/break behavior, locked runner direction, Wisp ownership/obstruction/expiry, deterministic spawns, and unique reward/retry flow. Full Chrome evidence and remaining gate results are recorded in `docs/qa/b06-owner-review.md`.
+## 2026-11-08 / B07 two-region expedition candidate
+
+- Added the dev-only `/?b07=1` playable route, with deterministic seeded choices across Sunderglass Reach and Vesper Loomworks, authored room geometry, timed hazards, field rewards, B06 roster AI, region ambience, route UI and an explicit boss-not-built threshold.
+- Added native ImageGen Vesper environment and platform/loom source masters, source/runtime hashes and a reproducible nearest-neighbour export/audit.
+- Fixed B06 move-target deduplication so a whiff does not consume the target's one contact, and scoped enemy support, movement bounds, hover lanes, guard height, projectile bounds and room blockers to typed room context.
+- Technical implementation does not clear the pending B05 art-motion/audio/controller gates, the B06 owner gate, or the separate B07 visual/audio/controller owner review.
