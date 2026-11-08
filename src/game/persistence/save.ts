@@ -23,7 +23,7 @@ export type B10RunCheckpoint = {
 };
 export type B10RunSummary = {
   runId: string; result: 'victory' | 'defeat'; seed: number; elapsedMs: number; damageTaken: number;
-  visited: readonly string[]; choices: B07RouteState['choices']; bossesCleared: readonly string[]; build: RunBuildState;
+  visited: readonly string[]; choices: B07RouteState['choices']; eventChoices?: Readonly<Record<string, string>>; bossesCleared: readonly string[]; build: RunBuildState;
 };
 export type SaveV2 = {
   version: 2;
@@ -71,9 +71,11 @@ function validRun(value: unknown): value is B10RunCheckpoint {
   if (!isObject(value) || typeof value.runId !== 'string' || !value.runId || !Number.isSafeInteger(value.seed) || !isObject(value.route) || !isObject(value.build)) return false;
   const route = value.route;
   const build = value.build;
+  const eventChoices = route.eventChoices;
   return Number.isInteger(route.roomIndex) && (route.roomIndex as number) >= 0 && Array.isArray(route.rooms) && route.rooms.length > 0
     && route.rooms.every((id) => typeof id === 'string') && Array.isArray(route.visited) && route.visited.every((id) => typeof id === 'string')
     && Array.isArray(route.rewarded) && route.rewarded.every((id) => typeof id === 'string') && isObject(route.choices)
+    && (eventChoices === undefined || isObject(eventChoices) && Object.values(eventChoices).every((choice) => typeof choice === 'string'))
     && Number.isInteger(route.repairCharges) && (route.repairCharges as number) >= 0 && Number.isFinite(route.resonance)
     && typeof route.complete === 'boolean' && build.version === 1 && build.seed === value.seed && isObject(build.ranks)
     && Array.isArray(build.acquisitions) && isObject(build.ledger) && Array.isArray(build.ledger.claimedSourceIds)
@@ -89,7 +91,8 @@ function validSummary(value: unknown): value is B10RunSummary | null {
   if (value === null) return true;
   if (!isObject(value) || typeof value.runId !== 'string' || (value.result !== 'victory' && value.result !== 'defeat') || !Number.isSafeInteger(value.seed)) return false;
   return Number.isFinite(value.elapsedMs) && Number.isFinite(value.damageTaken) && Array.isArray(value.visited) && value.visited.every((id) => typeof id === 'string')
-    && isObject(value.choices) && Array.isArray(value.bossesCleared) && value.bossesCleared.every((id) => typeof id === 'string') && isObject(value.build);
+    && isObject(value.choices) && (value.eventChoices === undefined || isObject(value.eventChoices) && Object.values(value.eventChoices).every((choice) => typeof choice === 'string'))
+    && Array.isArray(value.bossesCleared) && value.bossesCleared.every((id) => typeof id === 'string') && isObject(value.build);
 }
 function validV2(value: unknown): value is SaveV2 {
   if (!isObject(value) || value.version !== 2 || !Number.isSafeInteger(value.revision) || (value.revision as number) < 0 || typeof value.checksum !== 'string') return false;

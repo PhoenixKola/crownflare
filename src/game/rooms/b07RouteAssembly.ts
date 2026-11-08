@@ -4,6 +4,10 @@ import type { B07BranchChoice, B07ChoiceId, B07ChoiceOption, B07RoomInstance, B0
 export const B07_ROUTE_PREFIX = ['sg-breach-steps'] as const;
 export const B07_ROUTE_MIDDLE = ['sg-resonance-gallery', 'sg-to-vesper-gate'] as const;
 export const B07_ROUTE_END = ['vl-condensation-vault', 'vl-night-side-threshold'] as const;
+const SEEDED_REGION_ROOMS = {
+  reach: ['sg-sunwell-terrace', 'sg-echo-crossing', 'sg-emberwell-circuit'],
+  loom: ['vl-counterweight-climb', 'vl-cantor-pressure', 'vl-echo-condenser'],
+} as const;
 export const B07_CHOICE_OPTIONS: Readonly<Record<B07ChoiceId, readonly B07ChoiceOption[]>> = {
   reach: [
     { id: 'safe-recovery', roomId: 'sg-copper-causeway', title: 'Copper Causeway', risk: 'LOW', focus: 'Timed conduit crossings', reward: 'Repair shard', destination: 'Sunderglass Gallery' },
@@ -17,13 +21,12 @@ export const B07_CHOICE_OPTIONS: Readonly<Record<B07ChoiceId, readonly B07Choice
 
 export function initialB07Route(seed = 1): B07RouteState {
   const normalizedSeed = Number.isFinite(seed) ? Math.trunc(seed) >>> 0 : 1;
-  return { seed: normalizedSeed, roomIndex: 0, rooms: [...B07_ROUTE_PREFIX], choices: {}, visited: [], rewarded: [], repairCharges: 0, resonance: 0, complete: false };
+  return { seed: normalizedSeed, roomIndex: 0, rooms: [...B07_ROUTE_PREFIX], choices: {}, eventChoices: {}, visited: [], rewarded: [], repairCharges: 0, resonance: 0, complete: false };
 }
 
 export function currentB07Choice(state: B07RouteState): B07ChoiceId | null {
   if (state.roomIndex === B07_ROUTE_PREFIX.length && !state.choices.reach) return 'reach';
-  const reachLength = B07_ROUTE_PREFIX.length + 1 + B07_ROUTE_MIDDLE.length;
-  return state.roomIndex === reachLength && !state.choices.loom ? 'loom' : null;
+  return state.choices.reach && state.rooms.includes('sg-to-vesper-gate') && state.roomIndex >= state.rooms.length && !state.choices.loom ? 'loom' : null;
 }
 
 export function chooseB07Route(state: B07RouteState, choice: B07BranchChoice): B07RouteState {
@@ -32,6 +35,8 @@ export function chooseB07Route(state: B07RouteState, choice: B07BranchChoice): B
   const option = B07_CHOICE_OPTIONS[menu].find((candidate) => candidate.id === choice);
   if (!option) return state;
   const rooms = [...state.rooms, option.roomId];
+  const pool = SEEDED_REGION_ROOMS[menu];
+  rooms.push(pool[hash32(`${state.seed}:${menu}:${choice}`) % pool.length]!);
   if (menu === 'reach') rooms.push(...B07_ROUTE_MIDDLE);
   else rooms.push(...B07_ROUTE_END);
   const choices: B07RouteChoices = menu === 'reach' ? { ...state.choices, reach: choice as B07RouteChoices['reach'] } : { ...state.choices, loom: choice as B07RouteChoices['loom'] };
@@ -56,6 +61,11 @@ export function collectB07Reward(state: B07RouteState): B07RouteState {
   const repair = room.reward.kind === 'repair' || room.reward.kind === 'repair-and-resonance' ? room.reward.amount : 0;
   const resonance = room.reward.kind === 'resonance' || room.reward.kind === 'repair-and-resonance' ? room.reward.amount : 0;
   return { ...state, rewarded: [...state.rewarded, room.id], repairCharges: state.repairCharges + repair, resonance: state.resonance + resonance };
+}
+
+export function recordB07EventChoice(state: B07RouteState, roomId: string, eventId: string, choiceId: string): B07RouteState {
+  if (state.rewarded.includes(roomId) || !B07_ROOM_BY_ID.get(roomId)?.event || B07_ROOM_BY_ID.get(roomId)?.event?.id !== eventId) return state;
+  return { ...state, rewarded: [...state.rewarded, roomId], eventChoices: { ...(state.eventChoices ?? {}), [eventId]: choiceId } };
 }
 
 export function instantiateB07Room(room: B07RoomTemplate, seed: number, variation = 0): B07RoomInstance {

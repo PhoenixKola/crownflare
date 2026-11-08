@@ -85,11 +85,19 @@ export type B07RoomTemplate = {
   readonly enemies: readonly B07EnemySpawn[];
   readonly hazards: readonly B07HazardDefinition[];
   readonly reward: { readonly kind: 'none' | 'repair' | 'resonance' | 'repair-and-resonance'; readonly amount: number; readonly x: number; readonly surfaceId: string };
+  readonly event?: B07RunEvent;
   readonly visualKeys: { readonly horizon: string; readonly midground: string; readonly foreground: string; readonly platformKeys: Readonly<Record<B07Platform['art'], string>>; readonly landmark?: string };
   readonly parallax: readonly B07ParallaxLayer[];
   readonly ambienceKey: string;
   readonly authoringVersion: 1;
   readonly validationTags: readonly string[];
+};
+
+export type B07RunEvent = {
+  readonly id: 'sunwell-rite' | 'echo-exchange' | 'condenser-choice';
+  readonly x: number;
+  readonly title: string;
+  readonly choices: readonly { readonly id: 'field-repair' | 'dawnrush-charge' | 'repair-to-resonance' | 'resonance-to-repair' | 'heal' | 'echo-resonance'; readonly title: string; readonly detail: string }[];
 };
 
 export type B07RoomInstance = {
@@ -118,6 +126,8 @@ export type B07RouteState = {
   readonly roomIndex: number;
   readonly rooms: readonly string[];
   readonly choices: B07RouteChoices;
+  /** Optional in serialized B10 checkpoints so old route saves remain valid. */
+  readonly eventChoices?: Readonly<Record<string, string>>;
   readonly visited: readonly string[];
   readonly rewarded: readonly string[];
   readonly repairCharges: number;

@@ -2,9 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { b06EnemyIsGuarding, createB06Director, createB06Enemy, resolveB06MoveTargets, stepB06Director, type B06PlayerThreatFrame } from '../../src/game/enemies/b06EnemyModel.ts';
 import { B03_MOVES } from '../../src/game/combat/b03Moves.ts';
-import { advanceB07Room, chooseB07Route, collectB07Reward, currentB07Choice, initialB07Route, instantiateB07Room, seededB07Route } from '../../src/game/rooms/b07RouteAssembly.ts';
+import { advanceB07Room, chooseB07Route, collectB07Reward, currentB07Choice, initialB07Route, instantiateB07Room, recordB07EventChoice, seededB07Route } from '../../src/game/rooms/b07RouteAssembly.ts';
 import { B07_ROOM_LIBRARY, B07_ROOM_BY_ID, enemyWorldForRoom } from '../../src/game/rooms/b07RoomLibrary.ts';
-import { stepB07Hazard } from '../../src/game/rooms/b07Hazards.ts';
+import { b07MovingLiftVelocity, stepB07Hazard } from '../../src/game/rooms/b07Hazards.ts';
 import { validateB07Library } from '../../src/game/rooms/b07Validation.ts';
 
 test('B07 route choices reconverge at both regions and stay deterministic for a seed', () => {
@@ -21,10 +21,12 @@ test('B07 route choices reconverge at both regions and stay deterministic for a 
   assert.ok(safe.visited.includes('vl-spindle-lift'));
   assert.ok(challenge.visited.includes('vl-lattice-hall'));
   assert.deepEqual(seededB07Route(2026, 'safe-recovery', 'spindle-lift'), safe);
+  assert.notDeepEqual(safe.visited, seededB07Route(2027, 'safe-recovery', 'spindle-lift').visited, 'seed selects different authored rooms while preserving the same boss route');
+  assert.equal(safe.visited.length, 9);
   assert.notDeepEqual(instantiateB07Room(B07_ROOM_BY_ID.get('vl-lattice-hall')!, 2026), instantiateB07Room(B07_ROOM_BY_ID.get('vl-lattice-hall')!, 2027));
   assert.equal(safe.repairCharges, 3);
-  assert.equal(safe.resonance, 14);
-  assert.equal(challenge.resonance, 58);
+  assert.equal(safe.resonance, 50);
+  assert.equal(challenge.resonance, 94);
 });
 
 test('B07 route menus appear at the authored branch nodes and reject unrelated options', () => {
@@ -37,15 +39,48 @@ test('B07 route menus appear at the authored branch nodes and reject unrelated o
   route = advanceB07Room(route);
   route = advanceB07Room(route);
   route = advanceB07Room(route);
+  route = advanceB07Room(route);
   assert.equal(currentB07Choice(route), 'loom');
   const reward = collectB07Reward(route);
   assert.equal(reward, route, 'the gate transition has no collectible reward');
 });
 
+test('B07 seeded authored rooms expose all 36 branch-and-room combinations and retain the boss exit', () => {
+  const compositions = new Set<string>();
+  for (let seed = 1; seed <= 90; seed += 1) {
+    for (const reach of ['safe-recovery', 'conduit-challenge'] as const) for (const loom of ['spindle-lift', 'lattice-elite'] as const) {
+      const route = seededB07Route(seed, reach, loom);
+      assert.equal(route.complete, true);
+      assert.equal(route.visited.at(-1), 'vl-night-side-threshold');
+      const added = route.visited.filter((id) => id.startsWith('sg-sunwell') || id.startsWith('sg-echo-') || id.startsWith('sg-emberwell') || id.startsWith('vl-counterweight') || id.startsWith('vl-cantor-pressure') || id.startsWith('vl-echo-condenser'));
+      assert.equal(added.length, 2, 'each seeded route adds one authored room in each region');
+      compositions.add(`${reach}:${added[0]}:${loom}:${added[1]}`);
+    }
+  }
+  assert.equal(compositions.size, 36);
+});
+
 test('B07 Base reachability and room data validate across the authored library', () => {
-  assert.equal(B07_ROOM_LIBRARY.filter((room) => room.region === 'sunderglass-reach').length, 5);
-  assert.equal(B07_ROOM_LIBRARY.filter((room) => room.region === 'vesper-loomworks').length, 4);
+  assert.equal(B07_ROOM_LIBRARY.filter((room) => room.region === 'sunderglass-reach').length, 8);
+  assert.equal(B07_ROOM_LIBRARY.filter((room) => room.region === 'vesper-loomworks').length, 7);
+  assert.equal(B07_ROOM_LIBRARY.filter((room) => room.event).length, 3);
   assert.deepEqual(validateB07Library(), []);
+});
+
+test('B07 discoveries persist one choice and cannot be claimed twice', () => {
+  const room = B07_ROOM_BY_ID.get('sg-sunwell-terrace')!;
+  let route = recordB07EventChoice(initialB07Route(6), room.id, room.event!.id, 'dawnrush-charge');
+  assert.deepEqual(route.eventChoices, { 'sunwell-rite': 'dawnrush-charge' });
+  assert.deepEqual(route.rewarded, [room.id]);
+  assert.equal(recordB07EventChoice(route, room.id, room.event!.id, 'field-repair'), route);
+});
+
+test('B07 continues an old four-room checkpoint into the Loom branch', () => {
+  const legacy = { seed: 17, roomIndex: 4, rooms: ['sg-breach-steps', 'sg-copper-causeway', 'sg-resonance-gallery', 'sg-to-vesper-gate'], choices: { reach: 'safe-recovery' as const }, visited: ['sg-breach-steps', 'sg-copper-causeway', 'sg-resonance-gallery', 'sg-to-vesper-gate'], rewarded: ['sg-copper-causeway'], repairCharges: 1, resonance: 10, complete: false };
+  assert.equal(currentB07Choice(legacy), 'loom');
+  const continued = chooseB07Route(legacy, 'spindle-lift');
+  assert.equal(continued.rooms[4], 'vl-spindle-lift');
+  assert.equal(continued.rooms.at(-1), 'vl-night-side-threshold');
 });
 
 test('B07 hazard telegraphs precede active damage windows at 30, 60 and 120 Hz', () => {
@@ -74,6 +109,15 @@ test('B07 moving lift stays inside its authored travel lane', () => {
   assert.equal(top.y, lift.highY);
   assert.ok(start.y! >= lift.lowY && start.y! <= lift.highY);
   assert.ok(top.y! >= lift.lowY && top.y! <= lift.highY);
+});
+
+test('B07 lift velocity follows the authored lane and pauses without a visual lead', () => {
+  const lift = B07_ROOM_BY_ID.get('vl-spindle-lift')!.hazards.find((hazard) => hazard.kind === 'moving-lift')!;
+  assert.equal(lift.kind, 'moving-lift');
+  assert.ok(Math.abs(b07MovingLiftVelocity(lift, 0, 1000) - 30.322580645) < .001);
+  assert.equal(b07MovingLiftVelocity(lift, 1550, 1700), 0);
+  assert.ok(b07MovingLiftVelocity(lift, 2310, 2380) < 0, 'the return leg reverses after the pause');
+  assert.equal(b07MovingLiftVelocity(lift, 100, 100), 0);
 });
 
 test('B06 contact resolver leaves a whiff available, then deduplicates true contact', () => {

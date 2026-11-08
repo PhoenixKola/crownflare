@@ -5,15 +5,16 @@ import {
   spawnB06Projectile, stepB06Director,
   type B06Archetype, type B06DirectorEvent, type B06DirectorState, type B06EnemyRuntime,
 } from '../enemies/b06EnemyModel';
-import { B07_CHOICE_OPTIONS, advanceB07Room, chooseB07Route, collectB07Reward, currentB07Choice, initialB07Route, instantiateB07Room } from '../rooms/b07RouteAssembly';
+import { B07_CHOICE_OPTIONS, advanceB07Room, chooseB07Route, collectB07Reward, currentB07Choice, initialB07Route, instantiateB07Room, recordB07EventChoice } from '../rooms/b07RouteAssembly';
 import { B07_ROOM_BY_ID, enemyWorldForRoom } from '../rooms/b07RoomLibrary';
-import { stepB07Hazard, type B07HazardFrame } from '../rooms/b07Hazards';
+import { b07MovingLiftVelocity, stepB07Hazard, type B07HazardFrame } from '../rooms/b07Hazards';
 import type { B07BranchChoice, B07ChoiceId, B07HazardDefinition, B07RoomTemplate, B07RouteState } from '../rooms/roomTypes';
-import { ChamberScene, type B03CombatSnapshot, type B06CombatTarget } from './ChamberScene';
+import { ChamberScene, type B03CombatSnapshot, type B06CombatTarget, type PhysicsRegistrationDebug } from './ChamberScene';
 import type { ContactResult as MoveContactResult } from '../combat/b03Moves';
 import type { CombatEvent } from '../combat/sim';
 import type { InputController } from '../input/InputController';
 import { B08_BOSS_PROFILES, createB08Boss } from '../bosses/b08BossProfiles.ts';
+import { b08PresentationPose } from '../bosses/b08Presentation.ts';
 import { b08BossAttackRects, b08BossContactKey, b08BossIsVulnerable, damageB08Boss, stepB08Boss } from '../bosses/b08BossDirector.ts';
 import type { B08BossEvent, B08BossId, B08BossPatternId, B08BossRuntime, B08BossRect } from '../bosses/b08BossTypes.ts';
 import { bossForB08Room } from '../bosses/b08BossRoutes.ts';
@@ -29,7 +30,7 @@ const ENEMY_STATES: Readonly<Record<B06Archetype, readonly string[]>> = {
   cantor: ['intro', 'idle', 'move', 'sweep-telegraph', 'sweep-attack', 'sweep-recovery', 'pulse-telegraph', 'pulse-attack', 'vulnerable', 'hurt', 'ko', 'disperse'],
 };
 
-type PlatformRuntime = { readonly id: string; readonly source: Phaser.GameObjects.Rectangle; readonly visual: Phaser.GameObjects.GameObject; readonly moving: boolean; readonly top: number };
+type PlatformRuntime = { readonly id: string; readonly source: Phaser.GameObjects.Rectangle; readonly visual: Phaser.GameObjects.Image | Phaser.GameObjects.TileSprite; readonly moving: boolean; readonly top: number };
 type EnemyVisual = { readonly sprite: Phaser.GameObjects.Image; readonly label: Phaser.GameObjects.Text; readonly bar: Phaser.GameObjects.Graphics; pose: string };
 type HazardVisual = { readonly definition: B07HazardDefinition; readonly image: Phaser.GameObjects.Image; readonly cue: Phaser.GameObjects.Text; readonly hitPhases: Set<number> };
 type B07Menu = { readonly choice: B07ChoiceId; readonly options: readonly (typeof B07_CHOICE_OPTIONS[B07ChoiceId][number])[] };
@@ -38,12 +39,13 @@ type B07Menu = { readonly choice: B07ChoiceId; readonly options: readonly (typeo
 export class B07ExpeditionScene extends ChamberScene {
   private route: B07RouteState;
   private room?: B07RoomTemplate;
-  private variation = 0;
   private world?: ReturnType<typeof enemyWorldForRoom>;
   private director: B06DirectorState = createB06Director();
   private b09Launches = new Map<string, { readonly startY: number; readonly launchVelocity: number; elapsedMs: number }>();
   private combat: B03CombatSnapshot | null = null;
   private menu: B07Menu | null = null;
+  private eventMenu: NonNullable<B07RoomTemplate['event']> | null = null;
+  private eventMenuIndex = 0;
   private menuIndex = 0;
   private priorMenuAxis = 0;
   private priorMenuAccept = false;
@@ -79,6 +81,13 @@ export class B07ExpeditionScene extends ChamberScene {
   private choiceHeading?: Phaser.GameObjects.Text;
   private choiceHint?: Phaser.GameObjects.Text;
   private choiceButtons: Phaser.GameObjects.Text[] = [];
+  private eventPanel?: Phaser.GameObjects.Rectangle;
+  private eventHeading?: Phaser.GameObjects.Text;
+  private eventHint?: Phaser.GameObjects.Text;
+  private eventButtons: Phaser.GameObjects.Text[] = [];
+  private diagnosticsVisible = false;
+  private diagnosticsGraphic?: Phaser.GameObjects.Graphics;
+  private diagnosticsLabel?: Phaser.GameObjects.Text;
   private eventLog: Array<Record<string, unknown>> = [];
   private lastB07AudioCue = 'none';
   private readonly worldSeed: number;
@@ -145,6 +154,9 @@ export class B07ExpeditionScene extends ChamberScene {
     for (const file of ['vesper-horizon', 'vesper-engineering', 'vesper-foreground', 'vesper-platform-long', 'vesper-platform-thread', 'vesper-platform-lift', 'vesper-thread-press', 'vesper-threshold-gate', 'vesper-conduit']) {
       this.load.image(`b07-${file}`, `./assets/environments/b07/${file}.png`);
     }
+    for (const file of ['sg-sunwell', 'sg-echo', 'sg-emberwell', 'vl-counterweight', 'vl-cantor', 'vl-condenser', 'vesper-long-strip', 'vesper-thread-strip', 'vesper-lift-strip']) {
+      this.load.image(`b12-${file}`, `./assets/environments/b12/${file}.png`);
+    }
     for (const [archetype, states] of Object.entries(ENEMY_STATES)) for (const state of states) {
       this.load.image(`b07-${archetype}-${state}`, `./assets/enemies/b06/${archetype}-${state}.png`);
     }
@@ -177,7 +189,14 @@ export class B07ExpeditionScene extends ChamberScene {
       this.bossVfxEnabled = !this.bossVfxEnabled && !this.reducedMotion;
       this.emitState();
     });
+    if (import.meta.env.DEV) this.input.keyboard?.on('keydown-F3', (event: KeyboardEvent) => {
+      if (event.repeat) return;
+      this.diagnosticsVisible = !this.diagnosticsVisible;
+      this.drawPhysicsDiagnostics();
+    });
+    this.input.keyboard?.on('keydown-ESC', () => { if (this.eventMenu) this.closeEventMenu(); });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.shutdownRoom());
+    this.physics.world.on('worldstep', this.syncMovingLiftVisuals, this);
     const chooseB09 = (event: Event) => {
       const selectedDetail = (event as CustomEvent<{ sourceId: string; choiceId: UpgradeChoiceId }>).detail;
       const choiceId = selectedDetail?.choiceId;
@@ -210,10 +229,11 @@ export class B07ExpeditionScene extends ChamberScene {
 
   override update(time: number, delta: number): void {
     super.update(time, delta);
-    if (this.menu || this.resultSent || (!this.room && !this.activeBoss) || this.combat === null) return;
+    if (this.menu || this.eventMenu || this.resultSent || (!this.room && !this.activeBoss) || this.combat === null) return;
     const dt = Math.min(50, Math.max(0, delta));
     this.combat = this.combatSnapshot();
     if (!this.combat) return;
+    this.drawPhysicsDiagnostics();
     this.runElapsedMs += dt;
     this.roomElapsedMs += dt;
     if (this.combat.playerHp < this.lastPlayerHp) this.damageTaken += this.lastPlayerHp - this.combat.playerHp;
@@ -252,6 +272,16 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   protected override handleExclusiveInput(input: ReturnType<InputController['read']>): boolean {
+    if (this.eventMenu) {
+      const axis = input.move.axis;
+      if (Math.abs(axis) > .35 && this.priorMenuAxis === 0) this.eventMenuIndex = (this.eventMenuIndex + (axis < 0 ? -1 : 1) + this.eventMenu.choices.length) % this.eventMenu.choices.length;
+      this.priorMenuAxis = Math.abs(axis) <= .2 ? 0 : Math.sign(axis);
+      const accept = Boolean(input.actions.interact);
+      if (accept && !this.priorMenuAccept) this.confirmEventChoice();
+      this.priorMenuAccept = accept;
+      this.renderEventMenu();
+      return true;
+    }
     if (!this.menu) {
       if (this.b08Mode && this.activeBoss && input.actions.interact) {
         const hpBefore = this.combat?.playerHp ?? 0;
@@ -283,6 +313,10 @@ export class B07ExpeditionScene extends ChamberScene {
   protected override handleB04Interact(): boolean {
     if (!this.room || !this.combat || this.resultSent) return true;
     const x = this.combat.playerX;
+    if (this.room.event && !this.route.rewarded.includes(this.room.id) && Math.abs(x - this.room.event.x) <= 58) {
+      this.showEventMenu(this.room.event);
+      return true;
+    }
     if (this.room.reward.kind !== 'none' && !this.route.rewarded.includes(this.room.id) && Math.abs(x - this.room.reward.x) <= 54) {
       this.claimRoomReward();
       return true;
@@ -399,7 +433,8 @@ export class B07ExpeditionScene extends ChamberScene {
   b07Snapshot(): {
     seed: number; roomId: string | null; region: string | null; roomIndex: number; routeLength: number; runElapsedMs: number; roomElapsedMs: number; choices: B07RouteState['choices'];
     visited: readonly string[]; repairCharges: number; resonance: number; playerHp: number; enemies: readonly { id: string; archetype: string; x: number; y: number; hp: number; phase: string }[];
-    hazards: readonly { id: string; phase: string; progress: number }[]; menu: B07ChoiceId | null; rewardClaimed: boolean; reducedMotion: boolean;
+    hazards: readonly { id: string; phase: string; progress: number }[]; menu: B07ChoiceId | null; eventMenu: string | null; eventChoices: Readonly<Record<string, string>>; rewardClaimed: boolean; reducedMotion: boolean;
+    physics: { diagnosticsVisible: boolean; player: PhysicsRegistrationDebug; platforms: readonly { id: string; moving: boolean; body: { x: number; y: number; width: number; height: number }; visual: { x: number; y: number; width: number; height: number } }[] };
     loadedTextures: number; missingTextures: string[]; result: 'victory' | 'defeat' | null; lastAudioCue: string; events: readonly Record<string, unknown>[];
     b08: { enabled: boolean; practice: boolean; practiceBoss: B08BossId | null; activeBoss: B08BossId | null; hp: number; maxHp: number; phase: string | null; phaseMs: number; postKoMs: number; phaseNumber: number; pattern: B08BossPatternId | null; attackId: string | null; targetX: number | null; safeX: number | null; bossX: number | null; bossY: number | null; bossFrame: string; vulnerable: boolean; bossesCleared: readonly B08BossId[]; outcome: 'victory' | 'defeat' | null; lastAudioCue: string; vfxEnabled: boolean; loadedAssets: number; missingAssets: string[]; audioAssetsLoaded: number };
     b09: { enabled: boolean; version: number; build: RunBuildState; pendingSource: UpgradeChoiceSource | null };
@@ -427,7 +462,14 @@ export class B07ExpeditionScene extends ChamberScene {
         ...(frame.x === undefined ? {} : { x: Number(frame.x.toFixed(1)) }),
         ...(frame.y === undefined ? {} : { y: Number(frame.y.toFixed(1)) }),
       })),
-      menu: this.menu?.choice ?? null, rewardClaimed: this.room ? this.route.rewarded.includes(this.room.id) : false, reducedMotion: this.reducedMotion,
+      menu: this.menu?.choice ?? null, eventMenu: this.eventMenu?.id ?? null, eventChoices: { ...(this.route.eventChoices ?? {}) }, rewardClaimed: this.room ? this.route.rewarded.includes(this.room.id) : false, reducedMotion: this.reducedMotion,
+      physics: {
+        diagnosticsVisible: this.diagnosticsVisible, player: this.physicsRegistrationDebugForSnapshot(),
+        platforms: [...this.platforms.values()].map((platform) => {
+          const body = platform.source.body as Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody;
+          return { id: platform.id, moving: platform.moving, body: { x: body.x, y: body.y, width: body.width, height: body.height }, visual: { x: platform.visual.x, y: platform.visual.y, width: platform.visual.displayWidth, height: platform.visual.displayHeight } };
+        }),
+      },
       loadedTextures: expected.length - missingTextures.length, missingTextures, result: this.resultSent ? (this.b08Mode ? this.bossOutcome ?? 'defeat' : this.route.complete ? 'victory' : 'defeat') : null, lastAudioCue: this.lastB07AudioCue, events: [...this.eventLog],
       b08: { enabled: this.b08Mode, practice: this.practiceBoss !== null, practiceBoss: this.practiceBoss, activeBoss: this.activeBoss?.id ?? null, hp: this.activeBoss?.hp ?? 0, maxHp: this.activeBoss?.maxHp ?? 0, phase: this.activeBoss?.phase ?? null, phaseMs: this.activeBoss?.phaseMs ?? 0, postKoMs: this.bossPostKoMs, phaseNumber: this.activeBoss?.phaseNumber ?? 0, pattern: this.activeBoss?.pattern ?? null, attackId: this.activeBoss?.attackId ?? null, targetX: this.activeBoss?.targetX ?? null, safeX: this.activeBoss?.safeX ?? null, bossX: this.activeBoss?.x ?? null, bossY: this.activeBoss?.y ?? null, bossFrame: this.bossLastFrame, vulnerable: this.activeBoss ? b08BossIsVulnerable(this.activeBoss) : false, bossesCleared: [...this.bossCleared], outcome: this.bossOutcome, lastAudioCue: this.bossLastCue, vfxEnabled: this.bossVfxEnabled, loadedAssets: bossKeys.length - missingBossAssets.length, missingAssets: missingBossAssets, audioAssetsLoaded: bossAudioKeys.length - missingBossAudio.length },
       b09: { enabled: this.b09Mode, version: this.runBuild.version, build: this.runBuild, pendingSource: this.pendingB09Offer?.sourceId ?? null },
@@ -436,6 +478,8 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   b07EventLog(): readonly Record<string, unknown>[] { return this.eventLog; }
+
+  private physicsRegistrationDebugForSnapshot(): PhysicsRegistrationDebug { return this.physicsRegistrationDebug(); }
 
   resetB07Run(seed = this.worldSeed): void {
     this.resultSent = false;
@@ -472,8 +516,7 @@ export class B07ExpeditionScene extends ChamberScene {
     if (!room) { this.finish('victory'); return; }
     this.room = room;
     this.roomElapsedMs = 0;
-    this.variation += 1;
-    const instance = instantiateB07Room(room, this.route.seed, this.variation);
+    const instance = instantiateB07Room(room, this.route.seed, this.route.roomIndex);
     this.world = enemyWorldForRoom(room);
     this.setRoomWorldBounds(room.world.width, room.world.height);
     this.createEnvironment(room);
@@ -537,12 +580,14 @@ export class B07ExpeditionScene extends ChamberScene {
       }
       this.roomColliders.push(this.addPlayerCollider(bodyObject));
       const artKey = this.platformTexture(room, platform.art);
-      let visual: Phaser.GameObjects.GameObject;
+      let visual: Phaser.GameObjects.Image | Phaser.GameObjects.TileSprite;
       if (room.region === 'sunderglass-reach') {
-        visual = this.add.tileSprite(platform.left + platform.width / 2, platform.top, platform.width, Math.max(24, platform.height + 14), artKey).setOrigin(.5, 0).setDepth(6);
+        const tile = this.add.tileSprite(platform.left + platform.width / 2, platform.top, platform.width, Math.max(24, platform.height + 14), artKey).setOrigin(.5, 0).setDepth(6);
+        visual = tile;
       } else {
-        const image = this.add.image(platform.left + platform.width / 2, platform.top + 4, artKey).setOrigin(.5, 0).setDisplaySize(platform.width, Math.max(28, platform.height + 20)).setDepth(6);
-        visual = image;
+        const stripKey = platform.art === 'vesper-thread' ? 'b12-vesper-thread-strip' : platform.art === 'vesper-lift' ? 'b12-vesper-lift-strip' : 'b12-vesper-long-strip';
+        const tile = this.add.tileSprite(platform.left + platform.width / 2, platform.top, platform.width, 36, stripKey).setOrigin(.5, 0).setDepth(6);
+        visual = tile;
       }
       this.trackRoom(visual);
       this.platforms.set(platform.id, { id: platform.id, source: bodyObject, visual, moving, top: platform.top });
@@ -552,6 +597,11 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   private createRoomLandmarks(room: B07RoomTemplate): void {
+    const landmark = room.visualKeys.landmark;
+    if (landmark?.startsWith('b12-') && this.textures.exists(landmark)) {
+      const image = this.add.image(room.event?.x ?? 520, room.world.groundTop + 5, landmark).setOrigin(.5, 1).setDepth(5);
+      this.trackRoom(image);
+    }
     if (room.role === 'entry') {
       const key = room.region === 'vesper-loomworks' ? 'b07-vesper-threshold-gate' : 'b07-sg-entry-beacon';
       const beacon = this.add.image(48, room.world.groundTop, key).setOrigin(.5, 1).setDisplaySize(82, 106).setDepth(8);
@@ -689,6 +739,68 @@ export class B07ExpeditionScene extends ChamberScene {
     if (!this.pendingB09Offer) this.emitB10Checkpoint();
   }
 
+  private showEventMenu(event: NonNullable<B07RoomTemplate['event']>): void {
+    this.eventMenu = event;
+    this.eventMenuIndex = 0; this.priorMenuAxis = 0; this.priorMenuAccept = false;
+    this.eventPanel = this.add.rectangle(240, 135, 408, 176, 0x08131d, .97).setStrokeStyle(1, 0x9adcd0, .95).setScrollFactor(0).setDepth(74);
+    this.eventHeading = this.add.text(240, 66, `DISCOVERY / ${event.title}`, { fontFamily: 'monospace', fontSize: '8px', color: '#fff1d3', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(76);
+    this.eventHint = this.add.text(240, 210, 'LEFT / RIGHT OR D-PAD SELECT  ·  E / SOUTH CONFIRM  ·  ESC CANCEL', { fontFamily: 'monospace', fontSize: '5px', color: '#bdcbc7', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(76);
+    this.eventButtons = event.choices.map((_option, index) => {
+      const text = this.add.text(240, 112 + index * 50, '', { fontFamily: 'monospace', fontSize: '6px', color: '#e7eee5', align: 'center', lineSpacing: 2, backgroundColor: '#10202c', padding: { x: 5, y: 4 }, fixedWidth: 368 }).setOrigin(.5).setScrollFactor(0).setDepth(76).setInteractive({ useHandCursor: true });
+      text.on('pointerover', () => { this.eventMenuIndex = index; this.renderEventMenu(); });
+      text.on('pointerdown', () => { this.eventMenuIndex = index; this.confirmEventChoice(); });
+      return text;
+    });
+    this.renderEventMenu();
+    this.logEvent({ type: 'event-open', eventId: event.id, roomId: this.room?.id });
+  }
+
+  private renderEventMenu(): void {
+    if (!this.eventMenu) return;
+    this.eventMenu.choices.forEach((option, index) => {
+      const disabled = this.eventChoiceUnavailable(option.id);
+      const marker = index === this.eventMenuIndex ? '▶ ' : '  ';
+      this.eventButtons[index]?.setText(`${marker}${option.title}${disabled ? '  /  UNAVAILABLE' : ''}\n${option.detail}`)
+        .setColor(disabled ? '#89989a' : index === this.eventMenuIndex ? '#fff0c7' : '#cfdbd7')
+        .setBackgroundColor(index === this.eventMenuIndex ? '#18313b' : '#10202c');
+    });
+  }
+
+  private eventChoiceUnavailable(choice: string): boolean {
+    const resonance = this.combatSnapshot()?.resonance ?? 0;
+    if (choice === 'repair-to-resonance') return this.route.repairCharges < 1 || resonance >= 100;
+    if (choice === 'resonance-to-repair') return resonance < 24;
+    if (choice === 'heal') return (this.combatSnapshot()?.playerHp ?? 5) >= 5;
+    if (choice === 'dawnrush-charge') return (this.dawnrushSnapshot()?.energy ?? 100) >= 100;
+    if (choice === 'echo-resonance') return resonance >= 100;
+    return false;
+  }
+
+  private confirmEventChoice(): void {
+    if (!this.eventMenu || !this.room) return;
+    const choice = this.eventMenu.choices[this.eventMenuIndex]?.id;
+    if (!choice) return;
+    if (this.eventChoiceUnavailable(choice)) { this.renderEventMenu(); this.showBanner('THAT EXCHANGE IS NOT AVAILABLE'); return; }
+    if (choice === 'field-repair') this.route = { ...this.route, repairCharges: this.route.repairCharges + 1 };
+    else if (choice === 'dawnrush-charge') this.grantB09DawnrushEnergy(30);
+    else if (choice === 'repair-to-resonance') { this.route = { ...this.route, repairCharges: this.route.repairCharges - 1 }; this.grantB09CombatResonance(24); }
+    else if (choice === 'resonance-to-repair') { this.spendB09CombatResonance(24); this.route = { ...this.route, repairCharges: this.route.repairCharges + 1 }; }
+    else if (choice === 'heal') this.restorePlayerHealth(1);
+    else if (choice === 'echo-resonance') this.grantB09CombatResonance(30);
+    const eventId = this.eventMenu.id;
+    this.route = recordB07EventChoice(this.route, this.room.id, eventId, choice);
+    this.logEvent({ type: 'event-chosen', eventId, roomId: this.room.id, choice, repairCharges: this.route.repairCharges, combatResonance: this.combatSnapshot()?.resonance ?? 0, hp: this.combatSnapshot()?.playerHp ?? 0 });
+    this.closeEventMenu(); this.playCue('shard-reward'); this.emitB10Checkpoint(); this.drawHud();
+    this.showBanner(`DISCOVERY RECORDED  /  ${choice.replaceAll('-', ' ').toUpperCase()}`);
+  }
+
+  private closeEventMenu(): void {
+    this.eventPanel?.destroy(); this.eventHeading?.destroy(); this.eventHint?.destroy();
+    this.eventButtons.forEach((button) => button.destroy());
+    this.eventPanel = undefined; this.eventHeading = undefined; this.eventHint = undefined; this.eventButtons = []; this.eventMenu = null;
+    this.priorMenuAccept = false; this.priorMenuAxis = 0;
+  }
+
   private openB09Offer(sourceId: UpgradeChoiceSource): void {
     if (!this.b09Mode || this.practiceBoss || this.pendingB09Offer || this.runBuild.ledger.claimedSourceIds.includes(sourceId)) return;
     this.pendingB09Offer = generateUpgradeOffer(this.runBuild, sourceId);
@@ -708,7 +820,9 @@ export class B07ExpeditionScene extends ChamberScene {
     if (!this.room || !this.combat || !this.promptLabel) return;
     const x = this.combat.playerX;
     this.roomExit?.setAlpha(this.roomCanExit() ? 1 : .38);
-    if (this.room.reward.kind !== 'none' && !this.route.rewarded.includes(this.room.id) && Math.abs(x - this.room.reward.x) <= 72) {
+    if (this.room.event && !this.route.rewarded.includes(this.room.id) && Math.abs(x - this.room.event.x) <= 72) {
+      this.promptLabel.setText(this.combat.controllerIndex >= 0 ? 'SOUTH / OPEN DISCOVERY' : 'E / OPEN DISCOVERY').setVisible(!this.b10Mode);
+    } else if (this.room.reward.kind !== 'none' && !this.route.rewarded.includes(this.room.id) && Math.abs(x - this.room.reward.x) <= 72) {
       this.promptLabel.setText(this.combat.controllerIndex >= 0 ? 'SOUTH / CLAIM FIELD REWARD' : 'E / CLAIM FIELD REWARD').setVisible(!this.b10Mode);
     } else if (Math.abs(x - this.room.exit.x) <= this.room.exit.safeRadius + 42) {
       this.promptLabel.setText(this.roomCanExit() ? (this.combat.controllerIndex >= 0 ? 'SOUTH / CONTINUE' : 'E / CONTINUE') : 'CLEAR ENEMIES + CLAIM THE SHARD').setVisible(!this.b10Mode);
@@ -808,25 +922,7 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   private bossPose(boss: B08BossRuntime): string {
-    if (boss.phase === 'ko') return 'ko';
-    if (boss.phase === 'phase-change') return boss.id === 'broken-meridian' ? 'phase-change' : 'phase-2';
-    if (boss.phaseNumber === 2 && boss.phase === 'recovery') return 'phase-2';
-    if (boss.hurtMs > 0) return boss.id === 'spoolheart-regent' ? 'rewind' : 'hurt';
-    if (boss.phase === 'intro') return boss.phaseMs > 300 ? 'ready' : 'idle';
-    if (boss.phase === 'telegraph') {
-      if (boss.id === 'sundial-custodian') return boss.pattern === 'zenith-stamp' ? 'stamp-telegraph' : 'sweep-telegraph';
-      if (boss.id === 'spoolheart-regent') return boss.pattern === 'thread-drop' ? 'thread-telegraph' : 'lash-telegraph';
-      return 'cleave-telegraph';
-    }
-    if (boss.phase === 'commit') {
-      if (boss.id === 'sundial-custodian') return boss.pattern === 'zenith-stamp' ? 'stamp' : 'sweep';
-      if (boss.id === 'spoolheart-regent') return boss.pattern === 'thread-drop' ? 'thread-drop' : boss.pattern === 'spindle-rewind' ? 'rewind' : 'lash';
-      return boss.pattern === 'daybreak-afterglow' ? 'afterglow' : 'cleave';
-    }
-    if (boss.id === 'broken-meridian') return 'core-exposed';
-    if (boss.id === 'spoolheart-regent' && boss.pattern === 'spindle-rewind') return 'rewind';
-    if (boss.id === 'sundial-custodian' && boss.pattern === 'zenith-stamp') return 'stamp';
-    return 'ready';
+    return b08PresentationPose(boss);
   }
 
   private syncBossPresentation(): void {
@@ -940,9 +1036,7 @@ export class B07ExpeditionScene extends ChamberScene {
         const platform = this.platforms.get(hazard.platformId);
         if (!platform || frame.y === undefined) continue;
         const body = platform.source.body as Phaser.Physics.Arcade.Body;
-        const targetY = frame.y + (platform.source.height / 2);
-        body.setVelocityY(dt > 0 ? (targetY - body.center.y) * 1000 / dt : 0);
-        (platform.visual as Phaser.GameObjects.Image).setY(frame.y + 4);
+        body.setVelocityY(b07MovingLiftVelocity(hazard, this.roomElapsedMs - dt, this.roomElapsedMs));
         continue;
       }
       const visual = this.hazardVisuals.get(hazard.id);
@@ -967,6 +1061,14 @@ export class B07ExpeditionScene extends ChamberScene {
         this.spawnFx('wisp-impact', player.x, player.y, 40, 32, this.reducedMotion ? 80 : 150);
         this.logEvent({ type: 'hazard-contact', hazardId: hazard.id, phase: frame.phase, result, damage: result === 'hit' ? hazard.damage : 0 });
       }
+    }
+  }
+
+  private syncMovingLiftVisuals(): void {
+    for (const platform of this.platforms.values()) {
+      if (!platform.moving) continue;
+      const body = platform.source.body as Phaser.Physics.Arcade.Body;
+      platform.visual.setPosition(body.center.x, body.top);
     }
   }
 
@@ -1184,6 +1286,44 @@ export class B07ExpeditionScene extends ChamberScene {
     }
   }
 
+  private drawPhysicsDiagnostics(): void {
+    const graphic = this.diagnosticsGraphic ??= this.add.graphics().setDepth(68);
+    const label = this.diagnosticsLabel ??= this.add.text(6, 5, '', { fontFamily: 'monospace', fontSize: '5px', color: '#d8fff1', backgroundColor: '#061019e8', padding: { x: 3, y: 2 }, lineSpacing: 1 }).setScrollFactor(0).setDepth(82);
+    graphic.clear();
+    if (!import.meta.env.DEV || !this.diagnosticsVisible) { graphic.setVisible(false); label.setVisible(false); return; }
+    graphic.setVisible(true); label.setVisible(true);
+    const player = this.physicsRegistrationDebug();
+    graphic.lineStyle(1, 0xffa97f, .95).strokeRect(player.body.left, player.body.top, player.body.right - player.body.left, player.body.bottom - player.body.top);
+    graphic.lineStyle(1, 0x8c9baa, .55).lineBetween(player.body.left - 5, player.hipY, player.body.right + 5, player.hipY);
+    graphic.lineStyle(1, 0xffdd80, .95).lineBetween(player.body.left - 6, player.feetY, player.body.right + 6, player.feetY);
+    if (player.sprite) {
+      graphic.lineStyle(1, 0x7393ae, .5).strokeRect(player.sprite.left, player.sprite.top, player.sprite.right - player.sprite.left, player.sprite.bottom - player.sprite.top);
+      if (player.sprite.alpha) graphic.lineStyle(1, 0x8ff0ca, .98).strokeRect(player.sprite.alpha.left, player.sprite.alpha.top, player.sprite.alpha.right - player.sprite.alpha.left, player.sprite.alpha.bottom - player.sprite.alpha.top);
+    }
+    if (player.attack) graphic.lineStyle(1, 0xf087db, .98).strokeRect(player.attack.left, player.attack.top, player.attack.right - player.attack.left, player.attack.bottom - player.attack.top);
+    for (const platform of this.platforms.values()) {
+      const body = platform.source.body as Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody | null;
+      if (!body) continue;
+      const authored = this.room?.platforms.find((candidate) => candidate.id === platform.id);
+      graphic.lineStyle(1, platform.moving ? 0xffd26e : authored?.oneWay ? 0x68d7ef : 0x86a9c6, .86)
+        .strokeRect(body.x, body.y, body.width, body.height);
+    }
+    for (const hazard of this.hazardVisuals.values()) {
+      const definition = hazard.definition;
+      const bounds = definition.kind === 'thread-press'
+        ? { left: hazard.image.x - definition.width / 2, right: hazard.image.x + definition.width / 2, top: definition.rail.y, bottom: definition.rail.y + definition.height }
+        : definition.kind === 'charged-conduit' ? definition.bounds : null;
+      if (bounds) graphic.lineStyle(1, 0xff6f73, .9).strokeRect(bounds.left, bounds.top, bounds.right - bounds.left, bounds.bottom - bounds.top);
+    }
+    for (const enemy of this.director.enemies) {
+      if (enemy.hp <= 0 || enemy.phase !== 'commit' || !enemy.action) continue;
+      const attack = this.enemyAttackRect(enemy, enemy.action, enemy.facing);
+      graphic.lineStyle(1, 0xf4a0e7, .92).strokeRect(attack.left, attack.top, attack.right - attack.left, attack.bottom - attack.top);
+    }
+    for (const rect of this.bossActiveRects) graphic.lineStyle(1, 0xff707b, .98).strokeRect(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+    label.setText(`B12 DEV / F3 HIDE  ·  BODY ${this.combat?.bodySize.width ?? 15}×${this.combat?.bodySize.height ?? 30}  ·  FEET ${player.feetY.toFixed(1)}  ·  HIP ${player.hipY.toFixed(1)}  ·  CAM ${player.cameraX.toFixed(1)}\nALPHA ${player.sprite?.texture.split('-').slice(-2).join('-') ?? 'N/A'}  ·  PLATFORM / HAZARD / ENEMY / BOSS RECTANGLES`);
+  }
+
   private drawBuildSummary(): void {
     if (!this.b09Mode || !this.buildLabel) return;
     const active = Object.entries(this.runBuild.ranks).filter((entry): entry is [string, number] => typeof entry[1] === 'number' && entry[1] > 0);
@@ -1198,7 +1338,7 @@ export class B07ExpeditionScene extends ChamberScene {
     this.ambience?.stop();
     window.dispatchEvent(new CustomEvent('crownflare:b07-result', { detail: {
       result, elapsedMs: this.runElapsedMs, damageTaken: this.damageTaken, repairCharges: this.route.repairCharges,
-      resonance: this.route.resonance, visited: this.route.visited, choices: this.route.choices, seed: this.route.seed,
+      resonance: this.route.resonance, visited: this.route.visited, choices: this.route.choices, eventChoices: this.route.eventChoices ?? {}, seed: this.route.seed,
       b08BossBuilt: this.b08Mode, b08BossesCleared: [...this.bossCleared], b08Practice: this.practiceBoss !== null,
       b09Enabled: this.b09Mode, b09Build: this.runBuild, b10Enabled: this.b10Mode, runId: this.runId,
     } }));
@@ -1235,6 +1375,7 @@ export class B07ExpeditionScene extends ChamberScene {
     this.roomObjects = [];
     this.platforms.clear(); this.enemyVisuals.clear(); this.projectileVisuals.clear(); this.tellVisuals.clear(); this.hazardVisuals.clear(); this.roomHazardFrame.clear();
     this.roomReward = undefined; this.roomExit = undefined;
+    this.closeEventMenu();
     this.bossSprite = undefined; this.bossEffectSprite = undefined; this.bossHud = undefined; this.bossBar = undefined; this.bossTell = undefined; this.bossOverlay = undefined;
     this.bossLastFrame = ''; this.bossActiveRects = [];
     this.director = createB06Director();
@@ -1243,6 +1384,7 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   private shutdownRoom(): void {
+    this.physics.world.off('worldstep', this.syncMovingLiftVisuals, this);
     this.ambience?.stop(); this.sound.stopAll();
     for (const oscillator of this.vesperOscillators) { try { oscillator.stop(); oscillator.disconnect(); } catch { /* already stopped during shutdown */ } }
     this.vesperOscillators = [];

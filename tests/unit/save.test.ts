@@ -39,7 +39,7 @@ test('room-boundary checkpoint deep roundtrips route, upgrade ledger and durable
   const store = new Map<string, string>();
   const st = { getItem: (key: string) => store.get(key) ?? null, setItem: (key: string, value: string) => { store.set(key, value); } };
   const seed = 0x1234abcd;
-  const route = { ...chooseB07Route(advanceB07Room(initialB07Route(seed)), 'conduit-challenge'), rewarded: ['sg-breach-steps'], repairCharges: 2, resonance: 24 };
+  const route = { ...chooseB07Route(advanceB07Room(initialB07Route(seed)), 'conduit-challenge'), rewarded: ['sg-breach-steps'], eventChoices: { 'echo-exchange': 'repair-to-resonance' }, repairCharges: 2, resonance: 24 };
   const build = { ...createRunBuild(seed), ranks: { 'echo-palm': 1 as const }, acquisitions: [{ sourceId: 'room:sg-copper-causeway' as const, choiceId: 'echo-palm' as const, rank: 1, drawIndex: 0 }], ledger: { claimedSourceIds: ['room:sg-copper-causeway' as const] } };
   const checkpoint = { runId: 'test-run', seed, route, build, playerHp: 3, resonance: 62, dawnrushEnergy: 48, dawnrushActive: true, bossesCleared: ['sundial-custodian'], elapsedMs: 94000, damageTaken: 2, checkpointId: '1234abcd:2:sg-to-vesper-gate' };
   const before = { ...defaultSave(), activeRun: checkpoint };
@@ -47,6 +47,15 @@ test('room-boundary checkpoint deep roundtrips route, upgrade ledger and durable
   const restored = loadSave(st).activeRun;
   assert.deepEqual(restored, checkpoint);
   assert.notEqual(restored, checkpoint);
+});
+test('older B10 checkpoints without discovery choices remain readable', () => {
+  const seed = 4;
+  const { eventChoices: _eventChoices, ...legacyRoute } = initialB07Route(seed);
+  const checkpoint = { runId: 'legacy-route', seed, route: legacyRoute, build: createRunBuild(seed), playerHp: 5, resonance: 55, dawnrushEnergy: 70, dawnrushActive: false, bossesCleared: [], elapsedMs: 0, damageTaken: 0, checkpointId: 'legacy:0:sg-breach-steps' };
+  const store = new Map<string, string>();
+  const st = { getItem: (key: string) => store.get(key) ?? null, setItem: (key: string, value: string) => { store.set(key, value); } };
+  assert.equal(persistSave(st, { ...defaultSave(), activeRun: checkpoint }), true);
+  assert.deepEqual(loadSave(st).activeRun?.route, legacyRoute);
 });
 test('victory/defeat result application is idempotent and unlocks only on victory', () => {
   const build = createRunBuild(91);

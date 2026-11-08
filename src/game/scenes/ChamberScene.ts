@@ -28,6 +28,14 @@ export type IonaPreviewSnapshot = { playerX:number; playerY:number; physicsAncho
 export type B03CombatSnapshot = { playerX:number; playerY:number; playerHp:number; playerVelocity:{x:number;y:number}; playerInvulnerableMs:number; enemyX:number; enemyY:number; enemyHp:number; resonance:number; specialCooldownMs:number; move:string; phase:string; elapsedMs:number; bufferedMove:string|null; facing:IonaFacing; enemyState:string; frame:string; controllerIndex:number; lastResult:string; bodySize:{width:number;height:number}; spriteScale:number; vfxEnabled:boolean; vfxActive:boolean; background:ArtReviewContrast; reducedMotion:boolean; errors:string[]; grounded:boolean; dashActive:boolean; dashCooldownMs:number; hurtMs:number; resonanceCost:number };
 export type B06CombatTarget = { readonly id: string; readonly archetype?: string; readonly x: number; readonly y: number; readonly width: number; readonly height: number; readonly hp: number; readonly alive: boolean; readonly invulnerableMs?: number; readonly guarding?: boolean; readonly guardBreakable?: boolean };
 export type B06PlayerCombatFrame = B06PlayerThreatFrame & { readonly resonance: number; readonly facing: IonaFacing; readonly velocityX: number; readonly velocityY: number; readonly dawnrush: string; readonly grounded: boolean };
+export type PhysicsRegistrationDebug = {
+  readonly body: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+  readonly sprite: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number; readonly alpha: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number } | null; readonly texture: string } | null;
+  readonly hipY: number;
+  readonly feetY: number;
+  readonly attack: CombatRect | null;
+  readonly cameraX: number;
+};
 const WORLD_WIDTH = 1560;
 const WORLD_HEIGHT = 270;
 const GROUND_TOP = 241;
@@ -47,6 +55,30 @@ const B01C_COMBO_ACTIONS: ActionDef[] = [
   { id:'iona-base-combo-2', moveId:'iona-base-combo-2', sourceId:'iona-player', targetId:'training-dummy', startupMs:110, activeMs:90, recoveryMs:170, events:[{id:'contact',atMs:138}] },
   { id:'iona-base-combo-3', moveId:'iona-base-combo-3', sourceId:'iona-player', targetId:'training-dummy', startupMs:140, activeMs:100, recoveryMs:220, events:[{id:'contact',atMs:165}] },
 ];
+const ALPHA_BOUNDS_CACHE = new Map<string, readonly [number, number, number, number] | null>();
+
+function textureAlphaBounds(scene: Phaser.Scene, key: string): readonly [number, number, number, number] | null {
+  if (ALPHA_BOUNDS_CACHE.has(key)) return ALPHA_BOUNDS_CACHE.get(key) ?? null;
+  try {
+    const source = scene.textures.get(key).getSourceImage() as CanvasImageSource & { width: number; height: number };
+    const canvas = document.createElement('canvas'); canvas.width = source.width; canvas.height = source.height;
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    if (!context || !source.width || !source.height) { ALPHA_BOUNDS_CACHE.set(key, null); return null; }
+    context.drawImage(source, 0, 0);
+    const pixels = context.getImageData(0, 0, source.width, source.height).data;
+    let left = source.width, top = source.height, right = 0, bottom = 0;
+    for (let y = 0; y < source.height; y += 1) for (let x = 0; x < source.width; x += 1) {
+      if (pixels[(y * source.width + x) * 4 + 3]! < 16) continue;
+      left = Math.min(left, x); top = Math.min(top, y); right = Math.max(right, x + 1); bottom = Math.max(bottom, y + 1);
+    }
+    const bounds = right > left && bottom > top ? [left, top, right, bottom] as const : null;
+    ALPHA_BOUNDS_CACHE.set(key, bounds);
+    return bounds;
+  } catch {
+    ALPHA_BOUNDS_CACHE.set(key, null);
+    return null;
+  }
+}
 export type AnimationLabSnapshot = { mode:string; frame:string; facing:IonaFacing; attackPhase:string; comboStep:number; targetHealth:number; targetX:number; lastCombatEvent:string; artSource:'generated-imagegen'|'rejected-svg'|'b01c-native'|'b01d-candidate'|'b01e-candidate'; candidateVersion:'B01C'|'B01D'|'B01E'; assetCount:number; missingAssets:string[]; reviewVisible:boolean; contrast:ArtReviewContrast; reviewScale:48|60|72; spriteScale:number; visibleHeightPx:number; diagnosticsVisible:boolean; b01cComparison:boolean; vfxEnabled:boolean; audioEnabled:boolean; audioUnlocked:boolean; audioAssetsLoaded:number; audioVolume:number; audioPaused:boolean; lastAudioCue:string };
 
 /** B00 collision-test chamber; geometry remains programmer art and is never treated as production art. */
@@ -657,6 +689,36 @@ export class ChamberScene extends Phaser.Scene {
 
   protected getB06Blockers(): readonly CombatRect[] { return this.combatBlockers; }
   protected setCombatBlockers(blockers: readonly CombatRect[]): void { this.combatBlockers = [...blockers]; }
+  protected physicsRegistrationDebug(): PhysicsRegistrationDebug {
+    // The QA snapshot can be polled between scene construction and create();
+    // keep that short startup window safe without pretending it has live bounds.
+    const liveBody = this.body;
+    if (!liveBody) return { body: { left: 0, right: 0, top: 0, bottom: 0 }, sprite: null, hipY: 0, feetY: 0, attack: null, cameraX: this.cameras?.main?.scrollX ?? 0 };
+    const body = { left: liveBody.left, right: liveBody.right, top: liveBody.top, bottom: liveBody.bottom };
+    const sprite = this.labSprite;
+    let spriteBounds: PhysicsRegistrationDebug['sprite'] = null;
+    if (sprite) {
+      const key = sprite.texture.key;
+      const source = this.textures.get(key).getSourceImage() as CanvasImageSource & { width: number; height: number };
+      const alpha = textureAlphaBounds(this, key);
+      let alphaWorld: PhysicsRegistrationDebug['sprite'] extends infer _T ? { left: number; right: number; top: number; bottom: number } | null : never = null;
+      if (alpha) {
+        const [x0, y0, x1, y1] = alpha;
+        const leftX = sprite.flipX ? source.width - x1 : x0;
+        const rightX = sprite.flipX ? source.width - x0 : x1;
+        alphaWorld = {
+          left: sprite.x + (leftX - source.width * sprite.originX) * sprite.scaleX,
+          right: sprite.x + (rightX - source.width * sprite.originX) * sprite.scaleX,
+          top: sprite.y + (y0 - source.height * sprite.originY) * sprite.scaleY,
+          bottom: sprite.y + (y1 - source.height * sprite.originY) * sprite.scaleY,
+        };
+      }
+      const bounds = sprite.getBounds();
+      spriteBounds = { left: bounds.left, right: bounds.right, top: bounds.top, bottom: bounds.bottom, alpha: alphaWorld, texture: key };
+    }
+    const attack = this.b03Move ? moveHitbox(this.activeMoveDefinition ?? this.moveDefinition(this.b03Move), this.body.center.x, this.body.bottom, this.attackFacing) : null;
+    return { body, sprite: spriteBounds, hipY: this.body.top + this.body.height * .5, feetY: this.body.bottom, attack, cameraX: this.cameras.main.scrollX };
+  }
   protected setRoomWorldBounds(width: number, height = WORLD_HEIGHT): void {
     this.cameras.main.setBounds(0, 0, width, height);
     this.physics.world.setBounds(0, 0, width, height);

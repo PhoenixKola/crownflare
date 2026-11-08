@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { createB08Boss } from '../../src/game/bosses/b08BossProfiles.ts';
+import { b08PresentationPose } from '../../src/game/bosses/b08Presentation.ts';
 import { b08BossContactKey, b08BossIsVulnerable, damageB08Boss, stepB08Boss } from '../../src/game/bosses/b08BossDirector.ts';
 import type { B08BossPlayerFrame, B08BossRuntime } from '../../src/game/bosses/b08BossTypes.ts';
 import { B08_BOSS_ROOM_IDS, bossForB08Room } from '../../src/game/bosses/b08BossRoutes.ts';
@@ -46,6 +47,23 @@ test('boss accepts damage only during recovery and advances to phase two at the 
   while (state.hp / state.maxHp > .52) state = damageB08Boss(state, 4);
   assert.equal(state.phase, 'phase-change');
   assert.equal(state.phaseNumber, 2);
+});
+
+test('B08 telegraphs and phase changes step through existing key poses at readable timing', () => {
+  const sun = createB08Boss('sundial-custodian');
+  assert.equal(b08PresentationPose({ ...sun, phase: 'telegraph', phaseMs: 0, pattern: 'glassline-sweep' }), 'ready');
+  assert.equal(b08PresentationPose({ ...sun, phase: 'telegraph', phaseMs: 130, pattern: 'glassline-sweep' }), 'sweep-telegraph');
+  assert.equal(b08PresentationPose({ ...sun, phase: 'commit', phaseMs: 0, pattern: 'glassline-sweep' }), 'sweep-telegraph');
+  assert.equal(b08PresentationPose({ ...sun, phase: 'commit', phaseMs: 70, pattern: 'glassline-sweep' }), 'sweep');
+  assert.equal(b08PresentationPose({ ...sun, phase: 'phase-change', phaseMs: 0 }), 'ready');
+  assert.equal(b08PresentationPose({ ...sun, phase: 'phase-change', phaseMs: 210 }), 'phase-2');
+
+  const spool = createB08Boss('spoolheart-regent');
+  assert.equal(b08PresentationPose({ ...spool, phase: 'phase-change', phaseMs: 0 }), 'rewind');
+  assert.equal(b08PresentationPose({ ...spool, phase: 'phase-change', phaseMs: 150 }), 'phase-2');
+  const meridian = createB08Boss('broken-meridian');
+  assert.equal(b08PresentationPose({ ...meridian, phase: 'phase-change', phaseMs: 0 }), 'phase-change');
+  assert.equal(b08PresentationPose({ ...meridian, phase: 'phase-change', phaseMs: 230 }), 'phase-2');
 });
 
 test('all four B07 branch combinations reach the three B08 bosses in authored order', () => {

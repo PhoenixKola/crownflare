@@ -323,7 +323,9 @@ function renderHub(): void {
   hubContinueButton.textContent = checkpoint ? `CONTINUE · ROOM ${checkpoint.route.roomIndex + 1} · ${checkpoint.seed.toString(16).toUpperCase()}` : 'CONTINUE LAST RUN · NO CHECKPOINT';
   const last = saveState.meta.lastRun;
   titleMetadata.textContent = saveState.activeRun ? 'EXPEDITION CHECKPOINT READY / CONTINUE FROM THE LAST SAFE THREAD' : saveState.meta.completedRuns ? `${saveState.meta.completedRuns} RUN${saveState.meta.completedRuns === 1 ? '' : 'S'} RECORDED / ${saveState.meta.beaconAwakened ? 'BEACON AWAKE' : 'BEACON UNLIT'}` : 'FIRST EXPEDITION / SPINDLE REFUGE AWAITS';
-  hubProgress.textContent = `${saveState.meta.completedRuns} COMPLETED RUN${saveState.meta.completedRuns === 1 ? '' : 'S'} · ${saveState.meta.beaconAwakened ? 'REFUGE BEACON LIT' : 'FIRST CLEAR WILL LIGHT THE BEACON'}${last ? ` · LAST ${last.result.toUpperCase()}` : ''}`;
+  const discoveryLog = last ? Object.values(last.eventChoices ?? {}).map((choice) => choice.replaceAll('-', ' ').toUpperCase()).join(' / ') : '';
+  hubProgress.textContent = `${saveState.meta.completedRuns} COMPLETED RUN${saveState.meta.completedRuns === 1 ? '' : 'S'} · ${saveState.meta.beaconAwakened ? 'REFUGE BEACON LIT' : 'FIRST CLEAR WILL LIGHT THE BEACON'}${last ? ` · LAST ${last.result.toUpperCase()} / ${last.visited.length} ROOMS / ${discoveryLog || 'FRESH SEEDED ROUTE READY'}` : ''}`;
+  hubProgress.title = last ? `Last route: ${last.visited.join(' → ')}${discoveryLog ? ` / discoveries: ${discoveryLog}` : ''}` : 'A fresh run seed selects different authored rooms and encounter timing.';
   byId<HTMLElement>('hub-beacon-state').textContent = saveState.meta.beaconAwakened ? 'AWAKE / FIRST-CLEAR MARK' : 'UNLIT';
   hubReducedMotion.checked = saveState.options.reduceMotion;
   hubVolume.value = String(saveState.options.masterVolume);
@@ -402,13 +404,13 @@ function saveB10Checkpoint(event: Event): void {
   if (!checkpoint || checkpoint.runId !== b10RunId) return;
   commitSave({ ...saveState, activeRun: checkpoint });
 }
-function completeB10Run(detail: { result: 'victory' | 'defeat'; elapsedMs: number; damageTaken: number; visited: readonly string[]; choices: B10RunCheckpoint['route']['choices']; seed: number; b08BossesCleared?: readonly string[]; b09Build?: RunBuildState; runId?: string }): void {
+function completeB10Run(detail: { result: 'victory' | 'defeat'; elapsedMs: number; damageTaken: number; visited: readonly string[]; choices: B10RunCheckpoint['route']['choices']; eventChoices?: Readonly<Record<string, string>>; seed: number; b08BossesCleared?: readonly string[]; b09Build?: RunBuildState; runId?: string }): void {
   if (!b10Mode) return;
   const runId = detail.runId ?? b10RunId;
   if (!runId) return;
   const runBuild = detail.b09Build ?? (chamber instanceof B07ExpeditionScene ? chamber.b07Snapshot().b09.build : undefined);
   if (!runBuild) return;
-  const summary: B10RunSummary = { runId, result: detail.result, seed: detail.seed, elapsedMs: Math.round(detail.elapsedMs), damageTaken: detail.damageTaken, visited: [...detail.visited], choices: detail.choices, bossesCleared: [...(detail.b08BossesCleared ?? [])], build: runBuild };
+  const summary: B10RunSummary = { runId, result: detail.result, seed: detail.seed, elapsedMs: Math.round(detail.elapsedMs), damageTaken: detail.damageTaken, visited: [...detail.visited], choices: detail.choices, eventChoices: detail.eventChoices ?? {}, bossesCleared: [...(detail.b08BossesCleared ?? [])], build: runBuild };
   b10FirstClearResult = detail.result === 'victory' && !saveState.meta.beaconAwakened;
   commitSave(recordRunResult(saveState, summary));
 }
@@ -693,7 +695,7 @@ function finishB04Result(event: Event): void {
 window.addEventListener('crownflare:b04-result', finishB04Result);
 window.addEventListener('crownflare:b07-result', (event) => {
   if (!active || !b07Mode || b07ResultVisible) return;
-  const detail = (event as CustomEvent<{ result: 'victory' | 'defeat'; elapsedMs: number; damageTaken: number; repairCharges: number; resonance: number; visited: readonly string[]; choices: B10RunCheckpoint['route']['choices']; seed: number; b08BossBuilt: boolean; b08BossesCleared?: readonly string[]; b08Practice?: boolean; b09Enabled?: boolean; b09Build?: RunBuildState; b10Enabled?: boolean; runId?: string }>).detail;
+  const detail = (event as CustomEvent<{ result: 'victory' | 'defeat'; elapsedMs: number; damageTaken: number; repairCharges: number; resonance: number; visited: readonly string[]; choices: B10RunCheckpoint['route']['choices']; eventChoices?: Readonly<Record<string, string>>; seed: number; b08BossBuilt: boolean; b08BossesCleared?: readonly string[]; b08Practice?: boolean; b09Enabled?: boolean; b09Build?: RunBuildState; b10Enabled?: boolean; runId?: string }>).detail;
   if (!detail) return;
   completeB10Run(detail);
   game?.scene.pause('Chamber'); chamber?.setLabAudioPaused(true); paused = true; b07ResultVisible = true;
@@ -703,7 +705,8 @@ window.addEventListener('crownflare:b07-result', (event) => {
   const seconds = Math.floor((detail.elapsedMs % 60000) / 1000).toString().padStart(2, '0');
   const reach = detail.choices.reach ?? 'not chosen'; const loom = detail.choices.loom ?? 'not chosen';
   const buildSummary = detail.b09Build ? Object.entries(detail.b09Build.ranks).filter(([, rank]) => !!rank).map(([id, rank]) => `${B09_UPGRADES[id as keyof typeof B09_UPGRADES].name} ${rank}`).join(' / ') || 'NO ATTUNEMENTS' : '';
-  b07ResultStats.textContent = `${detail.result.toUpperCase()}  ·  ${minutes}:${seconds}  ·  ${detail.visited.length} ROOMS  ·  SEED ${detail.seed.toString(16).toUpperCase()}  ·  REACH ${reach}  ·  LOOM ${loom}  ·  REPAIRS ${detail.repairCharges}  ·  ROUTE RESONANCE ${detail.resonance}  ·  BOSSES ${detail.b08BossesCleared?.length ?? 0}/3  ·  ${detail.damageTaken} DAMAGE${detail.b09Enabled ? `  ·  RUN BUILD ${buildSummary}` : detail.b08BossBuilt ? '' : '. The B08 boss remains unbuilt.'}`;
+  const eventSummary = Object.values(detail.eventChoices ?? {}).map((choice) => choice.replaceAll('-', ' ').toUpperCase()).join(' / ') || 'NONE';
+  b07ResultStats.textContent = `${detail.result.toUpperCase()}  ·  ${minutes}:${seconds}  ·  ${detail.visited.length} ROOMS  ·  SEED ${detail.seed.toString(16).toUpperCase()}  ·  REACH ${reach}  ·  LOOM ${loom}  ·  DISCOVERIES ${eventSummary}  ·  REPAIRS ${detail.repairCharges}  ·  ROUTE RESONANCE ${detail.resonance}  ·  BOSSES ${detail.b08BossesCleared?.length ?? 0}/3  ·  ${detail.damageTaken} DAMAGE${detail.b09Enabled ? `  ·  RUN BUILD ${buildSummary}` : detail.b08BossBuilt ? '' : '. The B08 boss remains unbuilt.'}`;
   b07ResultStory.textContent = b10Mode ? detail.result === 'victory'
     ? 'At Broken Meridian, Iona refuses to pin the sky to a single hour. The Lumen Spindle turns again: dawn and night return in their own time. The refuge keeps the light of the first clear; each new run begins with a fresh build.'
     : 'The Spindle lets go before the hinge can be mended. Iona returns to the refuge with the route remembered, but this expedition has ended. Start a new run when you are ready.'

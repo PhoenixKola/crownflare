@@ -1,0 +1,146 @@
+{
+  "milestone": "B12",
+  "generation": {
+    "tool": "Codex native ImageGen",
+    "call_id": "01a1b353-b750-72f3-9594-c017f1f1a806",
+    "output": "exec-435ea220-e13f-4b72-9096-9906cc9ea74a.png",
+    "source_file": "art-source/environments/b12/landmarks-atlas.png",
+    "source_sha256": "3743d518adc883ee10687c9ab8086236acb16b11ae36a092a162a5bd7020b122",
+    "prompt": "Original 3x2 transparent atlas of six pixel-art Sunderglass/Vesper landmarks; the generated file had a baked near-white checkerboard, removed by edge-connected low-chroma flood fill. Each 512px cell is reduced 4x with nearest-neighbor sampling to a 128px runtime tile."
+  },
+  "platform_derivatives": "Pixel-preserving 96x36 source crops from B07 masters; tiled at native pixel scale to match each authored collision width.",
+  "outputs": [
+    {
+      "file": "public/assets/environments/b12/sg-sunwell.png",
+      "sha256": "0780611247e9c18145dcfe8363dede337d2c3fb2f235d2602edbd813890046ee",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_bbox": [
+        11,
+        3,
+        128,
+        123
+      ]
+    },
+    {
+      "file": "public/assets/environments/b12/sg-echo.png",
+      "sha256": "384ee3b548e2fcd264056e1a64001a8503383ee38c6dac44723838f8b5970f00",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_bbox": [
+        0,
+        22,
+        120,
+        123
+      ]
+    },
+    {
+      "file": "public/assets/environments/b12/sg-emberwell.png",
+      "sha256": "b1e8fe7696ba838a96ebddce244a1be399936ad8c1af8bcf20553c500bc6b641",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_bbox": [
+        0,
+        45,
+        126,
+        123
+      ]
+    },
+    {
+      "file": "public/assets/environments/b12/vl-counterweight.png",
+      "sha256": "80734098d397f7696eecc3418e3a8fa6338ddedcb901d9891961639ec1d9f5d1",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_bbox": [
+        4,
+        5,
+        122,
+        119
+      ]
+    },
+    {
+      "file": "public/assets/environments/b12/vl-cantor.png",
+      "sha256": "6d10f2da8b24a52a97f720c637edfb3239c2b35ed6b24578817bb7a42f684d8c",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_bbox": [
+        0,
+        4,
+        125,
+        119
+      ]
+    },
+    {
+      "file": "public/assets/environments/b12/vl-condenser.png",
+      "sha256": "fb43b4c5c1aaacb9710b628bf63ce182ff6cf85fe7e1c857f0bfa3663b435e1e",
+      "size": [
+        128,
+        128
+      ],
+      "alpha_bbox": [
+        4,
+        6,
+        123,
+        119
+      ]
+    },
+    {
+      "file": "public/assets/environments/b12/vesper-long-strip.png",
+      "sha256": "35f63aeddd2a36e16d7a0729bf838fa3a71a834158b6ba6ec5f9d0a66e488b38",
+      "size": [
+        96,
+        36
+      ],
+      "source_file": "public/assets/environments/b07/vesper-platform-long.png",
+      "source_sha256": "6af2a1b026f470bd615c769adf5b9308df0a4f350d8d9b2bd5f83cf39b6277f8",
+      "crop": [
+        98,
+        80,
+        194,
+        116
+      ]
+    },
+    {
+      "file": "public/assets/environments/b12/vesper-thread-strip.png",
+      "sha256": "dd4ece6db971fa5dc2daa4d98403b2381e64ea20949e948c7e96f43bfaab9b08",
+      "size": [
+        96,
+        36
+      ],
+      "source_file": "public/assets/environments/b07/vesper-platform-thread.png",
+      "source_sha256": "d584777047497dbb831dad43bebec3cec3cd4733ea86e1bde24965b11da25272",
+      "crop": [
+        104,
+        94,
+        200,
+        130
+      ]
+    },
+    {
+      "file": "public/assets/environments/b12/vesper-lift-strip.png",
+      "sha256": "320e9dba3640e40c73aad318d837b0c8781602b4ae84d8f9bd6ca46eb799eb78",
+      "size": [
+        96,
+        36
+      ],
+      "source_file": "public/assets/environments/b07/vesper-platform-lift.png",
+      "source_sha256": "5f13f14c51cb9530015afbf3ad631a00d1e8cc23b1bc511cb2fecddfc24dd770",
+      "crop": [
+        75,
+        120,
+        171,
+        156
+      ]
+    }
+  ]
+}

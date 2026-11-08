@@ -19,4 +19,14 @@ export function stepB07Hazard(hazard: B07HazardDefinition, elapsedMs: number): B
   return { phase: 'recovery', cycleTimeMs, progress: (cycleTimeMs - hazard.warningMs - hazard.activeMs) / hazard.recoveryMs };
 }
 
+/** Velocity for the current authored movement interval, in Arcade pixels/second. */
+export function b07MovingLiftVelocity(hazard: Extract<B07HazardDefinition, { kind: 'moving-lift' }>, fromMs: number, toMs: number): number {
+  const span = Math.max(0, toMs - fromMs);
+  if (span <= 0) return 0;
+  const from = stepB07Hazard(hazard, fromMs)?.y;
+  const to = stepB07Hazard(hazard, toMs)?.y;
+  if (from === undefined || to === undefined) return 0;
+  return (to - from) * 1000 / span;
+}
+
 function positiveMod(value: number, modulus: number): number { return ((value % modulus) + modulus) % modulus; }
