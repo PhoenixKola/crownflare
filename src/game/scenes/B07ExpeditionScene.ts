@@ -21,6 +21,12 @@ import { bossForB08Room } from '../bosses/b08BossRoutes.ts';
 import { createB09CombatRuntime, createRunBuild, effectiveModifiers, fieldRecyclerRepair, generateUpgradeOffer, resolveB09Contact, resolveB09Dodge, resolveB09Threat, selectUpgradeChoice, type B09CombatRuntime, type RunBuildState, type UpgradeChoiceId, type UpgradeOffer, type UpgradeChoiceSource } from '../roguelite/b09RunBuild.ts';
 import type { B10RunCheckpoint } from '../persistence/save.ts';
 
+const B08_BOSS_ASSET_FILES: Readonly<Record<B08BossId, readonly string[]>> = {
+  'sundial-custodian': ['canonical-master', 'idle', 'ready', 'sweep-telegraph', 'sweep', 'stamp-telegraph', 'stamp', 'phase-2', 'hurt', 'ko', 'vfx-glassline-sweep', 'vfx-zenith-stamp', 'vfx-aperture-pulse', 'arena'],
+  'spoolheart-regent': ['canonical-master', 'idle', 'ready', 'lash-telegraph', 'lash', 'thread-telegraph', 'thread-drop', 'rewind', 'phase-2', 'ko', 'vfx-loom-lash', 'vfx-thread-drop', 'vfx-spindle-rewind', 'arena'],
+  'broken-meridian': ['canonical-master', 'idle', 'cleave-telegraph', 'cleave', 'afterglow', 'core-exposed', 'phase-change', 'phase-2', 'hurt', 'ko', 'vfx-meridian-cleave', 'vfx-daybreak-afterglow', 'vfx-core-exposure', 'arena'],
+};
+const B08_BOSS_AUDIO_CUES = ['loop', 'tell', 'strike', 'phase', 'ko'] as const;
 const AUDIO_CUES = ['runner-tell', 'runner-slash', 'wisp-charge', 'wisp-shot', 'wisp-impact', 'bastion-tell', 'bastion-block', 'bastion-break', 'cantor-sweep', 'cantor-pulse', 'enemy-ko', 'shard-reward', 'wave-clear'] as const;
 const ENEMY_STATES: Readonly<Record<B06Archetype, readonly string[]>> = {
   'spindle-sentry': [],
@@ -119,6 +125,19 @@ export class B07ExpeditionScene extends ChamberScene {
   private bossDamageIds = new Set<string>();
   private bossActiveRects: readonly B08BossRect[] = [];
   private bossVfxEnabled = true;
+  private pendingBossStart: { readonly id: B08BossId; readonly practice: boolean } | null = null;
+  private bossLoadingText?: Phaser.GameObjects.Text;
+  private readonly resumePendingBoss = (): void => {
+    const pending = this.pendingBossStart;
+    if (!pending) return;
+    if (!this.textures.exists(`b08-${pending.id}-idle`) || !this.textures.exists(`b08-${pending.id}-arena`)) {
+      this.bossLoadingText?.setText('BOSS FILES FAILED TO LOAD / RESTART THE EXPEDITION');
+      return;
+    }
+    this.pendingBossStart = null;
+    this.bossLoadingText?.destroy(); this.bossLoadingText = undefined;
+    this.startBoss(pending.id, pending.practice);
+  };
 
   constructor(onPauseRequested: () => void, onControllerState: (active: boolean) => void, seed?: number, b08 = false, b09 = false, b10 = false, checkpoint: B10RunCheckpoint | null = null, runId?: string, reduceMotion?: boolean) {
     super(onPauseRequested, onControllerState, { ionaPreview: true, b03Combat: true, b04: true, b05: true, b06: true, b07: true, reduceMotion });
@@ -146,6 +165,19 @@ export class B07ExpeditionScene extends ChamberScene {
     super.setReducedMotion(enabled);
   }
 
+  private queueBossAssets(): void {
+    for (const [boss, files] of Object.entries(B08_BOSS_ASSET_FILES) as [B08BossId, readonly string[]][]) {
+      for (const file of files) {
+        const key = `b08-${boss}-${file}`;
+        if (!this.textures.exists(key)) this.load.image(key, `./assets/bosses/b08/${boss}/${file === 'arena' ? 'arena' : file}.png`);
+      }
+      for (const cue of B08_BOSS_AUDIO_CUES) {
+        const key = `b08-${boss}-${cue}`;
+        if (!this.cache.audio.exists(key)) this.load.audio(key, `./assets/audio/bosses/b08/${boss}/${cue}.wav`);
+      }
+    }
+  }
+
   override preload(): void {
     super.preload();
     for (const file of ['horizon', 'architecture', 'platform-long', 'platform-short', 'conduit-tile', 'entry-beacon', 'reward-shard', 'exit-gate']) {
@@ -165,23 +197,13 @@ export class B07ExpeditionScene extends ChamberScene {
     }
     for (const cue of AUDIO_CUES) this.load.audio(`b07-audio-${cue}`, `./assets/audio/b06/${cue}.wav`);
     this.load.audio('b07-audio-sunderglass', './assets/audio/b04/sunderglass-ambience.wav');
-    if (this.b08Mode) {
-      const bossFiles: Readonly<Record<B08BossId, readonly string[]>> = {
-        'sundial-custodian': ['canonical-master', 'idle', 'ready', 'sweep-telegraph', 'sweep', 'stamp-telegraph', 'stamp', 'phase-2', 'hurt', 'ko', 'vfx-glassline-sweep', 'vfx-zenith-stamp', 'vfx-aperture-pulse'],
-        'spoolheart-regent': ['canonical-master', 'idle', 'ready', 'lash-telegraph', 'lash', 'thread-telegraph', 'thread-drop', 'rewind', 'phase-2', 'ko', 'vfx-loom-lash', 'vfx-thread-drop', 'vfx-spindle-rewind'],
-        'broken-meridian': ['canonical-master', 'idle', 'cleave-telegraph', 'cleave', 'afterglow', 'core-exposed', 'phase-change', 'phase-2', 'hurt', 'ko', 'vfx-meridian-cleave', 'vfx-daybreak-afterglow', 'vfx-core-exposure'],
-      };
-      for (const [boss, files] of Object.entries(bossFiles) as [B08BossId, readonly string[]][]) {
-        for (const file of files) this.load.image(`b08-${boss}-${file}`, `./assets/bosses/b08/${boss}/${file}.png`);
-        this.load.image(`b08-${boss}-arena`, `./assets/bosses/b08/${boss}/arena.png`);
-        for (const cue of ['loop', 'tell', 'strike', 'phase', 'ko']) this.load.audio(`b08-${boss}-${cue}`, `./assets/audio/bosses/b08/${boss}/${cue}.wav`);
-      }
-    }
+    if (this.b08Mode && !this.b10Mode) this.queueBossAssets();
   }
 
   override create(): void {
     super.create();
     this.createHud();
+    if (this.b10Mode && this.b08Mode) { this.queueBossAssets(); this.load.start(); }
     this.input.keyboard?.on('keydown', () => this.unlockAudio());
     this.input.on(Phaser.Input.Events.POINTER_DOWN, () => this.unlockAudio());
     this.input.keyboard?.on('keydown-V', (event: KeyboardEvent) => {
@@ -196,6 +218,7 @@ export class B07ExpeditionScene extends ChamberScene {
     });
     this.input.keyboard?.on('keydown-ESC', () => { if (this.eventMenu) this.closeEventMenu(); });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.shutdownRoom());
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.load.off(Phaser.Loader.Events.COMPLETE, this.resumePendingBoss));
     this.physics.world.on('worldstep', this.syncMovingLiftVisuals, this);
     const chooseB09 = (event: Event) => {
       const selectedDetail = (event as CustomEvent<{ sourceId: string; choiceId: UpgradeChoiceId }>).detail;
@@ -735,7 +758,7 @@ export class B07ExpeditionScene extends ChamberScene {
     this.playCue('shard-reward');
     this.showBanner(health > 0 && resonance > 0 ? `REPAIR +${health}  /  RESONANCE +${resonance}` : health > 0 ? `FIELD REPAIR +${health}` : `RESONANCE +${resonance}`);
     this.logEvent({ type: 'reward-claimed', roomId: this.room.id, repair: health, resonance, repairCharges: this.route.repairCharges, totalResonance: this.route.resonance });
-    if (this.b09Mode && (this.room.id === 'sg-copper-causeway' || this.room.id === 'sg-conduit-annex')) this.openB09Offer(`room:${this.room.id}`);
+    if (this.b09Mode && (this.room.id === 'sg-copper-causeway' || this.room.role === 'combat' || this.room.role === 'elite')) this.openB09Offer(`room:${this.room.id}`);
     if (!this.pendingB09Offer) this.emitB10Checkpoint();
   }
 
@@ -831,6 +854,13 @@ export class B07ExpeditionScene extends ChamberScene {
 
   private startBoss(id: B08BossId, practice = false): void {
     if (!this.b08Mode) return;
+    if (this.b10Mode && (!this.textures.exists(`b08-${id}-idle`) || !this.textures.exists(`b08-${id}-arena`))) {
+      this.pendingBossStart = { id, practice };
+      this.bossLoadingText ??= this.add.text(240, 135, 'PREPARING ENCOUNTER', { fontFamily: 'monospace', fontSize: '9px', color: '#f4ead2', backgroundColor: '#07131fee', padding: { x: 12, y: 8 }, align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(100);
+      this.load.once(Phaser.Loader.Events.COMPLETE, this.resumePendingBoss);
+      if (!this.load.isLoading()) { this.queueBossAssets(); this.load.start(); }
+      return;
+    }
     this.bossSourceRoom = this.room?.id ?? (practice ? 'practice-shortcut' : 'unknown');
     this.bossAudio?.stop(); this.bossAudio = undefined;
     this.destroyRoom();

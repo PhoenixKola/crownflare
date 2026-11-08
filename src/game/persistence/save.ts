@@ -6,6 +6,7 @@ export const LEGACY_SAVE_NAMESPACE = 'project-crownflare:save:v1';
 export const PREVIOUS_SAVE_NAMESPACE = 'project-crownflare:save:v2:previous';
 export const PRESERVED_SAVE_NAMESPACE = 'project-crownflare:save:unrecognized';
 
+export type DisplayScalingMode = 'pixel-perfect' | 'fit';
 export type SaveV1 = { version: 1; options: { reduceMotion: boolean; masterVolume: number }; meta: { completedRuns: number } };
 export type B10RunCheckpoint = {
   runId: string;
@@ -29,7 +30,7 @@ export type SaveV2 = {
   version: 2;
   revision: number;
   checksum: string;
-  options: { reduceMotion: boolean; masterVolume: number };
+  options: { reduceMotion: boolean; masterVolume: number; pixelScaling?: DisplayScalingMode };
   meta: { completedRuns: number; beaconAwakened: boolean; completedRunIds: readonly string[]; lastRun: B10RunSummary | null };
   story: { prologueSeen: boolean; loomBeatSeen: boolean; meridianEndingSeen: boolean };
   activeRun: B10RunCheckpoint | null;
@@ -37,7 +38,7 @@ export type SaveV2 = {
 
 export const defaultSave = (): SaveV2 => sealSave({
   version: 2, revision: 0, checksum: '',
-  options: { reduceMotion: false, masterVolume: 0.8 },
+  options: { reduceMotion: false, masterVolume: 0.8, pixelScaling: 'pixel-perfect' },
   meta: { completedRuns: 0, beaconAwakened: false, completedRunIds: [], lastRun: null },
   story: { prologueSeen: false, loomBeatSeen: false, meridianEndingSeen: false }, activeRun: null,
 });
@@ -61,7 +62,8 @@ export function sealSave(data: Omit<SaveV2, 'checksum'> | SaveV2): SaveV2 {
 
 function isObject(value: unknown): value is Record<string, unknown> { return !!value && typeof value === 'object' && !Array.isArray(value); }
 function validOptions(value: unknown): value is SaveV2['options'] {
-  return isObject(value) && typeof value.reduceMotion === 'boolean' && typeof value.masterVolume === 'number' && Number.isFinite(value.masterVolume) && value.masterVolume >= 0 && value.masterVolume <= 1;
+  return isObject(value) && typeof value.reduceMotion === 'boolean' && typeof value.masterVolume === 'number' && Number.isFinite(value.masterVolume) && value.masterVolume >= 0 && value.masterVolume <= 1
+    && (value.pixelScaling === undefined || value.pixelScaling === 'pixel-perfect' || value.pixelScaling === 'fit');
 }
 function validLegacy(value: unknown): value is SaveV1 {
   if (!isObject(value) || value.version !== 1 || !validOptions(value.options) || !isObject(value.meta)) return false;
@@ -105,13 +107,16 @@ function validV2(value: unknown): value is SaveV2 {
   return hash(stable(withoutChecksum(candidate))) === candidate.checksum;
 }
 export function migrateV1(value: SaveV1): SaveV2 {
-  return sealSave({ ...defaultSave(), revision: 1, options: { ...value.options }, meta: { ...defaultSave().meta, completedRuns: value.meta.completedRuns } });
+  return sealSave({ ...defaultSave(), revision: 1, options: { ...defaultSave().options, ...value.options }, meta: { ...defaultSave().meta, completedRuns: value.meta.completedRuns } });
+}
+function normalizeV2(value: SaveV2): SaveV2 {
+  return value.options.pixelScaling ? value : sealSave({ ...value, options: { ...value.options, pixelScaling: 'pixel-perfect' } });
 }
 export function parseSave(raw: string | null): SaveV2 {
   if (!raw) return defaultSave();
   try {
     const value: unknown = JSON.parse(raw);
-    if (validV2(value)) return value;
+    if (validV2(value)) return normalizeV2(value);
     if (validLegacy(value)) return migrateV1(value);
     return defaultSave();
   } catch { return defaultSave(); }
@@ -128,7 +133,7 @@ export function loadSave(storage: Pick<Storage, 'getItem'> & Partial<Pick<Storag
   try {
     const primaryRaw = storage.getItem(SAVE_NAMESPACE);
     const primary = decode(primaryRaw);
-    if (validV2(primary)) return primary;
+    if (validV2(primary)) return normalizeV2(primary);
     if (validLegacy(primary)) return migrate(primary);
     const previousRaw = storage.getItem(PREVIOUS_SAVE_NAMESPACE);
     if (validV2(decode(previousRaw))) return parseSave(previousRaw);
@@ -147,7 +152,7 @@ export function persistSave(storage: Pick<Storage, 'setItem' | 'getItem'>, data:
       if (validV2(current)) storage.setItem(PREVIOUS_SAVE_NAMESPACE, currentRaw);
       else if ((!isObject(current) || typeof current.version !== 'number' || current.version > 2) && !storage.getItem(PRESERVED_SAVE_NAMESPACE)) storage.setItem(PRESERVED_SAVE_NAMESPACE, currentRaw);
     }
-    const current = sealSave({ ...data, revision: Math.max(0, data.revision) + 1 });
+    const current = sealSave({ ...data, options: { ...data.options, pixelScaling: data.options.pixelScaling ?? 'pixel-perfect' }, revision: Math.max(0, data.revision) + 1 });
     if (!validV2(current)) return false;
     storage.setItem(SAVE_NAMESPACE, JSON.stringify(current));
     return true;

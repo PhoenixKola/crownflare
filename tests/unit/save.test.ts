@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { defaultSave, parseSave, SAVE_NAMESPACE, PREVIOUS_SAVE_NAMESPACE, LEGACY_SAVE_NAMESPACE, persistSave, loadSave, recordRunResult } from '../../src/game/persistence/save.ts';
+import { defaultSave, parseSave, SAVE_NAMESPACE, PREVIOUS_SAVE_NAMESPACE, LEGACY_SAVE_NAMESPACE, persistSave, loadSave, recordRunResult, sealSave } from '../../src/game/persistence/save.ts';
 import { advanceB07Room, chooseB07Route, initialB07Route } from '../../src/game/rooms/b07RouteAssembly.ts';
 import { createRunBuild } from '../../src/game/roguelite/b09RunBuild.ts';
 
@@ -14,6 +14,13 @@ test('V1 options and completed runs migrate explicitly into V2', () => {
   const migrated = parseSave(JSON.stringify({ version: 1, options: { reduceMotion: true, masterVolume: .4 }, meta: { completedRuns: 7 } }));
   assert.equal(migrated.version, 2); assert.equal(migrated.options.reduceMotion, true); assert.equal(migrated.options.masterVolume, .4);
   assert.equal(migrated.meta.completedRuns, 7); assert.equal(migrated.activeRun, null);
+});
+test('B12 V2 saves without a display mode keep their progress and receive the pixel-perfect default', () => {
+  const oldSave = sealSave({ ...defaultSave(), options: { reduceMotion: true, masterVolume: .42 } });
+  const migrated = parseSave(JSON.stringify(oldSave));
+  assert.equal(migrated.options.pixelScaling, 'pixel-perfect');
+  assert.equal(migrated.options.reduceMotion, true);
+  assert.equal(migrated.options.masterVolume, .42);
 });
 test('V2 roundtrip verifies integrity and restores previous valid snapshot after corruption', () => {
   const store = new Map<string, string>();

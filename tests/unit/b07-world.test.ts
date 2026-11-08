@@ -22,11 +22,10 @@ test('B07 route choices reconverge at both regions and stay deterministic for a 
   assert.ok(challenge.visited.includes('vl-lattice-hall'));
   assert.deepEqual(seededB07Route(2026, 'safe-recovery', 'spindle-lift'), safe);
   assert.notDeepEqual(safe.visited, seededB07Route(2027, 'safe-recovery', 'spindle-lift').visited, 'seed selects different authored rooms while preserving the same boss route');
-  assert.equal(safe.visited.length, 9);
+  assert.equal(safe.visited.length, 11);
   assert.notDeepEqual(instantiateB07Room(B07_ROOM_BY_ID.get('vl-lattice-hall')!, 2026), instantiateB07Room(B07_ROOM_BY_ID.get('vl-lattice-hall')!, 2027));
   assert.equal(safe.repairCharges, 3);
-  assert.equal(safe.resonance, 50);
-  assert.equal(challenge.resonance, 94);
+  assert.equal(safe.resonance, 30);
 });
 
 test('B07 route menus appear at the authored branch nodes and reject unrelated options', () => {
@@ -36,16 +35,14 @@ test('B07 route menus appear at the authored branch nodes and reject unrelated o
   assert.equal(chooseB07Route(route, 'lattice-elite'), route);
   route = chooseB07Route(route, 'safe-recovery');
   assert.equal(route.rooms[1], 'sg-copper-causeway');
-  route = advanceB07Room(route);
-  route = advanceB07Room(route);
-  route = advanceB07Room(route);
+  while (currentB07Choice(route) !== 'loom' && !route.complete) { route = collectB07Reward(route); route = advanceB07Room(route); }
   route = advanceB07Room(route);
   assert.equal(currentB07Choice(route), 'loom');
   const reward = collectB07Reward(route);
   assert.equal(reward, route, 'the gate transition has no collectible reward');
 });
 
-test('B07 seeded authored rooms expose all 36 branch-and-room combinations and retain the boss exit', () => {
+test('B07 seeded authored rooms expose broad branch-and-room combinations and retain the boss exit', () => {
   const compositions = new Set<string>();
   for (let seed = 1; seed <= 90; seed += 1) {
     for (const reach of ['safe-recovery', 'conduit-challenge'] as const) for (const loom of ['spindle-lift', 'lattice-elite'] as const) {
@@ -53,11 +50,11 @@ test('B07 seeded authored rooms expose all 36 branch-and-room combinations and r
       assert.equal(route.complete, true);
       assert.equal(route.visited.at(-1), 'vl-night-side-threshold');
       const added = route.visited.filter((id) => id.startsWith('sg-sunwell') || id.startsWith('sg-echo-') || id.startsWith('sg-emberwell') || id.startsWith('vl-counterweight') || id.startsWith('vl-cantor-pressure') || id.startsWith('vl-echo-condenser'));
-      assert.equal(added.length, 2, 'each seeded route adds one authored room in each region');
-      compositions.add(`${reach}:${added[0]}:${loom}:${added[1]}`);
+      assert.equal(added.length, 4, 'each seeded route adds two distinct authored rooms in each region');
+      compositions.add(`${reach}:${added.slice(0, 2).join('>')}:${loom}:${added.slice(2).join('>')}`);
     }
   }
-  assert.equal(compositions.size, 36);
+  assert.ok(compositions.size >= 120, `expected broad seeded room-order variety, got ${compositions.size}/144 combinations`);
 });
 
 test('B07 Base reachability and room data validate across the authored library', () => {

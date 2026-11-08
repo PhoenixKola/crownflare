@@ -102,6 +102,9 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 .settings-motion-toggle { display: flex !important; gap: 8px !important; flex-wrap: wrap; }
 .settings-motion-toggle input { accent-color: var(--cf-teal); }
 .settings-motion-toggle small { width: 100%; padding-left: 23px; color: #9eb6b2; font: 500 .58rem/1.35 'Segoe UI', sans-serif; letter-spacing: 0; }
+.settings-display-scaling { grid-template-columns: 1fr !important; align-content: start; }
+.settings-display-scaling select { width: 100%; min-height: 32px; border: 1px solid #45626b; border-radius: 2px; padding: 5px 8px; background: #0b1a26; color: var(--cf-pearl); font: 700 .62rem/1.2 var(--cf-metadata); }
+.settings-display-scaling small { color: #9eb6b2; font: 500 .58rem/1.35 'Segoe UI', sans-serif; letter-spacing: 0; }
 .settings-footer button { border-radius: 2px; }
 
 .b09-choice-screen, .b04-results { background: #040a12eb; backdrop-filter: blur(3px); }

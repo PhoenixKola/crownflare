@@ -1,8 +1,8 @@
 import './style.css';
 import './ui/b11.css';
 import type * as Phaser from 'phaser';
-import { createGame } from './game/createGame';
-import { loadSave, persistSave, recordRunResult, type B10RunCheckpoint, type B10RunSummary, type SaveV2 } from './game/persistence/save';
+import { applyDisplayScaling, createGame } from './game/createGame';
+import { loadSave, persistSave, recordRunResult, type B10RunCheckpoint, type B10RunSummary, type DisplayScalingMode, type SaveV2 } from './game/persistence/save';
 import { GamepadStartEdge } from './game/input/gamepadStartEdge';
 import type { AnimationLabSnapshot, ArtReviewSnapshot, ChamberScene, ChamberSnapshot, IonaPreviewSnapshot } from './game/scenes/ChamberScene';
 import { B04VerticalSliceScene } from './game/scenes/B04VerticalSliceScene';
@@ -64,6 +64,7 @@ const b11ContextPrompt = byId<HTMLElement>('b11-context-prompt');
 const b11NavigationControl = byId<HTMLElement>('b11-navigation-control');
 const b11Build = byId<HTMLElement>('b11-build');
 const settingsMasterVolume = byId<HTMLInputElement>('settings-master-volume');
+const settingsPixelScaling = byId<HTMLSelectElement>('settings-pixel-scaling');
 const settingsVolumeValue = byId<HTMLOutputElement>('settings-volume-value');
 const settingsReducedMotion = byId<HTMLInputElement>('settings-reduced-motion');
 const pauseReason = byId<HTMLElement>('pause-reason');
@@ -331,6 +332,7 @@ function renderHub(): void {
   hubVolume.value = String(saveState.options.masterVolume);
   settingsReducedMotion.checked = saveState.options.reduceMotion;
   settingsMasterVolume.value = String(saveState.options.masterVolume);
+  settingsPixelScaling.value = saveState.options.pixelScaling ?? 'pixel-perfect';
   settingsVolumeValue.value = `${Math.round(saveState.options.masterVolume * 100)}%`;
   hubAmbience.volume = saveState.options.masterVolume;
   hubAmbience.muted = !hubSoundEnabled;
@@ -491,7 +493,7 @@ function start(artReview = false, animationLab = false, ionaPreview = false, b03
     byId<HTMLElement>('controls-tip').textContent = 'A/D MOVE · SPACE JUMP · SHIFT DASH · ESC PAUSE';
   }
   quitButton.textContent = b10 ? 'RETURN TO REFUGE' : 'RETURN TO TITLE';
-  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab, ionaPreview, b03Combat, b04, b05, b06, b07, b08, b09, b10, seed, checkpoint, runId, reduceMotion: saveState.options.reduceMotion });
+  const instance = createGame(() => togglePause(), (connected) => { controllerIndicator.textContent = connected ? 'CONTROLLER CONNECTED' : ''; }, { artReview, animationLab, ionaPreview, b03Combat, b04, b05, b06, b07, b08, b09, b10, seed, checkpoint, runId, reduceMotion: saveState.options.reduceMotion, pixelScaling: saveState.options.pixelScaling ?? 'pixel-perfect' });
   game = instance.game; chamber = instance.scene;
   game.sound.setVolume(saveState.options.masterVolume);
   window.requestAnimationFrame(() => window.requestAnimationFrame(syncB11HudToCanvas));
@@ -621,6 +623,7 @@ function openControllerSettings(fromPause: boolean): void {
   b11ControlSettings = readB11ControlSettings();
   settingsReducedMotion.checked = saveState.options.reduceMotion;
   settingsMasterVolume.value = String(saveState.options.masterVolume);
+  settingsPixelScaling.value = saveState.options.pixelScaling ?? 'pixel-perfect';
   settingsVolumeValue.value = `${Math.round(saveState.options.masterVolume * 100)}%`;
   chamber?.resetTransientInput();
   game?.canvas?.blur();
@@ -773,6 +776,17 @@ settingsReducedMotion.addEventListener('change', () => {
   chamber?.setReducedMotion(settingsReducedMotion.checked);
   commitSave({ ...saveState, options: { ...saveState.options, reduceMotion: settingsReducedMotion.checked } });
 });
+settingsPixelScaling.addEventListener('change', () => {
+  const mode = settingsPixelScaling.value as DisplayScalingMode;
+  if (mode !== 'pixel-perfect' && mode !== 'fit') return;
+  if (game) applyDisplayScaling(game, mode);
+  commitSave({ ...saveState, options: { ...saveState.options, pixelScaling: mode } });
+  byId<HTMLElement>('settings-message').textContent = mode === 'pixel-perfect'
+    ? window.innerWidth < 480 || window.innerHeight < 270
+      ? 'PIXEL PERFECT MODE / THE CANVAS FITS BELOW 480×270 BECAUSE NO WHOLE SCALE FITS.'
+      : 'PIXEL PERFECT MODE / WHOLE-NUMBER SCALE WITH LETTERBOXING.'
+    : 'FIT MODE / USES THE AVAILABLE AREA WITH NEAREST-NEIGHBOR PIXELS.';
+});
 hubStory.addEventListener('keydown', (event) => { if (event.code === 'Escape') { event.preventDefault(); setVisible(hubStory, false); hubNewRunButton.focus(); } });
 b10StoryContinue.addEventListener('click', closeB10StoryBeat);
 b10StoryBeat.addEventListener('keydown', (event) => { if (event.code === 'Escape' || event.code === 'Enter' || event.code === 'Space') { event.preventDefault(); closeB10StoryBeat(); } });
@@ -851,7 +865,7 @@ previewAudioVolume.addEventListener('change', focusGameCanvas);
 if (import.meta.env.DEV) {
   // QA hook is read-only and never changes game rules or bypasses play input.
   Object.defineProperty(window, '__CROWNFLARE_QA__', { configurable: true, value: {
-    snapshot: (): { screen: 'title' | 'hub' | 'hubStory' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b05Combat' | 'b06Combat' | 'b07Expedition' | 'b08Expedition' | 'b09Expedition' | 'b10Expedition' | 'b09Choice' | 'b04Results' | 'b07Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; b05: ReturnType<ChamberScene['dawnrushSnapshot']>; b06: ReturnType<B06EnemyGauntletScene['b06Snapshot']>; b06Events: readonly Record<string, unknown>[]; b07: ReturnType<B07ExpeditionScene['b07Snapshot']> | null; save: { version: number; revision: number; completedRuns: number; beaconAwakened: boolean; activeRun: B10RunCheckpoint | null; lastRun: SaveV2['meta']['lastRun'] }; sceneType: string | null; sceneActive: boolean; scenePaused: boolean } => ({
+    snapshot: (): { screen: 'title' | 'hub' | 'hubStory' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b05Combat' | 'b06Combat' | 'b07Expedition' | 'b08Expedition' | 'b09Expedition' | 'b10Expedition' | 'b09Choice' | 'b04Results' | 'b07Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; b05: ReturnType<ChamberScene['dawnrushSnapshot']>; b06: ReturnType<B06EnemyGauntletScene['b06Snapshot']>; b06Events: readonly Record<string, unknown>[]; b07: ReturnType<B07ExpeditionScene['b07Snapshot']> | null; save: { version: number; revision: number; completedRuns: number; beaconAwakened: boolean; activeRun: B10RunCheckpoint | null; lastRun: SaveV2['meta']['lastRun'] }; sceneType: string | null; sceneKey: string | null; sceneStatus: number | null; gameBooted: boolean; display: { mode: DisplayScalingMode; zoom: number; displayWidth: number; displayHeight: number; parentWidth: number; parentHeight: number } | null; sceneActive: boolean; scenePaused: boolean } => ({
       screen: !active ? hubStory.classList.contains('hidden') ? hubScreen.classList.contains('hidden') ? 'title' : 'hub' : 'hubStory' : b09ChoiceVisible ? 'b09Choice' : b04ResultVisible ? 'b04Results' : b07ResultVisible ? 'b07Results' : artReviewMode ? 'review' : paused ? 'paused' : animationLabMode ? 'animationLab' : b10Mode ? 'b10Expedition' : b09Mode ? 'b09Expedition' : b08Mode ? 'b08Expedition' : b07Mode ? 'b07Expedition' : b06Mode ? 'b06Combat' : b05Mode ? 'b05Combat' : b04Mode ? 'b04Combat' : b03CombatMode ? 'b03Combat' : ionaPreviewMode ? 'ionaPreview' : 'playing',
       player: active && !artReviewMode ? chamber?.snapshot() ?? null : null,
       review: active && artReviewMode ? chamber?.reviewSnapshot() ?? null : null,
@@ -862,9 +876,13 @@ if (import.meta.env.DEV) {
       b05: active && b05Mode ? chamber?.dawnrushSnapshot() ?? null : null,
       b06: active && b06Mode && chamber instanceof B06EnemyGauntletScene ? chamber.b06Snapshot() : null,
       b06Events: active && b06Mode && chamber instanceof B06EnemyGauntletScene ? chamber.b06EventLog() : [],
-      b07: active && b07Mode && chamber instanceof B07ExpeditionScene ? chamber.b07Snapshot() : null,
+      b07: active && game?.isBooted && b07Mode && chamber instanceof B07ExpeditionScene && chamber.sys.isActive() ? chamber.b07Snapshot() : null,
       save: { version: saveState.version, revision: saveState.revision, completedRuns: saveState.meta.completedRuns, beaconAwakened: saveState.meta.beaconAwakened, activeRun: saveState.activeRun, lastRun: saveState.meta.lastRun },
       sceneType: chamber?.constructor.name ?? null,
+      sceneKey: chamber?.sys.settings.key ?? null,
+      sceneStatus: chamber?.sys.settings.status ?? null,
+      gameBooted: game?.isBooted ?? false,
+      display: game ? { mode: saveState.options.pixelScaling ?? 'pixel-perfect', zoom: game.scale.zoom, displayWidth: game.scale.displaySize.width, displayHeight: game.scale.displaySize.height, parentWidth: game.scale.parentSize.width, parentHeight: game.scale.parentSize.height } : null,
       sceneActive: chamber?.sys.isActive() ?? false,
       scenePaused: game?.scene.isPaused('Chamber') ?? false,
     }),

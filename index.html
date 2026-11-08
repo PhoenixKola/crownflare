@@ -223,6 +223,10 @@
         <div class="settings-accessibility">
           <label>MASTER VOLUME <output id="settings-volume-value">80%</output><input id="settings-master-volume" type="range" min="0" max="1" step="0.05" value="0.8" /></label>
           <label class="settings-motion-toggle"><input id="settings-reduced-motion" type="checkbox" /> REDUCED MOTION <small>Use fewer animated effects</small></label>
+          <label class="settings-display-scaling">PIXEL SCALING
+            <select id="settings-pixel-scaling" aria-describedby="settings-pixel-scaling-help"><option value="pixel-perfect">PIXEL PERFECT / INTEGER</option><option value="fit">FIT TO WINDOW</option></select>
+            <small id="settings-pixel-scaling-help">Integer scaling uses the largest whole scale that fits. Below 480×270, the canvas fits the available space.</small>
+          </label>
         </div>
         <p id="settings-message" class="settings-message" role="status" aria-live="polite">Keyboard and mouse remain available. Controller navigation uses D-pad, South to confirm, East or Start to go back.</p>
         <footer class="settings-footer">

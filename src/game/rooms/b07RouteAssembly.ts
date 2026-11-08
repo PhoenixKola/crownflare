@@ -36,7 +36,8 @@ export function chooseB07Route(state: B07RouteState, choice: B07BranchChoice): B
   if (!option) return state;
   const rooms = [...state.rooms, option.roomId];
   const pool = SEEDED_REGION_ROOMS[menu];
-  rooms.push(pool[hash32(`${state.seed}:${menu}:${choice}`) % pool.length]!);
+  const authoredOrder = [...pool].sort((left, right) => hash32(`${state.seed}:${menu}:${choice}:${left}`) - hash32(`${state.seed}:${menu}:${choice}:${right}`));
+  rooms.push(...authoredOrder.slice(0, 2));
   if (menu === 'reach') rooms.push(...B07_ROUTE_MIDDLE);
   else rooms.push(...B07_ROUTE_END);
   const choices: B07RouteChoices = menu === 'reach' ? { ...state.choices, reach: choice as B07RouteChoices['reach'] } : { ...state.choices, loom: choice as B07RouteChoices['loom'] };

@@ -4,7 +4,19 @@ import { B04VerticalSliceScene } from './scenes/B04VerticalSliceScene';
 import { B06EnemyGauntletScene } from './scenes/B06EnemyGauntletScene';
 import { B07ExpeditionScene } from './scenes/B07ExpeditionScene';
 import type { B10RunCheckpoint } from './persistence/save';
-export function createGame(onPause: () => void, onController: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean; b07?: boolean; b08?: boolean; b09?: boolean; b10?: boolean; seed?: number; checkpoint?: B10RunCheckpoint | null; runId?: string; reduceMotion?: boolean } = {}): { game: Phaser.Game; scene: ChamberScene } {
+import type { DisplayScalingMode } from './persistence/save';
+
+function displayZoom(width: number, height: number, mode: DisplayScalingMode): number {
+  const fit = Math.min(width / 480, height / 270);
+  if (mode === 'fit' || fit < 1) return Math.max(0.1, fit);
+  return Math.max(1, Math.floor(fit));
+}
+
+export function applyDisplayScaling(game: Phaser.Game, mode: DisplayScalingMode): void {
+  game.scale.setZoom(displayZoom(window.innerWidth, window.innerHeight, mode));
+}
+
+export function createGame(onPause: () => void, onController: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean; b07?: boolean; b08?: boolean; b09?: boolean; b10?: boolean; seed?: number; checkpoint?: B10RunCheckpoint | null; runId?: string; reduceMotion?: boolean; pixelScaling?: DisplayScalingMode } = {}): { game: Phaser.Game; scene: ChamberScene } {
   const artReview = import.meta.env.DEV && options.artReview === true;
   const animationLab = import.meta.env.DEV && options.animationLab === true;
   const ionaPreview = import.meta.env.DEV && options.ionaPreview === true;
@@ -24,6 +36,7 @@ export function createGame(onPause: () => void, onController: (active: boolean) 
     : b04
     ? new B04VerticalSliceScene(onPause, onController, { b05 })
     : new ChamberScene(onPause, onController, { artReview, animationLab, ionaPreview: previewEnabled, b03Combat });
+  const initialZoom = displayZoom(window.innerWidth, window.innerHeight, options.pixelScaling ?? 'pixel-perfect');
   const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: 'game-root',
@@ -31,12 +44,17 @@ export function createGame(onPause: () => void, onController: (active: boolean) 
     pixelArt: true,
     render: { pixelArt: true, antialias: false, roundPixels: true },
     backgroundColor: '#080e1d',
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, width: 480, height: 270 },
+    scale: { mode: Phaser.Scale.NONE, autoCenter: Phaser.Scale.NO_CENTER, width: 480, height: 270, zoom: initialZoom },
     input: { gamepad: true },
     physics: { default: 'arcade', arcade: { gravity: { x: 0, y: 0 }, debug: false, fixedStep: true, fps: 60 } },
     scene: [scene],
   });
+  const applyScaling = () => applyDisplayScaling(game, options.pixelScaling ?? 'pixel-perfect');
+  window.addEventListener('resize', applyScaling);
+  game.events.once(Phaser.Core.Events.DESTROY, () => window.removeEventListener('resize', applyScaling));
   game.events.once(Phaser.Core.Events.READY, () => {
+    game.events.once(Phaser.Core.Events.POST_STEP, applyScaling);
+    window.setTimeout(applyScaling, 0);
     const canvas = game.canvas;
     if (!canvas) return;
     canvas.tabIndex = 0;
