@@ -195,7 +195,7 @@ export class B04VerticalSliceScene extends ChamberScene {
 
   private createHud(): void {
     this.hudGraphics = this.add.graphics().setScrollFactor(0).setDepth(45);
-    const style = { fontFamily: 'monospace', fontSize: '6px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2 };
+    const style = { fontFamily: 'Silkscreen', fontSize: '6px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2 };
     this.add.text(10, 8, this.b05ReviewMode ? 'SUNDERGLASS / DAWNRUSH REVIEW' : 'THE SUNDERGLASS ATRIUM', { ...style, fontSize: this.b05ReviewMode ? '7px' : '8px', color: '#f4d0a8' }).setScrollFactor(0).setDepth(46);
     this.hudVitals = this.add.text(10, 23, '', style).setScrollFactor(0).setDepth(46);
     this.hudSpecial = this.add.text(10, 34, '', { ...style, fontSize: '5px', color: '#a9e4dc' }).setScrollFactor(0).setDepth(46);
@@ -205,7 +205,7 @@ export class B04VerticalSliceScene extends ChamberScene {
   }
 
   private createPrompt(): void {
-    this.interactPrompt = this.add.text(0, 0, '', { fontFamily: 'monospace', fontSize: '6px', color: '#fbefd6', backgroundColor: '#111c25e8', padding: { x: 3, y: 2 }, align: 'center' }).setOrigin(.5, 1).setDepth(30).setVisible(false);
+    this.interactPrompt = this.add.text(0, 0, '', { fontFamily: 'Silkscreen', fontSize: '6px', color: '#fbefd6', backgroundColor: '#111c25e8', padding: { x: 3, y: 2 }, align: 'center' }).setOrigin(.5, 1).setDepth(30).setVisible(false);
   }
 
   private updateWorldState(combat: B03CombatSnapshot, deltaMs: number): void {
@@ -321,7 +321,7 @@ export class B04VerticalSliceScene extends ChamberScene {
   }
 
   private showBanner(message: string): void {
-    const banner = this.add.text(240, 58, message, { fontFamily: 'monospace', fontSize: '6px', color: '#f5ddbd', backgroundColor: '#111923e8', padding: { x: 5, y: 4 }, align: 'center' }).setOrigin(.5, 0).setScrollFactor(0).setDepth(60).setAlpha(0);
+    const banner = this.add.text(240, 58, message, { fontFamily: 'Silkscreen', fontSize: '6px', color: '#f5ddbd', backgroundColor: '#111923e8', padding: { x: 5, y: 4 }, align: 'center' }).setOrigin(.5, 0).setScrollFactor(0).setDepth(60).setAlpha(0);
     this.tweens.add({ targets: banner, alpha: 1, duration: 180, hold: 1700, yoyo: true, onComplete: () => banner.destroy() });
   }
 

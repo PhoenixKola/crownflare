@@ -467,7 +467,7 @@ export class B06EnemyGauntletScene extends ChamberScene {
     this.director = createB06Director(members);
     this.syncEnemyPresentation();
     this.add.rectangle(240, 8, 468, 15, 0x07131d, .9).setDepth(42);
-    this.add.text(8, 4, 'ROSTER / 480×270 / SOURCE SCALE / PIXELS AT GAME SIZE', { fontFamily: 'monospace', fontSize: '7px', color: '#f5ddbd' }).setDepth(43);
+    this.add.text(8, 4, 'ROSTER / 480×270 / SOURCE SCALE / PIXELS AT GAME SIZE', { fontFamily: 'Silkscreen', fontSize: '7px', color: '#f5ddbd' }).setDepth(43);
     const labels = [
       { x: 40, text: 'IONA\n15×30 / PLAYER', color: '#f1c99a' },
       { x: 120, text: 'SENTRY\nRUST / LUNGE', color: '#8dd6cb' },
@@ -477,18 +477,18 @@ export class B06EnemyGauntletScene extends ChamberScene {
       { x: 440, text: 'CANTOR\nRING / ELITE', color: '#d5bde8' },
     ];
     this.add.rectangle(240, 256, 480, 28, 0x07131d, .92).setDepth(41);
-    for (const label of labels) this.add.text(label.x, 246, label.text, { fontFamily: 'monospace', fontSize: '5px', color: label.color, align: 'center', lineSpacing: 1 }).setOrigin(.5, 0).setDepth(42);
-    this.add.text(240, 229, 'R / LB FORM TO REVIEW DAWNRUSH AURA   ·   ESC RETURNS TO TITLE', { fontFamily: 'monospace', fontSize: '5px', color: '#e5ddd0', backgroundColor: '#0b1620cc', padding: { x: 3, y: 2 } }).setOrigin(.5, 1).setDepth(43);
+    for (const label of labels) this.add.text(label.x, 246, label.text, { fontFamily: 'Silkscreen', fontSize: '5px', color: label.color, align: 'center', lineSpacing: 1 }).setOrigin(.5, 0).setDepth(42);
+    this.add.text(240, 229, 'R / LB FORM TO REVIEW DAWNRUSH AURA   ·   ESC RETURNS TO TITLE', { fontFamily: 'Silkscreen', fontSize: '5px', color: '#e5ddd0', backgroundColor: '#0b1620cc', padding: { x: 3, y: 2 } }).setOrigin(.5, 1).setDepth(43);
   }
 
   private createHud(): void {
     this.hudGraphics = this.add.graphics().setScrollFactor(0).setDepth(45);
-    const style = { fontFamily: 'monospace', fontSize: '6px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2 };
+    const style = { fontFamily: 'Silkscreen', fontSize: '6px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2 };
     this.add.text(10, 8, 'SUNDERGLASS / ENCOUNTER GAUNTLET', { ...style, fontSize: '7px', color: '#f4d0a8' }).setScrollFactor(0).setDepth(46);
     this.hudVitals = this.add.text(10, 22, '', style).setScrollFactor(0).setDepth(46);
     this.hudObjective = this.add.text(472, 9, '', { ...style, align: 'right' }).setOrigin(1, 0).setScrollFactor(0).setDepth(46);
     this.hudControls = this.add.text(8, 254, '', { ...style, fontSize: '5px', backgroundColor: '#0b1620d9', padding: { x: 4, y: 3 } }).setScrollFactor(0).setDepth(46);
-    this.interactPrompt = this.add.text(0, 0, '', { fontFamily: 'monospace', fontSize: '6px', color: '#fbefd6', backgroundColor: '#111c25e8', padding: { x: 3, y: 2 }, align: 'center' }).setOrigin(.5, 1).setDepth(30).setVisible(false);
+    this.interactPrompt = this.add.text(0, 0, '', { fontFamily: 'Silkscreen', fontSize: '6px', color: '#fbefd6', backgroundColor: '#111c25e8', padding: { x: 3, y: 2 }, align: 'center' }).setOrigin(.5, 1).setDepth(30).setVisible(false);
   }
 
   private updatePresentation(combat: B03CombatSnapshot): void {
@@ -529,7 +529,7 @@ export class B06EnemyGauntletScene extends ChamberScene {
       if (enemy.archetype === 'orbit-wisp') sprite.setOrigin(.5, .5);
       else sprite.setOrigin(.5, 1);
       if (enemy.archetype !== 'spindle-sentry') sprite.setDisplaySize(80, 80);
-      const label = this.add.text(enemy.x, enemy.y - 40, '', { fontFamily: 'monospace', fontSize: '5px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2, align: 'center' }).setOrigin(.5, 1).setDepth(20);
+      const label = this.add.text(enemy.x, enemy.y - 40, '', { fontFamily: 'Silkscreen', fontSize: '5px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2, align: 'center' }).setOrigin(.5, 1).setDepth(20);
       this.enemyVisuals.set(enemy.id, { sprite, label, lastPose: texture, barX: enemy.x });
     }
   }
@@ -640,7 +640,7 @@ export class B06EnemyGauntletScene extends ChamberScene {
   }
 
   private showBanner(message: string): void {
-    const banner = this.add.text(240, 58, message, { fontFamily: 'monospace', fontSize: '6px', color: '#f5ddbd', backgroundColor: '#111923e8', padding: { x: 5, y: 4 }, align: 'center' }).setOrigin(.5, 0).setScrollFactor(0).setDepth(60).setAlpha(0);
+    const banner = this.add.text(240, 58, message, { fontFamily: 'Silkscreen', fontSize: '6px', color: '#f5ddbd', backgroundColor: '#111923e8', padding: { x: 5, y: 4 }, align: 'center' }).setOrigin(.5, 0).setScrollFactor(0).setDepth(60).setAlpha(0);
     this.tweens.add({ targets: banner, alpha: 1, duration: 180, hold: 1500, yoyo: true, onComplete: () => banner.destroy() });
   }
 

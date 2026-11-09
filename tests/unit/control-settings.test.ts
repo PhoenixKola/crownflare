@@ -63,6 +63,8 @@ test('legacy saved mappings receive a free transform button and the new action s
 test('controller labels only use Xbox or PlayStation names when the ID identifies a family', () => {
   assert.equal(controllerFamily('Xbox Wireless Controller'), 'xbox');
   assert.equal(buttonLabel(2, 'playstation'), 'Square');
-  assert.equal(buttonLabel(2, 'standard'), 'Button 2');
+  assert.equal(buttonLabel(0, 'standard'), 'SOUTH');
+  assert.equal(buttonLabel(2, 'standard'), 'WEST');
+  assert.equal(buttonLabel(12, 'standard'), 'D-PAD UP');
   assert.equal(loadControlSettings({ getItem: () => { throw new Error('storage unavailable'); } }).version, 1);
 });

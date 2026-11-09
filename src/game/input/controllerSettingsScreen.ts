@@ -130,7 +130,7 @@ export class ControllerSettingsScreen {
 
   private labelFor(index: number): string {
     const family = this.family;
-    return family === 'standard' ? `Button ${index}` : `${buttonLabel(index, family)} · ${index}`;
+    return `${buttonLabel(index, family)} · ${index}`;
   }
 
   private setMessage(value: string): void { this.message.textContent = value; }

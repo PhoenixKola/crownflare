@@ -118,6 +118,8 @@ export class B07ExpeditionScene extends ChamberScene {
   private bossHud?: Phaser.GameObjects.Text;
   private bossBar?: Phaser.GameObjects.Graphics;
   private bossTell?: Phaser.GameObjects.Graphics;
+  private bossTellStrips: Phaser.GameObjects.TileSprite[] = [];
+  private bossSafeLabel?: Phaser.GameObjects.Text;
   private bossOverlay?: Phaser.GameObjects.Graphics;
   private bossAudio?: Phaser.Sound.BaseSound;
   private bossLastFrame = '';
@@ -197,6 +199,7 @@ export class B07ExpeditionScene extends ChamberScene {
     }
     for (const cue of AUDIO_CUES) this.load.audio(`b07-audio-${cue}`, `./assets/audio/b06/${cue}.wav`);
     this.load.audio('b07-audio-sunderglass', './assets/audio/b04/sunderglass-ambience.wav');
+    if (this.b08Mode) this.load.image('b08-attack-warning-strip', './assets/ui/b08/attack-warning-strip.png');
     if (this.b08Mode && !this.b10Mode) this.queueBossAssets();
   }
 
@@ -645,7 +648,7 @@ export class B07ExpeditionScene extends ChamberScene {
     if (room.id === 'vl-night-side-threshold') {
       const threshold = this.add.image(604, room.world.groundTop, 'b07-vesper-threshold-gate').setOrigin(.5, 1).setDisplaySize(208, 206).setDepth(8);
       this.trackRoom(threshold);
-      const honest = this.add.text(604, 66, 'B08 / BOSS NOT BUILT', { fontFamily: 'monospace', fontSize: '6px', color: '#fff0ca', backgroundColor: '#08131ddd', padding: { x: 3, y: 2 } }).setOrigin(.5).setDepth(10);
+      const honest = this.add.text(604, 66, 'B08 / BOSS NOT BUILT', { fontFamily: 'Silkscreen', fontSize: '6px', color: '#fff0ca', backgroundColor: '#08131ddd', padding: { x: 3, y: 2 } }).setOrigin(.5).setDepth(10);
       this.trackRoom(honest);
     }
   }
@@ -674,7 +677,7 @@ export class B07ExpeditionScene extends ChamberScene {
       const imageY = definition.kind === 'thread-press' ? definition.rail.y + height / 2 : definition.bounds.bottom;
       const image = this.add.image(x, imageY, texture).setDisplaySize(width, height + (definition.kind === 'thread-press' ? 0 : 14)).setOrigin(.5, definition.kind === 'thread-press' ? .5 : 1).setDepth(14).setAlpha(.28);
       const cueY = definition.kind === 'thread-press' ? definition.rail.y - 7 : imageY - height / 2 - 7;
-      const cue = this.add.text(x, cueY, 'THREAD / IDLE', { fontFamily: 'monospace', fontSize: '5px', color: '#e9f2dd', backgroundColor: '#09141ccc', padding: { x: 2, y: 1 } }).setOrigin(.5).setDepth(22);
+      const cue = this.add.text(x, cueY, 'THREAD / IDLE', { fontFamily: 'Silkscreen', fontSize: '5px', color: '#e9f2dd', backgroundColor: '#09141ccc', padding: { x: 2, y: 1 } }).setOrigin(.5).setDepth(22);
       this.trackRoom(image); this.trackRoom(cue);
       this.hazardVisuals.set(definition.id, { definition, image, cue, hitPhases: new Set() });
     }
@@ -688,7 +691,7 @@ export class B07ExpeditionScene extends ChamberScene {
       const footY = enemy.archetype === 'orbit-wisp' ? enemy.y : enemy.y + profile.height / 2;
       const sprite = this.add.image(enemy.x, footY, texture).setOrigin(.5, enemy.archetype === 'orbit-wisp' ? .5 : 1).setDepth(17);
       sprite.setDisplaySize(enemy.archetype === 'spindle-sentry' ? 70 : enemy.archetype === 'orbit-wisp' ? 54 : 82, enemy.archetype === 'orbit-wisp' ? 54 : 78);
-      const label = this.add.text(enemy.x, footY - 82, '', { fontFamily: 'monospace', fontSize: '5px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2, align: 'center' }).setOrigin(.5, 1).setDepth(20);
+      const label = this.add.text(enemy.x, footY - 82, '', { fontFamily: 'Silkscreen', fontSize: '5px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2, align: 'center' }).setOrigin(.5, 1).setDepth(20);
       const bar = this.add.graphics().setDepth(21);
       this.trackRoom(sprite); this.trackRoom(label); this.trackRoom(bar);
       this.enemyVisuals.set(enemy.id, { sprite, label, bar, pose: texture });
@@ -696,14 +699,14 @@ export class B07ExpeditionScene extends ChamberScene {
   }
 
   private createHud(): void {
-    const style = { fontFamily: 'monospace', fontSize: '6px', color: '#f4ead2', stroke: '#08111e', strokeThickness: 2 };
-    const topPlate = this.add.rectangle(240, 14, 480, 28, 0x07131d, .82).setScrollFactor(0).setDepth(45);
-    this.roomLabel = this.add.text(8, 8, '', { ...style, fontSize: '7px', color: '#f0d1a8' }).setScrollFactor(0).setDepth(46);
-    this.routeLabel = this.add.text(472, 8, '', { ...style, align: 'right', fontSize: '5px' }).setOrigin(1, 0).setScrollFactor(0).setDepth(46);
-    this.vitalsLabel = this.add.text(8, 23, '', style).setScrollFactor(0).setDepth(46);
-    this.objectiveLabel = this.add.text(472, 23, '', { ...style, align: 'right' }).setOrigin(1, 0).setScrollFactor(0).setDepth(46);
-    this.buildLabel = this.add.text(8, 39, '', { ...style, fontSize: '5px', color: '#a9d7c9' }).setScrollFactor(0).setDepth(46).setVisible(this.b09Mode);
-    this.promptLabel = this.add.text(240, 236, '', { ...style, fontSize: '6px', backgroundColor: '#07131de8', padding: { x: 4, y: 3 }, align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(48);
+    const style = { fontFamily: 'Silkscreen', fontSize: '7px', color: '#f4ead2' };
+    const topPlate = this.add.rectangle(240, 19, 480, 38, 0x07131d, .9).setScrollFactor(0).setDepth(45);
+    this.roomLabel = this.add.text(10, 6, '', { ...style, fontSize: '8px', color: '#f0d1a8' }).setScrollFactor(0).setDepth(46);
+    this.routeLabel = this.add.text(470, 6, '', { ...style, align: 'right', fontSize: '8px' }).setOrigin(1, 0).setScrollFactor(0).setDepth(46);
+    this.vitalsLabel = this.add.text(10, 25, '', style).setScrollFactor(0).setDepth(46);
+    this.objectiveLabel = this.add.text(470, 25, '', { ...style, align: 'right' }).setOrigin(1, 0).setScrollFactor(0).setDepth(46);
+    this.buildLabel = this.add.text(10, 39, '', { ...style, fontSize: '7px', color: '#a9d7c9' }).setScrollFactor(0).setDepth(46).setVisible(this.b09Mode);
+    this.promptLabel = this.add.text(240, 236, '', { ...style, fontSize: '8px', backgroundColor: '#07131de8', padding: { x: 5, y: 4 }, align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(48);
     this.bannerLabel = this.add.text(240, 46, '', { ...style, color: '#fff1c8', backgroundColor: '#07131de8', padding: { x: 4, y: 3 }, align: 'center' }).setOrigin(.5, 0).setScrollFactor(0).setDepth(49).setAlpha(0);
     if (this.b10Mode) {
       topPlate.setVisible(false);
@@ -714,11 +717,12 @@ export class B07ExpeditionScene extends ChamberScene {
   private showChoiceMenu(choice: B07ChoiceId): void {
     this.menu = { choice, options: B07_CHOICE_OPTIONS[choice] };
     this.menuIndex = 0; this.priorMenuAxis = 0; this.priorMenuAccept = false;
+    this.promptLabel?.setText('').setVisible(false);
     this.choicePanel = this.add.rectangle(240, 135, 408, 176, 0x08131d, .97).setStrokeStyle(1, choice === 'reach' ? 0xd8ae77 : 0x9adcd0, .95).setScrollFactor(0).setDepth(70);
-    this.choiceHeading = this.add.text(240, 66, choice === 'reach' ? 'ROUTE CHOICE / SUNDERGLASS REACH' : 'ROUTE CHOICE / VESPER LOOMWORKS', { fontFamily: 'monospace', fontSize: '8px', color: '#fff1d3', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(72);
-    this.choiceHint = this.add.text(240, 210, 'LEFT / RIGHT OR D-PAD SELECT  ·  E / SOUTH CONFIRM', { fontFamily: 'monospace', fontSize: '5px', color: '#bdcbc7', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(72);
+    this.choiceHeading = this.add.text(240, 66, choice === 'reach' ? 'ROUTE CHOICE / SUNDERGLASS REACH' : 'ROUTE CHOICE / VESPER LOOMWORKS', { fontFamily: 'Silkscreen', fontSize: '10px', resolution: 2, color: '#fff1d3', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(72);
+    this.choiceHint = this.add.text(240, 210, 'LEFT / RIGHT OR D-PAD SELECT  ·  E / SOUTH CONFIRM', { fontFamily: 'Silkscreen', fontSize: '7px', resolution: 3, color: '#bdcbc7', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(72);
     this.choiceButtons = this.menu.options.map((_option, index) => {
-      const text = this.add.text(240, 112 + index * 50, '', { fontFamily: 'monospace', fontSize: '6px', color: '#e7eee5', align: 'center', lineSpacing: 2, backgroundColor: '#10202c', padding: { x: 5, y: 4 }, fixedWidth: 368 }).setOrigin(.5).setScrollFactor(0).setDepth(72).setInteractive({ useHandCursor: true });
+      const text = this.add.text(240, 112 + index * 50, '', { fontFamily: 'Silkscreen', fontSize: '8px', resolution: 3, color: '#e7eee5', align: 'center', lineSpacing: 3, backgroundColor: '#10202c', padding: { x: 7, y: 6 }, fixedWidth: 368 }).setOrigin(.5).setScrollFactor(0).setDepth(72).setInteractive({ useHandCursor: true });
       text.on('pointerover', () => { this.menuIndex = index; this.renderChoiceMenu(); });
       text.on('pointerdown', () => { this.menuIndex = index; this.confirmChoice(); });
       return text;
@@ -774,10 +778,10 @@ export class B07ExpeditionScene extends ChamberScene {
     this.eventMenu = event;
     this.eventMenuIndex = 0; this.priorMenuAxis = 0; this.priorMenuAccept = false;
     this.eventPanel = this.add.rectangle(240, 135, 408, 176, 0x08131d, .97).setStrokeStyle(1, 0x9adcd0, .95).setScrollFactor(0).setDepth(74);
-    this.eventHeading = this.add.text(240, 66, `DISCOVERY / ${event.title}`, { fontFamily: 'monospace', fontSize: '8px', color: '#fff1d3', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(76);
-    this.eventHint = this.add.text(240, 210, 'LEFT / RIGHT OR D-PAD SELECT  ·  E / SOUTH CONFIRM  ·  ESC CANCEL', { fontFamily: 'monospace', fontSize: '5px', color: '#bdcbc7', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(76);
+    this.eventHeading = this.add.text(240, 66, `DISCOVERY / ${event.title}`, { fontFamily: 'Silkscreen', fontSize: '8px', color: '#fff1d3', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(76);
+    this.eventHint = this.add.text(240, 210, 'LEFT / RIGHT OR D-PAD SELECT  ·  E / SOUTH CONFIRM  ·  ESC CANCEL', { fontFamily: 'Silkscreen', fontSize: '7px', resolution: 3, color: '#bdcbc7', align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(76);
     this.eventButtons = event.choices.map((_option, index) => {
-      const text = this.add.text(240, 112 + index * 50, '', { fontFamily: 'monospace', fontSize: '6px', color: '#e7eee5', align: 'center', lineSpacing: 2, backgroundColor: '#10202c', padding: { x: 5, y: 4 }, fixedWidth: 368 }).setOrigin(.5).setScrollFactor(0).setDepth(76).setInteractive({ useHandCursor: true });
+      const text = this.add.text(240, 112 + index * 50, '', { fontFamily: 'Silkscreen', fontSize: '8px', resolution: 3, color: '#e7eee5', align: 'center', lineSpacing: 3, backgroundColor: '#10202c', padding: { x: 7, y: 6 }, fixedWidth: 368 }).setOrigin(.5).setScrollFactor(0).setDepth(76).setInteractive({ useHandCursor: true });
       text.on('pointerover', () => { this.eventMenuIndex = index; this.renderEventMenu(); });
       text.on('pointerdown', () => { this.eventMenuIndex = index; this.confirmEventChoice(); });
       return text;
@@ -864,7 +868,7 @@ export class B07ExpeditionScene extends ChamberScene {
     if (!this.b08Mode) return;
     if (this.b10Mode && (!this.textures.exists(`b08-${id}-idle`) || !this.textures.exists(`b08-${id}-arena`))) {
       this.pendingBossStart = { id, practice };
-      this.bossLoadingText ??= this.add.text(240, 135, 'PREPARING ENCOUNTER', { fontFamily: 'monospace', fontSize: '9px', color: '#f4ead2', backgroundColor: '#07131fee', padding: { x: 12, y: 8 }, align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(100);
+      this.bossLoadingText ??= this.add.text(240, 135, 'PREPARING ENCOUNTER', { fontFamily: 'Silkscreen', fontSize: '9px', color: '#f4ead2', backgroundColor: '#07131fee', padding: { x: 12, y: 8 }, align: 'center' }).setOrigin(.5).setScrollFactor(0).setDepth(100);
       this.load.once(Phaser.Loader.Events.COMPLETE, this.resumePendingBoss);
       if (!this.load.isLoading()) { this.queueBossAssets(); this.load.start(); }
       return;
@@ -897,8 +901,9 @@ export class B07ExpeditionScene extends ChamberScene {
     this.trackRoom(this.bossEffectSprite);
     this.bossTell = this.add.graphics().setDepth(16); this.trackRoom(this.bossTell);
     this.bossOverlay = this.add.graphics().setDepth(9); this.trackRoom(this.bossOverlay);
+    this.bossSafeLabel = this.trackRoom(this.add.text(0, 0, 'SAFE', { fontFamily: 'Silkscreen', fontSize: '6px', resolution: 3, color: '#c8fff0', backgroundColor: '#08221ee8', padding: { x: 3, y: 2 }, align: 'center' }).setOrigin(.5).setDepth(17).setVisible(false));
     this.bossBar = this.trackRoom(this.add.graphics().setScrollFactor(0).setDepth(57));
-    this.bossHud = this.trackRoom(this.add.text(240, 3, '', { fontFamily: 'monospace', fontSize: '5px', color: '#f8ead0', align: 'center', lineSpacing: 2 }).setOrigin(.5, 0).setScrollFactor(0).setDepth(56));
+    this.bossHud = this.trackRoom(this.add.text(240, 3, '', { fontFamily: 'Silkscreen', fontSize: '8px', resolution: 4, color: '#fff0d7', align: 'center', lineSpacing: 2, stroke: '#07111b', strokeThickness: 1 }).setOrigin(.5, 0).setScrollFactor(0).setDepth(56));
     this.bossBar.setScrollFactor(0); this.bossHud.setScrollFactor(0);
     if (this.b10Mode) { this.bossBar.setVisible(false); this.bossHud.setVisible(false); }
     this.roomLabel?.setText(`${id === 'sundial-custodian' ? 'SUNDERGLASS REACH' : id === 'spoolheart-regent' ? 'VESPER LOOMWORKS' : 'SPINDLE CORE'}  /  ${B08_BOSS_PROFILES[id].name}`);
@@ -966,26 +971,57 @@ export class B07ExpeditionScene extends ChamberScene {
   private syncBossPresentation(): void {
     const boss = this.activeBoss;
     if (!boss || !this.bossSprite || !this.bossTell || !this.bossOverlay || !this.bossEffectSprite) return;
+    const tell = this.bossTell;
     const pose = this.bossPose(boss);
     const key = `b08-${boss.id}-${pose}`;
     if (this.textures.exists(key) && this.bossLastFrame !== key) { this.bossSprite.setTexture(key); this.bossLastFrame = key; }
     this.bossSprite.setPosition(boss.x, boss.y).setFlipX(boss.facing < 0).setAlpha(boss.phase === 'phase-change' && !this.reducedMotion ? .82 : 1);
     this.syncBossEffect(boss);
-    this.bossTell.clear(); this.bossOverlay.clear();
+    tell.clear(); this.bossOverlay.clear();
+    this.bossTellStrips.forEach((strip) => strip.setVisible(false));
+    this.bossSafeLabel?.setVisible(false);
     if (boss.phase === 'telegraph' && boss.pattern) {
       const rects = b08BossAttackRects(boss, boss.pattern);
-      const fill = boss.id === 'sundial-custodian' ? 0xf04e58 : boss.id === 'spoolheart-regent' ? 0x22e6cf : 0xffd45e;
-      this.bossTell.fillStyle(fill, .5);
-      for (const rect of rects) {
-        this.bossTell.fillRect(rect.left, rect.top, Math.max(0, rect.right - rect.left), rect.bottom - rect.top);
-        this.bossTell.lineStyle(2, fill, .98);
-        this.bossTell.strokeRect(rect.left, rect.top, Math.max(0, rect.right - rect.left), rect.bottom - rect.top);
+      const fill = boss.id === 'sundial-custodian' ? 0xe87954 : boss.id === 'spoolheart-regent' ? 0xb06c57 : 0xe9ad56;
+      const warningTexture = this.textures.get('b08-attack-warning-strip');
+      if (warningTexture && !warningTexture.has('band')) warningTexture.add('band', 0, 0, 196, 2172, 330);
+      while (this.bossTellStrips.length < rects.length * 2 && this.textures.exists('b08-attack-warning-strip')) {
+        const strip = this.add.tileSprite(0, 0, 1, 1, 'b08-attack-warning-strip', 'band').setDepth(17).setAlpha(.62).setVisible(false);
+        this.bossTellStrips.push(this.trackRoom(strip));
       }
-      this.bossTell.fillStyle(0x81ffe0, .15).fillRect(boss.safeX - 30, 170, 60, 71);
-      this.bossTell.lineStyle(2, 0x81ffe0, .98);
-      this.bossTell.lineBetween(boss.safeX, 166, boss.safeX, 241);
-      this.bossTell.lineBetween(boss.safeX - 30, 166, boss.safeX - 30, 241);
-      this.bossTell.lineBetween(boss.safeX + 30, 166, boss.safeX + 30, 241);
+      rects.forEach((rect, index) => {
+        const width = Math.max(0, rect.right - rect.left);
+        const height = Math.max(0, rect.bottom - rect.top);
+        // The authored bands communicate danger without covering the arena in a red hitbox.
+        tell.fillStyle(fill, .035).fillRect(rect.left, rect.top, width, height);
+        const corner = Math.min(9, width / 5, height / 4);
+        tell.lineStyle(2, 0xffcf91, .96);
+        for (const x of [rect.left, rect.right]) for (const y of [rect.top, rect.bottom]) {
+          const dx = x === rect.left ? corner : -corner;
+          const dy = y === rect.top ? corner : -corner;
+          tell.lineBetween(x, y, x + dx, y);
+          tell.lineBetween(x, y, x, y + dy);
+        }
+        for (const edgeIndex of [0, 1]) {
+          const strip = this.bossTellStrips[index * 2 + edgeIndex];
+          if (!strip) continue;
+          strip.setPosition((rect.left + rect.right) / 2, edgeIndex === 0 ? rect.top + 6 : rect.bottom - 6)
+            .setSize(width, 12).setTileScale(.13, .036).setAlpha(.94).setVisible(true);
+        }
+      });
+      const safeTop = 170;
+      const safeBottom = 241;
+      const safeLeft = boss.safeX - 30;
+      const safeRight = boss.safeX + 30;
+      // Mark the refuge at the player's feet; tall rails obscured the fight and resembled hitboxes.
+      tell.fillStyle(0x78e7cc, .34).fillRect(safeLeft, safeBottom - 4, 60, 4);
+      tell.lineStyle(1, 0x8eead6, .9);
+      tell.lineBetween(safeLeft, safeBottom - 3, safeRight, safeBottom - 3);
+      tell.lineStyle(2, 0xb3ffea, .94);
+      for (const x of [safeLeft, safeRight]) {
+        tell.lineBetween(x, safeBottom - 10, x, safeBottom);
+      }
+      this.bossSafeLabel?.setPosition(boss.safeX, safeTop - 4).setVisible(true);
       if (this.bossVfxEnabled) {
         this.bossOverlay.lineStyle(1, fill, .7);
         this.bossOverlay.strokeCircle(boss.x, boss.y, 52 + (this.reducedMotion ? 0 : Math.sin(boss.phaseMs / 80) * 4));
@@ -1036,18 +1072,18 @@ export class B07ExpeditionScene extends ChamberScene {
     if (!boss || !this.bossBar || !this.bossHud) return;
     const profile = B08_BOSS_PROFILES[boss.id];
     this.bossBar.clear();
-    this.bossBar.fillStyle(0x09101b, .9); this.bossBar.fillRect(106, 22, 268, 6);
+    this.bossBar.fillStyle(0x09101b, .9); this.bossBar.fillRect(106, 24, 268, 6);
     this.bossBar.fillStyle(boss.id === 'sundial-custodian' ? 0xf0a257 : boss.id === 'spoolheart-regent' ? 0x56d8c7 : 0xf0d18a, .95);
-    this.bossBar.fillRect(107, 23, Math.max(0, 266 * boss.hp / boss.maxHp), 4);
-    this.bossBar.lineStyle(1, 0xf1e7d0, .72); this.bossBar.strokeRect(106, 22, 268, 6);
+    this.bossBar.fillRect(107, 25, Math.max(0, 266 * boss.hp / boss.maxHp), 4);
+    this.bossBar.lineStyle(1, 0xf1e7d0, .72); this.bossBar.strokeRect(106, 24, 268, 6);
     const playerHp = this.combat?.playerHp ?? 0;
-    const phaseName = boss.phase === 'telegraph' ? `TELEGRAPH / ${boss.pattern?.replaceAll('-', ' ').toUpperCase()} / READ THE TELL`
-      : boss.phase === 'commit' ? 'ATTACK COMMITTED / EVADE'
+    const phaseName = boss.phase === 'telegraph' ? `TELL / ${boss.pattern?.replaceAll('-', ' ').toUpperCase()} / DODGE TO SAFE LANE`
+      : boss.phase === 'commit' ? 'DODGE NOW / ATTACK IN PROGRESS'
         : boss.phase === 'recovery' ? 'CORE EXPOSED / COUNTERATTACK'
-          : boss.phase === 'phase-change' ? 'REGULATOR FAILURE / PHASE TWO'
+          : boss.phase === 'phase-change' ? 'PHASE TWO / WATCH THE PATTERN'
             : boss.phase === 'ko' ? 'MECHANISM FALLING SILENT' : 'OBSERVATORY ARMING';
-    const repairs = this.route.repairCharges > 0 && playerHp > 0 && playerHp < 5 ? ` / INTERACT: REPAIR +1 HP ×${this.route.repairCharges}` : ` / FIELD REPAIRS ×${this.route.repairCharges}`;
-    this.bossHud.setText(`${profile.name} / ${profile.epithet}\n${phaseName} / BOSS ${boss.hp}/${boss.maxHp} / IONA ${playerHp}/5 / VFX ${this.bossVfxEnabled ? 'ON' : 'OFF'}${repairs}${this.practiceBoss ? ' / PRACTICE' : ''}`);
+    const repairs = ` / REPAIRS ${this.route.repairCharges}`;
+    this.bossHud.setText(`${profile.name} / ${profile.epithet}\n${phaseName} / HP ${boss.hp}/${boss.maxHp} / IONA ${playerHp}/5${repairs}`);
   }
   private playBossCue(cue: 'loop' | 'tell' | 'strike' | 'phase' | 'ko'): void {
     const id = this.activeBoss?.id;
@@ -1326,7 +1362,7 @@ export class B07ExpeditionScene extends ChamberScene {
 
   private drawPhysicsDiagnostics(): void {
     const graphic = this.diagnosticsGraphic ??= this.add.graphics().setDepth(68);
-    const label = this.diagnosticsLabel ??= this.add.text(6, 5, '', { fontFamily: 'monospace', fontSize: '5px', color: '#d8fff1', backgroundColor: '#061019e8', padding: { x: 3, y: 2 }, lineSpacing: 1 }).setScrollFactor(0).setDepth(82);
+    const label = this.diagnosticsLabel ??= this.add.text(6, 5, '', { fontFamily: 'Silkscreen', fontSize: '5px', color: '#d8fff1', backgroundColor: '#061019e8', padding: { x: 3, y: 2 }, lineSpacing: 1 }).setScrollFactor(0).setDepth(82);
     graphic.clear();
     if (!import.meta.env.DEV || !this.diagnosticsVisible) { graphic.setVisible(false); label.setVisible(false); return; }
     graphic.setVisible(true); label.setVisible(true);

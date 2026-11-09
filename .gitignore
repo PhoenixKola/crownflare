@@ -1,6 +1,8 @@
 node_modules/
 **/__pycache__/
 dist/
+/release-artifacts/
+/tmp/
 /review-evidence/
 **/*.webm
 **/*.mov

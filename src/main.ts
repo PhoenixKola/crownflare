@@ -1,6 +1,3 @@
-import './style.css';
-import './ui/b11.css';
-import './ui/b14-title.css';
 import type * as Phaser from 'phaser';
 import { applyDisplayScaling, createGame } from './game/createGame';
 import { loadSave, persistSave, recordRunResult, type B10RunCheckpoint, type B10RunSummary, type DisplayScalingMode, type SaveV2 } from './game/persistence/save';
@@ -20,6 +17,7 @@ const byId = <T extends HTMLElement>(id: string): T => { const el = document.get
 const title = byId<HTMLElement>('title-screen');
 const titleHeroSprite = title.querySelector<HTMLImageElement>('.title-hero img')!;
 const hubScreen = byId<HTMLElement>('hub-screen');
+const hubIonaSprite = hubScreen.querySelector<HTMLImageElement>('.hub-iona img')!;
 const hubStory = byId<HTMLElement>('hub-story');
 const b10StoryBeat = byId<HTMLElement>('b10-story-beat');
 const b10StoryContinue = byId<HTMLButtonElement>('b10-story-continue');
@@ -99,6 +97,24 @@ const b09AbandonButton = byId<HTMLButtonElement>('b09-abandon-button');
 const b09PauseBuild = byId<HTMLElement>('b09-pause-build');
 const titleSettingsButton = byId<HTMLButtonElement>('title-settings-button');
 const pauseSettingsButton = byId<HTMLButtonElement>('pause-settings-button');
+const crispGameFontReady = document.fonts.load('8px "Silkscreen"').catch(() => []);
+const warmedHubFrames = [0, 1, 2, 3].map((frame) => {
+  const image = new Image();
+  image.src = `/assets/characters/iona/b01e/idle-${frame}-right.png`;
+  return image;
+});
+let hubIdleFrame = 0;
+window.setInterval(() => {
+  const reducedMotion = saveState.options.reduceMotion || byId<HTMLElement>('app').classList.contains('reduce-motion') || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  if (hubScreen.classList.contains('hidden') || document.visibilityState !== 'visible' || reducedMotion || hubReducedMotion.checked) {
+    if (hubIonaSprite.getAttribute('src') !== '/assets/characters/iona/b01e/idle-0-right.png') hubIonaSprite.src = '/assets/characters/iona/b01e/idle-0-right.png';
+    hubIdleFrame = 0;
+    return;
+  }
+  hubIdleFrame = (hubIdleFrame + 1) % warmedHubFrames.length;
+  const nextImage = warmedHubFrames[hubIdleFrame];
+  if (nextImage?.complete && nextImage.naturalWidth > 0) hubIonaSprite.src = `/assets/characters/iona/b01e/idle-${hubIdleFrame}-right.png`;
+}, 320);
 let game: Phaser.Game | null = null;
 let chamber: ChamberScene | null = null;
 let active = false;
@@ -339,7 +355,6 @@ function renderHub(): void {
   hubContinueButton.disabled = !checkpoint;
   hubContinueButton.textContent = checkpoint ? `CONTINUE · ROOM ${checkpoint.route.roomIndex + 1} · ${checkpoint.seed.toString(16).toUpperCase()}` : 'CONTINUE LAST RUN · NO CHECKPOINT';
   const last = saveState.meta.lastRun;
-  titleMetadata.textContent = saveState.activeRun ? 'EXPEDITION CHECKPOINT READY / CONTINUE FROM THE LAST SAFE THREAD' : saveState.meta.completedRuns ? `${saveState.meta.completedRuns} RUN${saveState.meta.completedRuns === 1 ? '' : 'S'} RECORDED / ${saveState.meta.beaconAwakened ? 'BEACON AWAKE' : 'BEACON UNLIT'}` : 'FIRST EXPEDITION / SPINDLE REFUGE AWAITS';
   const discoveryLog = last ? Object.values(last.eventChoices ?? {}).map((choice) => choice.replaceAll('-', ' ').toUpperCase()).join(' / ') : '';
   hubProgress.textContent = `${saveState.meta.completedRuns} COMPLETED RUN${saveState.meta.completedRuns === 1 ? '' : 'S'} · ${saveState.meta.beaconAwakened ? 'REFUGE BEACON LIT' : 'FIRST CLEAR WILL LIGHT THE BEACON'}${last ? ` · LAST ${last.result.toUpperCase()} / ${last.visited.length} ROOMS / ${discoveryLog || 'FRESH SEEDED ROUTE READY'}` : ''}`;
   hubProgress.title = last ? `Last route: ${last.visited.join(' → ')}${discoveryLog ? ` / discoveries: ${discoveryLog}` : ''}` : 'A fresh run seed selects different authored rooms and encounter timing.';
@@ -470,7 +485,9 @@ function syncB11HudToCanvas(): void {
   hud.style.bottom = 'auto';
 }
 window.addEventListener('resize', () => window.requestAnimationFrame(syncB11HudToCanvas));
-function start(artReview = false, animationLab = false, ionaPreview = false, b03Combat = false, b04 = false, b05 = false, b06 = false, b07 = false, b08 = false, b09 = false, b10 = false, seed?: number, checkpoint: B10RunCheckpoint | null = null, runId?: string): void {
+async function start(artReview = false, animationLab = false, ionaPreview = false, b03Combat = false, b04 = false, b05 = false, b06 = false, b07 = false, b08 = false, b09 = false, b10 = false, seed?: number, checkpoint: B10RunCheckpoint | null = null, runId?: string): Promise<void> {
+  if (active) return;
+  await crispGameFontReady;
   if (active) return;
   const b07On = b07 || b08 || b09 || b10;
   b11ControlSettings = readB11ControlSettings();
@@ -542,12 +559,14 @@ function moveB09Choice(direction: -1 | 1): void {
   const count = b09CurrentOffer.choices.length;
   b09SelectedIndex = (b09SelectedIndex + direction + count) % count;
   const cards = b09ChoiceCards.querySelectorAll<HTMLButtonElement>('.b09-choice-card');
+  cards.forEach((card, index) => card.setAttribute('aria-pressed', String(index === b09SelectedIndex)));
   cards[b09SelectedIndex]?.focus();
 }
 
 function chooseB09Card(index = b09SelectedIndex): void {
   const choice = b09CurrentOffer?.choices[index];
   if (!choice || !b09ChoiceVisible) return;
+  b09ChoiceCards.querySelectorAll<HTMLButtonElement>('.b09-choice-card').forEach((card, cardIndex) => card.setAttribute('aria-pressed', String(cardIndex === index)));
   b09ChoiceHint.textContent = `${choice.name.toUpperCase()} SELECTED · APPLYING TO THIS RUN`;
   for (const button of b09ChoiceCards.querySelectorAll<HTMLButtonElement>('button')) button.disabled = true;
   window.dispatchEvent(new CustomEvent('crownflare:b09-choice-selected', { detail: { sourceId: b09CurrentOffer!.sourceId, choiceId: choice.id } }));
@@ -598,12 +617,14 @@ function openB09Choice(event: Event): void {
     top.append(icon, document.createElement('span')); top.lastElementChild!.append(tag, rank);
     const name = document.createElement('strong'); name.textContent = choice.name;
     const rule = document.createElement('span'); rule.className = 'b09-card-rule'; rule.textContent = choice.rule;
-    const prompt = document.createElement('span'); prompt.className = 'b09-card-prompt'; prompt.textContent = index === 0 ? 'SOUTH / ENTER TO TAKE' : 'FOCUS · SOUTH / ENTER TO TAKE';
-    card.append(top, name, rule, prompt); card.addEventListener('focus', () => { b09SelectedIndex = index; }); card.addEventListener('click', () => { b09SelectedIndex = index; chooseB09Card(index); });
+    const prompt = document.createElement('span'); prompt.className = 'b09-card-prompt'; prompt.textContent = 'SELECT · SOUTH / ENTER TO TAKE';
+    card.append(top, name, rule, prompt); card.addEventListener('focus', () => { b09SelectedIndex = index; b09ChoiceCards.querySelectorAll<HTMLButtonElement>('.b09-choice-card').forEach((candidate, cardIndex) => candidate.setAttribute('aria-pressed', String(cardIndex === index))); }); card.addEventListener('click', () => { b09SelectedIndex = index; chooseB09Card(index); });
     b09ChoiceCards.append(card);
   });
   setVisible(b09ChoiceScreen, true);
-  b09ChoiceCards.querySelector<HTMLButtonElement>('.b09-choice-card')?.focus();
+  b09ChoiceScreen.dataset.pointerReady = 'false';
+  b09ChoiceScreen.tabIndex = -1;
+  b09ChoiceScreen.focus({ preventScroll: true });
   pollB09Choice();
 }
 
@@ -621,6 +642,7 @@ b09ChoiceScreen.addEventListener('keydown', (event) => {
   else if (event.code === 'Enter' || event.code === 'Space' || event.code === 'KeyE') { event.preventDefault(); chooseB09Card(); }
   else if (event.code === 'Escape') { event.preventDefault(); quit(); }
 });
+b09ChoiceScreen.addEventListener('pointermove', () => { b09ChoiceScreen.dataset.pointerReady = 'true'; });
 b09AbandonButton.addEventListener('click', quit);
 window.addEventListener('crownflare:b09-choice-open', openB09Choice);
 window.addEventListener('crownflare:b09-choice-completed', completeB09Choice);
@@ -801,8 +823,8 @@ settingsPixelScaling.addEventListener('change', () => {
   byId<HTMLElement>('settings-message').textContent = mode === 'pixel-perfect'
     ? window.innerWidth < 480 || window.innerHeight < 270
       ? 'PIXEL PERFECT MODE / THE CANVAS FITS BELOW 480×270 BECAUSE NO WHOLE SCALE FITS.'
-      : 'PIXEL PERFECT MODE / WHOLE-NUMBER SCALE WITH LETTERBOXING.'
-    : 'FIT MODE / USES THE AVAILABLE AREA WITH NEAREST-NEIGHBOR PIXELS.';
+      : 'PIXEL PERFECT MODE / WHOLE PHYSICAL-PIXEL SCALE WITH LETTERBOXING.'
+    : 'FIT MODE / FRACTIONAL 16:9 SCALE; MAY LOOK SOFTER THAN PIXEL PERFECT.';
 });
 hubStory.addEventListener('keydown', (event) => { if (event.code === 'Escape') { event.preventDefault(); setVisible(hubStory, false); hubNewRunButton.focus(); } });
 b10StoryContinue.addEventListener('click', closeB10StoryBeat);
@@ -882,7 +904,7 @@ previewAudioVolume.addEventListener('change', focusGameCanvas);
 if (import.meta.env.DEV) {
   // QA hook is read-only and never changes game rules or bypasses play input.
   Object.defineProperty(window, '__CROWNFLARE_QA__', { configurable: true, value: {
-    snapshot: (): { screen: 'title' | 'hub' | 'hubStory' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b05Combat' | 'b06Combat' | 'b07Expedition' | 'b08Expedition' | 'b09Expedition' | 'b10Expedition' | 'b09Choice' | 'b04Results' | 'b07Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; b05: ReturnType<ChamberScene['dawnrushSnapshot']>; b06: ReturnType<B06EnemyGauntletScene['b06Snapshot']>; b06Events: readonly Record<string, unknown>[]; b07: ReturnType<B07ExpeditionScene['b07Snapshot']> | null; save: { version: number; revision: number; completedRuns: number; beaconAwakened: boolean; activeRun: B10RunCheckpoint | null; lastRun: SaveV2['meta']['lastRun'] }; sceneType: string | null; sceneKey: string | null; sceneStatus: number | null; gameBooted: boolean; display: { mode: DisplayScalingMode; zoom: number; displayWidth: number; displayHeight: number; parentWidth: number; parentHeight: number } | null; sceneActive: boolean; scenePaused: boolean; loader: { loading: boolean; progress: number; queued: number; inflight: number; complete: number; failed: number } | null } => ({
+    snapshot: (): { screen: 'title' | 'hub' | 'hubStory' | 'playing' | 'paused' | 'review' | 'animationLab' | 'ionaPreview' | 'b03Combat' | 'b04Combat' | 'b05Combat' | 'b06Combat' | 'b07Expedition' | 'b08Expedition' | 'b09Expedition' | 'b10Expedition' | 'b09Choice' | 'b04Results' | 'b07Results'; player: ChamberSnapshot | null; review: ArtReviewSnapshot | null; lab: AnimationLabSnapshot | null; preview: IonaPreviewSnapshot | null; combat: ReturnType<ChamberScene['combatSnapshot']>; b04: ReturnType<B04VerticalSliceScene['b04Snapshot']>; b05: ReturnType<ChamberScene['dawnrushSnapshot']>; b06: ReturnType<B06EnemyGauntletScene['b06Snapshot']>; b06Events: readonly Record<string, unknown>[]; b07: ReturnType<B07ExpeditionScene['b07Snapshot']> | null; save: { version: number; revision: number; completedRuns: number; beaconAwakened: boolean; activeRun: B10RunCheckpoint | null; lastRun: SaveV2['meta']['lastRun'] }; sceneType: string | null; sceneKey: string | null; sceneStatus: number | null; gameBooted: boolean; display: { mode: DisplayScalingMode; zoom: number; displayWidth: number; displayHeight: number; parentWidth: number; parentHeight: number } | null; sceneActive: boolean; scenePaused: boolean; renderText: { text: string; fontSize: string | number; resolution: number; textureResolution: number; logicalSize: number[]; textureSize: number[] }[]; loader: { loading: boolean; progress: number; queued: number; inflight: number; complete: number; failed: number } | null } => ({
       screen: !active ? hubStory.classList.contains('hidden') ? hubScreen.classList.contains('hidden') ? 'title' : 'hub' : 'hubStory' : b09ChoiceVisible ? 'b09Choice' : b04ResultVisible ? 'b04Results' : b07ResultVisible ? 'b07Results' : artReviewMode ? 'review' : paused ? 'paused' : animationLabMode ? 'animationLab' : b10Mode ? 'b10Expedition' : b09Mode ? 'b09Expedition' : b08Mode ? 'b08Expedition' : b07Mode ? 'b07Expedition' : b06Mode ? 'b06Combat' : b05Mode ? 'b05Combat' : b04Mode ? 'b04Combat' : b03CombatMode ? 'b03Combat' : ionaPreviewMode ? 'ionaPreview' : 'playing',
       player: active && !artReviewMode ? chamber?.snapshot() ?? null : null,
       review: active && artReviewMode ? chamber?.reviewSnapshot() ?? null : null,
@@ -902,6 +924,10 @@ if (import.meta.env.DEV) {
       display: game ? { mode: saveState.options.pixelScaling ?? 'pixel-perfect', zoom: game.scale.zoom, displayWidth: game.scale.displaySize.width, displayHeight: game.scale.displaySize.height, parentWidth: game.scale.parentSize.width, parentHeight: game.scale.parentSize.height } : null,
       sceneActive: chamber?.sys.isActive() ?? false,
       scenePaused: game?.scene.isPaused('Chamber') ?? false,
+      renderText: chamber?.sys.displayList.list.filter((object) => object.type === 'Text').slice(0, 16).map((object) => {
+        const textObject = object as Phaser.GameObjects.Text;
+        return { text: textObject.text.slice(0, 80), fontSize: textObject.style.fontSize, resolution: textObject.style.resolution, textureResolution: textObject.frame.source.resolution, logicalSize: [textObject.width, textObject.height], textureSize: [textObject.canvas.width, textObject.canvas.height] };
+      }) ?? [],
       loader: chamber ? { loading: chamber.load.isLoading(), progress: chamber.load.progress, queued: chamber.load.list.size, inflight: chamber.load.inflight.size, complete: chamber.load.totalComplete, failed: chamber.load.totalFailed } : null,
     }),
   } });

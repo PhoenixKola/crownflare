@@ -108,7 +108,8 @@ export function readPadActions(pad: StandardPadLike | null, settings: ControlSet
 export function buttonLabel(index: number, family: 'xbox' | 'playstation' | 'standard' = 'standard'): string {
   const xbox: Record<number, string> = { 0: 'A', 1: 'B', 2: 'X', 3: 'Y', 4: 'LB', 5: 'RB', 6: 'LT', 7: 'RT', 8: 'View', 9: 'Menu', 10: 'L3', 11: 'R3', 12: 'D-pad Up', 13: 'D-pad Down', 14: 'D-pad Left', 15: 'D-pad Right' };
   const playstation: Record<number, string> = { 0: 'Cross', 1: 'Circle', 2: 'Square', 3: 'Triangle', 4: 'L1', 5: 'R1', 6: 'L2', 7: 'R2', 8: 'Share', 9: 'Options', 10: 'L3', 11: 'R3', 12: 'D-pad Up', 13: 'D-pad Down', 14: 'D-pad Left', 15: 'D-pad Right' };
-  const values = family === 'xbox' ? xbox : family === 'playstation' ? playstation : {};
+  const standard: Record<number, string> = { 0: 'SOUTH', 1: 'EAST', 2: 'WEST', 3: 'NORTH', 4: 'LB / L1', 5: 'RB / R1', 6: 'LT / L2', 7: 'RT / R2', 8: 'VIEW / SHARE', 9: 'MENU', 10: 'L3', 11: 'R3', 12: 'D-PAD UP', 13: 'D-PAD DOWN', 14: 'D-PAD LEFT', 15: 'D-PAD RIGHT' };
+  const values = family === 'xbox' ? xbox : family === 'playstation' ? playstation : standard;
   return values[index] ?? `Button ${index}`;
 }
 

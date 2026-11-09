@@ -337,6 +337,14 @@ export class ChamberScene extends Phaser.Scene {
   }
 
   create(): void {
+    const displayListEvents = this.sys.displayList.events;
+    const ensureReadableText = (gameObject: Phaser.GameObjects.GameObject): void => {
+      if (!(gameObject instanceof Phaser.GameObjects.Text)) return;
+      if (gameObject.style.resolution < 3) gameObject.setResolution(3);
+      if (gameObject.style.strokeThickness > 1 && gameObject.style.stroke) gameObject.setStroke(gameObject.style.stroke, 1);
+    };
+    displayListEvents.on(Phaser.Scenes.Events.ADDED_TO_SCENE, ensureReadableText);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => displayListEvents.off(Phaser.Scenes.Events.ADDED_TO_SCENE, ensureReadableText));
     const add = this.add;
     this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
     this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
@@ -403,11 +411,11 @@ export class ChamberScene extends Phaser.Scene {
       return { left: bounds.left, right: bounds.right, top: bounds.top, bottom: bounds.bottom };
     }).filter((bounds) => bounds.top < GROUND_TOP);
     if (!this.artReview && !this.animationLab && !this.previewMode && !this.b07Mode) {
-      add.text(27, 205, 'SECTOR 00 Â· SIMULATION CHAMBER', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#263940' : '#cce5d9' });
-      add.text(1057, 205, 'DASH BARRIER', { fontFamily: 'monospace', fontSize: '8px', color: '#edab91' });
-      add.text(1270, 127, 'BEYOND THE BROKEN DAY', { fontFamily: 'monospace', fontSize: '8px', color: this.reviewContrast === 'light' ? '#314852' : '#85c3bd' });
+      add.text(27, 205, 'SECTOR 00 Â· SIMULATION CHAMBER', { fontFamily: 'Silkscreen', fontSize: '8px', color: this.reviewContrast === 'light' ? '#263940' : '#cce5d9' });
+      add.text(1057, 205, 'DASH BARRIER', { fontFamily: 'Silkscreen', fontSize: '8px', color: '#edab91' });
+      add.text(1270, 127, 'BEYOND THE BROKEN DAY', { fontFamily: 'Silkscreen', fontSize: '8px', color: this.reviewContrast === 'light' ? '#314852' : '#85c3bd' });
     }
-    if (!this.previewMode) add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART / OWNER REVIEW PENDING' : this.previewMode ? 'PROVISIONAL IONA / DEVELOPMENT PREVIEW / NOT APPROVED' : this.animationLab ? (this.oldRejectedArt ? 'REJECTED OVERNIGHT VECTOR ART / COMPARISON ONLY' : this.b01cMode ? 'B01C NATIVE PIXEL MOTION PILOT / OWNER REVIEW PENDING' : 'B01 RECOVERY / IMAGEGEN PIXELS / OWNER REVIEW PENDING') : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'monospace', fontSize: this.artReview || this.animationLab || this.previewMode ? '6px' : '7px', color: this.artReview || this.animationLab || this.previewMode ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
+    if (!this.previewMode) add.text(472, 258, this.artReview ? 'B01A CANDIDATE ART / OWNER REVIEW PENDING' : this.previewMode ? 'PROVISIONAL IONA / DEVELOPMENT PREVIEW / NOT APPROVED' : this.animationLab ? (this.oldRejectedArt ? 'REJECTED OVERNIGHT VECTOR ART / COMPARISON ONLY' : this.b01cMode ? 'B01C NATIVE PIXEL MOTION PILOT / OWNER REVIEW PENDING' : 'B01 RECOVERY / IMAGEGEN PIXELS / OWNER REVIEW PENDING') : 'TEMPORARY / TEST CHAMBER', { fontFamily: 'Silkscreen', fontSize: this.artReview || this.animationLab || this.previewMode ? '6px' : '7px', color: this.artReview || this.animationLab || this.previewMode ? '#ffcfaa' : '#edab91' }).setOrigin(1, 1).setScrollFactor(0);
 
     if (this.artReview) {
       this.createArtReview();
@@ -435,7 +443,7 @@ export class ChamberScene extends Phaser.Scene {
       this.labSprite = add.sprite(this.actor.x,this.body.bottom,initialKey).setDepth(12);
       this.playerPresentation.attach(this.labSprite);
       if (this.b01eRuntime) this.sound.setVolume(this.labAudioVolume);
-      if (this.animationLab) this.labHud = add.text(6,5,this.b01eMode ? 'B01E / C-D-E A/B | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | CLICK/J ENABLE AUDIO | M MUTE | [ ] VOLUME | T VERSION | 1-3 SCALE | C BG | V VFX | R REVIEW | ESC PAUSE' : this.b01dMode ? 'B01D CANDIDATE / OWNER PENDING | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | T A/B | 1-2-3 SCALE | C BG | V VFX | G DIAG' : this.oldRejectedArt ? 'REJECTED OVERNIGHT ART COMPARE | J HIT | R REVIEW' : this.b01cMode ? 'B01C / PHASER SPRITES | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | R REVIEW' : 'B01 RECOVERY / GENERATED PIXELS | J HIT | R REVIEW', {fontFamily:'monospace',fontSize:this.b01dMode||this.b01eMode?'5px':'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
+      if (this.animationLab) this.labHud = add.text(6,5,this.b01eMode ? 'B01E / C-D-E A/B | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | CLICK/J ENABLE AUDIO | M MUTE | [ ] VOLUME | T VERSION | 1-3 SCALE | C BG | V VFX | R REVIEW | ESC PAUSE' : this.b01dMode ? 'B01D CANDIDATE / OWNER PENDING | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | T A/B | 1-2-3 SCALE | C BG | V VFX | G DIAG' : this.oldRejectedArt ? 'REJECTED OVERNIGHT ART COMPARE | J HIT | R REVIEW' : this.b01cMode ? 'B01C / PHASER SPRITES | A/D MOVE | SPACE JUMP | SHIFT DASH | J COMBO | R REVIEW' : 'B01 RECOVERY / GENERATED PIXELS | J HIT | R REVIEW', {fontFamily:'Silkscreen',fontSize:this.b01dMode||this.b01eMode?'5px':'6px',color:'#fff1d2',backgroundColor:'#171b2c',padding:{x:3,y:2}}).setScrollFactor(0).setDepth(40);
       this.input.keyboard?.on('keydown-R',(event:KeyboardEvent)=>{if(!event.repeat){if(this.previewMode&&!this.b04Mode)this.previewResetRequested=true;else if(this.animationLab)this.labReviewRequested=true;}});
       this.input.keyboard?.on('keydown-C',(event:KeyboardEvent)=>{if(!event.repeat&&!this.b04Mode)this.labContrastRequested=true;});
       this.input.keyboard?.on('keydown-T',(event:KeyboardEvent)=>{if(!event.repeat&&(this.b01dMode||this.b01eMode))this.labABRequested=true;});
@@ -455,7 +463,7 @@ export class ChamberScene extends Phaser.Scene {
         if(this.b01eRuntime)this.unlockLabAudio();
       });
       if(this.b01dMode||this.b01eMode||this.b02Diagnostics)this.labDiagnosticsGraphic=add.graphics().setDepth(39);
-      if(this.b02Diagnostics)this.labDiagnosticLabel=add.text(this.actor.x,this.body.bottom-84,'',{fontFamily:'monospace',fontSize:'5px',color:'#b9fff0',backgroundColor:'#09111c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(40);
+      if(this.b02Diagnostics)this.labDiagnosticLabel=add.text(this.actor.x,this.body.bottom-84,'',{fontFamily:'Silkscreen',fontSize:'5px',color:'#b9fff0',backgroundColor:'#09111c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(40);
       if(this.b01eRuntime)this.input.on(Phaser.Input.Events.POINTER_DOWN,()=>this.unlockLabAudio());
       if (this.animationLab || (this.previewMode && !this.b07Mode)) this.createTrainingTarget();
       if (this.b05Mode) this.createB05AuraLayers();
@@ -916,12 +924,12 @@ export class ChamberScene extends Phaser.Scene {
     if (this.b03Mode) {
       this.enemySprite = this.add.image(this.targetX, GROUND_TOP, ionaB03EnemyTexture('idle')).setOrigin(.5, 1).setDepth(13);
       this.enemyTell = this.add.graphics().setDepth(11);
-      this.targetLabel = this.add.text(this.targetX, GROUND_TOP - 61, 'FRACTURED SPINDLE SENTRY / 8 HP', { fontFamily: 'monospace', fontSize: '6px', color: '#f0cda8', align: 'center', backgroundColor: '#171b2c', padding: { x: 2, y: 1 } }).setOrigin(.5, 1).setDepth(20);
+      this.targetLabel = this.add.text(this.targetX, GROUND_TOP - 61, 'FRACTURED SPINDLE SENTRY / 8 HP', { fontFamily: 'Silkscreen', fontSize: '6px', color: '#f0cda8', align: 'center', backgroundColor: '#171b2c', padding: { x: 2, y: 1 } }).setOrigin(.5, 1).setDepth(20);
       if (this.b04Mode) this.targetLabel.setVisible(false);
       return;
     }
     this.targetVisual = this.add.graphics().setDepth(9);
-    this.targetLabel = this.add.text(this.targetX,GROUND_TOP-72,this.previewMode?'MOVING PRACTICE TARGET / 3 HP':'TRAINING DUMMY / 3', {fontFamily:'monospace',fontSize:'6px',color:'#f0cda8',align:'center',backgroundColor:'#171b2c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(20);
+    this.targetLabel = this.add.text(this.targetX,GROUND_TOP-72,this.previewMode?'MOVING PRACTICE TARGET / 3 HP':'TRAINING DUMMY / 3', {fontFamily:'Silkscreen',fontSize:'6px',color:'#f0cda8',align:'center',backgroundColor:'#171b2c',padding:{x:2,y:1}}).setOrigin(.5,1).setDepth(20);
     if (!this.b07Mode) this.drawTrainingTarget();
   }
 
@@ -1461,7 +1469,7 @@ export class ChamberScene extends Phaser.Scene {
       this.b03DebugGraphic.lineStyle(1, 0x9cf0d8, .95).strokeRect(box.left, box.top, box.right - box.left, box.bottom - box.top);
     }
     this.b03DebugGraphic.lineStyle(1, 0xffb38a, .95).strokeRect(this.targetX - 12, GROUND_TOP + this.enemyAirOffset - 42, 24, 42);
-    this.b03DebugLabel ??= this.add.text(6, 54, '', { fontFamily:'monospace', fontSize:'5px', color:'#baf5e7', backgroundColor:'#08131ddd', padding:{ x:3, y:2 } }).setScrollFactor(0).setDepth(51);
+    this.b03DebugLabel ??= this.add.text(6, 54, '', { fontFamily:'Silkscreen', fontSize:'5px', color:'#baf5e7', backgroundColor:'#08131ddd', padding:{ x:3, y:2 } }).setScrollFactor(0).setDepth(51);
     const move = this.b03Move ?? 'none';
     this.b03DebugLabel.setText(`MOVE ${move} / PHASE ${this.attackClock.phase} / POSE ${this.labFrame} / RESULT ${this.b03LastResult}`);
   }
@@ -1995,8 +2003,8 @@ export class ChamberScene extends Phaser.Scene {
     };
     if(this.b01dMode||this.b01eMode){
       addPanel(240,135,464,230);
-      const title=this.add.text(240,22,this.b01eMode?'B01C ↔ B01D ↔ B01E / SIDE-KICK + RUN COMPARISON':'B01C → B01D / RUN LOOP COMPARISON',{fontFamily:'monospace',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
-      const sub=this.add.text(240,34,'VFX OFF / A-D ARE INDEPENDENT SOURCES / 1-2-3 SCALE / R CLOSES / C BACKGROUND',{fontFamily:'monospace',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const title=this.add.text(240,22,this.b01eMode?'B01C ↔ B01D ↔ B01E / SIDE-KICK + RUN COMPARISON':'B01C → B01D / RUN LOOP COMPARISON',{fontFamily:'Silkscreen',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const sub=this.add.text(240,34,'VFX OFF / A-D ARE INDEPENDENT SOURCES / 1-2-3 SCALE / R CLOSES / C BACKGROUND',{fontFamily:'Silkscreen',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
       this.labReviewSub=sub;
       this.labReviewObjects.push(title,sub);
       const comparisons=[
@@ -2007,12 +2015,12 @@ export class ChamberScene extends Phaser.Scene {
       ];
       for(const item of comparisons){
         const image=this.add.image(item.x,133,item.key).setOrigin(.5,1).setScrollFactor(0).setDepth(52);
-        const label=this.add.text(item.x,48,item.label,{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        const label=this.add.text(item.x,48,item.label,{fontFamily:'Silkscreen',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
         this.labReviewImages.push(image);
         this.labReviewObjects.push(image,label);
       }
       if(this.b01eMode){
-        const contactTitle=this.add.text(240,149,'SIDE-KICK CONTACT / MATCHED 60PX GLOBAL SCALE',{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        const contactTitle=this.add.text(240,149,'SIDE-KICK CONTACT / MATCHED 60PX GLOBAL SCALE',{fontFamily:'Silkscreen',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
         this.labReviewObjects.push(contactTitle);
         const columns=[
           {version:'C',key:(facing:'left'|'right')=>ionaB01CAssetKey('combo-2-contact',facing)},
@@ -2022,13 +2030,13 @@ export class ChamberScene extends Phaser.Scene {
         for(const [row,facing] of (['left','right'] as const).entries()){
           for(const [column,version] of columns.entries()){
             const x=100+column*140;
-            const label=this.add.text(x,row===0?159:203,`${version.version} / ${facing.toUpperCase()}`,{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+            const label=this.add.text(x,row===0?159:203,`${version.version} / ${facing.toUpperCase()}`,{fontFamily:'Silkscreen',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
             const image=this.add.image(x,row===0?197:241,version.key(facing)).setOrigin(.5,1).setScale(.5).setScrollFactor(0).setDepth(52);
             this.labReviewObjects.push(image,label);
           }
         }
       }else{
-        const formTitle=this.add.text(240,150,'VFX OFF / FORM REFERENCES RETAINED FROM B01A — NOT APPROVED',{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        const formTitle=this.add.text(240,150,'VFX OFF / FORM REFERENCES RETAINED FROM B01A — NOT APPROVED',{fontFamily:'Silkscreen',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
         this.labReviewObjects.push(formTitle);
         const forms=[
           {key:'iona-b01d-b01a-base',label:'BASE / B01A SILHOUETTE',x:58,tint:0xd8e2dc},
@@ -2038,7 +2046,7 @@ export class ChamberScene extends Phaser.Scene {
         ];
         for(const form of forms){
           const image=this.add.image(form.x,239,form.key).setOrigin(.5,1).setScale(48/60).setTint(form.tint).setTintMode(Phaser.TintModes.FILL).setScrollFactor(0).setDepth(52);
-          const label=this.add.text(form.x,182,form.label,{fontFamily:'monospace',fontSize:'4px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+          const label=this.add.text(form.x,182,form.label,{fontFamily:'Silkscreen',fontSize:'4px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
           this.labReviewObjects.push(image,label);
           this.labReviewSilhouettes.push(image);
         }
@@ -2047,8 +2055,8 @@ export class ChamberScene extends Phaser.Scene {
     }
     if(this.b01cMode){
       addPanel(240,135,464,230);
-      const title=this.add.text(240,24,'B01C PIXEL METHOD / OWNER REVIEW PENDING',{fontFamily:'monospace',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
-      const sub=this.add.text(240,36,'SAME SOURCE POSE / 60PX VISIBLE HEIGHT / 1-2-3 SCALE / R CLOSES / C BG',{fontFamily:'monospace',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const title=this.add.text(240,24,'B01C PIXEL METHOD / OWNER REVIEW PENDING',{fontFamily:'Silkscreen',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const sub=this.add.text(240,36,'SAME SOURCE POSE / 60PX VISIBLE HEIGHT / 1-2-3 SCALE / R CLOSES / C BG',{fontFamily:'Silkscreen',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
       this.labReviewSub=sub;
       this.labReviewObjects.push(title,sub);
       const methods=[
@@ -2058,7 +2066,7 @@ export class ChamberScene extends Phaser.Scene {
       ];
       for(const method of methods){
         const image=this.add.image(method.x,145,method.key).setOrigin(.5,1).setScale(this.labReviewScale/60).setScrollFactor(0).setDepth(52);
-        const label=this.add.text(method.x,57,method.label,{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        const label=this.add.text(method.x,57,method.label,{fontFamily:'Silkscreen',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
         this.labReviewImages.push(image);
         this.labReviewObjects.push(image,label);
       }
@@ -2070,15 +2078,15 @@ export class ChamberScene extends Phaser.Scene {
       ];
       for(const sample of samples){
         const image=this.add.image(sample.x,236,ionaB01CAssetKey(sample.id,sample.side)).setOrigin(.5,1).setScale(.72).setScrollFactor(0).setDepth(52);
-        const label=this.add.text(sample.x,185,sample.label,{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        const label=this.add.text(sample.x,185,sample.label,{fontFamily:'Silkscreen',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
         this.labReviewObjects.push(image,label);
       }
       return;
     }
     addPanel(240,135,464,230);
-      const title=this.add.text(240,25,'B01 RECOVERY A/B / OWNER REVIEW PENDING', {fontFamily:'monospace',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const title=this.add.text(240,25,'B01 RECOVERY A/B / OWNER REVIEW PENDING', {fontFamily:'Silkscreen',fontSize:'7px',color:'#ffe0ba',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
       this.labReviewObjects.push(title);
-      const sub=this.add.text(240,36,'VISIBLE HEIGHT 60 PX / B00 BODY 15x30 / 1-2-3 SCALE / R CLOSES / C BACKGROUNDS', {fontFamily:'monospace',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const sub=this.add.text(240,36,'VISIBLE HEIGHT 60 PX / B00 BODY 15x30 / 1-2-3 SCALE / R CLOSES / C BACKGROUNDS', {fontFamily:'Silkscreen',fontSize:'5px',color:'#c4d5d1',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
       this.labReviewSub=sub;
       this.labReviewObjects.push(sub);
       const topCards=[
@@ -2091,7 +2099,7 @@ export class ChamberScene extends Phaser.Scene {
         const image=this.add.image(card.x,147,card.key).setOrigin(.5,1).setScrollFactor(0).setDepth(52);
         this.labReviewImages.push(image);
         this.labReviewObjects.push(image);
-        const label=this.add.text(card.x,57,card.label,{fontFamily:'monospace',fontSize:'6px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        const label=this.add.text(card.x,57,card.label,{fontFamily:'Silkscreen',fontSize:'6px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
         this.labReviewObjects.push(label);
       }
       const forms=[
@@ -2100,11 +2108,11 @@ export class ChamberScene extends Phaser.Scene {
         {key:'iona-review-stormhalo',label:'STORMHALO STUDY',x:300,tint:0xffffff},
         {key:'iona-review-eclipse',label:'ECLIPSE STUDY',x:421,tint:0xffffff},
       ];
-      const formsTitle=this.add.text(240,158,'VFX OFF / EARLIER FORM STUDIES — NOT APPROVED',{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+      const formsTitle=this.add.text(240,158,'VFX OFF / EARLIER FORM STUDIES — NOT APPROVED',{fontFamily:'Silkscreen',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
       this.labReviewObjects.push(formsTitle);
       for(const form of forms){
         const image=this.add.image(form.x,235,form.key).setOrigin(.5,1).setScale(52/60).setTint(form.tint).setTintMode(Phaser.TintModes.FILL).setScrollFactor(0).setDepth(52);
-        const label=this.add.text(form.x,181,form.label,{fontFamily:'monospace',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
+        const label=this.add.text(form.x,181,form.label,{fontFamily:'Silkscreen',fontSize:'5px',color:'#e9eee5',align:'center'}).setOrigin(.5,0).setScrollFactor(0).setDepth(55);
         this.labReviewObjects.push(image,label);
         this.labReviewSilhouettes.push(image);
       }
@@ -2167,7 +2175,7 @@ export class ChamberScene extends Phaser.Scene {
     for (const object of this.reviewObjects) object.destroy();
     this.reviewObjects = [];
     const addText = (x: number, y: number, text: string, color = '#f4eee1', size = '7px'): Phaser.GameObjects.Text => {
-      const object = this.add.text(x, y, text, { fontFamily: 'monospace', fontSize: size, color, align: 'center', stroke: '#0a1019', strokeThickness: 2 }).setOrigin(.5, 0).setScrollFactor(0).setDepth(20);
+      const object = this.add.text(x, y, text, { fontFamily: 'Silkscreen', fontSize: size, color, align: 'center', stroke: '#0a1019', strokeThickness: 2 }).setOrigin(.5, 0).setScrollFactor(0).setDepth(20);
       this.reviewObjects.push(object);
       return object;
     };
@@ -2238,13 +2246,13 @@ export class ChamberScene extends Phaser.Scene {
         const x = 178 + (index % 3) * 98, y = 62 + Math.floor(index / 3) * 39;
         const square = this.add.rectangle(x, y + 5, 13, 12, swatch.color).setStrokeStyle(1, 0xf1ebdf, .65).setDepth(10);
         this.reviewObjects.push(square);
-        const label = this.add.text(x + 11, y, `${swatch.label}\n${swatch.hex}`, { fontFamily: 'monospace', fontSize: '6px', color: '#edf1e8', align: 'left', lineSpacing: 1 }).setOrigin(0, 0).setScrollFactor(0).setDepth(20);
+        const label = this.add.text(x + 11, y, `${swatch.label}\n${swatch.hex}`, { fontFamily: 'Silkscreen', fontSize: '6px', color: '#edf1e8', align: 'left', lineSpacing: 1 }).setOrigin(0, 0).setScrollFactor(0).setDepth(20);
         this.reviewObjects.push(label);
       });
       addText(280, 181, 'SUGGESTED PROPORTIONS / ~60 PX', '#d9ece5', '6px').setOrigin(0, 0);
       const proportions = ['HEAD + HAIR 15 PX / 25%', 'TORSO + ARMS 18 PX / 30%', 'BELT + SASH  7 PX / 12%', 'LEGS        13 PX / 22%', 'BOOTS        7 PX / 11%'];
       proportions.forEach((line, index) => {
-        const label = this.add.text(280, 191 + index * 10, line, { fontFamily: 'monospace', fontSize: '6px', color: '#e7e0d5', align: 'left' }).setOrigin(0, 0).setScrollFactor(0).setDepth(20);
+        const label = this.add.text(280, 191 + index * 10, line, { fontFamily: 'Silkscreen', fontSize: '6px', color: '#e7e0d5', align: 'left' }).setOrigin(0, 0).setScrollFactor(0).setDepth(20);
         this.reviewObjects.push(label);
       });
     }

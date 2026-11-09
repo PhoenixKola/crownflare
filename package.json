@@ -1,7 +1,7 @@
 {
   "name": "project-crownflare",
   "private": true,
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Original pixel-art side-scrolling action roguelite — Crownflare v1 release candidate",
   "engines": {
@@ -65,14 +65,60 @@
     "qa:art:portable": "python tools/art-export/audit-iona-b01d.py && python tools/art-export/audit-iona-b01e.py && node tools/art-export/qa-art-portable.mjs",
     "qa:chrome:local": "node tools/local-qa/chrome-smoke.mjs --headed",
     "qa:controller:local": "node tools/local-qa/controller-start-smoke.mjs",
-    "qa:chrome:headless": "node tools/local-qa/chrome-smoke.mjs --headless"
-  },
-  "dependencies": {
-    "phaser": "4.2.1"
+    "qa:chrome:headless": "node tools/local-qa/chrome-smoke.mjs --headless",
+    "desktop:dev": "node tools/desktop/run-dev.mjs",
+    "desktop:package": "electron-builder --win dir --x64",
+    "desktop:release:win": "npm run build && electron-builder --win zip --x64"
   },
   "devDependencies": {
+    "@fontsource/silkscreen": "^5.3.0",
+    "electron": "45.2.3",
+    "electron-builder": "26.18.0",
     "playwright": "1.55.1",
     "typescript": "5.9.3",
-    "vite": "7.3.7"
+    "vite": "7.3.7",
+    "phaser": "4.2.1"
+  },
+  "main": "electron/main.mjs",
+  "build": {
+    "appId": "com.phoenixkola.crownflare",
+    "productName": "Crownflare",
+    "directories": {
+      "output": "release-artifacts"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/main.mjs"
+    ],
+    "extraResources": [
+      {
+        "from": "README-WINDOWS.txt",
+        "to": "README-WINDOWS.txt"
+      },
+      {
+        "from": "build-resources/crownflare.ico",
+        "to": "crownflare.ico"
+      },
+      {
+        "from": "docs/licenses/Silkscreen-OFL-1.1.txt",
+        "to": "THIRD-PARTY-NOTICES/Silkscreen-OFL-1.1.txt"
+      }
+    ],
+    "asar": true,
+    "artifactName": "Crownflare-v${version}-${os}-${arch}.${ext}",
+    "compression": "maximum",
+    "win": {
+      "target": [
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build-resources/crownflare.ico",
+      "executableName": "Crownflare",
+      "requestedExecutionLevel": "asInvoker"
+    }
   }
 }

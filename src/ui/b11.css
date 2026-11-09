@@ -66,6 +66,24 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 .hub-station { text-shadow: 0 2px 10px #000; }
 .hub-station b { color: #f2cf9d; text-shadow: 0 0 14px #d79a7270; }
 .hub-preferences { color: #d2e0da; font-family: var(--cf-metadata); }
+.hub-content {
+  width: min(470px, 58vw);
+  padding: clamp(18px, 2.1vw, 28px);
+  border: 1px solid #9dbbb56b;
+  border-left: 3px solid var(--cf-copper);
+  border-radius: 2px;
+  background: linear-gradient(145deg, #06131eef, #071821e8 78%, #0a1c24e6);
+  box-shadow: 0 18px 54px #0009, inset 0 1px #e9fff01c;
+  backdrop-filter: blur(5px);
+  text-shadow: 0 1px 2px #000, 0 2px 9px #000;
+}
+.hub-content .eyebrow { text-shadow: 0 1px 3px #000; }
+.hub-actions .secondary-action { border-color: #89b7ae; background: #071720f2; color: #edf4e8; text-shadow: 0 1px 2px #000; }
+.hub-actions button:disabled { opacity: .58; }
+.hub-progress, .hub-save-status { display: table; max-width: 100%; padding: 4px 7px; border: 1px solid #94b5ad55; background: #06131ee8; text-shadow: 0 1px 3px #000; }
+.hub-save-status:empty { display: none; }
+.hub-preferences { padding: 8px 10px; border: 1px solid #9bbab278; border-radius: 2px; background: #06131eeb; box-shadow: 0 8px 28px #0008, inset 0 1px #e9fff01a; backdrop-filter: blur(4px); text-shadow: 0 1px 3px #000; }
+.hub-station { padding: 7px 9px; border: 1px solid #9bbab255; border-radius: 2px; background: #06131edb; box-shadow: 0 8px 24px #0007; }
 
 .hub-story-card, .pause-panel, .settings-panel, .b09-choice-panel, .b04-results-panel {
   border: 1px solid var(--cf-line);
@@ -116,6 +134,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 .b09-choice-source, .b04-result-stats, .b07-result-story { color: #c1d3ca; }
 .b09-choice-card { border-radius: 2px; background: linear-gradient(145deg, #142b36, #0c1925); border-color: #506e75; }
 .b09-choice-card:hover, .b09-choice-card:focus-visible, .b09-choice-card[aria-pressed="true"] { border-color: var(--cf-teal); box-shadow: 0 0 28px #6edccc24, inset 0 1px #d5f5e722; }
+.b09-choice-screen[data-pointer-ready="false"] .b09-choice-card:hover:not(:focus-visible):not([aria-pressed="true"]) { outline: 0; outline-offset: 0; border-color: #506e75; background: linear-gradient(145deg, #142b36, #0c1925); box-shadow: inset 0 1px #d5f5e722; transform: none; }
 .b09-choice-card .b09-card-tier { color: #9fe0d1; }
 .b09-choice-card .b09-card-rank { color: #e2b48c; }
 .b09-choice-card .b09-card-prompt { color: #b8ceca; }

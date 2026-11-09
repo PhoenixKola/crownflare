@@ -5,15 +5,10 @@ import { B06EnemyGauntletScene } from './scenes/B06EnemyGauntletScene';
 import { B07ExpeditionScene } from './scenes/B07ExpeditionScene';
 import type { B10RunCheckpoint } from './persistence/save';
 import type { DisplayScalingMode } from './persistence/save';
-
-function displayZoom(width: number, height: number, mode: DisplayScalingMode): number {
-  const fit = Math.min(width / 480, height / 270);
-  if (mode === 'fit' || fit < 1) return Math.max(0.1, fit);
-  return Math.max(1, Math.floor(fit));
-}
+import { displayZoom } from './displayScaling';
 
 export function applyDisplayScaling(game: Phaser.Game, mode: DisplayScalingMode): void {
-  game.scale.setZoom(displayZoom(window.innerWidth, window.innerHeight, mode));
+  game.scale.setZoom(displayZoom(window.innerWidth, window.innerHeight, mode, window.devicePixelRatio));
 }
 
 export function createGame(onPause: () => void, onController: (active: boolean) => void, options: { artReview?: boolean; animationLab?: boolean; ionaPreview?: boolean; b03Combat?: boolean; b04?: boolean; b05?: boolean; b06?: boolean; b07?: boolean; b08?: boolean; b09?: boolean; b10?: boolean; seed?: number; checkpoint?: B10RunCheckpoint | null; runId?: string; reduceMotion?: boolean; pixelScaling?: DisplayScalingMode } = {}): { game: Phaser.Game; scene: ChamberScene } {
@@ -36,7 +31,7 @@ export function createGame(onPause: () => void, onController: (active: boolean) 
     : b04
     ? new B04VerticalSliceScene(onPause, onController, { b05 })
     : new ChamberScene(onPause, onController, { artReview, animationLab, ionaPreview: previewEnabled, b03Combat });
-  const initialZoom = displayZoom(window.innerWidth, window.innerHeight, options.pixelScaling ?? 'pixel-perfect');
+  const initialZoom = displayZoom(window.innerWidth, window.innerHeight, options.pixelScaling ?? 'pixel-perfect', window.devicePixelRatio);
   const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: 'game-root',

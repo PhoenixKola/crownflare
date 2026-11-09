@@ -9,6 +9,9 @@
   <meta property="og:description" content="A pixel-art action roguelite starring Iona Rell." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="/assets/ui/b14/crownflare-title.png" />
+  <link rel="stylesheet" href="/src/style.css" />
+  <link rel="stylesheet" href="/src/ui/b11.css" />
+  <link rel="stylesheet" href="/src/ui/b14-title.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="256x256" href="/favicon.png" />
   <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
@@ -236,7 +239,7 @@
           <label class="settings-motion-toggle"><input id="settings-reduced-motion" type="checkbox" /> REDUCED MOTION <small>Use fewer animated effects</small></label>
           <label class="settings-display-scaling">PIXEL SCALING
             <select id="settings-pixel-scaling" aria-describedby="settings-pixel-scaling-help"><option value="pixel-perfect">PIXEL PERFECT / INTEGER</option><option value="fit">FIT TO WINDOW</option></select>
-            <small id="settings-pixel-scaling-help">Integer scaling uses the largest whole scale that fits. Below 480×270, the canvas fits the available space.</small>
+            <small id="settings-pixel-scaling-help">Pixel Perfect uses whole physical pixels and preserves 16:9. Fit uses the largest 16:9 area with fractional scaling. Non-16:9 screens keep side or top bars. Use F11 for fullscreen.</small>
           </label>
         </div>
         <p id="settings-message" class="settings-message" role="status" aria-live="polite">Keyboard and mouse remain available. Controller navigation uses D-pad, South to confirm, East or Start to go back.</p>

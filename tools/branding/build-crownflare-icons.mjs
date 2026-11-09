@@ -10,7 +10,7 @@ const pngs = [];
 
 try {
   const page = await browser.newPage({ viewport: { width: 256, height: 256 }, deviceScaleFactor: 1 });
-  await page.setContent(`<!doctype html><style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:transparent}#icon{position:relative;width:256px;height:256px;overflow:hidden;background:transparent}#icon img{position:absolute;width:140%;height:140%;left:50%;top:50%;transform:translate(-50%,-50%);object-fit:contain;image-rendering:pixelated}</style><div id="icon"><img alt="" src="${dataUrl}"></div>`);
+  await page.setContent(`<!doctype html><style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:transparent}#icon{position:relative;width:256px;height:256px;overflow:hidden;background:transparent}#icon img{position:absolute;width:100%;height:100%;left:50%;top:50%;transform:translate(-50%,-50%);object-fit:contain;image-rendering:pixelated}</style><div id="icon"><img alt="" src="${dataUrl}"></div>`);
   await page.locator('img').evaluate((image) => image.decode());
   for (const size of sizes) {
     await page.locator('#icon').evaluate((element, width) => { element.style.width = `${width}px`; element.style.height = `${width}px`; }, size);

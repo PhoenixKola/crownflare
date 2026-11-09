@@ -76,7 +76,7 @@ try {
   const page = await context.newPage();
   monitor(page, 'normal B10 route');
   await page.goto(base, { waitUntil: 'domcontentloaded' });
-  assert((await page.locator('#title-metadata').innerText()).includes('FIRST EXPEDITION'), 'fresh title does not reflect the save state');
+  assert((await page.locator('#title-metadata').innerText()).includes('BASE + DAWNRUSH / TWO REGIONS / THREE BOSSES'), 'title does not reflect the shipped release scope');
   check('title shows save-aware first-run status', { action: await page.locator('#start-button').innerText(), metadata: await page.locator('#title-metadata').innerText(), capture: await capture(page, 'b11-title-1280') });
 
   await page.locator('#start-button').click();

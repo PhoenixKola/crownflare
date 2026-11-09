@@ -143,10 +143,17 @@
   top: 5%;
   right: 5%;
   bottom: auto;
-  color: #e0e8dd;
-  font-size: .61rem;
-  line-height: 1.7;
-  text-shadow: 0 2px 12px #061018;
+  padding: 9px 12px;
+  border: 1px solid #e8c095a8;
+  border-radius: 2px;
+  background: linear-gradient(135deg, #07131eeb, #0a1a23d9);
+  box-shadow: 0 8px 28px #0008, inset 0 1px #fff2;
+  color: #fff2dc;
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 1.65;
+  letter-spacing: .16em;
+  text-shadow: 0 1px 2px #000, 0 2px 8px #000;
 }
 
 #b07-results[data-result="victory"] {
