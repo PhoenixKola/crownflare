@@ -240,7 +240,7 @@ async function completeB09Run(page) {
       });
     });
     await page.goto(`${devUrl}/`, { waitUntil: 'domcontentloaded' });
-    assert((await page.locator('#title-metadata').innerText()).includes('PRE-RELEASE PLAYABLE'), 'B10 full-run route lost the pre-release disclosure');
+    assert((await page.locator('#title-metadata').innerText()).includes('BASE + DAWNRUSH'), 'normal title no longer identifies the shipped form scope');
     await page.locator('#start-button').click();
     await page.locator('#hub-new-run').click();
     await page.locator('#hub-story').waitFor({ state: 'visible' });

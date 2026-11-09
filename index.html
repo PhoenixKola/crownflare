@@ -3,16 +3,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#070f1c" />
-  <link rel="icon" href="data:," />
-  <title>PROJECT CROWNFLARE — Spindle Refuge</title>
+  <meta name="theme-color" content="#081622" />
+  <meta name="description" content="Crownflare — an original pixel-art action roguelite. Guide Iona Rell through two fractured regions and restore the Lumen Spindle." />
+  <meta property="og:title" content="Crownflare — Beyond the Broken Day" />
+  <meta property="og:description" content="A pixel-art action roguelite starring Iona Rell." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/ui/b14/crownflare-title.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="256x256" href="/favicon.png" />
+  <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <title>Crownflare — Beyond the Broken Day</title>
 </head>
 <body>
   <div id="app">
-    <div id="game-root" aria-label="Project Crownflare test chamber"></div>
+    <div id="game-root" aria-label="Crownflare game"></div>
     <section id="title-screen" class="screen title-screen" aria-labelledby="game-title">
       <div class="ambient-orbit orbit-a" aria-hidden="true"></div>
       <div class="ambient-orbit orbit-b" aria-hidden="true"></div>
+      <div class="title-hero" aria-hidden="true"><img src="/assets/characters/iona/b01e/idle-0-left.png" alt="" /></div>
       <div class="title-content">
         <div class="eyebrow">THE LUMEN SPINDLE / INITIATIVE ZERO</div>
         <p id="preview-notice" class="preview-notice hidden">DEVELOPMENT PREVIEW / PROVISIONAL IONA — NOT APPROVED</p>
@@ -21,11 +30,13 @@
         <p class="subtitle">BEYOND THE BROKEN DAY</p>
         <div class="thin-rule" aria-hidden="true"></div>
         <p class="lore">The day broke. The Spindle remembers.</p>
-        <button id="start-button" class="primary-action" type="button">ENTER THE REFUGE <span aria-hidden="true">→</span></button>
-        <button id="title-settings-button" class="secondary-action title-settings-action" type="button">CONTROLS / CONTROLLER</button>
-        <p id="title-metadata" class="metadata">PRE-RELEASE PLAYABLE / BASE + DAWNRUSH / OWNER REVIEW PENDING</p>
+        <div class="title-actions">
+          <button id="start-button" class="primary-action" type="button">ENTER THE REFUGE <span aria-hidden="true">→</span></button>
+          <button id="title-settings-button" class="secondary-action title-settings-action" type="button">CONTROLS / CONTROLLER</button>
+        </div>
+        <p id="title-metadata" class="metadata">BASE + DAWNRUSH / TWO REGIONS / THREE BOSSES</p>
       </div>
-      <div class="corner-note">A NEW ORIGINAL WORLD<br />UNAPPROVED HERO ART</div>
+      <div class="corner-note">IONA RELL<br />THE SPINDLE REMEMBERS</div>
     </section>
     <section id="hub-screen" class="hub-screen hidden" aria-labelledby="hub-title" aria-hidden="true">
       <div class="hub-art hub-sky" aria-hidden="true"></div>
@@ -33,7 +44,7 @@
       <div class="hub-light" aria-hidden="true"></div>
       <div class="hub-iona" aria-hidden="true"><img src="/assets/characters/iona/b01e/idle-0-right.png" alt="" /></div>
       <div class="hub-art hub-frame" aria-hidden="true"></div>
-      <div class="hub-topline"><span>CROWNFLARE</span><span>SPINDLE REFUGE <i>·</i> PRE-RELEASE</span></div>
+      <div class="hub-topline"><span>CROWNFLARE</span><span>SPINDLE REFUGE <i>·</i> SAFE HARBOR</span></div>
       <div class="hub-content">
         <p class="eyebrow">THE LUMEN SPINDLE / SAFE HARBOR</p>
         <h2 id="hub-title">Where the<br /><em>turning waits.</em></h2>
@@ -183,7 +194,7 @@
     <section id="b07-results" class="screen b04-results b07-results hidden" role="dialog" aria-modal="true" aria-labelledby="b07-result-heading" aria-hidden="true">
       <div class="b04-results-panel">
         <p class="eyebrow">CROWNFLARE / BROKEN MERIDIAN</p>
-        <h2 id="b07-result-heading">B07 ROUTE CLEARED</h2>
+        <h2 id="b07-result-heading">THE SPINDLE RESTORED</h2>
         <p id="b07-result-stats" class="b04-result-stats" aria-live="polite"></p>
         <p id="b07-result-story" class="b07-result-story" aria-live="polite"></p>
         <button id="b07-replay-button" class="primary-action" type="button">BEGIN ANOTHER RUN <span aria-hidden="true">&gt;</span></button>

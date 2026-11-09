@@ -135,7 +135,18 @@ try {
     throw new Error(`Dawnrush transform did not activate after R: ${JSON.stringify(await stateOf(page))}; ${error.message}`);
   }
   state = await stateOf(page);
-  check('Dawnrush form and energy render from the simulation after mapped keyboard transform input', { form: state.b07.hud.dawnrush.form, energy: state.b07.hud.dawnrush.energy, capture: await capture(page, 'b11-dawnrush-hud-1280') });
+  await page.waitForFunction(() => document.querySelector('#hud .b11-hud-overlay')?.dataset.form === 'dawnrush');
+  const originalReducedMotion = await page.locator('#app').evaluate((element) => element.classList.contains('reduce-motion'));
+  await page.locator('#app').evaluate((element) => element.classList.remove('reduce-motion'));
+  const pulse = await page.locator('.b11-gauge-form .b11-gauge-track').evaluate((element) => getComputedStyle(element).animationName);
+  const pulseFill = await page.locator('#b11-form-fill').evaluate((element) => getComputedStyle(element).animationName);
+  await page.locator('#app').evaluate((element) => element.classList.add('reduce-motion'));
+  const reducedPulse = await page.locator('.b11-gauge-form .b11-gauge-track').evaluate((element) => getComputedStyle(element).animationName);
+  const reducedPulseFill = await page.locator('#b11-form-fill').evaluate((element) => getComputedStyle(element).animationName);
+  await page.locator('#app').evaluate((element, wasReduced) => element.classList.toggle('reduce-motion', wasReduced), originalReducedMotion);
+  const pulseContext = await page.locator('#app').evaluate((app, wasReduced) => ({ appClass: app.className, originalReducedMotion: wasReduced, form: document.querySelector('#hud .b11-hud-overlay')?.getAttribute('data-form'), trackCount: document.querySelectorAll('.b11-gauge-form .b11-gauge-track').length, mediaReduced: matchMedia('(prefers-reduced-motion: reduce)').matches }), originalReducedMotion);
+  assert(pulse === 'b11-transform-pulse' && pulseFill === 'b11-transform-fill-pulse' && reducedPulse === 'none' && reducedPulseFill === 'none', `Dawnrush bar pulse or reduced-motion override failed: ${JSON.stringify({ pulse, pulseFill, reducedPulse, reducedPulseFill, pulseContext })}`);
+  check('Dawnrush energy bar and fill pulse only while transformed and respect reduced motion', { form: state.b07.hud.dawnrush.form, energy: state.b07.hud.dawnrush.energy, pulse, pulseFill, reducedPulse, reducedPulseFill, capture: await capture(page, 'b11-dawnrush-hud-1280') });
   await page.keyboard.down('Space'); await page.waitForTimeout(85); await page.keyboard.up('Space');
   await page.keyboard.press('j'); await page.waitForTimeout(220);
   await page.keyboard.press('Shift'); await page.waitForTimeout(180);

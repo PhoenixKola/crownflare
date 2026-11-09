@@ -73,6 +73,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   box-shadow: 0 30px 100px #000b, inset 0 1px #d9f2df16;
 }
 .hub-story, .b10-story-beat { background: #040c14e8; backdrop-filter: blur(3px); }
+#hub-story { background: linear-gradient(180deg, #06132077 0%, #06111db5 100%), url('/assets/ui/b14/crownflare-story.png') center / cover no-repeat; backdrop-filter: none; }
 .hub-story-card h3, .b10-story-beat h2 { color: #f0d0ad; font-family: var(--cf-display); }
 .hub-story-card > p:not(.eyebrow), .b10-story-beat #b10-story-copy { color: #e0e5db; line-height: 1.8; }
 .hub-story-card #hub-story-build { color: #a9d2c7; font-family: var(--cf-metadata); }
@@ -86,6 +87,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 .settings-screen { background: #040a12eb; backdrop-filter: blur(3px); }
 .settings-panel { border-radius: 2px; }
 .settings-header { border-color: #53727a; }
+.settings-header { position: relative; }
+.settings-header::after { content: ''; position: absolute; top: 50%; right: 150px; width: 122px; height: 64px; transform: translateY(-50%); background: url('/assets/ui/b14/crownflare-controller.png') center / contain no-repeat; image-rendering: pixelated; filter: drop-shadow(0 0 10px #76d8ca42); opacity: .86; pointer-events: none; }
 .settings-header h2 { color: var(--cf-pearl); font-family: var(--cf-display); letter-spacing: .04em; }
 .settings-close { border-radius: 2px; }
 .controller-status { border-left-color: var(--cf-teal); background: #091822; color: #c4e7dd; }
@@ -155,6 +158,10 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 .b11-gauge-track, .b11-boss-track { overflow: hidden; height: 5px; margin-top: 4px; border: 1px solid #5a7176; background: #14232a; }
 .b11-gauge-track i, .b11-boss-track i { display: block; width: 0; height: 100%; background: var(--cf-teal); transition: width .16s linear; }
 .b11-gauge-form .b11-gauge-track i { background: linear-gradient(90deg, #bd815d, #f0ca8e); }
+.b11-hud-overlay[data-form="dawnrush"] .b11-gauge-form .b11-gauge-track { animation: b11-transform-pulse 1.15s ease-in-out infinite; }
+.b11-hud-overlay[data-form="dawnrush"] .b11-gauge-form .b11-gauge-track i { animation: b11-transform-fill-pulse 1.15s ease-in-out infinite; }
+@keyframes b11-transform-pulse { 0%, 100% { border-color: #d39465; box-shadow: 0 0 5px #e59c6177; } 50% { border-color: #fff0bd; box-shadow: 0 0 18px #ffd16abf; } }
+@keyframes b11-transform-fill-pulse { 0%, 100% { filter: brightness(1.1) drop-shadow(0 0 3px #ffd89c77); } 50% { filter: brightness(1.65) drop-shadow(0 0 9px #ffe3aadd); } }
 .b11-gauge small { display: block; margin-top: 3px; color: #91aaa8; font: 600 .49rem/1.15 var(--cf-metadata); letter-spacing: .015em; }
 .b11-gauge-resonance[data-ready="true"] .b11-gauge-track { border-color: #a5d8c6; box-shadow: 0 0 9px #6edccc42; }
 .b11-gauge-resonance[data-ready="true"] small { color: #b9efd9; }
@@ -203,6 +210,7 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   .b11-status-cluster { min-height: 38px; padding: 5px 7px; }
 }
 @media (max-width: 680px) {
+  .settings-header::after { display: none; }
   .b11-hud-topline { grid-template-columns: minmax(128px, 1fr) minmax(138px, 1fr); }
   .b11-run-context { display: none; }
   .b11-gauges { grid-template-columns: 1fr; gap: 6px; min-height: 70px; padding: 7px; }
@@ -263,12 +271,19 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
   .settings-footer button { min-height: 40px; padding: 8px 7px; font-size: .61rem; }
 }
 @media (max-width: 680px) and (max-height: 440px) {
-  .settings-header { padding: 7px 0; }
-  .settings-live-test { grid-template-columns: 1fr 1fr; padding: 8px 0; }
-  .settings-bindings { gap: 5px; padding: 8px 0; }
-  .binding-row { min-height: 44px; }
-  .settings-accessibility, .settings-controls { padding: 9px 0; }
-  .settings-footer { padding-top: 7px; padding-bottom: 7px; }
+  .settings-header { margin-bottom: 0; padding: 4px 0; }
+  .settings-header h2 { font-size: clamp(1.1rem, 5.4vw, 1.35rem); }
+  .settings-close { min-height: 28px; padding: 4px 7px; }
+  .controller-status { max-height: 18px; padding: 2px 5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: .48rem; }
+  .settings-live-test { display: none; }
+  .settings-bindings { gap: 1px; padding: 1px 0; }
+  .binding-row { grid-template-columns: minmax(0, 1fr) 72px 62px; gap: 3px; min-height: 24px; padding: 0 5px; }
+  .binding-row > span { font-size: .5rem; line-height: 1.05; }
+  .binding-row small { margin-top: 0; font-size: .46rem; }
+  .binding-row button { min-height: 20px; padding: 1px 4px; font-size: .49rem; }
+  .settings-accessibility, .settings-controls { padding: 7px 0; }
+  .settings-footer { position: sticky; bottom: -10px; margin: auto -12px -10px; padding: 4px 12px; }
+  .settings-footer button { min-height: 26px; font-size: .51rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

@@ -1,8 +1,16 @@
-# Project Crownflare — B13 pre-release candidate
+# Crownflare — Final v1.0 release candidate
 
-Crownflare is an original side-view action roguelite. The normal route runs from the title into **Spindle Refuge**, through a short story beat and expedition preparation, then into a two-region branching expedition with seeded room variants, run upgrades and a three-boss confrontation. The run ends at Broken Meridian and returns to the refuge with a results summary. B13 adds two distinct seeded authored rooms per region to each route and separates Pixel Perfect integer scaling from Fit to Window. This remains a **pre-release candidate**: full-run duration, collision/art-motion, audio, physical-controller and owner acceptance gates are still open.
+Crownflare is an original pixel-art side-scrolling action roguelite starring Iona Rell. From **Spindle Refuge**, each expedition visits **11 authored rooms across Sunderglass Reach and Vesper Loomworks**, includes one branch in each region, run upgrades and discoveries, and leads through the **Sundial Custodian, Spoolheart Regent and Broken Meridian** to the ending and results. Iona has **Base and Dawnrush** forms; Stormhalo and Eclipse Warden remain outside the initial release scope.
+
+B14 completed an agent-driven, headed Chrome route through all 11 rooms and three bosses in **3:11 active game time / 3:33 wall time**. This is direct completion evidence, not human playtesting. The brief's 30–45 minute first-run target is not met; human review of art/game feel, audio and a physical controller is also still open. This is a **conditional release candidate**, not a public release approval.
 
 Only Iona's **Base** and **Dawnrush** forms are in the playable build. Stormhalo and Eclipse Warden are post-release concepts. The old B06–B09 QA shortcuts remain development-only.
+
+## Title art, victory art and app icons
+
+The title, departure-story and victory screens use original ImageGen environment illustrations. The controller settings panel has a generated pixel-art device accent. On the title, Iona plays the existing four-frame idle loop and gently breathes; both movements stop for reduced-motion settings. The favicon is also generated pixel art; its source prompts, originals and hashes are preserved under [`art-source/ui/b14/`](art-source/ui/b14/). The website serves 16px, 32px and 256px PNG icons, a multi-size ICO and an Apple touch icon. Rebuild those outputs with `npm run branding:build-icons`.
+
+`build-resources/crownflare.ico` is the matching Windows icon asset for app packaging. This repository currently contains no Electron application or packaging configuration, so the icon is staged but not wired to or tested in an Electron window.
 
 ## Run locally
 
@@ -44,9 +52,11 @@ npm run audit:repo
 npm audit --audit-level=high
 npm run qa:b13:entry
 npm run qa:b13:production
+node tools/local-qa/b14-final-candidate-run.mjs
+node tools/local-qa/b14-final-candidate-run.mjs --defeat-retry
 ```
 
-`npm run qa:b13:entry` uses headed Chrome for fresh normal-menu New Run and Continue flows, keyboard traversal/jump, save recovery, display sizes and a synthetic standard gamepad. `npm run qa:b13:production` checks the production preview route and confirms developer hooks are absent. Reports remain under ignored `review-evidence/b13/`. These checks do not replace a human full-run walkthrough or the remaining review gates in [the B13 acceptance record](docs/qa/b13-release-acceptance.md).
+`npm run qa:b13:entry` uses headed Chrome for fresh normal-menu New Run and Continue flows, keyboard traversal/jump, save recovery, display sizes and a synthetic standard gamepad. `npm run qa:b13:production` checks the production preview route and confirms developer hooks are absent. The B14 route command plays a complete 11-room run at real clock speed; add `--record` to capture video. The `--defeat-retry` variant follows the alternate combat branch, records a defeat and starts a new run. Reports and media remain under ignored `review-evidence/`. Automated routes do not replace the owner review in [the B14 acceptance record](docs/qa/b14-final-acceptance.md) and [owner checklist](docs/release/v1-owner-acceptance.md).
 
 Original Spindle Refuge source masters and their hashes are in [the B10 provenance record](art-source/environments/b10/spindle-refuge/provenance.md). Rebuild the runtime layers and ambient audio with `npm run art:b10:build` and `npm run audio:b10:build`.
 

@@ -1,9 +1,9 @@
 {
   "name": "project-crownflare",
   "private": true,
-  "version": "0.0.0-b00",
+  "version": "1.0.0-rc.0",
   "type": "module",
-  "description": "Original premium side-scrolling action roguelite — B00 foundation, NOT release art",
+  "description": "Original pixel-art side-scrolling action roguelite — Crownflare v1 release candidate",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -15,6 +15,7 @@
     "test": "node --experimental-strip-types --test tests/unit/*.test.ts",
     "audit:assets": "node tools/audit-assets/audit.mjs",
     "audit:repo": "node tools/audit-assets/audit-repo.mjs",
+    "branding:build-icons": "node tools/branding/build-crownflare-icons.mjs",
     "art:b01a:build": "node tools/art-export/build-b01a-previews.mjs",
     "art:iona:overnight:build": "node tools/art-export/build-iona-overnight.mjs",
     "art:iona:recovery:build": "python tools/art-export/build-iona-recovery.py",
@@ -49,6 +50,9 @@
     "qa:b12:smoke": "node tools/local-qa/b12-representative-smoke.mjs",
     "qa:b13:entry": "node tools/local-qa/b13-route-entry-smoke.mjs",
     "qa:b13:production": "node tools/local-qa/b13-production-route-smoke.mjs",
+    "qa:b14:full": "node tools/local-qa/b14-final-candidate-run.mjs",
+    "qa:b14:defeat-retry": "node tools/local-qa/b14-final-candidate-run.mjs --defeat-retry",
+    "qa:b14:branding": "node tools/local-qa/b14-brand-surface-smoke.mjs",
     "audio:b10:build": "python tools/audio/generate-b10-refuge-ambience.py",
     "audio:b08:build": "python tools/audio/generate-b08-boss-audio.py && python tools/audio/audit-b08-boss-audio.py",
     "qa:b04": "npm run build && npm run art:b04:build && npm run audio:b04:build && node tools/local-qa/b04-combat-smoke.mjs && node tools/local-qa/b04-production-route-smoke.mjs",

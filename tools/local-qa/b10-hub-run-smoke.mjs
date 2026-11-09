@@ -91,9 +91,10 @@ async function main() {
     window.__B10_QA_PAD__ = { set(index, pressed) { buttons[index].pressed = pressed; buttons[index].value = pressed ? 1 : 0; } };
   });
   await page.goto(base, { waitUntil: 'domcontentloaded' });
-  assert((await page.locator('#title-metadata').innerText()).includes('PRE-RELEASE PLAYABLE'), 'pre-release disclosure is missing on the normal title');
+  assert((await page.locator('#title-metadata').innerText()).includes('BASE + DAWNRUSH'), 'normal title must identify the shipped form scope');
+  assert(!(await page.locator('#title-screen').innerText()).match(/PRE-RELEASE|UNAPPROVED HERO ART|B13/i), 'normal title contains milestone or development copy');
   const titleCapture = await screenshot(page, 'b10-title.png');
-  check('normal route opens the pre-release title and keeps QA shortcuts out of the player menu', { action: await page.locator('#start-button').innerText(), capture: titleCapture });
+  check('normal route opens the final candidate title and keeps QA shortcuts out of the player menu', { action: await page.locator('#start-button').innerText(), capture: titleCapture });
   await page.locator('#start-button').click();
   await page.locator('#hub-new-run').waitFor({ state: 'visible' });
   assert(await page.locator('#hub-continue').isDisabled(), 'continue is enabled before a run has a checkpoint');

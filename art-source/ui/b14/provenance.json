@@ -1,0 +1,118 @@
+{
+  "generator": "OpenAI ImageGen",
+  "promptRecord": "art-source/ui/b14/generation-prompts.md",
+  "originals": [
+    {
+      "file": "art-source/ui/b14/crownflare-title-source.png",
+      "imageGenOutput": "exec-70769ed2-47be-4a4f-840e-03e9d3af9441.png"
+    },
+    {
+      "file": "art-source/ui/b14/crownflare-victory-source.png",
+      "imageGenOutput": "exec-09025907-bde7-47ba-afdb-2685aeee59fe.png"
+    },
+    {
+      "file": "art-source/ui/b14/crownflare-mark-source.png",
+      "imageGenOutput": "exec-c2e05911-b24d-4229-9e48-5added396479.png"
+    },
+    {
+      "file": "art-source/ui/b14/crownflare-story-source.png",
+      "imageGenOutput": "exec-39fd22b5-f368-4791-82ad-ba7ebfa89c32.png"
+    },
+    {
+      "file": "art-source/ui/b14/crownflare-controller-source.png",
+      "imageGenOutput": "exec-400392c8-f2cd-46de-9781-8e593bc894ef.png"
+    }
+  ],
+  "assets": {
+    "sources": {
+      "art-source/ui/b14/crownflare-title-source.png": {
+        "bytes": 2315620,
+        "sha256": "eae3056b21fafc2db5d274026602c9edecb99d5f88a2642a8de6dc7fd2747b8e",
+        "width": 1672,
+        "height": 941
+      },
+      "art-source/ui/b14/crownflare-victory-source.png": {
+        "bytes": 2296468,
+        "sha256": "f1957aab0f9900e488ff58ddcf64ea81a4d104cfc2e38205d88e395bd66d24da",
+        "width": 1672,
+        "height": 941
+      },
+      "art-source/ui/b14/crownflare-mark-source.png": {
+        "bytes": 551321,
+        "sha256": "54c643b95f610aaaa54b21e3d57f9978fa17da5c14ce4c3639a02d5e3d625a3d",
+        "width": 1254,
+        "height": 1254
+      },
+      "art-source/ui/b14/crownflare-story-source.png": {
+        "bytes": 2170947,
+        "sha256": "cace96686728278a38465750e26b8cfe19b7ea25eb200d658a17fd46ccf4a60e",
+        "width": 1672,
+        "height": 941
+      },
+      "art-source/ui/b14/crownflare-controller-source.png": {
+        "bytes": 2033538,
+        "sha256": "9c9d527ae9b08c4fe6a89d5a4a1a719c1d20919b9c2a3a79990b8bc14477cafe",
+        "width": 1536,
+        "height": 1024
+      }
+    },
+    "runtime": {
+      "public/assets/ui/b14/crownflare-title.png": {
+        "bytes": 2315620,
+        "sha256": "eae3056b21fafc2db5d274026602c9edecb99d5f88a2642a8de6dc7fd2747b8e",
+        "width": 1672,
+        "height": 941
+      },
+      "public/assets/ui/b14/crownflare-victory.png": {
+        "bytes": 2296468,
+        "sha256": "f1957aab0f9900e488ff58ddcf64ea81a4d104cfc2e38205d88e395bd66d24da",
+        "width": 1672,
+        "height": 941
+      },
+      "public/favicon-16.png": {
+        "bytes": 666,
+        "sha256": "5b1bbf687db93b3f1f7c20f243cd11adf7f0f57129b4dc06d3cb8272d1108961",
+        "width": 16,
+        "height": 16
+      },
+      "public/favicon-32.png": {
+        "bytes": 1917,
+        "sha256": "3b2036b0471a521b46e99c6255465ae584789fc578e86a6f2e0ce897e34cc15c",
+        "width": 32,
+        "height": 32
+      },
+      "public/favicon.png": {
+        "bytes": 57414,
+        "sha256": "fb553398c23f370257c22f1addfaac05ac2002e23a2fa513a76639cba919f3f3",
+        "width": 256,
+        "height": 256
+      },
+      "public/favicon.ico": {
+        "bytes": 88122,
+        "sha256": "f131855a7292a666b668247bd6393213892749085a09da3fb9cda0fb02e37d88"
+      },
+      "public/apple-touch-icon.png": {
+        "bytes": 28387,
+        "sha256": "857d4bcf0d0ed4b19c29d46aa8cea060803b92d5fff20271c1363e3cf41cab9b",
+        "width": 180,
+        "height": 180
+      },
+      "build-resources/crownflare.ico": {
+        "bytes": 88122,
+        "sha256": "f131855a7292a666b668247bd6393213892749085a09da3fb9cda0fb02e37d88"
+      },
+      "public/assets/ui/b14/crownflare-story.png": {
+        "bytes": 2170947,
+        "sha256": "cace96686728278a38465750e26b8cfe19b7ea25eb200d658a17fd46ccf4a60e",
+        "width": 1672,
+        "height": 941
+      },
+      "public/assets/ui/b14/crownflare-controller.png": {
+        "bytes": 2033538,
+        "sha256": "9c9d527ae9b08c4fe6a89d5a4a1a719c1d20919b9c2a3a79990b8bc14477cafe",
+        "width": 1536,
+        "height": 1024
+      }
+    }
+  }
+}

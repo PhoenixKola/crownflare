@@ -58,7 +58,7 @@ export function createGame(onPause: () => void, onController: (active: boolean) 
     const canvas = game.canvas;
     if (!canvas) return;
     canvas.tabIndex = 0;
-    canvas.setAttribute('aria-label', b10 ? 'Crownflare pre-release Spindle Refuge two-region expedition' : artReview ? 'Crownflare B01A true-scale character review' : animationLab ? 'Crownflare provisional Iona animation and combat laboratory' : b09 ? 'Crownflare B09 roguelite run-build expedition' : b08 ? 'Crownflare B08 three-boss expedition playtest' : b07 ? 'Crownflare B07 two-region branching expedition playtest' : b06 ? 'Crownflare B06 enemy roster and combat gauntlet playtest' : b05 ? 'Crownflare B05 Dawnrush transformation combat review' : b04 ? 'Crownflare B04 Sunderglass Atrium combat vertical slice' : b03Combat ? 'Crownflare B03 provisional base combat encounter' : previewEnabled ? 'Crownflare provisional Iona playable preview' : 'Crownflare playable test chamber');
+    canvas.setAttribute('aria-label', b10 ? 'Crownflare two-region expedition' : artReview ? 'Crownflare B01A true-scale character review' : animationLab ? 'Crownflare provisional Iona animation and combat laboratory' : b09 ? 'Crownflare B09 roguelite run-build expedition' : b08 ? 'Crownflare B08 three-boss expedition playtest' : b07 ? 'Crownflare B07 two-region branching expedition playtest' : b06 ? 'Crownflare B06 enemy roster and combat gauntlet playtest' : b05 ? 'Crownflare B05 Dawnrush transformation combat review' : b04 ? 'Crownflare B04 Sunderglass Atrium combat vertical slice' : b03Combat ? 'Crownflare B03 provisional base combat encounter' : previewEnabled ? 'Crownflare provisional Iona playable preview' : 'Crownflare playable test chamber');
     canvas.focus();
   });
   return { game, scene };

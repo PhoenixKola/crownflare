@@ -203,7 +203,15 @@ export class B07ExpeditionScene extends ChamberScene {
   override create(): void {
     super.create();
     this.createHud();
-    if (this.b10Mode && this.b08Mode) { this.queueBossAssets(); this.load.start(); }
+    // Let Phaser finish the normal room's create pass before starting the
+    // background boss stream. Starting the loader synchronously from create()
+    // can leave SceneManager in LOADING on slower/headed browser runs, so the
+    // game appears to boot but never becomes interactive.
+    if (this.b10Mode && this.b08Mode) window.setTimeout(() => {
+      if (!this.sys.isActive()) return;
+      this.queueBossAssets();
+      this.load.start();
+    }, 0);
     this.input.keyboard?.on('keydown', () => this.unlockAudio());
     this.input.on(Phaser.Input.Events.POINTER_DOWN, () => this.unlockAudio());
     this.input.keyboard?.on('keydown-V', (event: KeyboardEvent) => {
