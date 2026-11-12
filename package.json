@@ -72,12 +72,12 @@
   },
   "devDependencies": {
     "@fontsource/silkscreen": "^5.3.0",
-    "electron": "45.2.3",
+    "electron": "45.3.1",
     "electron-builder": "26.18.0",
+    "phaser": "4.2.1",
     "playwright": "1.55.1",
     "typescript": "5.9.3",
-    "vite": "7.3.7",
-    "phaser": "4.2.1"
+    "vite": "7.3.7"
   },
   "main": "electron/main.mjs",
   "build": {
@@ -105,8 +105,8 @@
       }
     ],
     "asar": true,
-    "artifactName": "Crownflare-v${version}-${os}-${arch}.${ext}",
-    "compression": "maximum",
+    "artifactName": "Crownflare-v${version}-windows-${arch}.${ext}",
+    "compression": "normal",
     "win": {
       "target": [
         {
