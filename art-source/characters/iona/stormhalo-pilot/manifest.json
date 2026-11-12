@@ -1,0 +1,605 @@
+{
+  "schemaVersion": 1,
+  "pilotId": "iona-stormhalo-second-transformation-pilot",
+  "createdDate": "2026-11-12",
+  "targetForm": {
+    "name": "Stormhalo",
+    "canonicalDirection": "Resonant Crown: split hovering halo, long angular collar/coat fins, indigo and white-violet prismatic electricity; precise counter-fighter.",
+    "sourceDocs": [
+      "docs/01-creative-vision.md",
+      "docs/02-hero-and-transformations-bible.md"
+    ],
+    "runtimeIntegration": "not included; Stormhalo remains a post-release form"
+  },
+  "verdict": {
+    "classification": "PARTIAL SUCCESS \u2014 frame-based visual/export pilot",
+    "visualStatus": "generated and exported for owner review; no owner art approval is implied",
+    "rigStatus": "not tested; no character parts sheet or editable rigid-cutout rig was built",
+    "reason": "The reusable Blender rig baseline is external to this checkout, and the game bible documents form attachment/switching as unsupported. A transformation is a good frame-based fallback; this artifact does not validate reusable skeletal motion."
+  },
+  "animationMethod": {
+    "type": "frame-based image-generation key poses",
+    "generationPrompts": "art-source/characters/iona/stormhalo-pilot/generation-prompts.md",
+    "exportSource": "tools/art-export/build-stormhalo-pilot.py",
+    "sourceIdentity": "current shipped B01E Base Iona sprite and B05 Dawnrush artwork",
+    "canvas": [
+      128,
+      112
+    ],
+    "footAnchorY": 106,
+    "bodyHeightPx": 60,
+    "alphaThreshold": 192,
+    "resampling": "nearest-neighbor"
+  },
+  "transformation": {
+    "loop": false,
+    "totalDurationMs": 1230,
+    "events": [
+      {
+        "id": "activation",
+        "timeMs": 180,
+        "atFrame": "ignition"
+      },
+      {
+        "id": "surge",
+        "timeMs": 350,
+        "atFrame": "surge"
+      },
+      {
+        "id": "silhouette_break",
+        "timeMs": 530,
+        "atFrame": "silhouette-break"
+      },
+      {
+        "id": "form_commit",
+        "timeMs": 690,
+        "atFrame": "transformed-reveal"
+      },
+      {
+        "id": "settled",
+        "timeMs": 1230,
+        "atFrame": "settle"
+      }
+    ],
+    "frames": [
+      {
+        "id": "anticipation",
+        "frame": 0,
+        "durationMs": 180,
+        "file": "review-evidence/stormhalo-pilot/exports/transformation/frames/01-anticipation.png",
+        "sha256": "ae0e35d9243c32c6e06723aa5b0703bfe3794f542259f23d54ec1f99487c7e60",
+        "sourceCell": {
+          "column": 0,
+          "row": 0
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.07,
+          "footRatio": 0.89,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      },
+      {
+        "id": "ignition",
+        "frame": 1,
+        "durationMs": 170,
+        "file": "review-evidence/stormhalo-pilot/exports/transformation/frames/02-ignition.png",
+        "sha256": "4e05f5b537e99611b4c3bcbe618acff715a9f44e6760ac1eebd6a4a77a7117f1",
+        "sourceCell": {
+          "column": 1,
+          "row": 0
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.07,
+          "footRatio": 0.89,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      },
+      {
+        "id": "surge",
+        "frame": 2,
+        "durationMs": 180,
+        "file": "review-evidence/stormhalo-pilot/exports/transformation/frames/03-surge.png",
+        "sha256": "34dab2d4414c4b27149cc097410fdada20dea9d709d85529ad39a1088a046d59",
+        "sourceCell": {
+          "column": 2,
+          "row": 0
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.12,
+          "footRatio": 0.89,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      },
+      {
+        "id": "silhouette-break",
+        "frame": 3,
+        "durationMs": 160,
+        "file": "review-evidence/stormhalo-pilot/exports/transformation/frames/04-silhouette-break.png",
+        "sha256": "16a1d13fbf8102ef0e658f830c9ee6f7fd1e9ac8d41453e582f8ed5b344cef7e",
+        "sourceCell": {
+          "column": 0,
+          "row": 1
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.22,
+          "footRatio": 0.97,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      },
+      {
+        "id": "transformed-reveal",
+        "frame": 4,
+        "durationMs": 240,
+        "file": "review-evidence/stormhalo-pilot/exports/transformation/frames/05-transformed-reveal.png",
+        "sha256": "3ae7b67c92cce3926e063b65a2a67dcd97d057aa5a4830c03c55b903bb8a8eeb",
+        "sourceCell": {
+          "column": 1,
+          "row": 1
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.22,
+          "footRatio": 0.97,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      },
+      {
+        "id": "settle",
+        "frame": 5,
+        "durationMs": 300,
+        "file": "review-evidence/stormhalo-pilot/exports/transformation/frames/06-settle.png",
+        "sha256": "ba90b3b4317c50cf51b78006cf510a8cb5c615ddf5aa03db06eba2d8b40e5f4f",
+        "sourceCell": {
+          "column": 2,
+          "row": 1
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.22,
+          "footRatio": 0.97,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      }
+    ]
+  },
+  "transformedIdle": {
+    "loop": true,
+    "totalDurationMs": 960,
+    "frames": [
+      {
+        "id": "idle-01",
+        "frame": 0,
+        "durationMs": 240,
+        "file": "review-evidence/stormhalo-pilot/exports/transformed-idle/frames/01-idle-01.png",
+        "sha256": "41f5789324db3d81b6e29a16cd531f5dd5786ff0c1c00d5d2fb8422671886a15",
+        "sourceCell": {
+          "column": 0,
+          "row": 0
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.22,
+          "footRatio": 0.97,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      },
+      {
+        "id": "idle-02",
+        "frame": 1,
+        "durationMs": 240,
+        "file": "review-evidence/stormhalo-pilot/exports/transformed-idle/frames/02-idle-02.png",
+        "sha256": "1ca1a1cbaa8eb6c0e4db0489bea13a4a681e22a7e7c4413534f860776b878c6a",
+        "sourceCell": {
+          "column": 1,
+          "row": 0
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.22,
+          "footRatio": 0.97,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      },
+      {
+        "id": "idle-03",
+        "frame": 2,
+        "durationMs": 240,
+        "file": "review-evidence/stormhalo-pilot/exports/transformed-idle/frames/03-idle-03.png",
+        "sha256": "4b123acaaed2c78908dd7e12f306caf62682d3f1f37ff1bdc061a1b604534bd0",
+        "sourceCell": {
+          "column": 0,
+          "row": 1
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.22,
+          "footRatio": 0.97,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      },
+      {
+        "id": "idle-04",
+        "frame": 3,
+        "durationMs": 240,
+        "file": "review-evidence/stormhalo-pilot/exports/transformed-idle/frames/04-idle-04.png",
+        "sha256": "9e26dd2f9c563df54ba59d85eaf8762f63698f45eff4e0454edb3d8783a13729",
+        "sourceCell": {
+          "column": 1,
+          "row": 1
+        },
+        "bodyScaleReference": {
+          "bodyTopRatio": 0.22,
+          "footRatio": 0.97,
+          "bodyHeightPx": 60
+        },
+        "canvas": [
+          128,
+          112
+        ],
+        "alpha": true,
+        "resampling": "nearest-neighbor"
+      }
+    ]
+  },
+  "constantAura": {
+    "loop": true,
+    "totalDurationMs": 640,
+    "layers": {
+      "split-halo": [
+        {
+          "frame": 0,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 0,
+            "row": 0
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/split-halo/source-cells/01.png",
+          "sourceSha256": "e5cc0a26326559fe681c7be78b051d03676f8286b80cca985b6b676bbf88ecaf",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/split-halo/game-scale/01.png",
+          "sha256": "00eaad64f90862624b92e966787c4a6fd6618ae55f68e27357bafcfdbad413c7",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        },
+        {
+          "frame": 1,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 1,
+            "row": 0
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/split-halo/source-cells/02.png",
+          "sourceSha256": "2d1cb63ca5083220da2783271e2b20e5c45c484745ade323d6c227cf6c825e71",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/split-halo/game-scale/02.png",
+          "sha256": "a713884a29d3494fd59bca139c8e67d914f9f8da4e21c30e17698519a48a2543",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        },
+        {
+          "frame": 2,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 2,
+            "row": 0
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/split-halo/source-cells/03.png",
+          "sourceSha256": "d2176cabc0d8cb576230c7b9c189e7c083d4e1d16f8dc056dc6b58e70d5cfb5a",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/split-halo/game-scale/03.png",
+          "sha256": "d665461e17f153cc7b2850a7b99d2d288573a37dbeec5bb06cbab5997bbd4106",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        },
+        {
+          "frame": 3,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 3,
+            "row": 0
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/split-halo/source-cells/04.png",
+          "sourceSha256": "200d35838a644ea1c8be66a6693d5257494562397185d131e9698bc51c0bc71f",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/split-halo/game-scale/04.png",
+          "sha256": "b53ba84405aaa0a4840d65eafe6378a6233612fd6f3002d3b2950ad78b8ceb6b",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        }
+      ],
+      "orbit-filaments": [
+        {
+          "frame": 0,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 0,
+            "row": 1
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/orbit-filaments/source-cells/01.png",
+          "sourceSha256": "d45f67b3e6cc5129b7f931fa4189e94b59c9615c0b75e24478253d77e415f6cf",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/orbit-filaments/game-scale/01.png",
+          "sha256": "08adc584615a9ed894f98e5468ddb32cf32e55cbc15848150c5758de19c4537a",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        },
+        {
+          "frame": 1,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 1,
+            "row": 1
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/orbit-filaments/source-cells/02.png",
+          "sourceSha256": "e883e1f1709ac33d4f13e7f883f5c09ce6d234cfec55d4cf7fb8a04c164574ad",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/orbit-filaments/game-scale/02.png",
+          "sha256": "aff4e1405730b789f1b062ad1d1b2b08b864ee0162bc4c7eff0a69020be17a9d",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        },
+        {
+          "frame": 2,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 2,
+            "row": 1
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/orbit-filaments/source-cells/03.png",
+          "sourceSha256": "93c655e23c8e1066d83dd074f7a7f0923ae9a977d61d74013110eee958f62a93",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/orbit-filaments/game-scale/03.png",
+          "sha256": "2349745557d70d3a969adbebf8a83eddae49a23c38c50f6e7c460bb16e3b52f8",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        },
+        {
+          "frame": 3,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 3,
+            "row": 1
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/orbit-filaments/source-cells/04.png",
+          "sourceSha256": "6bd064d442e7d5bb8d2316a0549cf69cd59c13d47682b6a664cc5b4e4c134255",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/orbit-filaments/game-scale/04.png",
+          "sha256": "42c68ea209c9aa04df4bbc98e47ecb27a9e8fb61e29178045821982812ce6eef",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        }
+      ],
+      "prismatic-motes": [
+        {
+          "frame": 0,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 0,
+            "row": 2
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/prismatic-motes/source-cells/01.png",
+          "sourceSha256": "5e39880a10b75bb2158c002b6b61db71844faf16c1395f7cc26e39fc5521b2f0",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/prismatic-motes/game-scale/01.png",
+          "sha256": "54576f2117623247acf21aacc7b7323f8541a16c69f3828cfe1aeacf5bb00ad3",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        },
+        {
+          "frame": 1,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 1,
+            "row": 2
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/prismatic-motes/source-cells/02.png",
+          "sourceSha256": "922de1e8d1ab1f4ec2e529da0bcd8b9294b5855355bb8861d553556c653b94ce",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/prismatic-motes/game-scale/02.png",
+          "sha256": "5be03a82cd987680a445c70616a596fe372f3b27a79d29609adb4c9f60029478",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        },
+        {
+          "frame": 2,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 2,
+            "row": 2
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/prismatic-motes/source-cells/03.png",
+          "sourceSha256": "de129d6ef28635414eab58d7838f881ef6a67d93e5fb0b40ceac44452d96d6c2",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/prismatic-motes/game-scale/03.png",
+          "sha256": "ae58dff4ad0e352124a0b88a2590cb3878ab9afe4d0898cbe45939e18015c542",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        },
+        {
+          "frame": 3,
+          "durationMs": 160,
+          "sourceCell": {
+            "column": 3,
+            "row": 2
+          },
+          "sourceFile": "review-evidence/stormhalo-pilot/exports/aura/prismatic-motes/source-cells/04.png",
+          "sourceSha256": "a9dcf7d1241f7d4f8b2ef041d7e1fd0d00bca279c64a4d6c40d6756d7e5195d1",
+          "file": "review-evidence/stormhalo-pilot/exports/aura/prismatic-motes/game-scale/04.png",
+          "sha256": "cc46a5b93de81d9c1404928ab0cb86db60859a3a64c202534c657f794096e5dd",
+          "canvas": [
+            128,
+            112
+          ],
+          "alpha": true,
+          "resampling": "nearest-neighbor"
+        }
+      ]
+    },
+    "compositeNotes": "The intrinsic split halo is already present in the Stormhalo idle art, so the composed character preview layers orbit filaments behind Iona and motes in front. The independent halo loop is exported separately to avoid drawing a duplicate halo in the preview."
+  },
+  "sourceFiles": [
+    {
+      "path": "art-source/characters/iona/stormhalo-pilot/generation/stormhalo-concept-imagegen-02.png",
+      "sha256": "5fe2702e0244a9558f04925573ec7614074307ba0cb61cad8bd81096387461d9",
+      "dimensions": [
+        1197,
+        1315
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/stormhalo-pilot/generation/stormhalo-transformation-sheet-imagegen-02.png",
+      "sha256": "0d16d1e39184722fff474d362aae52996bf798cf3846afb4cc540844923619ad",
+      "dimensions": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/stormhalo-pilot/generation/stormhalo-idle-sheet-imagegen-02.png",
+      "sha256": "7eba64ba701e61f437ff065860c8b0984268c89da5918be37b7cc13e006aa873",
+      "dimensions": [
+        1197,
+        1314
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/stormhalo-pilot/generation/stormhalo-aura-sheet-imagegen-02.png",
+      "sha256": "17a207a5868181a2dcc6c7d55e3ab90ebf66b1a94086ee7386828140d912dd6b",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/stormhalo-pilot/references/iona-b01e-runtime-base-idle-right.png",
+      "sha256": "387c6cc5e7c9b60029fc5277c230eaab4936037fafa886a29100600306c2d1b6",
+      "dimensions": [
+        128,
+        80
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/stormhalo-pilot/references/iona-b05-runtime-dawnrush-idle-ready-right.png",
+      "sha256": "db864cf95dc557edd2170cfdf5944d6949e109cbf32cc2548079d6a2f473d1d6",
+      "dimensions": [
+        128,
+        80
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/stormhalo-pilot/references/stormhalo-study-source.png",
+      "sha256": "6ce4b0be363bdd787f035ca8a8b07565aa13803c56571aa4b78733850120e995",
+      "dimensions": [
+        1179,
+        1334
+      ]
+    },
+    {
+      "path": "art-source/characters/iona/stormhalo-pilot/references/dawnrush-transformation-01a1b353.png",
+      "sha256": "81aa6625bba7ddd5361d138ed646e5d98a9368a3a71a9841d10d8d48dc18cc0a",
+      "dimensions": [
+        1247,
+        1261
+      ]
+    }
+  ],
+  "reviewEvidence": [
+    "review-evidence/stormhalo-pilot/contact-sheets/transformation-contact-sheet.png",
+    "review-evidence/stormhalo-pilot/contact-sheets/transformed-idle-contact-sheet.png",
+    "review-evidence/stormhalo-pilot/contact-sheets/transformed-idle-aura-contact-sheet.png",
+    "review-evidence/stormhalo-pilot/contact-sheets/aura-loop-contact-sheet.png",
+    "review-evidence/stormhalo-pilot/contact-sheets/three-form-side-by-side-review-board.png",
+    "review-evidence/stormhalo-pilot/report.md",
+    "review-evidence/stormhalo-pilot/export-audit.json",
+    "review-evidence/stormhalo-pilot/clips/transformation-sequence.gif",
+    "review-evidence/stormhalo-pilot/clips/transformed-idle-with-aura.gif"
+  ],
+  "scope": {
+    "gameplayCodeChanged": false,
+    "newMoves": false,
+    "combatOrBossIntegration": false,
+    "thirdForm": false
+  }
+}

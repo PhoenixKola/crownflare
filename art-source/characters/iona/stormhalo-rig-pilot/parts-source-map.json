@@ -1,0 +1,224 @@
+{
+  "source_generation_images": {
+    "parts_01": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+    "body_02": "generation/iona-stormhalo-rig-body-parts-imagegen-02.png",
+    "head_detail_03": "generation/iona-stormhalo-head-detail-imagegen-03.png",
+    "crown_coat_04": "generation/iona-stormhalo-crown-coat-imagegen-04.png"
+  },
+  "cutouts": {
+    "head": {
+      "source": "generation/iona-stormhalo-head-detail-imagegen-03.png",
+      "component_box_xyxy": [
+        73,
+        23,
+        1372,
+        1063
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/head.png"
+    },
+    "neck": {
+      "source": "generation/iona-stormhalo-rig-body-parts-imagegen-02.png",
+      "component_box_xyxy": [
+        532,
+        401,
+        716,
+        542
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/neck.png"
+    },
+    "torso": {
+      "source": "generation/iona-stormhalo-rig-body-parts-imagegen-02.png",
+      "component_box_xyxy": [
+        791,
+        201,
+        1177,
+        547
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/torso.png"
+    },
+    "pelvis": {
+      "source": "generation/iona-stormhalo-rig-body-parts-imagegen-02.png",
+      "component_box_xyxy": [
+        90,
+        808,
+        405,
+        1037
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/pelvis.png"
+    },
+    "upper_near": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        53,
+        390,
+        194,
+        571
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/upper_near.png"
+    },
+    "fore_near": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        271,
+        418,
+        443,
+        568
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/fore_near.png"
+    },
+    "hand_near": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        473,
+        451,
+        582,
+        545
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/hand_near.png"
+    },
+    "upper_far": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        683,
+        390,
+        803,
+        564
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/upper_far.png"
+    },
+    "fore_far": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        875,
+        418,
+        1025,
+        586
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/fore_far.png"
+    },
+    "hand_far": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        1098,
+        445,
+        1194,
+        545
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/hand_far.png"
+    },
+    "thigh_near": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        41,
+        628,
+        214,
+        893
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/thigh_near.png"
+    },
+    "shin_near": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        276,
+        664,
+        389,
+        872
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/shin_near.png"
+    },
+    "foot_near": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        457,
+        734,
+        590,
+        885
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/foot_near.png"
+    },
+    "thigh_far": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        683,
+        628,
+        835,
+        889
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/thigh_far.png"
+    },
+    "shin_far": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        881,
+        664,
+        992,
+        884
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/shin_far.png"
+    },
+    "foot_far": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        1061,
+        747,
+        1212,
+        887
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/foot_far.png"
+    },
+    "sash_near": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        28,
+        934,
+        270,
+        1235
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/sash_near.png"
+    },
+    "sash_far": {
+      "source": "generation/iona-stormhalo-rig-parts-imagegen-01.png",
+      "component_box_xyxy": [
+        307,
+        944,
+        489,
+        1227
+      ],
+      "transparent_padding_px": 8,
+      "output": "parts/sash_far.png"
+    }
+  },
+  "crown": {
+    "source": "generation/iona-stormhalo-crown-coat-imagegen-04.png",
+    "component_box_xyxy": [
+      110,
+      140,
+      850,
+      650
+    ],
+    "alpha_threshold": 128,
+    "pivot": [
+      67,
+      365
+    ],
+    "output": "parts/crown.png"
+  },
+  "note": "Each crop is one separately generated component from a parts sheet. No component was cut from a finished assembled character illustration. Original source sheets are retained unchanged."
+}

@@ -1,0 +1,710 @@
+{
+  "schema": "rcp.character/1",
+  "id": "iona-stormhalo-rig-pilot-crown",
+  "profile": "biped_side_v1",
+  "description": "Real Iona Stormhalo production rig pilot. Body cutouts are native ImageGen separations from generated sheets; no assembled pose was sliced. RCP v1.1 shared Idle and Stress templates only. Option B transformation compositing is documented separately.",
+  "art_dir": "parts",
+  "scene": {
+    "root_x": 64,
+    "ground_y": 78.5
+  },
+  "camera": {
+    "crop": [
+      0,
+      0,
+      128,
+      80
+    ]
+  },
+  "outputs": [
+    {
+      "name": "native",
+      "width": 128,
+      "height": 80
+    }
+  ],
+  "tints": {
+    "far": {
+      "brightness": 0.72,
+      "saturation": 0.88
+    }
+  },
+  "parts": {
+    "torso": {
+      "image": "torso.png",
+      "size": [
+        402,
+        362
+      ],
+      "pivot": [
+        201,
+        352
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "neck": [
+          201,
+          28
+        ],
+        "sh_near": [
+          295,
+          106
+        ],
+        "sh_far": [
+          90,
+          106
+        ],
+        "hip_near": [
+          219,
+          345
+        ],
+        "hip_far": [
+          183,
+          345
+        ],
+        "sash_near": [
+          231,
+          345
+        ],
+        "sash_far": [
+          172,
+          345
+        ]
+      }
+    },
+    "head": {
+      "image": "head.png",
+      "size": [
+        1315,
+        1056
+      ],
+      "pivot": [
+        880,
+        948
+      ],
+      "scale": 0.0155,
+      "anchors": {
+        "crown": [
+          433,
+          53
+        ]
+      }
+    },
+    "crown": {
+      "image": "crown.png",
+      "size": [
+        713,
+        469
+      ],
+      "pivot": [
+        67,
+        365
+      ],
+      "scale": 0.035
+    },
+    "neck": {
+      "image": "neck.png",
+      "size": [
+        200,
+        157
+      ],
+      "pivot": [
+        100,
+        8
+      ],
+      "scale": 0.052
+    },
+    "pelvis": {
+      "image": "pelvis.png",
+      "size": [
+        331,
+        245
+      ],
+      "pivot": [
+        165,
+        8
+      ],
+      "scale": 0.052
+    },
+    "upper_near": {
+      "image": "upper_near.png",
+      "size": [
+        157,
+        197
+      ],
+      "pivot": [
+        79,
+        21
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "child": [
+          77,
+          178
+        ]
+      }
+    },
+    "fore_near": {
+      "image": "fore_near.png",
+      "size": [
+        188,
+        166
+      ],
+      "pivot": [
+        89,
+        18
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "child": [
+          128,
+          104
+        ]
+      }
+    },
+    "hand_near": {
+      "image": "hand_near.png",
+      "size": [
+        125,
+        110
+      ],
+      "pivot": [
+        38,
+        78
+      ],
+      "scale": 0.0624
+    },
+    "upper_far": {
+      "image": "upper_far.png",
+      "size": [
+        136,
+        190
+      ],
+      "pivot": [
+        68,
+        20
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "child": [
+          68,
+          170
+        ]
+      }
+    },
+    "fore_far": {
+      "image": "fore_far.png",
+      "size": [
+        166,
+        184
+      ],
+      "pivot": [
+        138,
+        18
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "child": [
+          78,
+          113
+        ]
+      }
+    },
+    "hand_far": {
+      "image": "hand_far.png",
+      "size": [
+        112,
+        116
+      ],
+      "pivot": [
+        42,
+        81
+      ],
+      "scale": 0.0624
+    },
+    "thigh_near": {
+      "image": "thigh_near.png",
+      "size": [
+        189,
+        281
+      ],
+      "pivot": [
+        105,
+        18
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "child": [
+          92,
+          257
+        ]
+      }
+    },
+    "shin_near": {
+      "image": "shin_near.png",
+      "size": [
+        129,
+        224
+      ],
+      "pivot": [
+        60,
+        32
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "child": [
+          60,
+          211
+        ]
+      }
+    },
+    "foot_near": {
+      "image": "foot_near.png",
+      "size": [
+        149,
+        167
+      ],
+      "pivot": [
+        58,
+        38
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "heel": [
+          25,
+          147
+        ],
+        "toe": [
+          138,
+          147
+        ]
+      }
+    },
+    "thigh_far": {
+      "image": "thigh_far.png",
+      "size": [
+        168,
+        277
+      ],
+      "pivot": [
+        89,
+        28
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "child": [
+          83,
+          254
+        ]
+      }
+    },
+    "shin_far": {
+      "image": "shin_far.png",
+      "size": [
+        127,
+        236
+      ],
+      "pivot": [
+        63,
+        16
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "child": [
+          63,
+          223
+        ]
+      }
+    },
+    "foot_far": {
+      "image": "foot_far.png",
+      "size": [
+        167,
+        156
+      ],
+      "pivot": [
+        52,
+        48
+      ],
+      "scale": 0.052,
+      "anchors": {
+        "heel": [
+          25,
+          136
+        ],
+        "toe": [
+          157,
+          136
+        ]
+      }
+    },
+    "sash_near": {
+      "image": "sash_near.png",
+      "size": [
+        258,
+        317
+      ],
+      "pivot": [
+        187,
+        39
+      ],
+      "scale": 0.052
+    },
+    "sash_far": {
+      "image": "sash_far.png",
+      "size": [
+        198,
+        299
+      ],
+      "pivot": [
+        187,
+        39
+      ],
+      "scale": 0.052
+    }
+  },
+  "bones": [
+    {
+      "name": "body",
+      "parent": null,
+      "part": "torso"
+    },
+    {
+      "name": "head",
+      "parent": "body",
+      "attach": "neck",
+      "part": "head"
+    },
+    {
+      "name": "crown",
+      "parent": "head",
+      "attach": "crown",
+      "part": "crown",
+      "inherit_rotation": 0.8
+    },
+    {
+      "name": "neckSkin",
+      "parent": "body",
+      "attach": "neck",
+      "part": "neck"
+    },
+    {
+      "name": "upper.near",
+      "parent": "body",
+      "attach": "sh_near",
+      "part": "upper_near"
+    },
+    {
+      "name": "fore.near",
+      "parent": "upper.near",
+      "attach": "child",
+      "part": "fore_near"
+    },
+    {
+      "name": "hand.near",
+      "parent": "fore.near",
+      "attach": "child",
+      "part": "hand_near"
+    },
+    {
+      "name": "thigh.near",
+      "parent": "body",
+      "attach": "hip_near",
+      "part": "thigh_near"
+    },
+    {
+      "name": "shin.near",
+      "parent": "thigh.near",
+      "attach": "child",
+      "part": "shin_near"
+    },
+    {
+      "name": "foot.near",
+      "parent": "shin.near",
+      "attach": "child",
+      "part": "foot_near",
+      "contacts": [
+        "heel",
+        "toe"
+      ]
+    },
+    {
+      "name": "upper.far",
+      "parent": "body",
+      "attach": "sh_far",
+      "part": "upper_far"
+    },
+    {
+      "name": "fore.far",
+      "parent": "upper.far",
+      "attach": "child",
+      "part": "fore_far"
+    },
+    {
+      "name": "hand.far",
+      "parent": "fore.far",
+      "attach": "child",
+      "part": "hand_far"
+    },
+    {
+      "name": "thigh.far",
+      "parent": "body",
+      "attach": "hip_far",
+      "part": "thigh_far"
+    },
+    {
+      "name": "shin.far",
+      "parent": "thigh.far",
+      "attach": "child",
+      "part": "shin_far"
+    },
+    {
+      "name": "foot.far",
+      "parent": "shin.far",
+      "attach": "child",
+      "part": "foot_far",
+      "contacts": [
+        "heel",
+        "toe"
+      ]
+    }
+  ],
+  "draw_order": [
+    {
+      "part": "sash_far",
+      "bone": "body"
+    },
+    {
+      "part": "sash_near",
+      "bone": "body"
+    },
+    {
+      "part": "thigh_far",
+      "bone": "thigh.far"
+    },
+    {
+      "part": "shin_far",
+      "bone": "shin.far"
+    },
+    {
+      "part": "foot_far",
+      "bone": "foot.far"
+    },
+    {
+      "part": "upper_far",
+      "bone": "upper.far"
+    },
+    {
+      "part": "fore_far",
+      "bone": "fore.far"
+    },
+    {
+      "part": "hand_far",
+      "bone": "hand.far"
+    },
+    {
+      "part": "thigh_near",
+      "bone": "thigh.near"
+    },
+    {
+      "part": "shin_near",
+      "bone": "shin.near"
+    },
+    {
+      "part": "foot_near",
+      "bone": "foot.near"
+    },
+    {
+      "part": "neck",
+      "bone": "neckSkin"
+    },
+    {
+      "part": "pelvis",
+      "bone": "body"
+    },
+    {
+      "part": "torso",
+      "bone": "body"
+    },
+    {
+      "part": "crown",
+      "bone": "crown"
+    },
+    {
+      "part": "head",
+      "bone": "head"
+    },
+    {
+      "part": "upper_near",
+      "bone": "upper.near"
+    },
+    {
+      "part": "fore_near",
+      "bone": "fore.near"
+    },
+    {
+      "part": "hand_near",
+      "bone": "hand.near"
+    }
+  ],
+  "animations": {
+    "Idle": {
+      "template": "idle_v1",
+      "frames": 48,
+      "export_step": 2,
+      "export_fps": 12,
+      "loop": true
+    },
+    "Stress": {
+      "template": "stress_v1",
+      "qa": true,
+      "overrides": {
+        "poses": [
+          {
+            "label": "neutral",
+            "body": 0,
+            "head": 0,
+            "near": {
+              "sh": -6,
+              "el": 14,
+              "hip": -6,
+              "knee": 7,
+              "foot": 0
+            },
+            "far": {
+              "sh": 8,
+              "el": 14,
+              "hip": 9,
+              "knee": 9,
+              "foot": 0
+            }
+          },
+          {
+            "label": "ready",
+            "body": -3,
+            "head": 2,
+            "near": {
+              "sh": -20,
+              "el": 35,
+              "hip": -8,
+              "knee": 25,
+              "foot": 0
+            },
+            "far": {
+              "sh": 20,
+              "el": 25,
+              "hip": 12,
+              "knee": 30,
+              "foot": 0
+            }
+          },
+          {
+            "label": "knees",
+            "body": 0,
+            "head": 0,
+            "near": {
+              "sh": -10,
+              "el": 20,
+              "hip": 20,
+              "knee": 60,
+              "foot": 8
+            },
+            "far": {
+              "sh": 10,
+              "el": 20,
+              "hip": -10,
+              "knee": 45,
+              "foot": -8
+            }
+          },
+          {
+            "label": "wide",
+            "body": -5,
+            "head": 1,
+            "near": {
+              "sh": 10,
+              "el": 30,
+              "hip": 25,
+              "knee": 40,
+              "foot": 10
+            },
+            "far": {
+              "sh": -10,
+              "el": 25,
+              "hip": -20,
+              "knee": 45,
+              "foot": -10
+            }
+          },
+          {
+            "label": "elbows",
+            "body": 0,
+            "head": 0,
+            "near": {
+              "sh": -25,
+              "el": 70,
+              "hip": -6,
+              "knee": 7,
+              "foot": 0
+            },
+            "far": {
+              "sh": 20,
+              "el": 60,
+              "hip": 9,
+              "knee": 9,
+              "foot": 0
+            }
+          },
+          {
+            "label": "shoulders",
+            "body": 0,
+            "head": 0,
+            "near": {
+              "sh": 35,
+              "el": 20,
+              "hip": -6,
+              "knee": 7,
+              "foot": 0
+            },
+            "far": {
+              "sh": -30,
+              "el": 25,
+              "hip": 9,
+              "knee": 9,
+              "foot": 0
+            }
+          },
+          {
+            "label": "lean",
+            "body": 8,
+            "head": -6,
+            "near": {
+              "sh": -30,
+              "el": 45,
+              "hip": 10,
+              "knee": 25,
+              "foot": 8
+            },
+            "far": {
+              "sh": 20,
+              "el": 40,
+              "hip": -10,
+              "knee": 30,
+              "foot": -8
+            }
+          }
+        ]
+      }
+    }
+  },
+  "render": {
+    "master_scale": 1,
+    "texture_interpolation": "Closest",
+    "taa_samples": 1
+  },
+  "preview_background": [
+    11,
+    24,
+    35
+  ]
+}

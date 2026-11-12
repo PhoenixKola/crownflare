@@ -1,0 +1,147 @@
+{
+  "orbit": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      565,
+      85,
+      797,
+      419
+    ]
+  },
+  "upper_arc": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      73,
+      89,
+      411,
+      318
+    ]
+  },
+  "lower_arc": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      127,
+      297,
+      485,
+      434
+    ]
+  },
+  "filament_teal": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      912,
+      36,
+      972,
+      454
+    ]
+  },
+  "filament_copper": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      1015,
+      101,
+      1040,
+      413
+    ]
+  },
+  "filament_teal_small": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      1179,
+      105,
+      1203,
+      323
+    ]
+  },
+  "surge": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      45,
+      655,
+      690,
+      1194
+    ]
+  },
+  "mote-01": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      89,
+      476,
+      202,
+      575
+    ]
+  },
+  "mote-02": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      300,
+      468,
+      348,
+      517
+    ]
+  },
+  "mote-03": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      445,
+      489,
+      505,
+      550
+    ]
+  },
+  "mote-04": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      719,
+      493,
+      763,
+      538
+    ]
+  },
+  "mote-05": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      917,
+      493,
+      992,
+      548
+    ]
+  },
+  "mote-06": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      238,
+      549,
+      277,
+      590
+    ]
+  },
+  "mote-07": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      374,
+      563,
+      412,
+      603
+    ]
+  },
+  "mote-08": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      573,
+      547,
+      613,
+      586
+    ]
+  },
+  "mote-09": {
+    "source": "art-source/characters/iona/stormhalo-rig-pilot/generation/iona-stormhalo-aura-vfx-imagegen-01.png",
+    "component_box_xyxy": [
+      786,
+      553,
+      853,
+      607
+    ]
+  },
+  "note": "VFX crops are isolated generated components; low alpha background haze was thresholded for crisp pixel scale."
+}
