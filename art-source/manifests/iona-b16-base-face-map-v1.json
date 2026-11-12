@@ -1,0 +1,3609 @@
+{
+  "schemaVersion": 1,
+  "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+  "sourceCandidate": "IONA_B01E_BASE_SIDEKICK_V1",
+  "canvas": {
+    "width": 128,
+    "height": 80
+  },
+  "palette": {
+    "lid": "#312E47",
+    "pupil": "#191525",
+    "sclera": "#F3E5E0",
+    "lowerLash": "#DAA794"
+  },
+  "treatment": "Keep the authored dark pupil or lid, add an in-palette upper lid, one opposite-gaze sclera pixel, and a restrained warm lower edge only where the source pixels allow it. Exact edits are listed per frame. Closed, obscured, motion-compressed, and already-distinct eye frames are preserved.",
+  "frameCount": 70,
+  "repairedOpenEyeFrameCount": 67,
+  "preservedFrameCount": 3,
+  "frames": [
+    {
+      "id": "idle-0",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/idle-0-left.png",
+      "baselineSha256": "33cc42c0160b9d1210d9efb8b9c73c6c1fc0e2da06e09ff16b4b0d55a72a6c23",
+      "status": "repaired-open-eye",
+      "anchor": [
+        63,
+        30
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            63,
+            29
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            64,
+            30
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            64,
+            31
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "idle-1",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/idle-1-left.png",
+      "baselineSha256": "60d7299f32091d6992ae4ca7fda4a87d6716b2b1176648c07e5ef36a3ebd3113",
+      "status": "repaired-open-eye",
+      "anchor": [
+        62,
+        30
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            62,
+            29
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            63,
+            30
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "idle-2",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/idle-2-left.png",
+      "baselineSha256": "148b1682957d827799f2ffedc8e60d92330686150e1f45a984fce24bf2d56a54",
+      "status": "repaired-open-eye",
+      "anchor": [
+        57,
+        31
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            57,
+            30
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            58,
+            31
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            58,
+            32
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "idle-3",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/idle-3-left.png",
+      "baselineSha256": "0dce67c11e64f5cda025573d020c08ae3970467ca1382a874776757811276a5e",
+      "status": "repaired-open-eye",
+      "anchor": [
+        56,
+        30
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            56,
+            29
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            57,
+            30
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            57,
+            31
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "jump-0",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-0-left.png",
+      "baselineSha256": "4c42f0eab108c3a3f5bad969dd5df2c3825d8d71834d422377291e4906b77a08",
+      "status": "repaired-open-eye",
+      "anchor": [
+        53,
+        38
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            53,
+            37
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            54,
+            38
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "jump-1",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-1-left.png",
+      "baselineSha256": "fb5527aae907aa29821380fd682713bf1c9a318437c80ea2c86fba4d1786ef37",
+      "status": "repaired-open-eye",
+      "anchor": [
+        47,
+        29
+      ],
+      "anchorSource": "manual-review",
+      "rationale": "The open eye is a dark lid mark without a pupil anchor; manually inspected in the jump arc and treated as a small lower-facing eye.",
+      "pixelEdits": [
+        {
+          "xy": [
+            48,
+            29
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            48,
+            30
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "jump-2",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-2-left.png",
+      "baselineSha256": "642180dad51ec21523e5242659f740d8e8fea53609bb015fcfc24a526acbd99f",
+      "status": "repaired-open-eye",
+      "anchor": [
+        55,
+        32
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            55,
+            31
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            56,
+            32
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            56,
+            33
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "jump-3",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-3-left.png",
+      "baselineSha256": "395a7365599163cb79c94ace5aab1c1ecb7db2eb70d61a141b6d7df675c258c4",
+      "status": "repaired-open-eye",
+      "anchor": [
+        53,
+        36
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            53,
+            35
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            54,
+            36
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            54,
+            37
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "jump-4",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-4-left.png",
+      "baselineSha256": "29b66e1128e4d2555075d7a5677c5d9801c4f2387e9221d637f673873b84a854",
+      "status": "repaired-open-eye",
+      "anchor": [
+        58,
+        26
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            58,
+            25
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            59,
+            26
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "jump-5",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-5-left.png",
+      "baselineSha256": "339293c449823d7f00e339223fddba6ba662f7307cc405ecae506e7ba6a7f07e",
+      "status": "repaired-open-eye",
+      "anchor": [
+        50,
+        38
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            50,
+            37
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            51,
+            38
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            51,
+            39
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "dash-0",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-0-left.png",
+      "baselineSha256": "688ddc30dca47ca820a94cd44aace2d3ee4190a36d36c767e51ec22a6ed9006b",
+      "status": "repaired-open-eye",
+      "anchor": [
+        48,
+        37
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            48,
+            36
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            49,
+            37
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            49,
+            38
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "dash-1",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-1-left.png",
+      "baselineSha256": "7e6d8a95ca1168690c8fab2a792c2586c4dedc974b3dae5b693ae43719c2b9e8",
+      "status": "repaired-open-eye",
+      "anchor": [
+        54,
+        34
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            55,
+            34
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            55,
+            35
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "dash-2",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-2-left.png",
+      "baselineSha256": "f6177cb7169a0e04eecf78e985ea44dff89139780df6aaeca9d00085235c1bb3",
+      "status": "preserved-motion-occlusion",
+      "anchor": null,
+      "anchorSource": "none",
+      "rationale": "The face is compressed into the dash trail; no stable eye feature is exposed.",
+      "pixelEdits": []
+    },
+    {
+      "id": "dash-3",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-3-left.png",
+      "baselineSha256": "4c3d1f90f7ffa91bb0ffdaf33fb87c5c5fc466419c108cf97f8ca931c4f4fe8b",
+      "status": "repaired-open-eye",
+      "anchor": [
+        49,
+        46
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            49,
+            45
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            50,
+            46
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            50,
+            47
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "dash-4",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-4-left.png",
+      "baselineSha256": "0854c6485bcc720f068406cbb94fefcd75a22d33607e627a8683723b306b275d",
+      "status": "repaired-open-eye",
+      "anchor": [
+        50,
+        41
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            50,
+            40
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            51,
+            41
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            51,
+            42
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "dash-5",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-5-left.png",
+      "baselineSha256": "e5ea8dd3f8e64dd4044458a8a48b9e8f64eb73295310c4edfef861c82bac97c5",
+      "status": "repaired-open-eye",
+      "anchor": [
+        50,
+        30
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            50,
+            29
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            51,
+            31
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-1-windup",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-1-windup-left.png",
+      "baselineSha256": "0b55cb0c4d7b59b7a814df70177309ad969b32ba8c200c14cdf41cb1f02efb8a",
+      "status": "repaired-open-eye",
+      "anchor": [
+        61,
+        45
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            61,
+            44
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            62,
+            45
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            62,
+            46
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-1-contact",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-1-contact-left.png",
+      "baselineSha256": "5e496d91a911a7582ee1d0348ec1c85eb12ded98259061eb079e7949d05ffbcc",
+      "status": "repaired-open-eye",
+      "anchor": [
+        59,
+        44
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            59,
+            43
+          ],
+          "fromRgb": [
+            233,
+            217,
+            213
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            60,
+            44
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "combo-1-recovery",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-1-recovery-left.png",
+      "baselineSha256": "bcffb6efb4e89d1f2f7f0598646a69f7cabd6bca688f4e8fe9992149673a5234",
+      "status": "repaired-open-eye",
+      "anchor": [
+        55,
+        45
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            55,
+            44
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            56,
+            45
+          ],
+          "fromRgb": [
+            219,
+            202,
+            199
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            56,
+            46
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-3-windup",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-3-windup-left.png",
+      "baselineSha256": "6716a4a3a5c2cc4aab396afcf154e5d0a4d2d6dd6af387b4600019ee1f7c0e22",
+      "status": "repaired-open-eye",
+      "anchor": [
+        59,
+        47
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            59,
+            46
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "combo-3-contact",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-3-contact-left.png",
+      "baselineSha256": "65c2959ff6559561ac5eeb571a4e1b2d52d5f0ad51de4329e68b2feacd32f6cd",
+      "status": "repaired-open-eye",
+      "anchor": [
+        62,
+        46
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            62,
+            45
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "combo-3-recovery",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-3-recovery-left.png",
+      "baselineSha256": "a25c17b2de5cd555b00d9e04a413a8e6e0c340bb09ddf45a9b8d66bb3f65d3b6",
+      "status": "repaired-open-eye",
+      "anchor": [
+        55,
+        44
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            55,
+            43
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            56,
+            45
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "start-0",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/start-0-left.png",
+      "baselineSha256": "7f75645ef5ac4d29351b0dea55a1a8426a1c6d85c31a4d80fbf783aa6ec472ee",
+      "status": "repaired-open-eye",
+      "anchor": [
+        48,
+        26
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            48,
+            25
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            49,
+            26
+          ],
+          "fromRgb": [
+            219,
+            202,
+            199
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            49,
+            27
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "start-1",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/start-1-left.png",
+      "baselineSha256": "5e37979e1027398fd908ffa16489f249e5cdac050aac1b42bf8a09f626edb1cf",
+      "status": "repaired-open-eye",
+      "anchor": [
+        50,
+        26
+      ],
+      "anchorSource": "manual-review",
+      "rationale": "The open eye is present but its lid is partly blended into the hairline; manually inspected against the neighboring start pose.",
+      "pixelEdits": [
+        {
+          "xy": [
+            50,
+            25
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "stop-0",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/stop-0-left.png",
+      "baselineSha256": "b1651c1af08443bf7d86dfde48aad8b2fed3f3f2e1e9755fd4f11de209a8b8e2",
+      "status": "repaired-open-eye",
+      "anchor": [
+        64,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            65,
+            28
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            65,
+            29
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "stop-1",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/stop-1-left.png",
+      "baselineSha256": "653fb7f88ea201997fc1da38caf41395d74f78850bed61bcc2a8f7369a5bb505",
+      "status": "repaired-open-eye",
+      "anchor": [
+        54,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            54,
+            27
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            55,
+            28
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            55,
+            29
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "turn-1",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/turn-1-left.png",
+      "baselineSha256": "226468235e09829e68acf0d45b3fc44c2503f64a0a3b8f9810cc4e02bd785428",
+      "status": "preserved-turn-occlusion",
+      "anchor": null,
+      "anchorSource": "none",
+      "rationale": "The turning face is partly hidden by the fringe and the view is transitional.",
+      "pixelEdits": []
+    },
+    {
+      "id": "run-0",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/run-0-left.png",
+      "baselineSha256": "7481fb5e7ff60e6e78fcc83c5638212c54b4d83f9a4246922f6a31e3a81d963c",
+      "status": "repaired-open-eye",
+      "anchor": [
+        55,
+        24
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            55,
+            23
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            56,
+            25
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "run-1",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/run-1-left.png",
+      "baselineSha256": "5b25e54e53d246efaf1ca2d796843097703402c9e19a3d650c7e0390711b9bbb",
+      "status": "repaired-open-eye",
+      "anchor": [
+        54,
+        25
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            54,
+            24
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            55,
+            26
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "run-2",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/run-2-left.png",
+      "baselineSha256": "13e3bebb17e7f2cb0329eb0d321f2616cc988e6e45c4c73dc1e7cd59785e31b5",
+      "status": "repaired-open-eye",
+      "anchor": [
+        50,
+        25
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            51,
+            25
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            51,
+            26
+          ],
+          "fromRgb": [
+            243,
+            229,
+            224
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "run-3",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/run-3-left.png",
+      "baselineSha256": "70004dad544a2136f053e0a07ab4d87b86b7acbdb80ea30179cdc2cb8c0ca7b1",
+      "status": "repaired-open-eye",
+      "anchor": [
+        46,
+        25
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            46,
+            24
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            47,
+            26
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-2-windup",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-2-windup-left.png",
+      "baselineSha256": "b34703e146646dc012142d0f3db7eb624eda692c4959547950f141b127f66d44",
+      "status": "repaired-open-eye",
+      "anchor": [
+        59,
+        29
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            59,
+            28
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            60,
+            29
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            60,
+            30
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-2-windup-1",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-2-windup-1-left.png",
+      "baselineSha256": "4ab328f0cba670207bc42a368fee03d2821589ac1c092ab2b73590942a0114b3",
+      "status": "repaired-open-eye",
+      "anchor": [
+        65,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            65,
+            27
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            66,
+            28
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            66,
+            29
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-2-contact",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-2-contact-left.png",
+      "baselineSha256": "30afb53b3d66869e750c467ea3232e3f90f624611aa3ac6abf6762e401a01deb",
+      "status": "repaired-open-eye",
+      "anchor": [
+        68,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            68,
+            27
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            69,
+            28
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "combo-2-recovery",
+      "facing": "left",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-2-recovery-left.png",
+      "baselineSha256": "384f06eb30f7d21977e0a3eeffe41a3321caab0ec4a047875d3a8043040a735e",
+      "status": "repaired-open-eye",
+      "anchor": [
+        64,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            64,
+            27
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            65,
+            28
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            65,
+            29
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "idle-0",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/idle-0-right.png",
+      "baselineSha256": "387c6cc5e7c9b60029fc5277c230eaab4936037fafa886a29100600306c2d1b6",
+      "status": "repaired-open-eye",
+      "anchor": [
+        70,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            70,
+            27
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            69,
+            28
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            69,
+            29
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "idle-1",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/idle-1-right.png",
+      "baselineSha256": "c64d76099c2ef961e053974d9d3ccabf0d4c8a1d236d7e6ec8b1d7af352f6fe8",
+      "status": "repaired-open-eye",
+      "anchor": [
+        65,
+        32
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            65,
+            31
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "idle-2",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/idle-2-right.png",
+      "baselineSha256": "70965bc4d1f3dcc0f0ab9391a0841b9fad3757bbfd58ed3a3227960a7c0559d1",
+      "status": "repaired-open-eye",
+      "anchor": [
+        63,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            63,
+            27
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            62,
+            28
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            62,
+            29
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "idle-3",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/idle-3-right.png",
+      "baselineSha256": "85b2613df6295a874386420cd10511a6ef9fe81953ca8a2eb966fc9cab3fd942",
+      "status": "preserved-existing-eye",
+      "anchor": null,
+      "anchorSource": "none",
+      "rationale": "The face already has a distinct teal eye glint; retaining it avoids doubling the eye detail.",
+      "pixelEdits": []
+    },
+    {
+      "id": "jump-0",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-0-right.png",
+      "baselineSha256": "86d0bc2e34f1ac7ecc1143f0e05b8d27a45cddc4eb048f131d87694b3a1fe0e5",
+      "status": "repaired-open-eye",
+      "anchor": [
+        73,
+        40
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            73,
+            39
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            72,
+            40
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "jump-1",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-1-right.png",
+      "baselineSha256": "21341931f320b3cbc8655d17afbf792e6505b866426135225d51ccd3bcee7014",
+      "status": "repaired-open-eye",
+      "anchor": [
+        77,
+        30
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            77,
+            29
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            76,
+            31
+          ],
+          "fromRgb": [
+            243,
+            229,
+            224
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "jump-2",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-2-right.png",
+      "baselineSha256": "5edb1ef6fcb9bd455c1c918aaeb6df8a4806d7ab7d64e06af5619bd50abbe11c",
+      "status": "repaired-open-eye",
+      "anchor": [
+        75,
+        31
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            75,
+            30
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            74,
+            32
+          ],
+          "fromRgb": [
+            243,
+            229,
+            224
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "jump-3",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-3-right.png",
+      "baselineSha256": "7cd910f5f5f8909e11587e7e46554eeb25c6094993ac57225147468b5eb8ffb0",
+      "status": "repaired-open-eye",
+      "anchor": [
+        69,
+        39
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            69,
+            38
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "jump-4",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-4-right.png",
+      "baselineSha256": "140b85246869f54f5d05bb0515fd7b2c0b9c28e045ec18ee8fdb99db541f17ca",
+      "status": "repaired-open-eye",
+      "anchor": [
+        69,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            69,
+            27
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "jump-5",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/jump-5-right.png",
+      "baselineSha256": "9787df8617efd17a8ebc01a260ae5b843a71e5094b3565fa5c8226d4ceca28df",
+      "status": "repaired-open-eye",
+      "anchor": [
+        71,
+        40
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            71,
+            39
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            70,
+            40
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "dash-0",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-0-right.png",
+      "baselineSha256": "7698a312650f35f20d3c8b1ffe9fa93623ac15fa5c689d375e54f6f50974611a",
+      "status": "repaired-open-eye",
+      "anchor": [
+        77,
+        44
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            77,
+            43
+          ],
+          "fromRgb": [
+            219,
+            202,
+            199
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            76,
+            44
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "dash-1",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-1-right.png",
+      "baselineSha256": "ffc96e86c973ddf230d55141f72bbfca176b0902bf60a343dad4a929f93c9d56",
+      "status": "repaired-open-eye",
+      "anchor": [
+        76,
+        36
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            76,
+            35
+          ],
+          "fromRgb": [
+            233,
+            217,
+            213
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            75,
+            36
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "dash-2",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-2-right.png",
+      "baselineSha256": "4e08be59b49149ebdd8796854cf97ee17f6bfbc6269a72947de3becc9536d530",
+      "status": "repaired-open-eye",
+      "anchor": [
+        73,
+        44
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            73,
+            43
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "dash-3",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-3-right.png",
+      "baselineSha256": "51008462261648a263764c93061f2201d2f548d440fb88bb2818c9ea5d86050b",
+      "status": "repaired-open-eye",
+      "anchor": [
+        73,
+        53
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            72,
+            53
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            72,
+            54
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "dash-4",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-4-right.png",
+      "baselineSha256": "d090526217b1080005a00bbafb3b01e22d22bcd30bfe77f1a3eaa7e5545fe514",
+      "status": "repaired-open-eye",
+      "anchor": [
+        58,
+        42
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            58,
+            41
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            57,
+            42
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            57,
+            43
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "dash-5",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/dash-5-right.png",
+      "baselineSha256": "968f054bc61fcaea9f05819e6a1fe2bbce267fea265c416d9e6441ea635b7b9b",
+      "status": "repaired-open-eye",
+      "anchor": [
+        70,
+        30
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            70,
+            29
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "combo-1-windup",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-1-windup-right.png",
+      "baselineSha256": "73bba579a1f082b5f690060ac273dcf88e3a7803b9fe9a01a48767b969864ddd",
+      "status": "repaired-open-eye",
+      "anchor": [
+        75,
+        44
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            75,
+            43
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            74,
+            45
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-1-contact",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-1-contact-right.png",
+      "baselineSha256": "0bdb8ff116198962da93603cf33721c77c86911143609b06c1fa43cd3f8e572b",
+      "status": "repaired-open-eye",
+      "anchor": [
+        77,
+        44
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            76,
+            45
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-1-recovery",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-1-recovery-right.png",
+      "baselineSha256": "07d4941e80df88b8b201ae76547c2fbda2ca6424df89d13dab27ff097cc3c7fe",
+      "status": "repaired-open-eye",
+      "anchor": [
+        75,
+        44
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            75,
+            43
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            74,
+            44
+          ],
+          "fromRgb": [
+            233,
+            217,
+            213
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            74,
+            45
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-3-windup",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-3-windup-right.png",
+      "baselineSha256": "6a3e7e1384c946c6df571b630c6e6281834c351f480bcb0705aee8d8b851b2f5",
+      "status": "repaired-open-eye",
+      "anchor": [
+        74,
+        44
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            74,
+            43
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            73,
+            45
+          ],
+          "fromRgb": [
+            232,
+            210,
+            203
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-3-contact",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-3-contact-right.png",
+      "baselineSha256": "c2b83b42d78bf8dd13648cbb67c5fe73561f6b94d3f114371423b2fc2c7b6b91",
+      "status": "repaired-open-eye",
+      "anchor": [
+        70,
+        45
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            70,
+            44
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "combo-3-recovery",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-3-recovery-right.png",
+      "baselineSha256": "b760a7fabe106c040967ef32e062710fe4f6607a6cf24aee44310fd0b2eac714",
+      "status": "repaired-open-eye",
+      "anchor": [
+        74,
+        43
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            74,
+            42
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            73,
+            44
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "start-0",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/start-0-right.png",
+      "baselineSha256": "99d3795378eb71787e1a2c7b6f16f5aea2c8b6a383ea6da3c1c7d9c3df02021b",
+      "status": "repaired-open-eye",
+      "anchor": [
+        76,
+        26
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            76,
+            25
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        }
+      ]
+    },
+    {
+      "id": "start-1",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/start-1-right.png",
+      "baselineSha256": "aae3bb72e58d88d92bb7e3ab9e0370483a69e36f2d871bb88e490642c21a3574",
+      "status": "repaired-open-eye",
+      "anchor": [
+        72,
+        24
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            72,
+            23
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            71,
+            24
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        }
+      ]
+    },
+    {
+      "id": "stop-0",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/stop-0-right.png",
+      "baselineSha256": "96b52cfd71a399c5bb1b01a043981e2e567bdf174906475b3e471013735fe7f5",
+      "status": "repaired-open-eye",
+      "anchor": [
+        65,
+        25
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            65,
+            24
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            64,
+            26
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "stop-1",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/stop-1-right.png",
+      "baselineSha256": "ac0cece63b52de9556aaa6b5b9e3fe36f72ee5764e7b6d29d46e0fed81413f22",
+      "status": "repaired-open-eye",
+      "anchor": [
+        71,
+        26
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            71,
+            25
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            70,
+            26
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            70,
+            27
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "turn-1",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/turn-1-right.png",
+      "baselineSha256": "46dc5e73126d8f1d5b0ce778ad4e9d1040f04a4732959e1aa5c2f943243b5479",
+      "status": "repaired-open-eye",
+      "anchor": [
+        64,
+        23
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            64,
+            22
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            63,
+            23
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            63,
+            24
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "run-0",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/run-0-right.png",
+      "baselineSha256": "5e4cb73acc2ec28d82f7fb579f1c0a271b14f17fa9c25ba32b1aa5017f34b0c0",
+      "status": "repaired-open-eye",
+      "anchor": [
+        79,
+        24
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            79,
+            23
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            78,
+            24
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            78,
+            25
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "run-1",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/run-1-right.png",
+      "baselineSha256": "e2584f43230ceb980ffc64c5676adc160dbf3034717321db10d7bb9bada02a07",
+      "status": "repaired-open-eye",
+      "anchor": [
+        73,
+        24
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            73,
+            23
+          ],
+          "fromRgb": [
+            174,
+            157,
+            167
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            72,
+            25
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "run-2",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/run-2-right.png",
+      "baselineSha256": "a4e93b1b2498891b316312124618cba082e0aa36ed6bb586ed409215096f1c36",
+      "status": "repaired-open-eye",
+      "anchor": [
+        76,
+        24
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            76,
+            23
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            75,
+            24
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            75,
+            25
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "run-3",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/run-3-right.png",
+      "baselineSha256": "3c3d85137a595f2ea8f1c010a019d7324fee2ca113e0b2bae10aa62e899a487d",
+      "status": "repaired-open-eye",
+      "anchor": [
+        80,
+        24
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            80,
+            23
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            79,
+            24
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            79,
+            25
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-2-windup",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-2-windup-right.png",
+      "baselineSha256": "3231c47b79f630d56e2ff8aba5286ce6135b80d0cf4360e5c70fb04a06d440b4",
+      "status": "repaired-open-eye",
+      "anchor": [
+        72,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            71,
+            28
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            71,
+            29
+          ],
+          "fromRgb": [
+            124,
+            96,
+            99
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-2-windup-1",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-2-windup-1-right.png",
+      "baselineSha256": "8f17bb3514f02923fb5cefba74cf455ddc71fc9386d2bf2cabf1f3598e32f462",
+      "status": "repaired-open-eye",
+      "anchor": [
+        65,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            65,
+            27
+          ],
+          "fromRgb": [
+            218,
+            167,
+            148
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            64,
+            29
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-2-contact",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-2-contact-right.png",
+      "baselineSha256": "05ec712b1d549b67b44338378f38ce390eebd3ffcd18003edb03d07199b55020",
+      "status": "repaired-open-eye",
+      "anchor": [
+        67,
+        28
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            67,
+            27
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            66,
+            28
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            66,
+            29
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    },
+    {
+      "id": "combo-2-recovery",
+      "facing": "right",
+      "runtimePng": "public/assets/characters/iona/b01e/combo-2-recovery-right.png",
+      "baselineSha256": "1cb98546c072c160848962b0086ee80a66a66e039de35eae00a56d313e40f292",
+      "status": "repaired-open-eye",
+      "anchor": [
+        66,
+        27
+      ],
+      "anchorSource": "B15-confident-face-anchor",
+      "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape.",
+      "pixelEdits": [
+        {
+          "xy": [
+            66,
+            26
+          ],
+          "fromRgb": [
+            165,
+            134,
+            135
+          ],
+          "toRgb": [
+            49,
+            46,
+            71
+          ],
+          "part": "upper lid"
+        },
+        {
+          "xy": [
+            65,
+            27
+          ],
+          "fromRgb": [
+            248,
+            191,
+            157
+          ],
+          "toRgb": [
+            243,
+            229,
+            224
+          ],
+          "part": "sclera highlight"
+        },
+        {
+          "xy": [
+            65,
+            28
+          ],
+          "fromRgb": [
+            249,
+            203,
+            174
+          ],
+          "toRgb": [
+            218,
+            167,
+            148
+          ],
+          "part": "lower lash warmth"
+        }
+      ]
+    }
+  ]
+}

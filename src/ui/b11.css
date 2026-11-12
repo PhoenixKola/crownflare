@@ -307,3 +307,85 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px s
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* B16: keep production DOM text comfortable at common desktop sizes. */
+@media (min-width: 901px) {
+  .hub-progress, .hub-save-status { font-size: .62rem; }
+  .hub-preferences { font-size: .62rem; }
+
+  .settings-screen { padding: 8px; }
+  .settings-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    column-gap: 24px;
+    width: min(1080px, 96vw);
+    max-height: 98vh;
+  }
+  .settings-header { margin-bottom: 10px; padding-bottom: 12px; }
+  .settings-live-test { padding: 12px 0; }
+  .settings-accessibility { padding-top: 12px; }
+  .settings-footer { padding-top: 6px; }
+  .settings-header, .controller-status, .settings-live-test, .settings-message, .settings-footer { grid-column: 1 / -1; }
+  .settings-bindings {
+    grid-column: 1;
+    grid-row: 4;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+  .binding-row { grid-template-columns: minmax(0, 1fr) 90px 74px; gap: 6px; padding: 6px; }
+  .settings-controls { grid-column: 1; grid-row: 5; }
+  .settings-accessibility {
+    grid-column: 2;
+    grid-row: 4 / span 2;
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 18px;
+    padding: 16px 0;
+  }
+
+  .controller-status { font-size: .82rem; }
+  .axis-test { font-size: .74rem; }
+  .button-test span { min-width: 58px; font-size: .72rem; }
+  .binding-row > span { font-size: .78rem; }
+  .binding-row small { font-size: .70rem; }
+  .binding-row button { min-height: 36px; font-size: .74rem; }
+  .deadzone-control { font-size: .74rem; }
+  .reserved-controls { color: #b0c4c1; font-size: .67rem; }
+  .rumble-control { font-size: .82rem; }
+  .rumble-control span { font-size: .74rem; }
+  .settings-controls > .secondary-action { font-size: .74rem; }
+  .settings-accessibility { font-size: .72rem; }
+  .settings-motion-toggle small { color: #b0c4c1; font-size: .66rem; }
+  .settings-display-scaling select { min-height: 36px; font-size: .71rem; }
+  .settings-display-scaling small { color: #b0c4c1; font-size: .66rem; line-height: 1.5; }
+  .settings-message { color: #c4ded8; font-size: .76rem; line-height: 1.6; }
+  .settings-footer button { font-size: .80rem; }
+
+  .b09-choice-source { font-size: .72rem; }
+  .b09-choice-card .b09-card-tier, .b09-choice-card .b09-card-rank { font-size: .64rem; }
+  .b09-choice-card .b09-card-rule { font-size: clamp(.72rem, 1vw, .82rem); }
+  .b09-choice-card .b09-card-prompt, .b09-choice-footer p { color: #b2c9c3; font-size: .64rem; }
+  .b09-choice-footer button { font-size: .70rem; }
+  .b09-pause-build { font-size: .70rem; }
+  .b04-result-stats { font-size: .80rem; }
+  .b04-results-panel button { font-size: .82rem; }
+  .b04-menu-hint { font-size: .64rem; }
+
+  .b11-health-readout { font-size: .66rem; }
+  .b11-form-tag { font-size: .62rem; }
+  .b11-run-brand strong { font-size: .84rem; }
+  .b11-run-brand small { color: #b4c8c1; font-size: .62rem; }
+  .b11-run-context > p { font-size: .71rem; }
+  .b11-run-context > small { color: #b0c4bd; font-size: .62rem; }
+  .b11-gauge > div:first-child { color: #c2d2ca; font-size: .65rem; }
+  .b11-gauge > div:first-child b { font-size: .68rem; }
+  .b11-gauge small { color: #b0c4bd; font-size: .64rem; }
+  .b11-boss-heading span, .b11-boss-foot span { color: #c1d1c8; font-size: .64rem; }
+  .b11-boss-heading strong { font-size: .86rem; }
+  .b11-boss-heading > b { font-size: .66rem; }
+  .b11-boss-foot b { font-size: .66rem; }
+  .b11-status-cluster p { font-size: .66rem; }
+  .b11-status-cluster > span, .b11-status-cluster > small { font-size: .64rem; }
+  .b11-ability > span { font-size: .63rem; }
+  .b11-ability kbd { font-size: .62rem; }
+}

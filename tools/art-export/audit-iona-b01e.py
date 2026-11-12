@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 import wave
 from pathlib import Path
@@ -15,6 +16,7 @@ B01D = ROOT / "art-source/manifests/iona-b01d-candidate-v1.json"
 PROMOTION = ROOT / "src/game/animation/ionaPromotion.ts"
 AUDIO_PROVENANCE = ROOT / "art-source/characters/iona/b01e/audio-provenance.json"
 IMAGE_PROVENANCE = ROOT / "art-source/characters/iona/b01e/generation-provenance.json"
+FACE_MAP = ROOT / "art-source/manifests/iona-b16-base-face-map-v1.json"
 
 
 def digest(path: Path) -> str:
@@ -29,12 +31,19 @@ def require(condition: bool, message: str) -> None:
 def main() -> None:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     b01d = json.loads(B01D.read_text(encoding="utf-8"))
+    face_map = json.loads(FACE_MAP.read_text(encoding="utf-8"))
     require(manifest["ownerApproval"] == "PENDING_OWNER_REVIEW" and manifest["readyToPromote"] is False, "B01E owner gate must remain pending")
     require(manifest["physicsBody"] == {"width": 15, "height": 30, "authority": "unchanged B00 Arcade body"}, "B00 collision body was modified")
     rows = manifest["runtimeFrames"]
     require(len(rows) == 70 and manifest["runtimeFrameCount"] == 70, "B01E texture inventory must be exactly 70")
     statuses = {status: sum(row["candidateStatus"] == status for row in rows) for status in ("NEW_IMAGEGEN_POSE", "UNCHANGED_REUSED")}
     require(statuses == {"NEW_IMAGEGEN_POSE": 8, "UNCHANGED_REUSED": 62}, f"B01E status counts mismatch: {statuses}")
+    require(manifest.get("newImagegenPoseCount") == 8 and manifest.get("reusedB01DBasePoseCount") == 62 and "unchangedReusedCount" not in manifest, "B01E source-count fields must describe pose reuse rather than byte-identical post-treatment art")
+    face_meta = manifest.get("baseFaceTreatment", {})
+    require(face_meta.get("mapPath") == FACE_MAP.relative_to(ROOT).as_posix() and face_meta.get("mapSha256") == digest(FACE_MAP), "B16 face map provenance hash mismatch")
+    require(face_meta.get("mapId") == face_map["mapId"] and face_meta.get("repairedOpenEyeFrameCount") == 67 and face_meta.get("preservedFrameCount") == 3 and face_meta.get("pixelEditCount") == 150 and face_meta.get("timingsAnchorsAndAlphaChanged") is False, "B16 face treatment summary changed")
+    face_rows = {(row["id"], row["facing"]): row for row in face_map["frames"]}
+    require(len(face_rows) == 70 and face_map["frameCount"] == 70, "B16 face map must cover all B01E frames")
     expected_d = {(row["id"], row["facing"]): row for row in b01d["runtimeFrames"]}
     require(sum(row["candidateStatus"] == "NEW_IMAGEGEN_POSE" for row in b01d["runtimeFrames"]) == 8 and sum(row["candidateStatus"] == "UNCHANGED_REUSED" for row in b01d["runtimeFrames"]) == 60, "B01D historical baseline is not 8+60")
     metrics_path = ROOT / manifest["frameMetricsModule"]["path"]
@@ -65,10 +74,23 @@ def main() -> None:
         rgba = image.tobytes()
         colors = {f"#{rgba[index]:02X}{rgba[index + 1]:02X}{rgba[index + 2]:02X}" for index in range(0, len(rgba), 4) if rgba[index + 3]}
         require(colors <= palette and len(colors) <= 32, f"candidate palette overflow: {row['id']}/{row['facing']}")
+        key = (row["id"], row["facing"])
+        treatment = face_rows.get(key)
+        require(treatment is not None, f"B16 face map missing: {row['id']}/{row['facing']}")
+        face_record = row.get("faceTreatment", {})
+        require(face_record.get("mapId") == face_map["mapId"] and face_record.get("status") == treatment["status"] and face_record.get("baselineSha256") == treatment["baselineSha256"] and face_record.get("pixelEdits") == treatment["pixelEdits"], f"B16 face treatment metadata mismatch: {row['id']}/{row['facing']}")
+        edits = treatment["pixelEdits"]
         if row["candidateStatus"] == "UNCHANGED_REUSED":
             baseline = expected_d[(row["id"], row["facing"])]
-            require(row["runtimeSha256"] == baseline["runtimeSha256"], f"claimed B01D reuse differs: {row['id']}/{row['facing']}")
-            require((ROOT / baseline["runtimePng"]).read_bytes() == path.read_bytes(), f"B01D reuse not byte-identical: {row['id']}/{row['facing']}")
+            baseline_path = ROOT / baseline["runtimePng"]
+            require(treatment["baselineSha256"] == baseline["runtimeSha256"], f"B16 reused-frame baseline is not B01D: {row['id']}/{row['facing']}")
+            before = Image.open(baseline_path).convert("RGBA")
+            changed = {(x, y) for y in range(80) for x in range(128) if before.getpixel((x, y)) != image.getpixel((x, y))}
+            expected = {tuple(edit["xy"]) for edit in edits}
+            require(changed == expected, f"B16 face edit escaped its mapped pixels: {row['id']}/{row['facing']}")
+            for edit in edits:
+                x, y = edit["xy"]
+                require(before.getpixel((x, y)) == (*edit["fromRgb"], 255) and image.getpixel((x, y)) == (*edit["toRgb"], 255), f"B16 reused-frame pixel mismatch: {row['id']}/{row['facing']} at {x},{y}")
         else:
             require(row["id"] in expected_new_ids and row["sourceTool"] == "OpenAI native image_gen.imagegen", f"unexpected new source: {row['id']}")
             source = ROOT / row["source"]
@@ -76,6 +98,14 @@ def main() -> None:
             require(digest(source) == row["sourceSha256"], f"original ImageGen source hash mismatch: {row['id']}/{row['facing']}")
             require(digest(crop) == row["croppedSourceSha256"], f"cropped pose source hash mismatch: {row['id']}/{row['facing']}")
             require(row["runtimeVisibleHeightPx"] in (60, 61), f"unexpected visible size: {row['id']}/{row['facing']}")
+            reversible = image.copy()
+            for edit in edits:
+                x, y = edit["xy"]
+                require(reversible.getpixel((x, y)) == (*edit["toRgb"], 255), f"B16 generated-frame target pixel mismatch: {row['id']}/{row['facing']} at {x},{y}")
+                reversible.putpixel((x, y), (*edit["fromRgb"], 255))
+            buffer = io.BytesIO()
+            reversible.save(buffer, format="PNG", optimize=True)
+            require(hashlib.sha256(buffer.getvalue()).hexdigest() == treatment["baselineSha256"], f"B16 generated-frame reversible baseline mismatch: {row['id']}/{row['facing']}")
             if row["id"] == "combo-2-contact":
                 require(row["contactAnchor"]["contactEventMs"] == 138 and row["durationMs"] == 90, "kick contact timing changed")
     for facing in ("left", "right"):
@@ -97,7 +127,7 @@ def main() -> None:
             samples = wav.readframes(wav.getnframes())
             require(wav.getnframes() > 1200 and any(samples), f"empty or too-short audio: {cue['key']}")
 
-    print("PASS: B01E 70 textures / 8 ImageGen poses / 62 byte-identical B01D frames / planted 128x80 frames / one scale per facing / 370ms kick action at 138ms / 13 hashed original WAV cues / no promotion")
+    print("PASS: B01E 70 textures / B16 map covers all faces (67 repaired, 3 intentionally preserved) / 62 B01D base poses with only mapped face pixels changed / planted 128x80 frames / one scale per facing / 370ms kick action at 138ms / 13 hashed WAV cues / no promotion")
 
 
 if __name__ == "__main__":

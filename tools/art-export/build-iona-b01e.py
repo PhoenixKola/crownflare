@@ -22,6 +22,7 @@ EVIDENCE = ROOT / "review-evidence/b01e"
 B01C_MANIFEST = ROOT / "art-source/manifests/iona-b01c-production-v1.json"
 B01D_MANIFEST = ROOT / "art-source/manifests/iona-b01d-candidate-v1.json"
 B01D_RUNTIME = ROOT / "public/assets/characters/iona/b01d"
+FACE_MAP = ROOT / "art-source/manifests/iona-b16-base-face-map-v1.json"
 CANVAS = (128, 80)
 ANCHOR_X, FEET_Y = 64, 80
 ALPHA_THRESHOLD = 192
@@ -114,6 +115,53 @@ def place(image: Image.Image, factor: float, palette: Image.Image) -> tuple[Imag
     return canvas, list(canvas.getchannel("A").getbbox() or (0, 0, 0, 0))
 
 
+def apply_b16_face_treatment(records: list[dict[str, Any]]) -> dict[str, Any]:
+    face_map = json.loads(FACE_MAP.read_text(encoding="utf-8"))
+    map_rows = {(row["id"], row["facing"]): row for row in face_map["frames"]}
+    record_rows = {(row["id"], row["facing"]): row for row in records}
+    if len(map_rows) != 70 or map_rows.keys() != record_rows.keys():
+        raise RuntimeError("B16 face map must account for every active B01E frame exactly once")
+
+    palette = {tuple(int(value[index:index + 2], 16) for index in (1, 3, 5)) for value in json.loads(MANIFEST.read_text(encoding="utf-8"))["palette"]}
+    patched_count = 0
+    edit_count = 0
+    for key, record in record_rows.items():
+        treatment = map_rows[key]
+        path = ROOT / record["runtimePng"]
+        if sha256(path) != treatment["baselineSha256"]:
+            raise RuntimeError(f"B16 baseline hash mismatch before face edit: {key[0]}/{key[1]}")
+        image = Image.open(path).convert("RGBA")
+        if image.size != CANVAS:
+            raise RuntimeError(f"Unexpected B16 base frame size: {key[0]}/{key[1]} {image.size}")
+        edits = treatment["pixelEdits"]
+        for edit in edits:
+            x, y = edit["xy"]
+            source = tuple(edit["fromRgb"])
+            target = tuple(edit["toRgb"])
+            if image.getpixel((x, y)) != (*source, 255):
+                raise RuntimeError(f"B16 source pixel mismatch: {key[0]}/{key[1]} at {x},{y}")
+            if target not in palette:
+                raise RuntimeError(f"B16 face treatment added an out-of-palette color: {key[0]}/{key[1]}")
+            image.putpixel((x, y), (*target, 255))
+        if edits:
+            image.save(path, optimize=True)
+            patched_count += 1
+            edit_count += len(edits)
+        record["runtimeSha256"] = sha256(path)
+        record["faceTreatment"] = {
+            "mapId": face_map["mapId"], "status": treatment["status"],
+            "baselineSha256": treatment["baselineSha256"], "anchor": treatment["anchor"],
+            "anchorSource": treatment["anchorSource"], "pixelEdits": edits,
+            "rationale": treatment["rationale"],
+        }
+        if edits:
+            record["manualEditDescription"] += f" B16 applies {len(edits)} reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing."
+
+    if patched_count != face_map["repairedOpenEyeFrameCount"] or edit_count != sum(len(row["pixelEdits"]) for row in face_map["frames"]):
+        raise RuntimeError("B16 face map summary counts do not match the reviewed frame records")
+    return face_map
+
+
 def main() -> None:
     b01c = json.loads(B01C_MANIFEST.read_text(encoding="utf-8"))
     b01d = json.loads(B01D_MANIFEST.read_text(encoding="utf-8"))
@@ -200,6 +248,8 @@ def main() -> None:
     if len(records) != 70 or sum(row["candidateStatus"] == "UNCHANGED_REUSED" for row in records) != 62:
         raise RuntimeError(f"Unexpected B01E inventory: {len(records)} records")
 
+    face_map = apply_b16_face_treatment(records)
+
     # Publish a compact, actual-pixel comparison sheet for the eight source-driven poses.
     contact = Image.new("RGBA", (4 * 128, 2 * 100), (13, 20, 33, 255))
     draw = ImageDraw.Draw(contact)
@@ -230,13 +280,14 @@ def main() -> None:
         "canvas": {"width": 128, "height": 80}, "workingDisplayHeightPx": 60, "anchor": {"x": 64, "feetY": 80},
         "palette": b01c["processing"]["globalPalette"], "exporter": {"script": "tools/art-export/build-iona-b01e.py", "PillowVersion": PIL.__version__},
         "frameMetricsModule": {"path": "src/game/animation/ionaB01eFrameMetrics.ts", "sha256": sha256(ROOT / "src/game/animation/ionaB01eFrameMetrics.ts")},
-        "sourceSheets": SOURCE_SHEETS, "runtimeFrameCount": 70, "newImagegenPoseCount": 8, "unchangedReusedCount": 62,
+        "sourceSheets": SOURCE_SHEETS, "runtimeFrameCount": 70, "newImagegenPoseCount": 8, "reusedB01DBasePoseCount": 62,
         "sidekickClip": {"frames": [{"id": "combo-2-windup", "durationMs": 55}, {"id": "combo-2-windup-1", "durationMs": 55}, {"id": "combo-2-contact", "durationMs": 90}, {"id": "combo-2-recovery", "durationMs": 170}], "totalMs": 370, "authoritativeContactMs": 138},
+        "baseFaceTreatment": {"mapPath": FACE_MAP.relative_to(ROOT).as_posix(), "mapSha256": sha256(FACE_MAP), "mapId": face_map["mapId"], "repairedOpenEyeFrameCount": face_map["repairedOpenEyeFrameCount"], "preservedFrameCount": face_map["preservedFrameCount"], "pixelEditCount": sum(len(row["pixelEdits"]) for row in face_map["frames"]), "timingsAnchorsAndAlphaChanged": False},
         "frameCoverage": "B01D runtime retained except the six legacy combo-2 side-kick frames are replaced; two additional authored chamber frames extend windup.",
         "runtimeFrames": records,
     }
     write_lf(MANIFEST, json.dumps(manifest, indent=2) + "\n")
-    print("PASS: B01E exported 70 frames (8 ImageGen poses / 62 unchanged B01D), two 370ms side-kick cycles, 128x80 canvas")
+    print(f"PASS: B01E exported 70 frames (8 ImageGen poses / 62 reused B01D), B16 face treatment on {face_map['repairedOpenEyeFrameCount']} open-eye frames, two 370ms side-kick cycles, 128x80 canvas")
 
 
 if __name__ == "__main__":

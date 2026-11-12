@@ -238,8 +238,8 @@
           <label>MASTER VOLUME <output id="settings-volume-value">80%</output><input id="settings-master-volume" type="range" min="0" max="1" step="0.05" value="0.8" /></label>
           <label class="settings-motion-toggle"><input id="settings-reduced-motion" type="checkbox" /> REDUCED MOTION <small>Use fewer animated effects</small></label>
           <label class="settings-display-scaling">PIXEL SCALING
-            <select id="settings-pixel-scaling" aria-describedby="settings-pixel-scaling-help"><option value="pixel-perfect">PIXEL PERFECT / INTEGER</option><option value="fit">FIT TO WINDOW</option></select>
-            <small id="settings-pixel-scaling-help">Pixel Perfect uses whole physical pixels and preserves 16:9. Fit uses the largest 16:9 area with fractional scaling. Non-16:9 screens keep side or top bars. Use F11 for fullscreen.</small>
+            <select id="settings-pixel-scaling" aria-describedby="settings-pixel-scaling-help"><option value="pixel-perfect">SHARP / ADAPTIVE FIT</option><option value="fit">FIT TO WINDOW</option></select>
+            <small id="settings-pixel-scaling-help">Sharp keeps whole physical pixels when they fill at least 90% of the view; otherwise it uses crisp nearest-neighbor 16:9 fit. Fit to Window always fills the largest 16:9 area. Use F11 for fullscreen.</small>
           </label>
         </div>
         <p id="settings-message" class="settings-message" role="status" aria-live="polite">Keyboard and mouse remain available. Controller navigation uses D-pad, South to confirm, East or Start to go back.</p>

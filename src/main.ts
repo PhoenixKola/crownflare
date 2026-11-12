@@ -821,10 +821,8 @@ settingsPixelScaling.addEventListener('change', () => {
   if (game) applyDisplayScaling(game, mode);
   commitSave({ ...saveState, options: { ...saveState.options, pixelScaling: mode } });
   byId<HTMLElement>('settings-message').textContent = mode === 'pixel-perfect'
-    ? window.innerWidth < 480 || window.innerHeight < 270
-      ? 'PIXEL PERFECT MODE / THE CANVAS FITS BELOW 480×270 BECAUSE NO WHOLE SCALE FITS.'
-      : 'PIXEL PERFECT MODE / WHOLE PHYSICAL-PIXEL SCALE WITH LETTERBOXING.'
-    : 'FIT MODE / FRACTIONAL 16:9 SCALE; MAY LOOK SOFTER THAN PIXEL PERFECT.';
+    ? 'SHARP MODE / INTEGER PHYSICAL PIXELS WHEN NEAR FULL SIZE; OTHERWISE CRISP NEAREST-NEIGHBOR 16:9 FIT.'
+    : 'FIT MODE / CRISP NEAREST-NEIGHBOR 16:9 FIT.';
 });
 hubStory.addEventListener('keydown', (event) => { if (event.code === 'Escape') { event.preventDefault(); setVisible(hubStory, false); hubNewRunButton.focus(); } });
 b10StoryContinue.addEventListener('click', closeB10StoryBeat);

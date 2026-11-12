@@ -2,10 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { displayZoom } from '../../src/game/displayScaling.ts';
 
-test('pixel-perfect zoom uses the largest whole physical-pixel scale', () => {
+test('sharp zoom keeps integer physical pixels when that does not waste the viewport', () => {
   assert.equal(displayZoom(1920, 1080, 'pixel-perfect'), 4);
-  assert.equal(displayZoom(1536, 730, 'pixel-perfect', 1.25), 2.4);
+  assert.equal(displayZoom(1366, 768, 'pixel-perfect'), 768 / 270);
+  assert.equal(displayZoom(1536, 730, 'pixel-perfect', 1.25), 730 / 270);
   assert.equal(displayZoom(1536, 730, 'pixel-perfect', 1.5), 8 / 3);
+  assert.equal(displayZoom(1600, 900, 'pixel-perfect'), 3);
 });
 
 test('fit mode and undersized windows preserve the available fractional fit', () => {

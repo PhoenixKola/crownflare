@@ -79,7 +79,7 @@
   },
   "runtimeFrameCount": 70,
   "newImagegenPoseCount": 8,
-  "unchangedReusedCount": 62,
+  "reusedB01DBasePoseCount": 62,
   "sidekickClip": {
     "frames": [
       {
@@ -101,6 +101,15 @@
     ],
     "totalMs": 370,
     "authoritativeContactMs": 138
+  },
+  "baseFaceTreatment": {
+    "mapPath": "art-source/manifests/iona-b16-base-face-map-v1.json",
+    "mapSha256": "481cd4bd14b8fa0f6aaf37073e6ca4f6213f1cb8b6c7788f5265347cf2490d22",
+    "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+    "repairedOpenEyeFrameCount": 67,
+    "preservedFrameCount": 3,
+    "pixelEditCount": 150,
+    "timingsAnchorsAndAlphaChanged": false
   },
   "frameCoverage": "B01D runtime retained except the six legacy combo-2 side-kick frames are replaced; two additional authored chamber frames extend windup.",
   "runtimeFrames": [
@@ -125,7 +134,7 @@
       ],
       "trimmedCropSha256": "b16df4ac2a4480f7adcacfdcdc6cf2a90dd80d1405b91fed6b696963894e14d4",
       "runtimePng": "public/assets/characters/iona/b01e/idle-0-left.png",
-      "runtimeSha256": "33cc42c0160b9d1210d9efb8b9c73c6c1fc0e2da06e09ff16b4b0d55a72a6c23",
+      "runtimeSha256": "26496ae3852243a49edf16e60518f68c1d2fa7d29b4101ebb141a7957f414853",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -159,10 +168,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "33cc42c0160b9d1210d9efb8b9c73c6c1fc0e2da06e09ff16b4b0d55a72a6c23",
+        "anchor": [
+          63,
+          30
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              63,
+              29
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              64,
+              30
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              64,
+              31
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "idle-1",
@@ -185,7 +258,7 @@
       ],
       "trimmedCropSha256": "e7862615eb20733e5fa0f08ddcc99b90d3e16f3d1f077d73af02416f440e15f5",
       "runtimePng": "public/assets/characters/iona/b01e/idle-1-left.png",
-      "runtimeSha256": "60d7299f32091d6992ae4ca7fda4a87d6716b2b1176648c07e5ef36a3ebd3113",
+      "runtimeSha256": "13f3cc1fa44c285a6bc30a40a1f3cb8f9fb8e9159fb9d634bb99ebac7a5c5069",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -219,10 +292,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "60d7299f32091d6992ae4ca7fda4a87d6716b2b1176648c07e5ef36a3ebd3113",
+        "anchor": [
+          62,
+          30
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              62,
+              29
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              63,
+              30
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "idle-2",
@@ -245,7 +365,7 @@
       ],
       "trimmedCropSha256": "c230985f16f98c3f85ed8e36beae85d68114613d9a391d904530b8d29c9ba4bf",
       "runtimePng": "public/assets/characters/iona/b01e/idle-2-left.png",
-      "runtimeSha256": "148b1682957d827799f2ffedc8e60d92330686150e1f45a984fce24bf2d56a54",
+      "runtimeSha256": "439c34bcacf42e3c45fb008d98c4b929b7fe55fcf90dcffd9166450c18ad0fa1",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -279,10 +399,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "148b1682957d827799f2ffedc8e60d92330686150e1f45a984fce24bf2d56a54",
+        "anchor": [
+          57,
+          31
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              57,
+              30
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              58,
+              31
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              58,
+              32
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "idle-3",
@@ -305,7 +489,7 @@
       ],
       "trimmedCropSha256": "d1161c979903005b220acaf156f2c6dddda24d9cb6e3a7a8b178e36ca41ef442",
       "runtimePng": "public/assets/characters/iona/b01e/idle-3-left.png",
-      "runtimeSha256": "0dce67c11e64f5cda025573d020c08ae3970467ca1382a874776757811276a5e",
+      "runtimeSha256": "7a2b711db643fffba8dcfd41a7ae2c77afa44669379978885331a68dc460561c",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -339,10 +523,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "0dce67c11e64f5cda025573d020c08ae3970467ca1382a874776757811276a5e",
+        "anchor": [
+          56,
+          30
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              56,
+              29
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              57,
+              30
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              57,
+              31
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-0",
@@ -370,7 +618,7 @@
       ],
       "trimmedCropSha256": "c965e2560a5ce0708345f0e697f93612904ed06ab1c3637bb1e5ddf6b50179a4",
       "runtimePng": "public/assets/characters/iona/b01e/jump-0-left.png",
-      "runtimeSha256": "4c42f0eab108c3a3f5bad969dd5df2c3825d8d71834d422377291e4906b77a08",
+      "runtimeSha256": "e2a014282a40a8de265ff275fff4ae6e6ff381a95b6c1b04181710b95db91e6f",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -404,10 +652,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "4c42f0eab108c3a3f5bad969dd5df2c3825d8d71834d422377291e4906b77a08",
+        "anchor": [
+          53,
+          38
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              53,
+              37
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              54,
+              38
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-1",
@@ -435,7 +730,7 @@
       ],
       "trimmedCropSha256": "a413a7fd6fd0f060c0939d69421b3cb98f606200d4ec28c7b692ce72626b1e68",
       "runtimePng": "public/assets/characters/iona/b01e/jump-1-left.png",
-      "runtimeSha256": "fb5527aae907aa29821380fd682713bf1c9a318437c80ea2c86fba4d1786ef37",
+      "runtimeSha256": "b27560e2ff78471844446068b304d08c81bce5506a83001de073ddde296dfc95",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -469,10 +764,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "fb5527aae907aa29821380fd682713bf1c9a318437c80ea2c86fba4d1786ef37",
+        "anchor": [
+          47,
+          29
+        ],
+        "anchorSource": "manual-review",
+        "pixelEdits": [
+          {
+            "xy": [
+              48,
+              29
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              48,
+              30
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "The open eye is a dark lid mark without a pupil anchor; manually inspected in the jump arc and treated as a small lower-facing eye."
+      }
     },
     {
       "id": "jump-2",
@@ -500,7 +842,7 @@
       ],
       "trimmedCropSha256": "3e4d7ec95c036f65be928095d78afb01bdd742dafcdf4fd8a49c1b1766f0a844",
       "runtimePng": "public/assets/characters/iona/b01e/jump-2-left.png",
-      "runtimeSha256": "642180dad51ec21523e5242659f740d8e8fea53609bb015fcfc24a526acbd99f",
+      "runtimeSha256": "9aa22b31270d4e09ec41d7a636c8e70c0a4f17add6a7f3e78cc081ae35d40ddf",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -534,10 +876,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "642180dad51ec21523e5242659f740d8e8fea53609bb015fcfc24a526acbd99f",
+        "anchor": [
+          55,
+          32
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              55,
+              31
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              56,
+              32
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              56,
+              33
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-3",
@@ -565,7 +971,7 @@
       ],
       "trimmedCropSha256": "c95abdf077cd49888f70c3a82753ab7ddd0e6b27bd45a2eb14b17681da1bca74",
       "runtimePng": "public/assets/characters/iona/b01e/jump-3-left.png",
-      "runtimeSha256": "395a7365599163cb79c94ace5aab1c1ecb7db2eb70d61a141b6d7df675c258c4",
+      "runtimeSha256": "b5fdc9737c991f6d0605817a022285d2b6ac777105d53179e36fad35a219bab6",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -599,10 +1005,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "395a7365599163cb79c94ace5aab1c1ecb7db2eb70d61a141b6d7df675c258c4",
+        "anchor": [
+          53,
+          36
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              53,
+              35
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              54,
+              36
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              54,
+              37
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-4",
@@ -630,7 +1100,7 @@
       ],
       "trimmedCropSha256": "89dc1aef25c77825da63afe3b834287d8aa10a5906b0c83eaf0640b53654970c",
       "runtimePng": "public/assets/characters/iona/b01e/jump-4-left.png",
-      "runtimeSha256": "29b66e1128e4d2555075d7a5677c5d9801c4f2387e9221d637f673873b84a854",
+      "runtimeSha256": "b5a583157ea354e06fb130a69f4d65824b7b8b801593712a0bb5df813a28f926",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -664,10 +1134,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "29b66e1128e4d2555075d7a5677c5d9801c4f2387e9221d637f673873b84a854",
+        "anchor": [
+          58,
+          26
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              58,
+              25
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              59,
+              26
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-5",
@@ -695,7 +1212,7 @@
       ],
       "trimmedCropSha256": "c4ed9edf83243f4e54b32f2c2f62884ad02e476d0f6f560d489742b89fa43955",
       "runtimePng": "public/assets/characters/iona/b01e/jump-5-left.png",
-      "runtimeSha256": "339293c449823d7f00e339223fddba6ba662f7307cc405ecae506e7ba6a7f07e",
+      "runtimeSha256": "a57e6ecd673403730d6668699db314796e6d0d6cf4041f0f7083a15ca0005737",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -729,10 +1246,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "339293c449823d7f00e339223fddba6ba662f7307cc405ecae506e7ba6a7f07e",
+        "anchor": [
+          50,
+          38
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              50,
+              37
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              51,
+              38
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              51,
+              39
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-0",
@@ -760,7 +1341,7 @@
       ],
       "trimmedCropSha256": "129a6b6a78672b0fde491c0b2723209f1d6184d05c8edafdfe27fb9a304dc2f5",
       "runtimePng": "public/assets/characters/iona/b01e/dash-0-left.png",
-      "runtimeSha256": "688ddc30dca47ca820a94cd44aace2d3ee4190a36d36c767e51ec22a6ed9006b",
+      "runtimeSha256": "328ca7d9ad26ec00078eca1ada2bb73e9468614df9a0f8b1d68f0f99915d2f2b",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -794,10 +1375,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "688ddc30dca47ca820a94cd44aace2d3ee4190a36d36c767e51ec22a6ed9006b",
+        "anchor": [
+          48,
+          37
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              48,
+              36
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              49,
+              37
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              49,
+              38
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-1",
@@ -825,7 +1470,7 @@
       ],
       "trimmedCropSha256": "72b76fd7f25b86cc9754891a1a2d724718164ec14aad75d2331fb3c93bf031e6",
       "runtimePng": "public/assets/characters/iona/b01e/dash-1-left.png",
-      "runtimeSha256": "7e6d8a95ca1168690c8fab2a792c2586c4dedc974b3dae5b693ae43719c2b9e8",
+      "runtimeSha256": "cde3d29e5d8bc905d83dae820c0a0ed117b3620699829098e920a91a7520af05",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -859,10 +1504,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "7e6d8a95ca1168690c8fab2a792c2586c4dedc974b3dae5b693ae43719c2b9e8",
+        "anchor": [
+          54,
+          34
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              55,
+              34
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              55,
+              35
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-2",
@@ -927,7 +1619,16 @@
       "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "preserved-motion-occlusion",
+        "baselineSha256": "f6177cb7169a0e04eecf78e985ea44dff89139780df6aaeca9d00085235c1bb3",
+        "anchor": null,
+        "anchorSource": "none",
+        "pixelEdits": [],
+        "rationale": "The face is compressed into the dash trail; no stable eye feature is exposed."
+      }
     },
     {
       "id": "dash-3",
@@ -955,7 +1656,7 @@
       ],
       "trimmedCropSha256": "a9ca406308d67780edd2b3ec23b63a3165a1c6298d4cfc45386cc4e05c495649",
       "runtimePng": "public/assets/characters/iona/b01e/dash-3-left.png",
-      "runtimeSha256": "4c3d1f90f7ffa91bb0ffdaf33fb87c5c5fc466419c108cf97f8ca931c4f4fe8b",
+      "runtimeSha256": "1f97e51ffec258b64404d9783a3989c077a46f37e06efc4a5a6e9bc51d50f73e",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -989,10 +1690,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "4c3d1f90f7ffa91bb0ffdaf33fb87c5c5fc466419c108cf97f8ca931c4f4fe8b",
+        "anchor": [
+          49,
+          46
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              49,
+              45
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              50,
+              46
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              50,
+              47
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-4",
@@ -1020,7 +1785,7 @@
       ],
       "trimmedCropSha256": "c0b0f1d7ca816f0486584c1e5c03a721f97bd937c5cf988fcabaa389baf8dde9",
       "runtimePng": "public/assets/characters/iona/b01e/dash-4-left.png",
-      "runtimeSha256": "0854c6485bcc720f068406cbb94fefcd75a22d33607e627a8683723b306b275d",
+      "runtimeSha256": "26fa2b2081fd48a8cfd2acf6bcf60052bc53feec1b9c957bddf171c00ac4d406",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1054,10 +1819,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "0854c6485bcc720f068406cbb94fefcd75a22d33607e627a8683723b306b275d",
+        "anchor": [
+          50,
+          41
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              50,
+              40
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              51,
+              41
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              51,
+              42
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-5",
@@ -1085,7 +1914,7 @@
       ],
       "trimmedCropSha256": "d703ae000e7055946ca3c0f7f5794bdfe2bc775ae1231910e891bc121ec37e37",
       "runtimePng": "public/assets/characters/iona/b01e/dash-5-left.png",
-      "runtimeSha256": "e5ea8dd3f8e64dd4044458a8a48b9e8f64eb73295310c4edfef861c82bac97c5",
+      "runtimeSha256": "6d40d27f1a8255152cb7d4cab8c3027728037ca95dffafaa079f19af97f9a709",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1119,10 +1948,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "e5ea8dd3f8e64dd4044458a8a48b9e8f64eb73295310c4edfef861c82bac97c5",
+        "anchor": [
+          50,
+          30
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              50,
+              29
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              51,
+              31
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-1-windup",
@@ -1150,7 +2026,7 @@
       ],
       "trimmedCropSha256": "b966725ca3b37e98c6134f2d1d900e63e5a6045f51c526b38d59b93d32d36fba",
       "runtimePng": "public/assets/characters/iona/b01e/combo-1-windup-left.png",
-      "runtimeSha256": "0b55cb0c4d7b59b7a814df70177309ad969b32ba8c200c14cdf41cb1f02efb8a",
+      "runtimeSha256": "03f67fd0877a2ae49fcfbfd9cc032b4dae140593cac692c17319c6e8e7bf3df1",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1184,10 +2060,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "0b55cb0c4d7b59b7a814df70177309ad969b32ba8c200c14cdf41cb1f02efb8a",
+        "anchor": [
+          61,
+          45
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              61,
+              44
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              62,
+              45
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              62,
+              46
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-1-contact",
@@ -1215,7 +2155,7 @@
       ],
       "trimmedCropSha256": "c661c1a8f6af717d4d07556922474646c0a17ac8e3dbfb783302fc70de0dc096",
       "runtimePng": "public/assets/characters/iona/b01e/combo-1-contact-left.png",
-      "runtimeSha256": "5e496d91a911a7582ee1d0348ec1c85eb12ded98259061eb079e7949d05ffbcc",
+      "runtimeSha256": "3dbe4642c1d9a474a430b466534a6c152473d7d3063c2f0832c3102e5b6e7529",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1254,10 +2194,57 @@
       },
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "5e496d91a911a7582ee1d0348ec1c85eb12ded98259061eb079e7949d05ffbcc",
+        "anchor": [
+          59,
+          44
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              59,
+              43
+            ],
+            "fromRgb": [
+              233,
+              217,
+              213
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              60,
+              44
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-1-recovery",
@@ -1285,7 +2272,7 @@
       ],
       "trimmedCropSha256": "89677da5e2ff3d01bcbc61377c8b93d5fbfaba2f2068ab190b8844b00f8b283f",
       "runtimePng": "public/assets/characters/iona/b01e/combo-1-recovery-left.png",
-      "runtimeSha256": "bcffb6efb4e89d1f2f7f0598646a69f7cabd6bca688f4e8fe9992149673a5234",
+      "runtimeSha256": "f559a0644e90ded6e092ef22c8f06f2a3bfc065ae85d5a116637511941ec5643",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1319,10 +2306,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "bcffb6efb4e89d1f2f7f0598646a69f7cabd6bca688f4e8fe9992149673a5234",
+        "anchor": [
+          55,
+          45
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              55,
+              44
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              56,
+              45
+            ],
+            "fromRgb": [
+              219,
+              202,
+              199
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              56,
+              46
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-3-windup",
@@ -1350,7 +2401,7 @@
       ],
       "trimmedCropSha256": "0ec16d38a10cc38a90dc86f78424609e99d4534611838559747509ce813c5806",
       "runtimePng": "public/assets/characters/iona/b01e/combo-3-windup-left.png",
-      "runtimeSha256": "6716a4a3a5c2cc4aab396afcf154e5d0a4d2d6dd6af387b4600019ee1f7c0e22",
+      "runtimeSha256": "78112e83c5dbc8e5cab6f74a97f13f84b184c76bc64ecdbe6fbe98197fc33ca1",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1384,10 +2435,40 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "6716a4a3a5c2cc4aab396afcf154e5d0a4d2d6dd6af387b4600019ee1f7c0e22",
+        "anchor": [
+          59,
+          47
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              59,
+              46
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-3-contact",
@@ -1415,7 +2496,7 @@
       ],
       "trimmedCropSha256": "427b4423574795b6aa8ed0bd849308f8608939025cb189d5921ccc1a041357d3",
       "runtimePng": "public/assets/characters/iona/b01e/combo-3-contact-left.png",
-      "runtimeSha256": "65c2959ff6559561ac5eeb571a4e1b2d52d5f0ad51de4329e68b2feacd32f6cd",
+      "runtimeSha256": "cb553f03604fab12d4f4e3cf67d3630097f222c5d04fdcbc1e625e78cc1385c4",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1454,10 +2535,40 @@
       },
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "65c2959ff6559561ac5eeb571a4e1b2d52d5f0ad51de4329e68b2feacd32f6cd",
+        "anchor": [
+          62,
+          46
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              62,
+              45
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-3-recovery",
@@ -1485,7 +2596,7 @@
       ],
       "trimmedCropSha256": "78d08e7adde5f1767a29c0a3c759e78dc7a1e5c917dff1af66f891fdab9fe60e",
       "runtimePng": "public/assets/characters/iona/b01e/combo-3-recovery-left.png",
-      "runtimeSha256": "a25c17b2de5cd555b00d9e04a413a8e6e0c340bb09ddf45a9b8d66bb3f65d3b6",
+      "runtimeSha256": "1b6361f44060e96038d5d16c5e29e3f4d32d6876fd7ca69c54034abc3de50169",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1519,10 +2630,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "a25c17b2de5cd555b00d9e04a413a8e6e0c340bb09ddf45a9b8d66bb3f65d3b6",
+        "anchor": [
+          55,
+          44
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              55,
+              43
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              56,
+              45
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "start-0",
@@ -1550,7 +2708,7 @@
       ],
       "trimmedCropSha256": "4d2854cfadadc9461bbbe8f2c4b1424a4a76da21348ae58148e06f24a05eb61b",
       "runtimePng": "public/assets/characters/iona/b01e/start-0-left.png",
-      "runtimeSha256": "7f75645ef5ac4d29351b0dea55a1a8426a1c6d85c31a4d80fbf783aa6ec472ee",
+      "runtimeSha256": "d5f75e6c387d70895fd4ab475ecbbd3842701e6b4a5a8b4b654a221fb999110e",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1584,10 +2742,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "7f75645ef5ac4d29351b0dea55a1a8426a1c6d85c31a4d80fbf783aa6ec472ee",
+        "anchor": [
+          48,
+          26
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              48,
+              25
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              49,
+              26
+            ],
+            "fromRgb": [
+              219,
+              202,
+              199
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              49,
+              27
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "start-1",
@@ -1615,7 +2837,7 @@
       ],
       "trimmedCropSha256": "f85cbba5982a262186ee74352a92b3183acb371975b11832a57be21e3ad127e5",
       "runtimePng": "public/assets/characters/iona/b01e/start-1-left.png",
-      "runtimeSha256": "5e37979e1027398fd908ffa16489f249e5cdac050aac1b42bf8a09f626edb1cf",
+      "runtimeSha256": "cab190bd9ca8d8322495ace58d9321c0e2fcef7737374ab0e81add1095d7d21f",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1649,10 +2871,40 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "5e37979e1027398fd908ffa16489f249e5cdac050aac1b42bf8a09f626edb1cf",
+        "anchor": [
+          50,
+          26
+        ],
+        "anchorSource": "manual-review",
+        "pixelEdits": [
+          {
+            "xy": [
+              50,
+              25
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "The open eye is present but its lid is partly blended into the hairline; manually inspected against the neighboring start pose."
+      }
     },
     {
       "id": "stop-0",
@@ -1680,7 +2932,7 @@
       ],
       "trimmedCropSha256": "a0be6e535fdd8dda8295b0704b5388ac22bb75cf9498dce7df159b95149ed3b3",
       "runtimePng": "public/assets/characters/iona/b01e/stop-0-left.png",
-      "runtimeSha256": "b1651c1af08443bf7d86dfde48aad8b2fed3f3f2e1e9755fd4f11de209a8b8e2",
+      "runtimeSha256": "badd67a022cf9b3029424d6f04219cd0d1860d412ad564b8b1da11df7d270645",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1714,10 +2966,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "b1651c1af08443bf7d86dfde48aad8b2fed3f3f2e1e9755fd4f11de209a8b8e2",
+        "anchor": [
+          64,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              65,
+              28
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              65,
+              29
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "stop-1",
@@ -1745,7 +3044,7 @@
       ],
       "trimmedCropSha256": "5a35cdc3a4c21857a8c0d209fc0c1eae690f688dd0461cbdc370fbec79d0529b",
       "runtimePng": "public/assets/characters/iona/b01e/stop-1-left.png",
-      "runtimeSha256": "653fb7f88ea201997fc1da38caf41395d74f78850bed61bcc2a8f7369a5bb505",
+      "runtimeSha256": "2ba8a6c4d7043205f1784370ef0b302627bcf7fe75e08917cc525c35cd150c62",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1779,10 +3078,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "653fb7f88ea201997fc1da38caf41395d74f78850bed61bcc2a8f7369a5bb505",
+        "anchor": [
+          54,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              54,
+              27
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              55,
+              28
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              55,
+              29
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "turn-1",
@@ -1847,7 +3210,16 @@
       "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "preserved-turn-occlusion",
+        "baselineSha256": "226468235e09829e68acf0d45b3fc44c2503f64a0a3b8f9810cc4e02bd785428",
+        "anchor": null,
+        "anchorSource": "none",
+        "pixelEdits": [],
+        "rationale": "The turning face is partly hidden by the fringe and the view is transitional."
+      }
     },
     {
       "id": "run-0",
@@ -1881,7 +3253,7 @@
       "croppedSourceSha256": "dc755c3ec8722fcd661daa8da0d8b79f887392c94cef42c005086d254c660319",
       "croppedSourceContentSha256": "dc755c3ec8722fcd661daa8da0d8b79f887392c94cef42c005086d254c660319",
       "runtimePng": "public/assets/characters/iona/b01e/run-0-left.png",
-      "runtimeSha256": "7481fb5e7ff60e6e78fcc83c5638212c54b4d83f9a4246922f6a31e3a81d963c",
+      "runtimeSha256": "3325f165d90d6a1c5667782d52439530f32756c6c8b57564343f831d5c6d66b6",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1905,10 +3277,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "7481fb5e7ff60e6e78fcc83c5638212c54b4d83f9a4246922f6a31e3a81d963c",
+        "anchor": [
+          55,
+          24
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              55,
+              23
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              56,
+              25
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "run-1",
@@ -1942,7 +3361,7 @@
       "croppedSourceSha256": "516e5124fe38e98635a9013ad191d51769d0fd321f9c10c2710855505a335620",
       "croppedSourceContentSha256": "516e5124fe38e98635a9013ad191d51769d0fd321f9c10c2710855505a335620",
       "runtimePng": "public/assets/characters/iona/b01e/run-1-left.png",
-      "runtimeSha256": "5b25e54e53d246efaf1ca2d796843097703402c9e19a3d650c7e0390711b9bbb",
+      "runtimeSha256": "f9e25653282cb98b44a3f42282f9773385ed7f418f95e6f655c428f52665c5f7",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -1966,10 +3385,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "5b25e54e53d246efaf1ca2d796843097703402c9e19a3d650c7e0390711b9bbb",
+        "anchor": [
+          54,
+          25
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              54,
+              24
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              55,
+              26
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "run-2",
@@ -2003,7 +3469,7 @@
       "croppedSourceSha256": "1d6f4c811db87676c59720f36dfc86c2dccb7f25428e1015e80d60a1d71e46a4",
       "croppedSourceContentSha256": "1d6f4c811db87676c59720f36dfc86c2dccb7f25428e1015e80d60a1d71e46a4",
       "runtimePng": "public/assets/characters/iona/b01e/run-2-left.png",
-      "runtimeSha256": "13e3bebb17e7f2cb0329eb0d321f2616cc988e6e45c4c73dc1e7cd59785e31b5",
+      "runtimeSha256": "672106f6b90ab4152df306d3ef0ddc33aff9f19eb64d89bedfa871d61e33566e",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2027,10 +3493,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "13e3bebb17e7f2cb0329eb0d321f2616cc988e6e45c4c73dc1e7cd59785e31b5",
+        "anchor": [
+          50,
+          25
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              51,
+              25
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              51,
+              26
+            ],
+            "fromRgb": [
+              243,
+              229,
+              224
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "run-3",
@@ -2064,7 +3577,7 @@
       "croppedSourceSha256": "0ede77b6f6c04ecdfa9e456be774d4aece7fe1fe86795f1c568dca4f7c747981",
       "croppedSourceContentSha256": "0ede77b6f6c04ecdfa9e456be774d4aece7fe1fe86795f1c568dca4f7c747981",
       "runtimePng": "public/assets/characters/iona/b01e/run-3-left.png",
-      "runtimeSha256": "70004dad544a2136f053e0a07ab4d87b86b7acbdb80ea30179cdc2cb8c0ca7b1",
+      "runtimeSha256": "2d6dd043e565c5dfbf5a90db52ea1cca1b304afeb50380df3c5a2a493feed5dd",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2088,10 +3601,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "70004dad544a2136f053e0a07ab4d87b86b7acbdb80ea30179cdc2cb8c0ca7b1",
+        "anchor": [
+          46,
+          25
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              46,
+              24
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              47,
+              26
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-2-windup",
@@ -2125,7 +3685,7 @@
       "croppedSourceSha256": "773511143fcd6787a6d71b587798be4ef9ab96b0c0ff4fc4ddf591952b755821",
       "croppedSourceContentSha256": "773511143fcd6787a6d71b587798be4ef9ab96b0c0ff4fc4ddf591952b755821",
       "runtimePng": "public/assets/characters/iona/b01e/combo-2-windup-left.png",
-      "runtimeSha256": "b34703e146646dc012142d0f3db7eb624eda692c4959547950f141b127f66d44",
+      "runtimeSha256": "cbf08197f51d9e7e14e4ab97dc09fa95d0a856ec19bb60421700f2a91a075d0b",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2156,9 +3716,73 @@
       "baselineB01CSha256": "6d43645dc9d74aa09837e308bb9702595e9b28e6ff0212a5e5777cc286303b09",
       "replacedB01DSha256": "6d43645dc9d74aa09837e308bb9702595e9b28e6ff0212a5e5777cc286303b09",
       "pixelMethod": "alpha >= 192; cell crop; one shared nearest-neighbor scale per facing from median source pose height; B01C shared 32-color palette; no dithering; waist-aligned x64 and visible feet y80 on a 128x80 transparent canvas",
-      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only.",
+      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "NEW_IMAGEGEN_POSE",
-      "ownerApproval": "PENDING_OWNER_REVIEW"
+      "ownerApproval": "PENDING_OWNER_REVIEW",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "b34703e146646dc012142d0f3db7eb624eda692c4959547950f141b127f66d44",
+        "anchor": [
+          59,
+          29
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              59,
+              28
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              60,
+              29
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              60,
+              30
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-2-windup-1",
@@ -2192,7 +3816,7 @@
       "croppedSourceSha256": "a76d7ffc91d7d8ce27fdd4bbba7e12eba17d78b1f1e94977a721f0f5f1e700b7",
       "croppedSourceContentSha256": "a76d7ffc91d7d8ce27fdd4bbba7e12eba17d78b1f1e94977a721f0f5f1e700b7",
       "runtimePng": "public/assets/characters/iona/b01e/combo-2-windup-1-left.png",
-      "runtimeSha256": "4ab328f0cba670207bc42a368fee03d2821589ac1c092ab2b73590942a0114b3",
+      "runtimeSha256": "a79fae8cc6bb146a24fe2c226160b068b9185dce8a65be9c17fb3f7e048c6662",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2223,9 +3847,73 @@
       "baselineB01CSha256": "6d43645dc9d74aa09837e308bb9702595e9b28e6ff0212a5e5777cc286303b09",
       "replacedB01DSha256": "6d43645dc9d74aa09837e308bb9702595e9b28e6ff0212a5e5777cc286303b09",
       "pixelMethod": "alpha >= 192; cell crop; one shared nearest-neighbor scale per facing from median source pose height; B01C shared 32-color palette; no dithering; waist-aligned x64 and visible feet y80 on a 128x80 transparent canvas",
-      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only.",
+      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "NEW_IMAGEGEN_POSE",
-      "ownerApproval": "PENDING_OWNER_REVIEW"
+      "ownerApproval": "PENDING_OWNER_REVIEW",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "4ab328f0cba670207bc42a368fee03d2821589ac1c092ab2b73590942a0114b3",
+        "anchor": [
+          65,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              65,
+              27
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              66,
+              28
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              66,
+              29
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-2-contact",
@@ -2259,7 +3947,7 @@
       "croppedSourceSha256": "a4fa750d2a595549fe8c37035689eacc23a12b5c3357e68cd6175b47226a9586",
       "croppedSourceContentSha256": "a4fa750d2a595549fe8c37035689eacc23a12b5c3357e68cd6175b47226a9586",
       "runtimePng": "public/assets/characters/iona/b01e/combo-2-contact-left.png",
-      "runtimeSha256": "30afb53b3d66869e750c467ea3232e3f90f624611aa3ac6abf6762e401a01deb",
+      "runtimeSha256": "6986c4e217867b1acc88ca35c0c10e442376f958ea5f250e17825dbf3b360441",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2295,9 +3983,56 @@
       "baselineB01CSha256": "db30015c0d363e80c0c40b79210dc1c464fd16c2699048dbd3e2c4479cdeac48",
       "replacedB01DSha256": "db30015c0d363e80c0c40b79210dc1c464fd16c2699048dbd3e2c4479cdeac48",
       "pixelMethod": "alpha >= 192; cell crop; one shared nearest-neighbor scale per facing from median source pose height; B01C shared 32-color palette; no dithering; waist-aligned x64 and visible feet y80 on a 128x80 transparent canvas",
-      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only.",
+      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "NEW_IMAGEGEN_POSE",
-      "ownerApproval": "PENDING_OWNER_REVIEW"
+      "ownerApproval": "PENDING_OWNER_REVIEW",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "30afb53b3d66869e750c467ea3232e3f90f624611aa3ac6abf6762e401a01deb",
+        "anchor": [
+          68,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              68,
+              27
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              69,
+              28
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-2-recovery",
@@ -2331,7 +4066,7 @@
       "croppedSourceSha256": "cd55ed152c9627b73852791c5226b3a97ce6a82c318aa406d83609854215d905",
       "croppedSourceContentSha256": "cd55ed152c9627b73852791c5226b3a97ce6a82c318aa406d83609854215d905",
       "runtimePng": "public/assets/characters/iona/b01e/combo-2-recovery-left.png",
-      "runtimeSha256": "384f06eb30f7d21977e0a3eeffe41a3321caab0ec4a047875d3a8043040a735e",
+      "runtimeSha256": "f8de81ee243358dda6af7c0a136e612791a0d43e7664bd3756b00cfd9e8a66d5",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2362,9 +4097,73 @@
       "baselineB01CSha256": "b680341a55b847a649a88966fb68455b911d2c7e394404393771aba1ca2e6c59",
       "replacedB01DSha256": "b680341a55b847a649a88966fb68455b911d2c7e394404393771aba1ca2e6c59",
       "pixelMethod": "alpha >= 192; cell crop; one shared nearest-neighbor scale per facing from median source pose height; B01C shared 32-color palette; no dithering; waist-aligned x64 and visible feet y80 on a 128x80 transparent canvas",
-      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only.",
+      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "NEW_IMAGEGEN_POSE",
-      "ownerApproval": "PENDING_OWNER_REVIEW"
+      "ownerApproval": "PENDING_OWNER_REVIEW",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "384f06eb30f7d21977e0a3eeffe41a3321caab0ec4a047875d3a8043040a735e",
+        "anchor": [
+          64,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              64,
+              27
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              65,
+              28
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              65,
+              29
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "idle-0",
@@ -2387,7 +4186,7 @@
       ],
       "trimmedCropSha256": "aacecc1137a63ee30f43f2accf6e3651e20f730adbf2169ab1fe513f1cf44376",
       "runtimePng": "public/assets/characters/iona/b01e/idle-0-right.png",
-      "runtimeSha256": "387c6cc5e7c9b60029fc5277c230eaab4936037fafa886a29100600306c2d1b6",
+      "runtimeSha256": "1e1a7f63dc8e9f8a04096b400e076cb38401ca2a59ba672b47a1924b2b9fa446",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2421,10 +4220,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "387c6cc5e7c9b60029fc5277c230eaab4936037fafa886a29100600306c2d1b6",
+        "anchor": [
+          70,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              70,
+              27
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              69,
+              28
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              69,
+              29
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "idle-1",
@@ -2447,7 +4310,7 @@
       ],
       "trimmedCropSha256": "e0fa4943e5a8de69d4436826fb2998cbc73a161a1deb00dfcf0fd07e054684b6",
       "runtimePng": "public/assets/characters/iona/b01e/idle-1-right.png",
-      "runtimeSha256": "c64d76099c2ef961e053974d9d3ccabf0d4c8a1d236d7e6ec8b1d7af352f6fe8",
+      "runtimeSha256": "d5c3973cff28d2730f59257ebb37ce0c6c76c15a259523cca90e464a17d15a76",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2481,10 +4344,40 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "c64d76099c2ef961e053974d9d3ccabf0d4c8a1d236d7e6ec8b1d7af352f6fe8",
+        "anchor": [
+          65,
+          32
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              65,
+              31
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "idle-2",
@@ -2507,7 +4400,7 @@
       ],
       "trimmedCropSha256": "70bf699dcd1982c4b84d05daa556680265d69de2fbf585c1c8277748d8c5c164",
       "runtimePng": "public/assets/characters/iona/b01e/idle-2-right.png",
-      "runtimeSha256": "70965bc4d1f3dcc0f0ab9391a0841b9fad3757bbfd58ed3a3227960a7c0559d1",
+      "runtimeSha256": "8994a248d3249ffbea2e7d71365b353ccba8853b1b8e8cc420c5e3c21bb09425",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2541,10 +4434,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "70965bc4d1f3dcc0f0ab9391a0841b9fad3757bbfd58ed3a3227960a7c0559d1",
+        "anchor": [
+          63,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              63,
+              27
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              62,
+              28
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              62,
+              29
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "idle-3",
@@ -2604,7 +4561,16 @@
       "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "preserved-existing-eye",
+        "baselineSha256": "85b2613df6295a874386420cd10511a6ef9fe81953ca8a2eb966fc9cab3fd942",
+        "anchor": null,
+        "anchorSource": "none",
+        "pixelEdits": [],
+        "rationale": "The face already has a distinct teal eye glint; retaining it avoids doubling the eye detail."
+      }
     },
     {
       "id": "jump-0",
@@ -2632,7 +4598,7 @@
       ],
       "trimmedCropSha256": "443ea1ebc36f2664da2b0338a98d973d6c4a065750f664c635d264d92793f35e",
       "runtimePng": "public/assets/characters/iona/b01e/jump-0-right.png",
-      "runtimeSha256": "86d0bc2e34f1ac7ecc1143f0e05b8d27a45cddc4eb048f131d87694b3a1fe0e5",
+      "runtimeSha256": "bc61ac80cd6261dbd8a39509e1a8f35dd15678145118c0eadc89e9eafa79066f",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2666,10 +4632,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "86d0bc2e34f1ac7ecc1143f0e05b8d27a45cddc4eb048f131d87694b3a1fe0e5",
+        "anchor": [
+          73,
+          40
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              73,
+              39
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              72,
+              40
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-1",
@@ -2697,7 +4710,7 @@
       ],
       "trimmedCropSha256": "2f84c7b6ee78ea005e46417fe6faaa1df44474b09160b7d97e33db30fff81791",
       "runtimePng": "public/assets/characters/iona/b01e/jump-1-right.png",
-      "runtimeSha256": "21341931f320b3cbc8655d17afbf792e6505b866426135225d51ccd3bcee7014",
+      "runtimeSha256": "db2761acc60c9302eea3724f56d97b493e0cb6a71c1fe32272138674238a9793",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2731,10 +4744,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "21341931f320b3cbc8655d17afbf792e6505b866426135225d51ccd3bcee7014",
+        "anchor": [
+          77,
+          30
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              77,
+              29
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              76,
+              31
+            ],
+            "fromRgb": [
+              243,
+              229,
+              224
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-2",
@@ -2762,7 +4822,7 @@
       ],
       "trimmedCropSha256": "73c4dbea98aa030955f0cf575018d256f14b4b2d55ebd03da46de3f4a9bf83dc",
       "runtimePng": "public/assets/characters/iona/b01e/jump-2-right.png",
-      "runtimeSha256": "5edb1ef6fcb9bd455c1c918aaeb6df8a4806d7ab7d64e06af5619bd50abbe11c",
+      "runtimeSha256": "d35e1b8f36bfba3692f63fe60f7aedfa6f2ebf639e878003ee4b6c3500f4309e",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2796,10 +4856,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "5edb1ef6fcb9bd455c1c918aaeb6df8a4806d7ab7d64e06af5619bd50abbe11c",
+        "anchor": [
+          75,
+          31
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              75,
+              30
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              74,
+              32
+            ],
+            "fromRgb": [
+              243,
+              229,
+              224
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-3",
@@ -2827,7 +4934,7 @@
       ],
       "trimmedCropSha256": "864af2b5330feacaa61836784b3b440d0be0381a943a0f555f8ad6f574a0fade",
       "runtimePng": "public/assets/characters/iona/b01e/jump-3-right.png",
-      "runtimeSha256": "7cd910f5f5f8909e11587e7e46554eeb25c6094993ac57225147468b5eb8ffb0",
+      "runtimeSha256": "75be13d75830558aceaaaf5ba8f2f118cd24e497680bd4eeed19b31775c30850",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2861,10 +4968,40 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "7cd910f5f5f8909e11587e7e46554eeb25c6094993ac57225147468b5eb8ffb0",
+        "anchor": [
+          69,
+          39
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              69,
+              38
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-4",
@@ -2892,7 +5029,7 @@
       ],
       "trimmedCropSha256": "2edfb857cf155a9edc3e0b321439cfa1945e968734f07f4890677246e88a2fe9",
       "runtimePng": "public/assets/characters/iona/b01e/jump-4-right.png",
-      "runtimeSha256": "140b85246869f54f5d05bb0515fd7b2c0b9c28e045ec18ee8fdb99db541f17ca",
+      "runtimeSha256": "0c584dd6fe6c1fe54732e0e02d96af7074c91eb2aec3449eebcc3ed10f7a5605",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2926,10 +5063,40 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "140b85246869f54f5d05bb0515fd7b2c0b9c28e045ec18ee8fdb99db541f17ca",
+        "anchor": [
+          69,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              69,
+              27
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "jump-5",
@@ -2957,7 +5124,7 @@
       ],
       "trimmedCropSha256": "d71cf1e4d1f75220593e58da94b749a2f5ccf5e51fb343efbba2bfaae9981a6d",
       "runtimePng": "public/assets/characters/iona/b01e/jump-5-right.png",
-      "runtimeSha256": "9787df8617efd17a8ebc01a260ae5b843a71e5094b3565fa5c8226d4ceca28df",
+      "runtimeSha256": "0bbee3961481a3febdc7a203c71df04b53e6ec25c8353b37ff36569ec4fd321c",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -2991,10 +5158,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "9787df8617efd17a8ebc01a260ae5b843a71e5094b3565fa5c8226d4ceca28df",
+        "anchor": [
+          71,
+          40
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              71,
+              39
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              70,
+              40
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-0",
@@ -3022,7 +5236,7 @@
       ],
       "trimmedCropSha256": "e91bc57bc8ee826ea4aeae2c8f2c5ec929ea39da2c4cad381828baf196e889bf",
       "runtimePng": "public/assets/characters/iona/b01e/dash-0-right.png",
-      "runtimeSha256": "7698a312650f35f20d3c8b1ffe9fa93623ac15fa5c689d375e54f6f50974611a",
+      "runtimeSha256": "00b0b27724bb62ca4e539be3455a9b7ed0e90535a050a9bcaf7724cb0f3be03c",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3056,10 +5270,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "7698a312650f35f20d3c8b1ffe9fa93623ac15fa5c689d375e54f6f50974611a",
+        "anchor": [
+          77,
+          44
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              77,
+              43
+            ],
+            "fromRgb": [
+              219,
+              202,
+              199
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              76,
+              44
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-1",
@@ -3087,7 +5348,7 @@
       ],
       "trimmedCropSha256": "635cb22b6b1ed6eba79fe8cad05b1056d70315d495db21261ca4c8bf38157ea1",
       "runtimePng": "public/assets/characters/iona/b01e/dash-1-right.png",
-      "runtimeSha256": "ffc96e86c973ddf230d55141f72bbfca176b0902bf60a343dad4a929f93c9d56",
+      "runtimeSha256": "ea25d5bfd3c5a319bac6af83a8c7545c4739bb423416e78dd3c5e1cc5136ddf6",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3121,10 +5382,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "ffc96e86c973ddf230d55141f72bbfca176b0902bf60a343dad4a929f93c9d56",
+        "anchor": [
+          76,
+          36
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              76,
+              35
+            ],
+            "fromRgb": [
+              233,
+              217,
+              213
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              75,
+              36
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-2",
@@ -3152,7 +5460,7 @@
       ],
       "trimmedCropSha256": "d2a6b3dc6eeb3cb9214b0a3fee1de260a8add00c4369892599f775f42de9cebe",
       "runtimePng": "public/assets/characters/iona/b01e/dash-2-right.png",
-      "runtimeSha256": "4e08be59b49149ebdd8796854cf97ee17f6bfbc6269a72947de3becc9536d530",
+      "runtimeSha256": "2c026d0a01db16877eebc87707ce57ac4b033386c61edba5453659a213645c2e",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3186,10 +5494,40 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "4e08be59b49149ebdd8796854cf97ee17f6bfbc6269a72947de3becc9536d530",
+        "anchor": [
+          73,
+          44
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              73,
+              43
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-3",
@@ -3217,7 +5555,7 @@
       ],
       "trimmedCropSha256": "df9ef2bcffec467f7f7d52775ce87f1c4dcde1a4903b355a07429007933782e7",
       "runtimePng": "public/assets/characters/iona/b01e/dash-3-right.png",
-      "runtimeSha256": "51008462261648a263764c93061f2201d2f548d440fb88bb2818c9ea5d86050b",
+      "runtimeSha256": "b077e5ea5523a878977a60d1eeac7f4e4153e4d03b5edc400984888116edd90c",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3251,10 +5589,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "51008462261648a263764c93061f2201d2f548d440fb88bb2818c9ea5d86050b",
+        "anchor": [
+          73,
+          53
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              72,
+              53
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              72,
+              54
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-4",
@@ -3282,7 +5667,7 @@
       ],
       "trimmedCropSha256": "8ad9bfa1e7823fdd729cad135222e334b448e0dc78ae41cfd3fffd255a6ebff5",
       "runtimePng": "public/assets/characters/iona/b01e/dash-4-right.png",
-      "runtimeSha256": "d090526217b1080005a00bbafb3b01e22d22bcd30bfe77f1a3eaa7e5545fe514",
+      "runtimeSha256": "ecead12050735ad4583683081aa534b34d245e548b3eb0580b524f733f690712",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3316,10 +5701,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "d090526217b1080005a00bbafb3b01e22d22bcd30bfe77f1a3eaa7e5545fe514",
+        "anchor": [
+          58,
+          42
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              58,
+              41
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              57,
+              42
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              57,
+              43
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "dash-5",
@@ -3347,7 +5796,7 @@
       ],
       "trimmedCropSha256": "561ae20988e6cace584359b460b137f3e209ccdd16ca21814c51fde7c7e8ba42",
       "runtimePng": "public/assets/characters/iona/b01e/dash-5-right.png",
-      "runtimeSha256": "968f054bc61fcaea9f05819e6a1fe2bbce267fea265c416d9e6441ea635b7b9b",
+      "runtimeSha256": "763eb64aeba219c16e4f6ff4da2bf7cb1dfab19fa9897436f9331f4fce1d8cc8",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3381,10 +5830,40 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "968f054bc61fcaea9f05819e6a1fe2bbce267fea265c416d9e6441ea635b7b9b",
+        "anchor": [
+          70,
+          30
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              70,
+              29
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-1-windup",
@@ -3412,7 +5891,7 @@
       ],
       "trimmedCropSha256": "678a22677c6cf4a1795aaab8e3e51963b4c79dd820d66e7fc1ccd965c9113380",
       "runtimePng": "public/assets/characters/iona/b01e/combo-1-windup-right.png",
-      "runtimeSha256": "73bba579a1f082b5f690060ac273dcf88e3a7803b9fe9a01a48767b969864ddd",
+      "runtimeSha256": "b487abee023f5a63ad1c9fac183cdcefbbd442535436c522fc75d47dedc6ce1c",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3446,10 +5925,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "73bba579a1f082b5f690060ac273dcf88e3a7803b9fe9a01a48767b969864ddd",
+        "anchor": [
+          75,
+          44
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              75,
+              43
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              74,
+              45
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-1-contact",
@@ -3477,7 +6003,7 @@
       ],
       "trimmedCropSha256": "5945fd600b46993c42a9d2065535749385b6d894c8db2fcee85aaa7916053fd3",
       "runtimePng": "public/assets/characters/iona/b01e/combo-1-contact-right.png",
-      "runtimeSha256": "0bdb8ff116198962da93603cf33721c77c86911143609b06c1fa43cd3f8e572b",
+      "runtimeSha256": "268fcc3f8aa20735824e2dedf2024b8a56a562107e8c880081b2539b7bfc9ec3",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3516,10 +6042,40 @@
       },
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "0bdb8ff116198962da93603cf33721c77c86911143609b06c1fa43cd3f8e572b",
+        "anchor": [
+          77,
+          44
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              76,
+              45
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-1-recovery",
@@ -3547,7 +6103,7 @@
       ],
       "trimmedCropSha256": "b9d0072fc7ebc6e806902084fe8d43b626b99fb8d1cc07b7d805284b0b7c6a0b",
       "runtimePng": "public/assets/characters/iona/b01e/combo-1-recovery-right.png",
-      "runtimeSha256": "07d4941e80df88b8b201ae76547c2fbda2ca6424df89d13dab27ff097cc3c7fe",
+      "runtimeSha256": "494cc453bffae3d9654f05d8c4f7c4190bf342537930b498cb78764d7c375974",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3581,10 +6137,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "07d4941e80df88b8b201ae76547c2fbda2ca6424df89d13dab27ff097cc3c7fe",
+        "anchor": [
+          75,
+          44
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              75,
+              43
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              74,
+              44
+            ],
+            "fromRgb": [
+              233,
+              217,
+              213
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              74,
+              45
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-3-windup",
@@ -3612,7 +6232,7 @@
       ],
       "trimmedCropSha256": "4e6b67c14d83f40a621ba4e04e13181a6b1bc9703657c590b1e4665dc8b29bc0",
       "runtimePng": "public/assets/characters/iona/b01e/combo-3-windup-right.png",
-      "runtimeSha256": "6a3e7e1384c946c6df571b630c6e6281834c351f480bcb0705aee8d8b851b2f5",
+      "runtimeSha256": "96d9b3aaf174e8f8c8daef755d43b2d41cfdfd8af1684815027b57b659f3de66",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3646,10 +6266,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "6a3e7e1384c946c6df571b630c6e6281834c351f480bcb0705aee8d8b851b2f5",
+        "anchor": [
+          74,
+          44
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              74,
+              43
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              73,
+              45
+            ],
+            "fromRgb": [
+              232,
+              210,
+              203
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-3-contact",
@@ -3677,7 +6344,7 @@
       ],
       "trimmedCropSha256": "b005dc54bcf0c1205c3e587be1b0445cb641096264ecbfa7ffbea65db9152269",
       "runtimePng": "public/assets/characters/iona/b01e/combo-3-contact-right.png",
-      "runtimeSha256": "c2b83b42d78bf8dd13648cbb67c5fe73561f6b94d3f114371423b2fc2c7b6b91",
+      "runtimeSha256": "569888f45f87680b07fd55b46741526b8d2b336cee3d9bc645616ec0479df30a",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3716,10 +6383,40 @@
       },
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "c2b83b42d78bf8dd13648cbb67c5fe73561f6b94d3f114371423b2fc2c7b6b91",
+        "anchor": [
+          70,
+          45
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              70,
+              44
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-3-recovery",
@@ -3747,7 +6444,7 @@
       ],
       "trimmedCropSha256": "2cf7cbc641bbef7cb949cc319f43cb56d11cbd6472964f9cf4f180eba45c5c23",
       "runtimePng": "public/assets/characters/iona/b01e/combo-3-recovery-right.png",
-      "runtimeSha256": "b760a7fabe106c040967ef32e062710fe4f6607a6cf24aee44310fd0b2eac714",
+      "runtimeSha256": "9dd8903d1eb75bf346e4cb162730052552303c8d88c8554cca9065ae8b58d333",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3781,10 +6478,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "b760a7fabe106c040967ef32e062710fe4f6607a6cf24aee44310fd0b2eac714",
+        "anchor": [
+          74,
+          43
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              74,
+              42
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              73,
+              44
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "start-0",
@@ -3812,7 +6556,7 @@
       ],
       "trimmedCropSha256": "dd16b3d0426637faaba9cf5ce24450a1437fcdccef9e7b8c5ee34a605d29b0bd",
       "runtimePng": "public/assets/characters/iona/b01e/start-0-right.png",
-      "runtimeSha256": "99d3795378eb71787e1a2c7b6f16f5aea2c8b6a383ea6da3c1c7d9c3df02021b",
+      "runtimeSha256": "2fdd2d82c9713a9b8e744939f54e1b3dc155b1d285926282ec9f8a3f8650a999",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3846,10 +6590,40 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 1 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "99d3795378eb71787e1a2c7b6f16f5aea2c8b6a383ea6da3c1c7d9c3df02021b",
+        "anchor": [
+          76,
+          26
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              76,
+              25
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "start-1",
@@ -3877,7 +6651,7 @@
       ],
       "trimmedCropSha256": "371ee88487e9e9a20d0e217fa1d58e1c559b555d85baa6771384919ee534255d",
       "runtimePng": "public/assets/characters/iona/b01e/start-1-right.png",
-      "runtimeSha256": "aae3bb72e58d88d92bb7e3ab9e0370483a69e36f2d871bb88e490642c21a3574",
+      "runtimeSha256": "100ccc47744ad6b53285107db475dbd7b9cfe2d584c887ac0ecb163c9b69a794",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3911,10 +6685,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "aae3bb72e58d88d92bb7e3ab9e0370483a69e36f2d871bb88e490642c21a3574",
+        "anchor": [
+          72,
+          24
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              72,
+              23
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              71,
+              24
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "stop-0",
@@ -3942,7 +6763,7 @@
       ],
       "trimmedCropSha256": "d876715a6cd732cc6c00255de3cb3f0f4b534416107f944a1d4a2ba7ab68f6d5",
       "runtimePng": "public/assets/characters/iona/b01e/stop-0-right.png",
-      "runtimeSha256": "96b52cfd71a399c5bb1b01a043981e2e567bdf174906475b3e471013735fe7f5",
+      "runtimeSha256": "f85eb350bea2a8befdba673aa685b20e6f98d6caf674e7e8af5d55d00973b773",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -3976,10 +6797,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "96b52cfd71a399c5bb1b01a043981e2e567bdf174906475b3e471013735fe7f5",
+        "anchor": [
+          65,
+          25
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              65,
+              24
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              64,
+              26
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "stop-1",
@@ -4007,7 +6875,7 @@
       ],
       "trimmedCropSha256": "27b997882fa5a719f33e81d29f43ef1c8a6db498638a3d1456ae952e9c1679fc",
       "runtimePng": "public/assets/characters/iona/b01e/stop-1-right.png",
-      "runtimeSha256": "ac0cece63b52de9556aaa6b5b9e3fe36f72ee5764e7b6d29d46e0fed81413f22",
+      "runtimeSha256": "cda148189fdc5b12ed398bb8346317a2fe47e89ea83dd2b0f1517e884a5ba3e5",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4041,10 +6909,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "ac0cece63b52de9556aaa6b5b9e3fe36f72ee5764e7b6d29d46e0fed81413f22",
+        "anchor": [
+          71,
+          26
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              71,
+              25
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              70,
+              26
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              70,
+              27
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "turn-1",
@@ -4072,7 +7004,7 @@
       ],
       "trimmedCropSha256": "879d8c99d203d0df817d1bbe1ac53e18d2e7f7f89086896b1eab969976c38c6a",
       "runtimePng": "public/assets/characters/iona/b01e/turn-1-right.png",
-      "runtimeSha256": "46dc5e73126d8f1d5b0ce778ad4e9d1040f04a4732959e1aa5c2f943243b5479",
+      "runtimeSha256": "d2aed7d006362524e19ee7d6788e6210e8c2acd0b9fdcc3268e65a3c68fe42c9",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4106,10 +7038,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "46dc5e73126d8f1d5b0ce778ad4e9d1040f04a4732959e1aa5c2f943243b5479",
+        "anchor": [
+          64,
+          23
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              64,
+              22
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              63,
+              23
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              63,
+              24
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "run-0",
@@ -4143,7 +7139,7 @@
       "croppedSourceSha256": "3419e24369db0ff43db5b1482e3c421fadf6fb3ff75290b1f0620b047d34ee29",
       "croppedSourceContentSha256": "3419e24369db0ff43db5b1482e3c421fadf6fb3ff75290b1f0620b047d34ee29",
       "runtimePng": "public/assets/characters/iona/b01e/run-0-right.png",
-      "runtimeSha256": "5e4cb73acc2ec28d82f7fb579f1c0a271b14f17fa9c25ba32b1aa5017f34b0c0",
+      "runtimeSha256": "df09a437471839773a1ddc9605b59707cd43533cc137e6f54690a3e0ac612b70",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4167,10 +7163,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "5e4cb73acc2ec28d82f7fb579f1c0a271b14f17fa9c25ba32b1aa5017f34b0c0",
+        "anchor": [
+          79,
+          24
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              79,
+              23
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              78,
+              24
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              78,
+              25
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "run-1",
@@ -4204,7 +7264,7 @@
       "croppedSourceSha256": "b5448d2701c88a5bae9b50cca7d899acfdfbc4b1aecdbae168fe1ee91792c0f9",
       "croppedSourceContentSha256": "b5448d2701c88a5bae9b50cca7d899acfdfbc4b1aecdbae168fe1ee91792c0f9",
       "runtimePng": "public/assets/characters/iona/b01e/run-1-right.png",
-      "runtimeSha256": "e2584f43230ceb980ffc64c5676adc160dbf3034717321db10d7bb9bada02a07",
+      "runtimeSha256": "b23dd9b821f3205fbea381616d2354363f613f8c5b69af1d670971b8846ac969",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4228,10 +7288,57 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "e2584f43230ceb980ffc64c5676adc160dbf3034717321db10d7bb9bada02a07",
+        "anchor": [
+          73,
+          24
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              73,
+              23
+            ],
+            "fromRgb": [
+              174,
+              157,
+              167
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              72,
+              25
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "run-2",
@@ -4265,7 +7372,7 @@
       "croppedSourceSha256": "75e3a68b294cc76d31e6b81ba553876564819b6be694497c3c941edc021a3732",
       "croppedSourceContentSha256": "75e3a68b294cc76d31e6b81ba553876564819b6be694497c3c941edc021a3732",
       "runtimePng": "public/assets/characters/iona/b01e/run-2-right.png",
-      "runtimeSha256": "a4e93b1b2498891b316312124618cba082e0aa36ed6bb586ed409215096f1c36",
+      "runtimeSha256": "71bbd708741bfcf4da78b0dd0bf0ce23ead271ce1bf666cf851dcff9094b33a5",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4289,10 +7396,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "a4e93b1b2498891b316312124618cba082e0aa36ed6bb586ed409215096f1c36",
+        "anchor": [
+          76,
+          24
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              76,
+              23
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              75,
+              24
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              75,
+              25
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "run-3",
@@ -4326,7 +7497,7 @@
       "croppedSourceSha256": "18fda23c72eec7572897f9a93f1c9e6c466cec94d751a1183b15c1a41c6f83a0",
       "croppedSourceContentSha256": "18fda23c72eec7572897f9a93f1c9e6c466cec94d751a1183b15c1a41c6f83a0",
       "runtimePng": "public/assets/characters/iona/b01e/run-3-right.png",
-      "runtimeSha256": "3c3d85137a595f2ea8f1c010a019d7324fee2ca113e0b2bae10aa62e899a487d",
+      "runtimeSha256": "611fd7a01a693ed561a41daa3daad5daa07dba20ef2ce60a6a0a9fdb289e74e3",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4350,10 +7521,74 @@
       "contactAnchor": null,
       "vfxAnchor": null,
       "sfxAnchor": null,
-      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate.",
+      "manualEditDescription": "Copied byte-identically from the provisional B01D candidate. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "UNCHANGED_REUSED",
       "ownerApproval": "PENDING_OWNER_REVIEW",
-      "sourceCandidate": "B01D"
+      "sourceCandidate": "B01D",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "3c3d85137a595f2ea8f1c010a019d7324fee2ca113e0b2bae10aa62e899a487d",
+        "anchor": [
+          80,
+          24
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              80,
+              23
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              79,
+              24
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              79,
+              25
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-2-windup",
@@ -4387,7 +7622,7 @@
       "croppedSourceSha256": "03a98e31824de0543bbed031627d95a0de9c90eeb09c923d9db8ef270859b4d4",
       "croppedSourceContentSha256": "03a98e31824de0543bbed031627d95a0de9c90eeb09c923d9db8ef270859b4d4",
       "runtimePng": "public/assets/characters/iona/b01e/combo-2-windup-right.png",
-      "runtimeSha256": "3231c47b79f630d56e2ff8aba5286ce6135b80d0cf4360e5c70fb04a06d440b4",
+      "runtimeSha256": "7559e7d8a264eb9a42b4363c5d8268671aa1a86cbfe76c36efa7ea577eba2490",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4418,9 +7653,56 @@
       "baselineB01CSha256": "b3d538ffb8c04e4aa2976b3886aeb1e8a840f6ce1303b8b24372c737e6ec68b0",
       "replacedB01DSha256": "b3d538ffb8c04e4aa2976b3886aeb1e8a840f6ce1303b8b24372c737e6ec68b0",
       "pixelMethod": "alpha >= 192; cell crop; one shared nearest-neighbor scale per facing from median source pose height; B01C shared 32-color palette; no dithering; waist-aligned x64 and visible feet y80 on a 128x80 transparent canvas",
-      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only.",
+      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "NEW_IMAGEGEN_POSE",
-      "ownerApproval": "PENDING_OWNER_REVIEW"
+      "ownerApproval": "PENDING_OWNER_REVIEW",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "3231c47b79f630d56e2ff8aba5286ce6135b80d0cf4360e5c70fb04a06d440b4",
+        "anchor": [
+          72,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              71,
+              28
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              71,
+              29
+            ],
+            "fromRgb": [
+              124,
+              96,
+              99
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-2-windup-1",
@@ -4454,7 +7736,7 @@
       "croppedSourceSha256": "5f6a7e28d0975525b9472433b7391f85f92500b6dbbf3008858d6fb6e6845355",
       "croppedSourceContentSha256": "5f6a7e28d0975525b9472433b7391f85f92500b6dbbf3008858d6fb6e6845355",
       "runtimePng": "public/assets/characters/iona/b01e/combo-2-windup-1-right.png",
-      "runtimeSha256": "8f17bb3514f02923fb5cefba74cf455ddc71fc9386d2bf2cabf1f3598e32f462",
+      "runtimeSha256": "4303383679a46ad10c50d4fc7b84b5f64b95ab2335c8488128bcfda35989b966",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4485,9 +7767,56 @@
       "baselineB01CSha256": "b3d538ffb8c04e4aa2976b3886aeb1e8a840f6ce1303b8b24372c737e6ec68b0",
       "replacedB01DSha256": "b3d538ffb8c04e4aa2976b3886aeb1e8a840f6ce1303b8b24372c737e6ec68b0",
       "pixelMethod": "alpha >= 192; cell crop; one shared nearest-neighbor scale per facing from median source pose height; B01C shared 32-color palette; no dithering; waist-aligned x64 and visible feet y80 on a 128x80 transparent canvas",
-      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only.",
+      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only. B16 applies 2 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "NEW_IMAGEGEN_POSE",
-      "ownerApproval": "PENDING_OWNER_REVIEW"
+      "ownerApproval": "PENDING_OWNER_REVIEW",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "8f17bb3514f02923fb5cefba74cf455ddc71fc9386d2bf2cabf1f3598e32f462",
+        "anchor": [
+          65,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              65,
+              27
+            ],
+            "fromRgb": [
+              218,
+              167,
+              148
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              64,
+              29
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-2-contact",
@@ -4521,7 +7850,7 @@
       "croppedSourceSha256": "49232d07fe6e6fdae13b233b67a394131f0a72aac8b1b6992db5a3052d020178",
       "croppedSourceContentSha256": "49232d07fe6e6fdae13b233b67a394131f0a72aac8b1b6992db5a3052d020178",
       "runtimePng": "public/assets/characters/iona/b01e/combo-2-contact-right.png",
-      "runtimeSha256": "05ec712b1d549b67b44338378f38ce390eebd3ffcd18003edb03d07199b55020",
+      "runtimeSha256": "0c89769e8bf5b87e71846b9e2b2beb49fe6cc2cd5db38e07bdd000f2ed535e87",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4557,9 +7886,73 @@
       "baselineB01CSha256": "b1275ac140dd4852cb1e25dd9a33d81f87cc00d34d0e8ba9889aa0faa2298f99",
       "replacedB01DSha256": "b1275ac140dd4852cb1e25dd9a33d81f87cc00d34d0e8ba9889aa0faa2298f99",
       "pixelMethod": "alpha >= 192; cell crop; one shared nearest-neighbor scale per facing from median source pose height; B01C shared 32-color palette; no dithering; waist-aligned x64 and visible feet y80 on a 128x80 transparent canvas",
-      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only.",
+      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "NEW_IMAGEGEN_POSE",
-      "ownerApproval": "PENDING_OWNER_REVIEW"
+      "ownerApproval": "PENDING_OWNER_REVIEW",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "05ec712b1d549b67b44338378f38ce390eebd3ffcd18003edb03d07199b55020",
+        "anchor": [
+          67,
+          28
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              67,
+              27
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              66,
+              28
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              66,
+              29
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     },
     {
       "id": "combo-2-recovery",
@@ -4593,7 +7986,7 @@
       "croppedSourceSha256": "0eb40bddffb00015114ac7fa3fa22ba77bc952791d9304ccdd54bf96193a4532",
       "croppedSourceContentSha256": "0eb40bddffb00015114ac7fa3fa22ba77bc952791d9304ccdd54bf96193a4532",
       "runtimePng": "public/assets/characters/iona/b01e/combo-2-recovery-right.png",
-      "runtimeSha256": "1cb98546c072c160848962b0086ee80a66a66e039de35eae00a56d313e40f292",
+      "runtimeSha256": "6b753e430bfd6953810f51e9772010952ecbd6a51c1baff02800be72c14e00b8",
       "runtimeCanvas": {
         "width": 128,
         "height": 80
@@ -4624,9 +8017,73 @@
       "baselineB01CSha256": "3c9b32b44050e409545b7b156cd3723bd7b402881666cec452ef36abcbad596e",
       "replacedB01DSha256": "3c9b32b44050e409545b7b156cd3723bd7b402881666cec452ef36abcbad596e",
       "pixelMethod": "alpha >= 192; cell crop; one shared nearest-neighbor scale per facing from median source pose height; B01C shared 32-color palette; no dithering; waist-aligned x64 and visible feet y80 on a 128x80 transparent canvas",
-      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only.",
+      "manualEditDescription": "No hand-redrawn pixels. Reproducible crop, threshold, scale, palette, waist alignment and planted ground baseline only. B16 applies 3 reviewed, in-palette face pixels without changing the authored pupil, alpha, anchor, or timing.",
       "candidateStatus": "NEW_IMAGEGEN_POSE",
-      "ownerApproval": "PENDING_OWNER_REVIEW"
+      "ownerApproval": "PENDING_OWNER_REVIEW",
+      "faceTreatment": {
+        "mapId": "IONA_B16_BASE_FACE_REPAIR_V1",
+        "status": "repaired-open-eye",
+        "baselineSha256": "1cb98546c072c160848962b0086ee80a66a66e039de35eae00a56d313e40f292",
+        "anchor": [
+          66,
+          27
+        ],
+        "anchorSource": "B15-confident-face-anchor",
+        "pixelEdits": [
+          {
+            "xy": [
+              66,
+              26
+            ],
+            "fromRgb": [
+              165,
+              134,
+              135
+            ],
+            "toRgb": [
+              49,
+              46,
+              71
+            ],
+            "part": "upper lid"
+          },
+          {
+            "xy": [
+              65,
+              27
+            ],
+            "fromRgb": [
+              248,
+              191,
+              157
+            ],
+            "toRgb": [
+              243,
+              229,
+              224
+            ],
+            "part": "sclera highlight"
+          },
+          {
+            "xy": [
+              65,
+              28
+            ],
+            "fromRgb": [
+              249,
+              203,
+              174
+            ],
+            "toRgb": [
+              218,
+              167,
+              148
+            ],
+            "part": "lower lash warmth"
+          }
+        ],
+        "rationale": "Visible eye face-palette anchor from B15 inspection; compact pixel cluster preserves the source pupil and pose-specific eye shape."
+      }
     }
   ]
 }
